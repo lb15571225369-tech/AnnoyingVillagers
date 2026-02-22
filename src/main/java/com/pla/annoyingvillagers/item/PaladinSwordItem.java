@@ -10,6 +10,7 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class PaladinSwordItem extends SwordItem {
 
@@ -35,8 +36,8 @@ public class PaladinSwordItem extends SwordItem {
                 return 20;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -2.3F, (new Properties()));
     }

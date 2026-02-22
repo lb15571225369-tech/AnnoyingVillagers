@@ -6,6 +6,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class RedDiamondSwordItem extends SwordItem {
 
@@ -20,7 +21,7 @@ public class RedDiamondSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 8.5F;
+                return 4.5F;
             }
 
             public int getLevel() {
@@ -31,13 +32,13 @@ public class RedDiamondSwordItem extends SwordItem {
                 return 14;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -2.1F, (new Properties()));
     }
 
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
+    public boolean hurtEnemy(@NotNull ItemStack itemstack, @NotNull LivingEntity livingentity, @NotNull LivingEntity livingentity1) {
         boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
 
         if (livingentity != null) {

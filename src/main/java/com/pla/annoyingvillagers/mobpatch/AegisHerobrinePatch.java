@@ -148,6 +148,6 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     @Override
     public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
-        return ExecutionTypeManager.DEFAULT_TYPE;
+        return type;
     }
 }

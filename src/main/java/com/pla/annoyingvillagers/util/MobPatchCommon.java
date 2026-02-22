@@ -25,7 +25,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GREATSWORD.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.TWO_HAND) {
                 return PlayerNpcGreatsword.AV_GREATSWORD;
             }
@@ -39,7 +39,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcLongsword.AV_LONGSWORD_SHIELD;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {
@@ -47,7 +47,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONGBLADE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcTachi.AV_TACHI;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {

@@ -13,11 +13,25 @@ public class NpcFist {
     public static final Builder<MobPatch<?>> FIST = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(3.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
@@ -25,6 +39,7 @@ public class NpcFist {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(8.0D, 48.0D)
@@ -39,6 +54,7 @@ public class NpcFist {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::isWrongWeapon)
                                             .guard(40)

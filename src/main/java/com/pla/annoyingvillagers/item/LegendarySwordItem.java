@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.skill.LegendarySwordSkill;
 import com.pla.annoyingvillagers.util.ArmorUtil;
 import net.minecraft.network.chat.Component;
@@ -45,7 +46,7 @@ public class LegendarySwordItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get()));
             }
         }, 3, -2.32F, (new Properties()).fireResistant());
     }
@@ -69,10 +70,6 @@ public class LegendarySwordItem extends SwordItem {
             }
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
-    }
-
-    public boolean isRepairable(@NotNull ItemStack itemStack) {
-        return false;
     }
 
     public void appendHoverText(@NotNull ItemStack itemStack, Level level, @NotNull List<Component> componentList, @NotNull TooltipFlag tooltipFlag) {

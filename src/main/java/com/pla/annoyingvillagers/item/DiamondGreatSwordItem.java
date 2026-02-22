@@ -44,7 +44,7 @@ public class DiamondGreatSwordItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -2.8F, (new Properties()));
     }

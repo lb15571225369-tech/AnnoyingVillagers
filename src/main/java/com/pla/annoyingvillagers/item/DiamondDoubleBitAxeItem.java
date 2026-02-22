@@ -5,6 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class DiamondDoubleBitAxeItem extends SwordItem {
 
@@ -19,7 +20,7 @@ public class DiamondDoubleBitAxeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 11.7F;
+                return 4.7F;
             }
 
             public int getLevel() {
@@ -30,8 +31,8 @@ public class DiamondDoubleBitAxeItem extends SwordItem {
                 return 15;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -2.6F, (new Properties()));
     }

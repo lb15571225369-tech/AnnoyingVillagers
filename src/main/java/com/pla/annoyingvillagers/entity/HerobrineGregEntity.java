@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
@@ -59,8 +58,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.network.NetworkHooks;
@@ -104,14 +101,14 @@ public class HerobrineGregEntity extends Monster {
             Items.DIAMOND_AXE,
             AnnoyingVillagersModItems.DIAMOND_SWORD.get(),
             AnnoyingVillagersModItems.DIAMOND_SPEAR.get(),
-            AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREATSWORD.get(),
             AnnoyingVillagersModItems.DIAMOND_BLADE.get(),
             AnnoyingVillagersModItems.DIAMOND_DAGGER.get(),
             AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get(),
             AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_GREATE_BLADE.get(),
-            AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREATBLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONGBLADE.get(),
             AnnoyingVillagersModItems.DIAMOND_HALBERD.get(),
             AnnoyingVillagersModItems.DIAMOND_SCYTHE.get(),
             AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get(),

@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
@@ -61,7 +62,8 @@ public class RenderShadowObsidianSword extends RenderItemBase {
                 } else if (((dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4
-                        || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5) && entityState.getLevel() > 1)
+                        || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5
+                        || dynamicAnimation.get() instanceof ExecutionAttackAnimation) && entityState.getLevel() > 1)
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH
@@ -102,7 +104,8 @@ public class RenderShadowObsidianSword extends RenderItemBase {
                     Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
                     poseStack.popPose();
                 } else if (((dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4
-                        || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5) && entityState.getLevel() > 1)
+                        || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5
+                        || dynamicAnimation.get() instanceof ExecutionAttackAnimation) && entityState.getLevel() > 1)
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE

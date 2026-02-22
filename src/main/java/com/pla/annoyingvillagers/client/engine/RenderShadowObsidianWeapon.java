@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -58,7 +59,8 @@ public class RenderShadowObsidianWeapon extends RenderItemBase {
                     || dynamicAnimation == AVAnimations.OBSIDIAN_FIST_AUTO1
                     || dynamicAnimation == AVAnimations.OBSIDIAN_BIPED_LANDING
                     || dynamicAnimation == AVAnimations.OBSIDIAN_STRONG_PUNCH
-                    || dynamicAnimation == AVAnimations.OBSIDIAN_WHIRLWIND_KICK) {
+                    || dynamicAnimation == AVAnimations.OBSIDIAN_WHIRLWIND_KICK
+                    || dynamicAnimation.get() instanceof ExecutionAttackAnimation) {
                 itemstack = ItemStack.EMPTY;
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);

@@ -56,15 +56,37 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         }
     }
 
+    private static boolean addMoreDualCap(WeaponCapability weaponCapability) {
+        return false;
+    }
+
+    private static boolean addMoreShieldCap(WeaponCapability weaponCapability) {
+        return false;
+    }
+
+    public static boolean canUseShield(ItemStack stack) {
+        CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(stack);
+
+        if (cap instanceof WeaponCapability weaponCapability) {
+            return weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.LONGSWORD ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.SPEAR
+                    || addMoreShieldCap(weaponCapability);
+        }
+
+        return false;
+    }
+
     public static boolean canTwoHand(ItemStack stack) {
         CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(stack);
 
-        if (cap instanceof WeaponCapability weaponCap) {
-            return weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ||
-                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.TACHI ||
-                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
-                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.FIST ||
-                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.DAGGER;
+        if (cap instanceof WeaponCapability weaponCapability) {
+            return weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.TACHI ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.FIST ||
+                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.DAGGER
+                    || addMoreDualCap(weaponCapability);
         }
 
         return false;
@@ -113,8 +135,18 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
             ItemStack itemStack = new ItemStack(item);
             if (slot.equals("MAINHAND")) {
-                if (canTwoHand(itemStack)) {
-                    oneHandWeaponInMainHand = itemId;
+                if (new Random().nextBoolean()) {
+                    if (canTwoHand(itemStack)) {
+                        oneHandWeaponInMainHand = itemId;
+                    } else if (canUseShield(itemStack)) {
+                        oneHandWeaponInMainHand = "minecraft:shield";
+                    }
+                } else {
+                    if (canUseShield(itemStack)) {
+                        oneHandWeaponInMainHand = "minecraft:shield";
+                    } else if (canTwoHand(itemStack)) {
+                        oneHandWeaponInMainHand = itemId;
+                    }
                 }
             }
         }

@@ -50,7 +50,6 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -607,12 +606,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-//        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(EpicFightItems.GLOVE.get()));
-//        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-//        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-//        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-//        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
-
         List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
         for (String cmd : commands) {
             try {
@@ -654,7 +647,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Override
     public void onEquipItem(@NotNull EquipmentSlot pSlot, @NotNull ItemStack pOldItem, @NotNull ItemStack pNewItem) {
         if (pSlot == EquipmentSlot.MAINHAND &&
-                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
             this.mainWeaponItem = pNewItem.copy();
         }
         if (pSlot == EquipmentSlot.OFFHAND &&

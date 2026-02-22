@@ -5,6 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class IronGlaiveItem extends SwordItem {
 
@@ -19,7 +20,7 @@ public class IronGlaiveItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 7.0F;
+                return 2.0F;
             }
 
             public int getLevel() {
@@ -30,8 +31,8 @@ public class IronGlaiveItem extends SwordItem {
                 return 8;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.IRON_INGOT)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.IRON_INGOT));
             }
         }, 3, -2.6F, (new Properties()));
     }

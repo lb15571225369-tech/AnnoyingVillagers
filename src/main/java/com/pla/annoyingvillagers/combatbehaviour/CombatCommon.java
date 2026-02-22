@@ -140,9 +140,6 @@ public class CombatCommon {
     public static boolean canPerformNormalAttackLogic(MobPatch<?> mobpatch) {
         LivingEntity attacker = mobpatch.getOriginal();
         LivingEntity victim = mobpatch.getOriginal().getTarget();
-        if (attacker instanceof NullEntity nullEntity) {
-            return nullEntity.getState() == 2;
-        }
         if (attacker instanceof SwordsmanHerobrineEntity swordsmanHerobrineEntity
                 && swordsmanHerobrineEntity.getMainHandItem().getTag() != null
                 && swordsmanHerobrineEntity.getMainHandItem().getTag().contains("SnakeAnimation")) {

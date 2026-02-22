@@ -13,11 +13,11 @@
       "item": "annoyingvillagers:purple_gem"
     },
     "2": {
-      "item": "annoyingvillagers:diamond_long_sword"
+      "item": "annoyingvillagers:diamond_longsword"
     }
   },
   "result": {
-    "item": "annoyingvillagers:purple_gem_long_sword",
+    "item": "annoyingvillagers:purple_gem_longsword",
     "count": 1
   }
 }

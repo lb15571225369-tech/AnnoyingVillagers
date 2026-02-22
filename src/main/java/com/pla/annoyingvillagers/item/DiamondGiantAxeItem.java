@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.item;
 
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class DiamondGiantAxeItem extends AxeItem {
 
@@ -17,7 +20,7 @@ public class DiamondGiantAxeItem extends AxeItem {
             }
 
             public float getAttackDamageBonus() {
-                return 10.5F;
+                return 8.5F;
             }
 
             public int getLevel() {
@@ -28,8 +31,8 @@ public class DiamondGiantAxeItem extends AxeItem {
                 return 10;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of();
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 1.0F, -2.8F, (new Properties()));
     }

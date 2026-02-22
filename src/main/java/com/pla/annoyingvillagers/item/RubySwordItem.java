@@ -1,9 +1,11 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class RubySwordItem extends SwordItem {
 
@@ -29,21 +31,9 @@ public class RubySwordItem extends SwordItem {
                 return 20;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of();
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.RUBY.get()));
             }
         }, 3, -1.4F, (new Properties()));
-    }
-
-    public boolean hasContainerItem(ItemStack itemstack) {
-        return true;
-    }
-
-    public ItemStack getContainerItem(ItemStack itemstack) {
-        return new ItemStack(this);
-    }
-
-    public boolean isRepairable(ItemStack itemstack) {
-        return false;
     }
 }

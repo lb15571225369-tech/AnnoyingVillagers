@@ -117,9 +117,9 @@ public class HeavyAttackAnimation extends AttackAnimation {
     public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> livingentitypatch, float f) {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
-        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey())).get()) {
-            typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
-            typeflexiblehashmap.put(EntityState.UPDATE_LIVING_MOTION, Optional.of(true));
+        if (!livingentitypatch.getOriginal().level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey()).get()) {
+            typeflexiblehashmap.put((EntityState.StateFactor<?>) EntityState.MOVEMENT_LOCKED, Boolean.FALSE);
+            typeflexiblehashmap.put((EntityState.StateFactor<?>) EntityState.UPDATE_LIVING_MOTION, Boolean.TRUE);
         }
 
         return typeflexiblehashmap;

@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -65,7 +66,9 @@ public class RenderShadowObsidianPillar extends RenderItemBase {
                     MathUtils.mulStack(poseStack, openmatrix4fmainHand);
                     Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
                     poseStack.popPose();
-                } else if (((dynamicAnimation == AVAnimations.OBSIDIAN_FIST_AIR_SLASH || dynamicAnimation == AVAnimations.OBSIDIAN_INFERNAL_AUTO_2) && entityState.getLevel() > 1)
+                } else if (((dynamicAnimation == AVAnimations.OBSIDIAN_FIST_AIR_SLASH
+                        || dynamicAnimation == AVAnimations.OBSIDIAN_INFERNAL_AUTO_2
+                        || dynamicAnimation.get() instanceof ExecutionAttackAnimation) && entityState.getLevel() > 1)
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE
                         || dynamicAnimation == AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR) {
                     itemstack = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_BURST.get());

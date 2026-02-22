@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -34,6 +33,9 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 import java.util.Objects;
 
 public class SpecialAttackOnKeyPressedEvent {
+    private static void registerMoreSpecialAttackCategories(PlayerPatch<?> playerpatch, Entity entity, LivingEntityPatch<?> livingEntityPatch) {
+    }
+
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null) return;
 
@@ -476,6 +478,8 @@ public class SpecialAttackOnKeyPressedEvent {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
                 }
             }
+
+            registerMoreSpecialAttackCategories(playerpatch, entity, livingEntityPatch);
         }
     }
 }

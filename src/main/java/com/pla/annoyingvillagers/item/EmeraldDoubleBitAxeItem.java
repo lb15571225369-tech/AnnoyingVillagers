@@ -5,6 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class EmeraldDoubleBitAxeItem extends SwordItem {
 
@@ -19,7 +20,7 @@ public class EmeraldDoubleBitAxeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 10.5F;
+                return 5.5F;
             }
 
             public int getLevel() {
@@ -30,8 +31,8 @@ public class EmeraldDoubleBitAxeItem extends SwordItem {
                 return 18;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.EMERALD)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.EMERALD));
             }
         }, 3, -2.6F, (new Properties()));
     }

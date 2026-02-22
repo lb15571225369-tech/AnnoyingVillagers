@@ -197,6 +197,6 @@ public class VillagerScoutCaptainPatch extends CEHumanoidPatch implements Custom
 
     @Override
     public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
-        return ExecutionTypeManager.DEFAULT_TYPE;
+        return type;
     }
 }

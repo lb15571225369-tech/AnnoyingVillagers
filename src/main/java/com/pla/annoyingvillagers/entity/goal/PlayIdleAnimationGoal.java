@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -380,22 +379,12 @@ public class PlayIdleAnimationGoal extends Goal {
     private void tryBroadcastIdleMessage(IdleAnimation idle) {
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
         if (!AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()) return;
-        if (mob instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isIdleMessageBroadcast()) {
-            return;
-        }
-        if (mob instanceof AVNpc avNpc && avNpc.isIdleMessageBroadcast()) {
-            return;
-        }
-        String msg = "<" + mob.getDisplayName().getString() + "> " + idleMessages
-                .getOrDefault(idle, List.of("..."))
-                .get(new Random().nextInt(idleMessages.get(idle).size()));
-        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
-
-        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+        if (mob instanceof PlayerNpcEntity playerNpcEntity && !playerNpcEntity.isIdleMessageBroadcast()) {
+            String msg = "<" + mob.getDisplayName().getString() + "> " + idleMessages
+                    .getOrDefault(idle, List.of("..."))
+                    .get(new Random().nextInt(idleMessages.get(idle).size()));
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
             playerNpcEntity.setIdleMessageBroadcast(true);
-        }
-        if (mob instanceof AVNpc avNpc) {
-            avNpc.setIdleMessageBroadcast(true);
         }
     }
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +20,9 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.world.capabilities.item.WOMWeaponCategories;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -82,6 +86,27 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                 .put(WeaponCategories.FIST,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
+        this.weaponLivingMotions
+                .put(WOMWeaponCategories.ENDERBLASTER,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ), Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WOMWeaponCategories.ENDERBLASTER,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST, Styles.TWO_HAND, PlayerNpcFist.FIST));
+
         this.weaponAttackMotions
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
@@ -109,6 +134,56 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
         this.weaponAttackMotions
                 .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
+
+        this.weaponAttackMotions
+                .put(WOMWeaponCategories.TORMENT,
+                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.AV_GREATSWORD));
+        this.weaponLivingMotions
+                .put(WOMWeaponCategories.TORMENT,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.BIPED_BLOCK),
+                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_IDLE),
+                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_WALK),
+                                        Pair.of(LivingMotions.RUN, WOMAnimations.TORMENT_RUN),
+                                        Pair.of(LivingMotions.CHASE, WOMAnimations.TORMENT_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+
+        this.weaponAttackMotions
+                .put(WOMWeaponCategories.ANTITHEUS,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcSpear.AV_SPEAR
+                        ));
+        this.weaponLivingMotions
+                .put(WOMWeaponCategories.ANTITHEUS,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AnimsAgony.AGONY_IDLE),
+                                        Pair.of(LivingMotions.WALK, AnimsAgony.AGONY_WALK),
+                                        Pair.of(LivingMotions.RUN, AnimsAgony.AGONY_RUN),
+                                        Pair.of(LivingMotions.CHASE, AnimsAgony.AGONY_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+
+        this.weaponAttackMotions
+                .put(WOMWeaponCategories.NAPOLEON,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcSpear.AV_SPEAR
+                        ));
+
+        this.weaponLivingMotions
+                .put(WOMWeaponCategories.NAPOLEON,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AnimsAgony.AGONY_IDLE),
+                                        Pair.of(LivingMotions.WALK, AnimsAgony.AGONY_WALK),
+                                        Pair.of(LivingMotions.RUN, AnimsAgony.AGONY_RUN),
+                                        Pair.of(LivingMotions.CHASE, AnimsAgony.AGONY_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.SPEAR,
@@ -165,10 +240,31 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         )
                 )
         );
+        this.guardHitMotions.put(WOMWeaponCategories.TORMENT,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.GREATSWORD_GUARD_HIT
+                        )
+                )
+        );
         this.guardHitMotions.put(WeaponCategories.GREATSWORD,
                 ImmutableMap.of(
                         Styles.TWO_HAND, List.of(
                                 Animations.GREATSWORD_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WOMWeaponCategories.ANTITHEUS,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WOMWeaponCategories.NAPOLEON,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
                         )
                 )
         );
@@ -301,6 +397,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
 
     @Override
     public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
-        return ExecutionTypeManager.DEFAULT_TYPE;
+        return type;
     }
 }

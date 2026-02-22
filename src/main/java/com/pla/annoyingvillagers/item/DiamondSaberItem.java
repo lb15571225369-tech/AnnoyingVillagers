@@ -35,7 +35,7 @@ public class DiamondSaberItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 6.0F;
+                return 4.0F;
             }
 
             public int getLevel() {

@@ -115,6 +115,7 @@ public class TEMPLATE {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)

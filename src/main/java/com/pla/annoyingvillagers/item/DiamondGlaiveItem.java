@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class DiamondGlaiveItem extends AxeItem {
 
@@ -19,7 +20,7 @@ public class DiamondGlaiveItem extends AxeItem {
             }
 
             public float getAttackDamageBonus() {
-                return 11.2F;
+                return 5.2F;
             }
 
             public int getLevel() {
@@ -30,8 +31,8 @@ public class DiamondGlaiveItem extends AxeItem {
                 return 10;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 1.0F, -2.5F, (new Properties()));
     }

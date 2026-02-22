@@ -13,11 +13,11 @@
       "item": "minecraft:diamond"
     },
     "2": {
-      "item": "minecraft:diamond_sword"
+      "item": "annoyingvillagers:diamond_longsword"
     }
   },
   "result": {
-    "item": "annoyingvillagers:diamond_long_sword",
+    "item": "annoyingvillagers:diamond_greatsword",
     "count": 1
   }
 }

@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 
 public class PurpleGemLongSwordItem extends SwordItem {
 
@@ -31,21 +31,9 @@ public class PurpleGemLongSwordItem extends SwordItem {
                 return 25;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack((ItemLike) AnnoyingVillagersModItems.PURPLE_GEM.get())});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.PURPLE_GEM.get()));
             }
         }, 3, -1.6F, (new Properties()));
-    }
-
-    public boolean hasContainerItem(ItemStack itemstack) {
-        return true;
-    }
-
-    public ItemStack getContainerItem(ItemStack itemstack) {
-        return new ItemStack(this);
-    }
-
-    public boolean isRepairable(ItemStack itemstack) {
-        return false;
     }
 }

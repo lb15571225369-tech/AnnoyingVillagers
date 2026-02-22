@@ -5,6 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class EmeraldSwordItem extends SwordItem {
     public EmeraldSwordItem() {
@@ -29,8 +30,8 @@ public class EmeraldSwordItem extends SwordItem {
                 return 18;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.EMERALD)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.EMERALD));
             }
         }, 3, -1.5F, (new Properties()));
     }

@@ -7,17 +7,17 @@
   ],
   "key": {
     "0": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:iron_ingot"
     },
     "1": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:iron_ingot"
     },
     "2": {
-      "item": "annoyingvillagers:diamond_long_sword"
+      "item": "minecraft:iron_sword"
     }
   },
   "result": {
-    "item": "annoyingvillagers:diamond_great_sword",
+    "item": "annoyingvillagers:iron_longsword",
     "count": 1
   }
 }

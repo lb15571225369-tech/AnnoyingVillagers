@@ -83,8 +83,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.NULL_HOE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SPEAR.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SWORD.get());
@@ -93,8 +93,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_FLAME_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SABER.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREATE_BLADE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREATBLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONGBLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_HALBERD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SCYTHE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get());
@@ -104,8 +104,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SHEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_GOLDEN_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.GOLDEN_LONG_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.IRON_LONG_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.GOLDEN_LONGSWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.IRON_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_IRON_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.IRON_CLEAVER.get());
                         pOutput.accept(AnnoyingVillagersModItems.IRON_GLAIVE.get());
@@ -114,10 +114,10 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.IRON_POLEAXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.EMERALD_DOUBLE_BIT_AXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.EMERALD_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_GREATSWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM_LONG_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY.get());

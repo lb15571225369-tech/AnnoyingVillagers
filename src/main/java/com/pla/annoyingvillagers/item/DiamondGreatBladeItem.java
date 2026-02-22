@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.item;
 
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class DiamondGreatBladeItem extends SwordItem {
 
@@ -17,7 +20,7 @@ public class DiamondGreatBladeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 10.5F;
+                return 4.5F;
             }
 
             public int getLevel() {
@@ -28,8 +31,8 @@ public class DiamondGreatBladeItem extends SwordItem {
                 return 10;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of();
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -3.0F, (new Properties()));
     }

@@ -144,6 +144,6 @@ public class SwordsmanHerobrinePatch extends CEHumanoidPatch implements CustomEx
 
     @Override
     public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
-        return ExecutionTypeManager.DEFAULT_TYPE;
+        return type;
     }
 }

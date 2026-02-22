@@ -130,7 +130,7 @@ public class KickAttackAnimation extends AttackAnimation {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
         if (!livingentitypatch.getOriginal().level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey()).get()) {
-            typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
+            typeflexiblehashmap.put((EntityState.StateFactor<?>) EntityState.MOVEMENT_LOCKED, Boolean.FALSE);
         }
 
         return typeflexiblehashmap;

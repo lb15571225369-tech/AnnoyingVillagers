@@ -5,6 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class HookedIronSwordItem extends SwordItem {
 
@@ -19,7 +20,7 @@ public class HookedIronSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 4.0F;
+                return 3.0F;
             }
 
             public int getLevel() {
@@ -30,8 +31,8 @@ public class HookedIronSwordItem extends SwordItem {
                 return 8;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.IRON_INGOT)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.IRON_INGOT));
             }
         }, 3, -1.5F, (new Properties()));
     }

@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class IronSpearItem extends AxeItem {
 
@@ -27,11 +28,11 @@ public class IronSpearItem extends AxeItem {
             }
 
             public int getEnchantmentValue() {
-                return 10;
+                return 2;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.IRON_INGOT)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.IRON_INGOT));
             }
         }, 1.0F, -2.6F, (new Properties()));
     }

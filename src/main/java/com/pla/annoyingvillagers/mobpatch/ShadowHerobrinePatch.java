@@ -168,6 +168,6 @@ public class ShadowHerobrinePatch extends CEHumanoidPatch implements CustomExecu
 
     @Override
     public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
-        return ExecutionTypeManager.DEFAULT_TYPE;
+        return type;
     }
 }

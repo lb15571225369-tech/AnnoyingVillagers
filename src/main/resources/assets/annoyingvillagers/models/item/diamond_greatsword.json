@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/diamond_greatsword",
+  "textures": {
+    "1": "annoyingvillagers:item/diamond_greatsword",
+    "particle": "annoyingvillagers:item/diamond_greatsword"
+  }
+}
