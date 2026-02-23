@@ -968,6 +968,18 @@ public class HerobrineShadowObsidianPillar {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(30.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .custom(HerobrineCommon::canPerformGuarding)
+                                            .guard(40)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -1411,9 +1423,6 @@ public class HerobrineShadowObsidianPillar {
                                                             )
                                             )
                             )
-
-/* 10 */
-
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1568,9 +1577,6 @@ public class HerobrineShadowObsidianPillar {
                                                             )
                                             )
                             )
-
-/* 15 */
-
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1725,9 +1731,6 @@ public class HerobrineShadowObsidianPillar {
                                                             )
                                             )
                             )
-
-/* 20 */
-
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1943,6 +1946,18 @@ public class HerobrineShadowObsidianPillar {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .custom(HerobrineCommon::canPerformGuarding)
+                                            .guard(40)
                             )
             )
             .newBehaviorRoot(

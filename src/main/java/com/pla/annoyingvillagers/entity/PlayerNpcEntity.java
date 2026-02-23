@@ -79,7 +79,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
     private boolean idleMessageBroadcast = false;
     private boolean playingIdle;
-    private int playingIdleCooldown = 1200;
+    private int playingIdleCooldown = new Random().nextInt(600, 1200);
     private boolean isStrolling;
 
     public boolean isStrolling() {

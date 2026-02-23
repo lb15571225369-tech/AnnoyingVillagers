@@ -7,7 +7,6 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
@@ -711,8 +710,6 @@ public class HerobrineShadowObsidianSword {
                                             )
                             )
 
-/* 20 */
-
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -904,6 +901,18 @@ public class HerobrineShadowObsidianSword {
                                             .custom(HerobrineCommon::canPlayObsidianMachine)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(HerobrineCommon::performObsidianMachine)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .custom(HerobrineCommon::canPerformGuarding)
+                                            .guard(40)
                             )
             )
             .newBehaviorRoot(
@@ -1352,9 +1361,6 @@ public class HerobrineShadowObsidianSword {
                                                             )
                                             )
                             )
-
-/* 10 */
-
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1885,6 +1891,18 @@ public class HerobrineShadowObsidianSword {
                                             .custom(HerobrineCommon::canPlayObsidianMachine)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(HerobrineCommon::performObsidianMachine)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .custom(HerobrineCommon::canPerformGuarding)
+                                            .guard(40)
                             )
             )
             .newBehaviorRoot(

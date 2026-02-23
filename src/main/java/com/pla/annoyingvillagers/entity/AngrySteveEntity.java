@@ -129,10 +129,6 @@ public class AngrySteveEntity extends AVNpc {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (this.getUnableToDamageCooldown() > 0) {
-            return false;
-        }
-
         LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
         AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
         if (livingEntityPatch != null) {
@@ -356,7 +352,6 @@ public class AngrySteveEntity extends AVNpc {
                 SoundSource.NEUTRAL,
                 1.0F, 1.0F
         );
-        this.setUnableToDamageCooldown(60);
         if (this.getLivingEntityPatch() != null) {
             this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
         }

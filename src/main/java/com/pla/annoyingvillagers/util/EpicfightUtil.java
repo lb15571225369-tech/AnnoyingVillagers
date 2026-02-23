@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.hm.efn.animations.types.stun.EFNStunAnimation;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;

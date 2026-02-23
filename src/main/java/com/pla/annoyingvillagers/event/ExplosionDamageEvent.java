@@ -52,9 +52,6 @@ public class ExplosionDamageEvent {
                             && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
                             && !(entity instanceof Player player && player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        if (explodedPatch != null) {
-                            explodedPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
-                        }
                         new DelayedTask(10) {
                             @Override
                             public void run() {

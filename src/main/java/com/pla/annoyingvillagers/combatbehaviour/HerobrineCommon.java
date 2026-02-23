@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.entity.*;
@@ -164,7 +163,9 @@ public class HerobrineCommon {
     }
 
     public static boolean canPerformGuarding(MobPatch<?> mobpatch) {
-        return true;
+        Entity entity = mobpatch.getOriginal();
+        return !(entity instanceof HerobrineCloneEntity) && !(entity instanceof ShadowHerobrineCloneEntity)
+                && !(entity instanceof HerobrineChrisEntity) && !(entity instanceof ArmoredHerobrineEntity) && !(entity instanceof Herobrine7Entity);
     }
 
     public static void performHealingAnimation(MobPatch<?> mobpatch) {

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
+import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.fml.ModList;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
@@ -109,6 +111,25 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
         // More logic when player parry success
+    }
+
+    @Override
+    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof HerobrineMob herobrineMob) {
+            EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState());
+            herobrineMob.postPlayEfnGuardHit();
+        } else {
+            super.playGuardHitAnimation(damageSource, canCounter);
+        }
+    }
+
+    @Override
+    public boolean dealStaminaDamage(DamageSource damageSource, float amount) {
+        if (ModList.get().isLoaded("efn") && EpicFightNightFall.isPlayingEfnGuardHit(this)) {
+            return false;
+        } else {
+            return super.dealStaminaDamage(damageSource, amount);
+        }
     }
 
     @Override

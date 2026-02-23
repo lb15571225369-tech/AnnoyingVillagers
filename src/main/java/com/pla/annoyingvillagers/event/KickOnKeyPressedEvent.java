@@ -35,7 +35,7 @@ public class KickOnKeyPressedEvent {
             if (livingEntityPatch != null) {
                 AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
-                if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, livingEntityPatch)) {
+                if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, livingEntityPatch)) {
                     if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0) return;
                     entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 5);
 

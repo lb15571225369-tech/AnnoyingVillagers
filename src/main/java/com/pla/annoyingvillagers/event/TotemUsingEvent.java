@@ -41,7 +41,6 @@ public class TotemUsingEvent {
                                 SoundSource.NEUTRAL,
                                 1.0F, 1.0F
                         );
-                        steveEntity.setUnableToDamageCooldown(60);
                         steveEntity.setHealth(steveEntity.getMaxHealth());
                         ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
                         diamondSword.enchant(Enchantments.SHARPNESS, 5);
@@ -99,7 +98,6 @@ public class TotemUsingEvent {
                 new DelayedTask(1) {
                     @Override
                     public void run() {
-                        alexEntity.setUnableToDamageCooldown(60);
                         alexEntity.setHealth(alexEntity.getMaxHealth());
                         ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
                         diamondSword.enchant(Enchantments.SHARPNESS, 5);
@@ -123,7 +121,6 @@ public class TotemUsingEvent {
                 new DelayedTask(1) {
                     @Override
                     public void run() {
-                        chrisEntity.setUnableToDamageCooldown(60);
                         chrisEntity.setHealth(chrisEntity.getMaxHealth());
                         ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
                         diamondSword.enchant(Enchantments.KNOCKBACK, 5);

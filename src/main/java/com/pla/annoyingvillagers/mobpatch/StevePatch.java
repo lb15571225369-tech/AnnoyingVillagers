@@ -2,7 +2,9 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.*;
+import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -11,8 +13,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.fml.ModList;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
@@ -220,6 +224,28 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
 
     public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
         // More logic when player parry success
+    }
+
+    @Override
+    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
+        if (ModList.get().isLoaded("efn")
+                && this.getOriginal() instanceof AVNpc avNpc
+                && (avNpc.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD)
+                || avNpc.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()))) {
+            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState());
+            avNpc.postPlayEfnGuardHit();
+        } else {
+            super.playGuardHitAnimation(damageSource, canCounter);
+        }
+    }
+
+    @Override
+    public boolean dealStaminaDamage(DamageSource damageSource, float amount) {
+        if (ModList.get().isLoaded("efn") && EpicFightNightFall.isPlayingEfnGuardHit(this)) {
+            return false;
+        } else {
+            return super.dealStaminaDamage(damageSource, amount);
+        }
     }
 
     @Override

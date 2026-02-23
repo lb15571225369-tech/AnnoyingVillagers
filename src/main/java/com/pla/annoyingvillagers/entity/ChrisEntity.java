@@ -120,10 +120,6 @@ public class ChrisEntity extends AVNpc {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (this.getUnableToDamageCooldown() > 0) {
-            return false;
-        }
-
         LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
         AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
         if (livingEntityPatch != null) {

@@ -19,7 +19,107 @@ public class MobPatchCommon {
             }
         }
 
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_BLADE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_DAGGER.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.HOOKED_IRON_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.PALADIN_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.BLUE_FLAME_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.HOOKED_GOLDEN_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.HOOKED_IRON_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.EMERALD_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.RUBY_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSword.AV_SWORD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSword.AV_DUAL_SWORD;
+            }
+        }
+
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcAxe.AV_AXE;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.EMERALD_DOUBLE_BIT_AXE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcAxe.AV_AXE;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.EMERALD_DOUBLE_BIT_AXE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcAxe.AV_AXE;
             }
@@ -31,7 +131,95 @@ public class MobPatchCommon {
             }
         }
 
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GIANT_AXE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcGreatsword.AV_GREATSWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_BATTLE_AXE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcGreatsword.AV_GREATSWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.RUBY_GREATSWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcGreatsword.AV_GREATSWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_CLEAVER.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcGreatsword.AV_GREATSWORD;
+            }
+        }
+
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_SPEAR.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_HALBERD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_SCYTHE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GLAIVE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_GLAIVE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_SCYTHE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_SPEAR.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcSpear.AV_SPEAR_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcSpear.AV_SPEAR;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_POLEAXE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcSpear.AV_SPEAR_SHIELD;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {
@@ -47,7 +235,47 @@ public class MobPatchCommon {
             }
         }
 
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.GOLDEN_LONGSWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.IRON_LONGSWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.PURPLE_GEM_LONGSWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD_SHIELD;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcLongsword.AV_LONGSWORD;
+            }
+        }
+
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONGBLADE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcTachi.AV_TACHI;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcTachi.AV_DUAL_TACHI;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_SABER.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcTachi.AV_TACHI;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcTachi.AV_DUAL_TACHI;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GREATBLADE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcTachi.AV_TACHI;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {

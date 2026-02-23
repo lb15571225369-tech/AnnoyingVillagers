@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -212,12 +214,22 @@ public class MobClashBladeMixin {
                 && defender.level() instanceof ServerLevel serverLevel) {
             // Herobrine playing animation
             if (clashBy != 0) {
-                if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity
-                        || defender instanceof SledgehammerHerobrineEntity || defender instanceof ReaperHerobrineEntity) {
-                    defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
-                }
-                if (defender instanceof SwordsmanHerobrineEntity) {
-                    defenderLivingEntityPatch.playAnimationSynchronized(AnimsSolar.SOLAR_GUARD_HIT, 0.0F);
+                if (ModList.get().isLoaded("efn")) {
+                    if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity
+                            || defender instanceof SledgehammerHerobrineEntity || defender instanceof ReaperHerobrineEntity
+                            || defender instanceof SwordsmanHerobrineEntity || defender instanceof ShadowHerobrineEntity) {
+                        HerobrineMob herobrineMob = (HerobrineMob) defender;
+                        EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState());
+                        herobrineMob.postPlayEfnGuardHit();
+                    }
+                } else {
+                    if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity
+                            || defender instanceof SledgehammerHerobrineEntity || defender instanceof ReaperHerobrineEntity) {
+                        defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
+                    }
+                    if (defender instanceof SwordsmanHerobrineEntity) {
+                        defenderLivingEntityPatch.playAnimationSynchronized(AnimsSolar.SOLAR_GUARD_HIT, 0.0F);
+                    }
                 }
             }
 

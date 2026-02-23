@@ -27,7 +27,8 @@
     "AbstractArrowBreakMixin",
     "OpenMatrix4fInvertFixMixin",
     "LivingEntityPatchMixin",
-    "ExecutionHandlerMixin"
+    "ExecutionHandlerMixin",
+    "EnderHandMixin"
   ],
   "client": [
     "client.ModelPartMixin"

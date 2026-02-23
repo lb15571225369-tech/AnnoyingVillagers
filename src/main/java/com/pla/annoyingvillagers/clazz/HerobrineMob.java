@@ -94,6 +94,21 @@ public class HerobrineMob extends Monster {
     private int stunEscapeCooldown = 0;
     private Entity blockDamage = null;
     private int swapWeaponCooldown;
+    private int efnGuardHitState = 0;
+    private int efnGuardHitCooldown = 0;
+
+    public int getEfnGuardHitState() {
+        return efnGuardHitState;
+    }
+
+    public void postPlayEfnGuardHit() {
+        if (efnGuardHitState == 2) {
+            efnGuardHitState = 0;
+        } else {
+            efnGuardHitState = efnGuardHitState + 1;
+        }
+        efnGuardHitCooldown = 100;
+    }
 
     public int getStunEscapeCooldown() {
         return stunEscapeCooldown;
@@ -829,6 +844,11 @@ public class HerobrineMob extends Monster {
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
             if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
+            if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
+
+            if (efnGuardHitCooldown == 0 && efnGuardHitState != 0) {
+                efnGuardHitState = 0;
+            }
 
             if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
                 if (getLivingEntityPatch() != null) {

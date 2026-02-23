@@ -4,8 +4,11 @@ import com.hm.efn.animations.types.stun.EFNStunAnimation;
 import com.hm.efn.gameasset.EFNAnimations;
 import com.hm.efn.gameasset.animations.*;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,5 +41,24 @@ public class EpicFightNightFall {
 
     public static boolean isEFNStun(AssetAccessor<? extends StaticAnimation> assetAccessor) {
         return assetAccessor.get() instanceof EFNStunAnimation;
+    }
+
+    public static void playEfnGuardHit(LivingEntityPatch<?> livingEntityPatch, int index) {
+        if (index == 0) {
+            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1, 0.0F);
+        } else if (index == 1) {
+            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2, 0.0F);
+        } else {
+            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3, 0.0F);
+        }
+    }
+
+    public static boolean isPlayingEfnGuardHit(CEHumanoidPatch ceHumanoidPatch) {
+        AnimationPlayer animationPlayer = ceHumanoidPatch.getAnimator().getPlayerFor(null);
+        if (animationPlayer != null) {
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = animationPlayer.getRealAnimation();
+            return dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1 || dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2 || dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3;
+        }
+        return false;
     }
 }

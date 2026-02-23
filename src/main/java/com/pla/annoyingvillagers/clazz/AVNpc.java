@@ -47,8 +47,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean useBow = true;
     private Entity blockDamage = null;
     private double placeBlockToParryChance;
-    private boolean swapBackToBow = false;
-    private int unableToDamageCooldown = 0;
+    private boolean swapBackToBow = false;;
     private int stunEscapeCooldown = 0;
     @Nullable
     private IdleAnimation idleAnimationChoice;
@@ -57,6 +56,22 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean playingIdle;
     private int playingIdleCooldown = 1200;
     private boolean isStrolling;
+    private int efnGuardHitState = 0;
+    private int efnGuardHitCooldown = 0;
+
+    public int getEfnGuardHitState() {
+        return efnGuardHitState;
+    }
+
+    public void postPlayEfnGuardHit() {
+        if (efnGuardHitState == 2) {
+            efnGuardHitState = 0;
+        } else {
+            efnGuardHitState = efnGuardHitState + 1;
+        }
+        efnGuardHitCooldown = 100;
+    }
+
 
     public boolean isStrolling() {
         return isStrolling;
@@ -120,14 +135,6 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
 
     public void setStunEscapeCooldown(int stunEscapeCooldown) {
         this.stunEscapeCooldown = stunEscapeCooldown;
-    }
-
-    public void setUnableToDamageCooldown(int unableToDamageCooldown) {
-        this.unableToDamageCooldown = unableToDamageCooldown;
-    }
-
-    public int getUnableToDamageCooldown() {
-        return unableToDamageCooldown;
     }
 
     public Entity getBlockDamage() {
@@ -483,9 +490,14 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
-        if (unableToDamageCooldown > 0) unableToDamageCooldown--;
         if (stunEscapeCooldown > 0) stunEscapeCooldown--;
         if (playingIdleCooldown > 0) playingIdleCooldown--;
+        if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
+
+        if (efnGuardHitCooldown == 0 && efnGuardHitState != 0) {
+            efnGuardHitState = 0;
+        }
+
 
         if ((tickCount + getId()) % 20 == 0) {
             if (!isInventoryFull()) {

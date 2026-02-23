@@ -19,6 +19,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> CAN_EXECUTE_AV_MOB;
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_EXECUTE;
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_BURN_ITEM;
+    public static ForgeConfigSpec.ConfigValue<Boolean> VANILLA_MOB_CAN_DRINK_HEALING_POTION;
 
     // ==== NPC Behaviour ====
     public static ForgeConfigSpec.ConfigValue<Double> NPC_TARGET_WEIGHT_MONSTER_HUNTER;
@@ -82,6 +83,9 @@ public class AnnoyingVillagersConfig {
         AV_MOB_CAN_BURN_ITEM = BUILDER.comment(
                         "Enable burning items ability for all of Av NPCs and Mobs")
                 .define("AvMobCanBurnItem", true);
+        VANILLA_MOB_CAN_DRINK_HEALING_POTION = BUILDER.comment(
+                        "Enable drinking healing potion ability for Zombie and Skeleton")
+                .define("VanillaMobCanDrinkHealingPotion", true);
 
         // ===== NPC Behaviour =====
         BUILDER.comment(

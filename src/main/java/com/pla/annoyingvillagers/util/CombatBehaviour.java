@@ -445,31 +445,27 @@ public class CombatBehaviour {
     }
 
     public static double calculateGuardBreakWakeUpChance(LivingEntity entity) {
-        if (entity instanceof HerobrineMob || entity instanceof AngrySteveEntity) {
-            return 0.8D;
-        } else {
-            float hpPct = entity.getHealth() / entity.getMaxHealth();
+        float hpPct = entity.getHealth() / entity.getMaxHealth();
 
-            double min = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE.get();
-            double max = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE.get();
+        double min = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE.get();
+        double max = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE.get();
 
-            if (max < min) {
-                double tmp = max;
-                max = min;
-                min = tmp;
-            }
-
-            double chance;
-            if (max == min) {
-                chance = max;
-            } else {
-                double t = (1.0D - hpPct) / 0.5D;
-                t = Mth.clamp(t, 0.0D, 1.0D);
-                chance = max - t * (max - min);
-            }
-
-            return chance;
+        if (max < min) {
+            double tmp = max;
+            max = min;
+            min = tmp;
         }
+
+        double chance;
+        if (max == min) {
+            chance = max;
+        } else {
+            double t = (1.0D - hpPct) / 0.5D;
+            t = Mth.clamp(t, 0.0D, 1.0D);
+            chance = max - t * (max - min);
+        }
+
+        return chance;
     }
 
     public static void postGuardBreakWakeUp(LivingEntity entity, LivingEntityPatch<?> livingEntityPatch, ServerLevel serverLevel) {
