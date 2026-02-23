@@ -4,7 +4,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
@@ -23,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 @Mixin(value = {Zombie.class}, remap = true)
 public class ZombieMixin {
@@ -44,10 +44,10 @@ public class ZombieMixin {
                 self.getServer().getCommands().getDispatcher().execute(
                         "data merge entity @s {CanPickUpLoot: 1b}",
                         self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException ignored) {
 
             }
-            RandomSource random = self.level().getRandom();
+            Random random = new Random();
 
             if (random.nextFloat() < 0.2f) {
                 self.setItemSlot(EquipmentSlot.HEAD, createDyedArmor(Items.LEATHER_HELMET, random));
@@ -64,7 +64,7 @@ public class ZombieMixin {
         }
     }
 
-    private static ItemStack createDyedArmor(Item item, RandomSource random) {
+    private static ItemStack createDyedArmor(Item item, Random random) {
         ItemStack stack = new ItemStack(item);
         if (stack.getItem() instanceof DyeableLeatherItem dyeable) {
             int red = random.nextInt(256);

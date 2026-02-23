@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -289,8 +288,8 @@ public class HerobrineUtil {
                             null
                             , x, y, z, AnnoyingVillagersModSounds.ELECTIFY.get(),
                             SoundSource.NEUTRAL,
-                            (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D),
-                            (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
+                            new Random().nextFloat(0.05F, 0.4F),
+                            new Random().nextFloat(0.5F, 1.2F));
                 }
             }
 

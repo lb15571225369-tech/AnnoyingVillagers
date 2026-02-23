@@ -547,7 +547,30 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+
+        if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
+            if (getLivingEntityPatch() != null) {
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && this.isAlive()) {
+                    if (this.getRandom().nextFloat() < CombatBehaviour.calculateGuardBreakWakeUpChance(this)) {
+                        this.stunEscapeCooldown = 100;
+                        this.playingIdleCooldown = playingIdleCooldown + 100;
+                        PlayerNpcEntity entity = this;
+                        new DelayedTask(new Random().nextInt(5, 10)) {
+                            @Override
+                            public void run() {
+                                if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
+                                    CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
+                                } else {
+                                    entity.stunEscapeCooldown = 1;
+                                }
+                            }
+                        };
+                    }
+                }
+            }
+        }
 
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;

@@ -75,12 +75,19 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:7617763")
     implementation fg.deobf("curse.maven:combat-evolution-1377795:7647549")
-    implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7622640")
+    implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7662809")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7517612")
 
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
     implementation fg.deobf("curse.maven:aaa-particles-979809:6616719")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+
+    implementation fg.deobf("curse.maven:epicfight-nightfall-1307848:7648049")
+    implementation fg.deobf("curse.maven:epic-fight-avalon-1268823:7619938")
+    implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:7627321")
+    implementation fg.deobf("curse.maven:sword-soaring-1011068:7627333")
+    implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:6860192")
+    implementation fg.deobf("curse.maven:selene-499980:7541536")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 

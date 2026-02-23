@@ -1,9 +1,12 @@
 package com.pla.annoyingvillagers.clazz;
 
+import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
 import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -29,6 +32,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class AVNpc extends PathfinderMob implements RangedAttackMob {
@@ -443,11 +447,37 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
 
         if (this.tickCount == 1 && !this.initialSpawn) {
             implementFirstTick((ServerLevel) this.level());
             this.initialSpawn = true;
+        }
+
+        if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
+            if (getLivingEntityPatch() != null) {
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && this.isAlive()) {
+                    if (this.getRandom().nextFloat() < CombatBehaviour.calculateGuardBreakWakeUpChance(this)) {
+                        if (this instanceof AngrySteveEntity) {
+                            this.stunEscapeCooldown = 60;
+                        } else {
+                            this.stunEscapeCooldown = 100;
+                        }
+                        AVNpc entity = this;
+                        new DelayedTask(new Random().nextInt(5, 10)) {
+                            @Override
+                            public void run() {
+                                if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
+                                    CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
+                                } else {
+                                    entity.stunEscapeCooldown = 1;
+                                }
+                            }
+                        };
+                    }
+                }
+            }
         }
 
         if (gapCooldown > 0) gapCooldown--;

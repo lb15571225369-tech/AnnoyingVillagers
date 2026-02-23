@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
@@ -17,21 +16,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 @Mixin(value = {Vindicator.class}, remap = true)
 public class VindicatorMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void monsterJoinHerobrineTeam(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
-        Vindicator self = (Vindicator) (Object) this;
-        if (!self.level().isClientSide() && self.getServer() != null) {
-            RandomSource random = self.level().getRandom();
-            if (random.nextBoolean()) {
-                if (random.nextBoolean()) {
-                    self.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.IRON_POLEAXE.get()));
-                } else {
-                    self.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.IRON_AXE));
-                }
-            }
-        }
+//        Vindicator self = (Vindicator) (Object) this;
+//        if (!self.level().isClientSide() && self.getServer() != null) {
+//            Random random = new Random();
+//            if (random.nextBoolean()) {
+//                if (random.nextBoolean()) {
+//                    self.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.IRON_POLEAXE.get()));
+//                } else {
+//                    self.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.IRON_AXE));
+//                }
+//            }
+//        }
     }
 }

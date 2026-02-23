@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.clazz;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
@@ -13,9 +12,8 @@ import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
-import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.HerobrinePortalUtil;
-import com.pla.annoyingvillagers.util.HerobrineUtil;
+import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.*;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +32,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -65,6 +62,8 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
@@ -830,6 +829,28 @@ public class HerobrineMob extends Monster {
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
             if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
+
+            if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
+                if (getLivingEntityPatch() != null) {
+                    AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+                    if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && this.isAlive()) {
+                        if (this.getRandom().nextFloat() < CombatBehaviour.calculateGuardBreakWakeUpChance(this)) {
+                            this.stunEscapeCooldown = 60;
+                            HerobrineMob entity = this;
+                            new DelayedTask(new Random().nextInt(5, 10)) {
+                                @Override
+                                public void run() {
+                                    if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
+                                        CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
+                                    } else {
+                                        entity.stunEscapeCooldown = 1;
+                                    }
+                                }
+                            };
+                        }
+                    }
+                }
+            }
 
             if (this.state == 2 && (this instanceof AegisHerobrineEntity
                     || this instanceof SledgehammerHerobrineEntity

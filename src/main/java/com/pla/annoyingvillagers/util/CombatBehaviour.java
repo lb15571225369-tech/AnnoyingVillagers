@@ -1,7 +1,10 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -30,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -437,6 +441,54 @@ public class CombatBehaviour {
             mob.yBodyRotO = yaw;
             mob.yHeadRot = yaw;
             mob.yHeadRotO = yaw;
+        }
+    }
+
+    public static double calculateGuardBreakWakeUpChance(LivingEntity entity) {
+        if (entity instanceof HerobrineMob || entity instanceof AngrySteveEntity) {
+            return 0.8D;
+        } else {
+            float hpPct = entity.getHealth() / entity.getMaxHealth();
+
+            double min = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE.get();
+            double max = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE.get();
+
+            if (max < min) {
+                double tmp = max;
+                max = min;
+                min = tmp;
+            }
+
+            double chance;
+            if (max == min) {
+                chance = max;
+            } else {
+                double t = (1.0D - hpPct) / 0.5D;
+                t = Mth.clamp(t, 0.0D, 1.0D);
+                chance = max - t * (max - min);
+            }
+
+            return chance;
+        }
+    }
+
+    public static void postGuardBreakWakeUp(LivingEntity entity, LivingEntityPatch<?> livingEntityPatch, ServerLevel serverLevel) {
+        serverLevel.sendParticles(
+                EpicFightParticles.WHITE_AFTERIMAGE.get(),
+                entity.getX(), entity.getY(), entity.getZ(),
+                1, 0.0D, 0.0D, 0.0D, Double.longBitsToDouble(entity.getId())
+        );
+        entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1, false, false));
+        entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 1, false, false));
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
+
+        double chooseAnimation = new Random().nextDouble(0.0D, 1.0D);
+        if (chooseAnimation <= 0.4D) {
+            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+        } else if (chooseAnimation <= 0.8D) {
+            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+        } else {
+            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
         }
     }
 }

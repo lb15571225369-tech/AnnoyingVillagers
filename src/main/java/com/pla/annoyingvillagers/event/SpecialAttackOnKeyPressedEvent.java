@@ -8,6 +8,8 @@ import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.skill.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.fml.ModList;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -38,7 +41,6 @@ public class SpecialAttackOnKeyPressedEvent {
 
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null) return;
-
 
         PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -81,6 +83,7 @@ public class SpecialAttackOnKeyPressedEvent {
             // Check by item
             ItemStack holdingItem = player.getMainHandItem();
             ItemStack offHandItem = player.getOffhandItem();
+
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
@@ -371,6 +374,10 @@ public class SpecialAttackOnKeyPressedEvent {
 
             // Check by categories
             if (playerpatch == null) return;
+
+            ResourceLocation key = BuiltInRegistries.ITEM.getKey(holdingItem.getItem());
+            if (ModList.get().isLoaded("efn") && key.getNamespace().equals("efn")) return;
+
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                 if (entity.level() instanceof ServerLevel) {
                     if (!entity.getPersistentData().contains("AxeCombo")) {
