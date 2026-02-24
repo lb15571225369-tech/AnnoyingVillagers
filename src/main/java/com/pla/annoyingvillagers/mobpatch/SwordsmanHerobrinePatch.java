@@ -116,11 +116,19 @@ public class SwordsmanHerobrinePatch extends CEHumanoidPatch implements CustomEx
 
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof HerobrineMob herobrineMob) {
-            EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState());
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof HerobrineMob herobrineMob && herobrineMob.getLivingEntityPatch() != null) {
+            EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState(), damageSource);
             herobrineMob.postPlayEfnGuardHit();
         } else {
             super.playGuardHitAnimation(damageSource, canCounter);
+        }
+    }
+
+    @Override
+    public void playGuardHitSound() {
+        if (ModList.get().isLoaded("efn")) {
+        } else {
+            super.playGuardHitSound();
         }
     }
 

@@ -229,10 +229,10 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
         if (ModList.get().isLoaded("efn")
-                && this.getOriginal() instanceof AVNpc avNpc
+                && this.getOriginal() instanceof AVNpc avNpc && avNpc.getLivingEntityPatch() != null
                 && (avNpc.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD)
                 || avNpc.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()))) {
-            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState());
+            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState(), damageSource);
             avNpc.postPlayEfnGuardHit();
         } else {
             super.playGuardHitAnimation(damageSource, canCounter);
@@ -253,6 +253,17 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
+        }
+    }
+
+    @Override
+    public void playGuardHitSound() {
+        if (ModList.get().isLoaded("efn")
+                && this.getOriginal() instanceof AVNpc avNpc
+                && (avNpc.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD)
+                || avNpc.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()))) {
+        } else {
+            super.playGuardHitSound();
         }
     }
 

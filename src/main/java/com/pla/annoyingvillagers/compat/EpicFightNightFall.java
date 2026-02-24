@@ -1,13 +1,21 @@
 package com.pla.annoyingvillagers.compat;
 
 import com.hm.efn.animations.types.stun.EFNStunAnimation;
+import com.hm.efn.client.sound.EFNSounds;
 import com.hm.efn.gameasset.EFNAnimations;
 import com.hm.efn.gameasset.animations.*;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.hm.efn.particle.EFNParticles;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import org.joml.Vector3d;
+import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.HashSet;
@@ -69,13 +77,77 @@ public class EpicFightNightFall {
         return assetAccessor.get() instanceof EFNStunAnimation;
     }
 
-    public static void playEfnGuardHit(LivingEntityPatch<?> livingEntityPatch, int index) {
-        if (index == 0) {
-            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1, 0.0F);
-        } else if (index == 1) {
-            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2, 0.0F);
+    private static Vector3d getParticleArgumentsForAnimation(AnimationManager.AnimationAccessor<? extends StaticAnimation> animation) {
+        if (animation.get() == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1) {
+            return new Vector3d(1.0F, -0.6, 0.0F);
+        } else if (animation.get() == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2) {
+            return new Vector3d(1.0F, 0.6, 0.0F);
         } else {
-            livingEntityPatch.playAnimationSynchronized(EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3, 0.0F);
+            return animation.get() == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3 ? new Vector3d(1.2, 0.7, 0.0F) : new Vector3d(1.0F, 0.0F, 0.0F);
+        }
+    }
+
+    private static Vector3d getParticlePositionForAnimation(Entity owner, Entity target, AnimationManager.AnimationAccessor<? extends StaticAnimation> animation) {
+        Vec3 lookVec = owner.getLookAngle();
+        Vec3 playerPos = owner.position().add(0.0F, (double)owner.getBbHeight() * 0.6, 0.0F);
+        Vec3 targetPos = target.position().add(0.0F, (double)target.getBbHeight() * 0.6, 0.0F);
+        Vec3 middlePos = playerPos.add(targetPos.subtract(playerPos).scale(0.5F));
+        Vec3 toMiddle = middlePos.subtract(playerPos);
+        double distanceToMiddle = toMiddle.length();
+        double maxDistance = 1.0F;
+        Vec3 limitedMiddlePos;
+        if (distanceToMiddle > maxDistance) {
+            Vec3 direction = toMiddle.normalize();
+            limitedMiddlePos = playerPos.add(direction.scale(maxDistance));
+        } else {
+            limitedMiddlePos = middlePos;
+        }
+
+        Vector3d basePosition = new Vector3d(limitedMiddlePos.x, limitedMiddlePos.y, limitedMiddlePos.z);
+        if (animation.get() == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1) {
+            Vec3 leftOffset = lookVec.yRot((float)Math.toRadians(-90.0F)).scale(0.2);
+            Vector3d finalPos = new Vector3d(basePosition.x + leftOffset.x, basePosition.y, basePosition.z + leftOffset.z);
+            return limitDistanceFromOwner(playerPos, finalPos, maxDistance);
+        } else if (animation.get() == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2) {
+            Vec3 rightOffset = lookVec.yRot((float)Math.toRadians(90.0F)).scale(0.2);
+            Vector3d finalPos = new Vector3d(basePosition.x + rightOffset.x, basePosition.y, basePosition.z + rightOffset.z);
+            return limitDistanceFromOwner(playerPos, finalPos, maxDistance);
+        } else {
+            return basePosition;
+        }
+    }
+
+    private static Vector3d limitDistanceFromOwner(Vec3 playerPos, Vector3d particlePos, double maxDistance) {
+        Vec3 toParticle = (new Vec3(particlePos.x, particlePos.y, particlePos.z)).subtract(playerPos);
+        double distance = toParticle.length();
+        if (distance > maxDistance) {
+            Vec3 direction = toParticle.normalize();
+            Vec3 limitedPos = playerPos.add(direction.scale(maxDistance));
+            return new Vector3d(limitedPos.x, limitedPos.y, limitedPos.z);
+        } else {
+            return particlePos;
+        }
+    }
+
+    private static void spawnParryFlashParticle(Entity owner, Entity target, AnimationManager.AnimationAccessor<? extends StaticAnimation> animation, ServerLevel serverLevel) {
+        Vector3d particleArgs = getParticleArgumentsForAnimation(animation);
+        EFNParticles.EFN_PARRY_FLASH_MAIN.get().spawnParticleWithArgument(serverLevel, (player, entity) -> getParticlePositionForAnimation(player, entity, animation), (player, entity) -> particleArgs, owner, target);
+        EFNParticles.ALL_SPARK.get().spawnParticleWithArgument(serverLevel, (player, entity) -> getParticlePositionForAnimation(player, entity, animation), HitParticleType.ZERO, owner, target);
+    }
+
+    public static void playEfnGuardHit(LivingEntityPatch<?> livingEntityPatch, int index, DamageSource damageSource) {
+        if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+            AnimationManager.AnimationAccessor<? extends StaticAnimation> animation;
+            if (index == 0) {
+                animation = EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1;
+            } else if (index == 1) {
+                animation = EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2;
+            } else {
+                animation = EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3;
+            }
+            livingEntityPatch.playAnimationSynchronized(animation, 0.0F);
+            spawnParryFlashParticle(livingEntityPatch.getOriginal(), damageSource.getDirectEntity(), animation, serverLevel);
+            livingEntityPatch.playSound(EFNSounds.PARRY.get(), 0.5F, 0.0F, 0.0F);
         }
     }
 

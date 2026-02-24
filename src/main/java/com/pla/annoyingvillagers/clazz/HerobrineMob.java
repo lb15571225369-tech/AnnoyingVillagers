@@ -742,36 +742,36 @@ public class HerobrineMob extends Monster {
         }
         if (this instanceof AegisHerobrineEntity) {
             ItemStack enderAegis = new ItemStack(AnnoyingVillagersModItems.ENDER_AEGIS.get());
-            enderAegis.enchant(Enchantments.SHARPNESS, 5);
-            enderAegis.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderAegis.enchant(Enchantments.SHARPNESS, 3);
+            enderAegis.enchant(Enchantments.SWEEPING_EDGE, 3);
             enderAegis.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, enderAegis);
         }
         if (this instanceof SwordsmanHerobrineEntity) {
             ItemStack demoniacVoltageReaver = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
-            demoniacVoltageReaver.enchant(Enchantments.SHARPNESS, 5);
-            demoniacVoltageReaver.enchant(Enchantments.SWEEPING_EDGE, 5);
+            demoniacVoltageReaver.enchant(Enchantments.SHARPNESS, 3);
+            demoniacVoltageReaver.enchant(Enchantments.SWEEPING_EDGE, 3);
             demoniacVoltageReaver.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, demoniacVoltageReaver);
         }
         if (this instanceof SledgehammerHerobrineEntity) {
             ItemStack obsidianSledgehammer = new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get());
-            obsidianSledgehammer.enchant(Enchantments.SHARPNESS, 5);
-            obsidianSledgehammer.enchant(Enchantments.SWEEPING_EDGE, 5);
+            obsidianSledgehammer.enchant(Enchantments.SHARPNESS, 3);
+            obsidianSledgehammer.enchant(Enchantments.SWEEPING_EDGE, 3);
             obsidianSledgehammer.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, obsidianSledgehammer);
         }
         if (this instanceof GlaiveHerobrineEntity) {
             ItemStack enderGlaive = new ItemStack(AnnoyingVillagersModItems.ENDER_GLAIVE.get());
-            enderGlaive.enchant(Enchantments.SHARPNESS, 5);
-            enderGlaive.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderGlaive.enchant(Enchantments.SHARPNESS, 3);
+            enderGlaive.enchant(Enchantments.SWEEPING_EDGE, 3);
             enderGlaive.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, enderGlaive);
         }
         if (this instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
             ItemStack enderSlayerScythe = new ItemStack(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get());
-            enderSlayerScythe.enchant(Enchantments.SHARPNESS, 5);
-            enderSlayerScythe.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderSlayerScythe.enchant(Enchantments.SHARPNESS, 3);
+            enderSlayerScythe.enchant(Enchantments.SWEEPING_EDGE, 3);
             enderSlayerScythe.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, enderSlayerScythe);
 

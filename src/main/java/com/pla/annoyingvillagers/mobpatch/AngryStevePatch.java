@@ -154,8 +154,8 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
 
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof AVNpc avNpc) {
-            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState());
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof AVNpc avNpc && avNpc.getLivingEntityPatch() != null) {
+            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState(), damageSource);
             avNpc.postPlayEfnGuardHit();
         } else {
             super.playGuardHitAnimation(damageSource, canCounter);
@@ -176,6 +176,14 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
+        }
+    }
+
+    @Override
+    public void playGuardHitSound() {
+        if (ModList.get().isLoaded("efn")) {
+        } else {
+            super.playGuardHitSound();
         }
     }
 

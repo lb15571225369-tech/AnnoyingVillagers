@@ -219,8 +219,10 @@ public class MobClashBladeMixin {
                             || defender instanceof SledgehammerHerobrineEntity || defender instanceof ReaperHerobrineEntity
                             || defender instanceof SwordsmanHerobrineEntity || defender instanceof ShadowHerobrineEntity) {
                         HerobrineMob herobrineMob = (HerobrineMob) defender;
-                        EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState());
-                        herobrineMob.postPlayEfnGuardHit();
+                        if (herobrineMob.getLivingEntityPatch() != null) {
+                            EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState(), livingAttackEvent.getSource());
+                            herobrineMob.postPlayEfnGuardHit();
+                        }
                     }
                 } else {
                     if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity

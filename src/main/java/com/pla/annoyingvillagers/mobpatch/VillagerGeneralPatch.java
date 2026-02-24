@@ -157,11 +157,19 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
 
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof GreenVillagerGeneralEntity greenVillagerGeneralEntity) {
-            EpicFightNightFall.playEfnGuardHit(greenVillagerGeneralEntity.getLivingEntityPatch(), greenVillagerGeneralEntity.getEfnGuardHitState());
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof GreenVillagerGeneralEntity greenVillagerGeneralEntity && greenVillagerGeneralEntity.getLivingEntityPatch() != null) {
+            EpicFightNightFall.playEfnGuardHit(greenVillagerGeneralEntity.getLivingEntityPatch(), greenVillagerGeneralEntity.getEfnGuardHitState(), damageSource);
             greenVillagerGeneralEntity.postPlayEfnGuardHit();
         } else {
             super.playGuardHitAnimation(damageSource, canCounter);
+        }
+    }
+
+    @Override
+    public void playGuardHitSound() {
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof GreenVillagerGeneralEntity) {
+        } else {
+            super.playGuardHitSound();
         }
     }
 

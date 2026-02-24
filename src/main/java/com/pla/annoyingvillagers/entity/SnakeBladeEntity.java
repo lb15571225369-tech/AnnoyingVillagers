@@ -184,8 +184,7 @@ public class SnakeBladeEntity extends Entity {
     private void tickGuardAoe(Entity creator) {
         final double size = 2.0D;
         final double radiusSqr = size * size;
-        final float knockBackStrength = 3.0F;
-        final float damage = this.getBaseDamage();
+        final float knockBackStrength = 1.0F;
 
         LivingEntity owner = (creator instanceof LivingEntity living) ? living : null;
 
@@ -215,6 +214,7 @@ public class SnakeBladeEntity extends Entity {
             this.playSound(AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(), 1.0F, (float) (0.5 + Math.random() * 0.5));
 
             LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+
             DamageSource src = (owner != null)
                     ? this.level().damageSources().indirectMagic(this, owner)
                     : this.level().damageSources().generic();
@@ -224,13 +224,12 @@ public class SnakeBladeEntity extends Entity {
             if (creator != null) {
                 increaseSkillPoint(creator, 3.0F);
             }
-
-            double kbX = this.getX() - target.getX();
-            double kbZ = this.getZ() - target.getZ();
-            target.knockback(knockBackStrength, kbX, kbZ);
-
             if (targetPatch != null) {
-                targetPatch.applyStun(StunType.SHORT, 5.0F);
+                targetPatch.knockBackEntity(this.position(), knockBackStrength);
+            } else {
+                double kbX = this.getX() - target.getX();
+                double kbZ = this.getZ() - target.getZ();
+                target.knockback(knockBackStrength, kbX, kbZ);
             }
         }
     }

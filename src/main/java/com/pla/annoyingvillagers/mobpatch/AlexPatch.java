@@ -168,11 +168,19 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
 
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof AVNpc avNpc) {
-            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState());
+        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof AVNpc avNpc && avNpc.getLivingEntityPatch() != null) {
+            EpicFightNightFall.playEfnGuardHit(avNpc.getLivingEntityPatch(), avNpc.getEfnGuardHitState(), damageSource);
             avNpc.postPlayEfnGuardHit();
         } else {
             super.playGuardHitAnimation(damageSource, canCounter);
+        }
+    }
+
+    @Override
+    public void playGuardHitSound() {
+        if (ModList.get().isLoaded("efn")) {
+        } else {
+            super.playGuardHitSound();
         }
     }
 
