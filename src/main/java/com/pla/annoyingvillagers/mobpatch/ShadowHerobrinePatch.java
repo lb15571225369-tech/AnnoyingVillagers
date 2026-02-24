@@ -138,25 +138,6 @@ public class ShadowHerobrinePatch extends CEHumanoidPatch implements CustomExecu
     }
 
     @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-        if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof HerobrineMob herobrineMob) {
-            EpicFightNightFall.playEfnGuardHit(herobrineMob.getLivingEntityPatch(), herobrineMob.getEfnGuardHitState());
-            herobrineMob.postPlayEfnGuardHit();
-        } else {
-            super.playGuardHitAnimation(damageSource, canCounter);
-        }
-    }
-
-    @Override
-    public boolean dealStaminaDamage(DamageSource damageSource, float amount) {
-        if (ModList.get().isLoaded("efn") && EpicFightNightFall.isPlayingEfnGuardHit(this)) {
-            return false;
-        } else {
-            return super.dealStaminaDamage(damageSource, amount);
-        }
-    }
-
-    @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
