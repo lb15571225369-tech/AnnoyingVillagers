@@ -218,7 +218,7 @@ public class SnakeBladeEntity extends Entity {
             DamageSource src = (owner != null)
                     ? this.level().damageSources().indirectMagic(this, owner)
                     : this.level().damageSources().generic();
-            target.hurt(src, 1.0F);
+            target.hurt(src, this.getBaseDamage() / 2);
             EpicfightUtil.dealStaminaDamage(src, 1.0F, targetPatch, false);
 
             if (creator != null) {

@@ -72,37 +72,37 @@ public class JevFist {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.FIST_LEFT, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_DASH, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                                             )
@@ -115,32 +115,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                             )
@@ -152,32 +152,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.FIST_UP, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                             )
@@ -189,32 +189,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.FIST_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_DASH, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                             )
@@ -226,37 +226,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(AVAnimations.WHIRLWIND_KICK, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)
                                                                                                                             )
@@ -269,37 +269,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.FIST_UP, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                                             )
@@ -312,32 +312,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.FIST_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(AVAnimations.FIST_LEFT, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                             )
@@ -349,37 +349,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                                             )
@@ -392,32 +392,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(AVAnimations.FIST_DASH, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                             )
@@ -429,37 +429,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.WHIRLWIND_KICK, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_DASH, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                                             )
@@ -472,37 +472,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.FIST_UP, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                                             )
@@ -515,37 +515,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.FIST_LEFT, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                                                                                                                             )
@@ -558,37 +558,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(AVAnimations.FIST_UP, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_DASH, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                                                                                                             )
@@ -601,32 +601,32 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.FIST_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                                                                             )
@@ -638,37 +638,37 @@ public class JevFist {
 
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 4.0D)
                                                                             .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                             .withinDistance(0.0D, 4.0D)
                                                                                             .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                             .animationBehavior(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                             .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
-                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic).custom(CombatCommon::canAttackWhileNotHealing)
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)
                                                                                                                             )

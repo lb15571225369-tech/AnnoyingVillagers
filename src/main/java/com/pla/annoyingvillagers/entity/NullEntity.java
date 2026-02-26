@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.AnimationPlayer;
@@ -493,7 +494,7 @@ public class NullEntity extends HerobrineMob {
                 }
             }
 
-            if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch()) || this.getLivingEntityPatch().isStunned()) {
+            if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch()) || this.getLivingEntityPatch().isStunned() || dynamicAnimation.get() instanceof ExecutionAttackAnimation) {
                 this.getNavigation().stop();
                 this.setDeltaMovement(Vec3.ZERO);
             } else {
