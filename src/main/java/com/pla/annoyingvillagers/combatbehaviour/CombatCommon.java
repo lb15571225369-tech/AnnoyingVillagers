@@ -29,14 +29,19 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.shelmarow.combat_evolution.ai.util.BehaviorUtils;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
+import net.shelmarow.combat_evolution.execution.ExecutionTask;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
@@ -48,6 +53,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -86,21 +92,76 @@ public class CombatCommon {
                 && targetIsInRange(attacker, victim, 0, maxDist, 180);
     }
 
-    public static Vec3 calculateExecutionPosition(LivingEntity target, Vec3 offset) {
+    @Nullable
+    private static ExecutionHandler.ExecutionTransform calculateExecutionPosition(Level level, LivingEntity executor, LivingEntity target, Vec3 offset) {
         float yaw = target.getYRot();
-        double rad = Math.toRadians(yaw);
+        ExecutionHandler.ExecutionTransform executionTransform = findPosAround(level, executor, target, offset, yaw, 360.0F, 0.5F);
+        if (executionTransform == null) {
+            Vec3 executorPos = executor.position();
+            Vec3 targetPos = target.position();
+            Vec3 deltaVec = executorPos.subtract(targetPos);
+            float startAngle = (float)(Math.toDegrees(Mth.atan2(deltaVec.z, deltaVec.x)) - (double)90.0F);
+            float allowedY = 0.5F;
+            executionTransform = findPosAround(level, executor, target, offset, startAngle, 12.0F, allowedY);
+            if (executionTransform == null) {
+                allowedY = 0.95F;
+                executionTransform = findPosAround(level, executor, target, offset, startAngle, 12.0F, allowedY);
+            }
+        }
 
-        double forwardX = -Math.sin(rad);
-        double forwardZ = Math.cos(rad);
+        return executionTransform;
+    }
 
-        double rightX = Math.cos(rad);
-        double rightZ = Math.sin(rad);
+    @Nullable
+    private static ExecutionHandler.ExecutionTransform findPosAround(Level level, LivingEntity executor, LivingEntity target, Vec3 offset, float startAngle, float angleStep, float allowedY) {
+        for(float angleOffset = 0.0F; angleOffset < 360.0F; angleOffset += angleStep) {
+            float yaw = startAngle + angleOffset;
+            double rad = Math.toRadians((double)yaw);
+            double forwardX = -Math.sin(rad);
+            double forwardZ = Math.cos(rad);
+            double rightX = Math.cos(rad);
+            double rightZ = Math.sin(rad);
+            double offsetX = forwardX * offset.x + rightX * offset.z;
+            double offsetY = offset.y;
+            double offsetZ = forwardZ * offset.x + rightZ * offset.z;
+            Vec3 testPos = target.position().add(offsetX, offsetY, offsetZ);
+            Vec3 executionPos = canStandHere(level, testPos, executor, target, allowedY);
+            if (executionPos != null) {
+                return new ExecutionHandler.ExecutionTransform(executionPos, yaw);
+            }
+        }
 
-        double offsetX = forwardX * offset.x + rightX * offset.z;
-        double offsetY = offset.y;
-        double offsetZ = forwardZ * offset.x + rightZ * offset.z;
+        return null;
+    }
 
-        return target.position().add(offsetX, offsetY, offsetZ);
+    @Nullable
+    public static Vec3 canStandHere(Level level, Vec3 pos, LivingEntity executor, LivingEntity target, float allowedY) {
+        AABB entityBox = executor.getBoundingBox();
+        double width = entityBox.getXsize();
+        double height = entityBox.getYsize();
+
+        for(float i = allowedY; i > -allowedY; i -= 0.05F) {
+            BlockPos blockPosBelow = BlockPos.containing(pos.x, pos.y + (double)i, pos.z);
+            BlockState stateBelow = level.getBlockState(blockPosBelow);
+            VoxelShape shapeBelow = stateBelow.getCollisionShape(level, blockPosBelow);
+            if (!shapeBelow.isEmpty()) {
+                double offsetY = shapeBelow.max(Direction.Axis.Y);
+                AABB checkBox = new AABB(pos.x - width / (double)2.0F, (double)blockPosBelow.getY() + offsetY, pos.z - width / (double)2.0F, pos.x + width / (double)2.0F, (double)blockPosBelow.getY() + offsetY + height, pos.z + width / (double)2.0F);
+                Vec3 standPos = new Vec3(pos.x, (double)blockPosBelow.getY() + offsetY, pos.z);
+                if (level.noCollision(checkBox) && getEntityInView(executor, new Vec3(standPos.x, executor.getEyePosition().y, standPos.z), target) != null) {
+                    return standPos;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static LivingEntity getEntityInView(LivingEntity executor, Vec3 startPos, Entity target) {
+        BlockHitResult blockHit = executor.level().clip(new ClipContext(startPos, target.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, executor));
+        double blockDistanceSqr = blockHit.getType() != HitResult.Type.MISS ? startPos.distanceToSqr(blockHit.getLocation()) : Double.MAX_VALUE;
+        double entityDistanceSqr = startPos.distanceToSqr(target.getEyePosition());
+        return entityDistanceSqr < blockDistanceSqr && blockDistanceSqr - entityDistanceSqr > target.getBoundingBox().minX ? (LivingEntity)target : null;
     }
 
     public static boolean canExecute(MobPatch<?> mobPatch) {
@@ -116,9 +177,7 @@ public class CombatCommon {
 
             if (ExecutionHandler.isTargetGuardBreak(currentAnimation, victimEntityPatch) && canExecute(attacker, victim, mobPatch, victimEntityPatch)) {
                 ExecutionTypeManager.Type executionType = ExecutionHandler.getExecutionType(mobPatch, victimEntityPatch);
-                Level level = attacker.level();
-                Vec3 frontPos = calculateExecutionPosition(victim, executionType.offset());
-                return ExecutionHandler.canStandHere(level, frontPos, attacker) != null;
+                return calculateExecutionPosition(attacker.level(), attacker, victim, executionType.offset()) != null;
             }
         }
         return false;
@@ -825,8 +884,9 @@ public class CombatCommon {
 
         final ExecutionTypeManager.Type execType = ExecutionHandler.getExecutionType(mobPatch, victimPatch);
         faceTargetHard(attacker, victim);
-        final Vec3 frontPos = calculateExecutionPosition(victim, execType.offset());
-        attacker.teleportTo(frontPos.x, frontPos.y, frontPos.z);
+        ExecutionHandler.ExecutionTransform transform = calculateExecutionPosition(attacker.level(), attacker, victim, execType.offset());
+        Vec3 executionPos = transform.position();
+        attacker.teleportTo(executionPos.x, executionPos.y, executionPos.z);
         faceTargetHard(attacker, victim);
         TickTaskManager.addTask(victim.getUUID(),
                 new MobExecutionTask(attacker, victim, execType, execType.totalTick()));
