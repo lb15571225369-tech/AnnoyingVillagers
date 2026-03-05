@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/iron_scythe",
-  "textures": {
-    "0": "annoyingvillagers:item/iron_scythe",
-    "particle": "annoyingvillagers:item/iron_scythe"
-  }
-}

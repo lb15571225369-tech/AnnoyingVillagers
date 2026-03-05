@@ -54,23 +54,21 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
             Items.DIAMOND_SWORD,
             Items.DIAMOND_AXE,
-            AnnoyingVillagersModItems.DIAMOND_SWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_SPEAR.get(),
-            AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_GREATSWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_BLADE.get(),
-            AnnoyingVillagersModItems.DIAMOND_DAGGER.get(),
+            AnnoyingVillagersModItems.DIAMOND_ATTRACTOR_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_BLASTER_SWORD.get(),
             AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get(),
-            AnnoyingVillagersModItems.DIAMOND_GREATBLADE.get(),
-            AnnoyingVillagersModItems.DIAMOND_LONGBLADE.get(),
-            AnnoyingVillagersModItems.DIAMOND_HALBERD.get(),
-            AnnoyingVillagersModItems.DIAMOND_SCYTHE.get(),
-            AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get(),
-            AnnoyingVillagersModItems.DIAMOND_GIANT_AXE.get(),
-            AnnoyingVillagersModItems.DIAMOND_BATTLE_AXE.get(),
-            AnnoyingVillagersModItems.DIAMOND_GLAIVE.get(),
-            AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()
+            AnnoyingVillagersModItems.DIAMOND_WARBLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_FALCHION.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREAT_FALCHION.get(),
+            AnnoyingVillagersModItems.DIAMOND_SABRE.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_CHIPPED_LONGSWORD.get(),
+            AnnoyingVillagersModItems.PALADIN_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREATAXE.get(),
+            AnnoyingVillagersModItems.DIAMOND_ARMBLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_SICKLE.get(),
+            AnnoyingVillagersModItems.DOUBLE_DIAMOND_GLAIVE.get(),
+            AnnoyingVillagersModItems.DIAMOND_MOON_BLADE.get()
     ));
 
     public EliteHerobrineKnockedEntity(SpawnEntity spawnEntity, Level level) {

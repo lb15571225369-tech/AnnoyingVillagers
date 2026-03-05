@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/iron_glaive",
-  "textures": {
-    "0": "annoyingvillagers:item/iron_glaive",
-    "particle": "annoyingvillagers:item/iron_glaive"
-  }
-}

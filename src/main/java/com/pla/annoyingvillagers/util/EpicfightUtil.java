@@ -43,6 +43,7 @@ public class EpicfightUtil {
                 AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3.get().getRegistryName().toString(),
                 AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1.get().getRegistryName().toString(),
                 AVAnimations.AEGIS_SHIELD_SHOOT.get().getRegistryName().toString(),
+                AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT.get().getRegistryName().toString(),
                 AnimsAgony.AGONY_SKY_DIVE_X.get().getRegistryName().toString(),
                 AnimsAgony.AGONY_SKY_DIVE.get().getRegistryName().toString(),
                 WOMAnimations.TORMENT_CHARGED_ATTACK_2.get().getRegistryName().toString(),

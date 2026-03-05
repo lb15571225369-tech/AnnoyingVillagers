@@ -421,9 +421,9 @@ public class AVWeaponCapabilityPresets {
                             AnimsSatsujin.SATSUJIN_HARUSAKI,
                             AnimsHerrscher.HERRSCHER_AUSROTTUNG)
                     .innateSkill(Styles.ONE_HAND,
-                            (itemstack) -> AVSkills.HARD_GREAT_SWORD)
+                            (itemstack) -> AVSkills.GREAT_SWORD)
                     .innateSkill(Styles.TWO_HAND,
-                            (itemstack) -> AVSkills.HARD_GREAT_SWORD)
+                            (itemstack) -> AVSkills.GREAT_SWORD)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)

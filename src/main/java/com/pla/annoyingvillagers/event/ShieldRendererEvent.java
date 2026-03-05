@@ -43,6 +43,12 @@ public class ShieldRendererEvent extends BlockEntityWithoutLevelRenderer {
         Item shield = stack.getItem();
         if (shield == AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()) {
             renderMaterial = ModModelPredicateProvider.LOCATION_JESSICA_THE_DARK_SHIELD;
+        } else if (shield == AnnoyingVillagersModItems.HEATER_SHIELD.get()) {
+            renderMaterial = ModModelPredicateProvider.LOCATION_HEATER_SHIELD;
+        } else if (shield == AnnoyingVillagersModItems.GEM_SHIELD.get()) {
+            renderMaterial = ModModelPredicateProvider.LOCATION_GEM_SHIELD;
+        } else if (shield == AnnoyingVillagersModItems.NETHERITE_SHIELD.get()) {
+            renderMaterial = ModModelPredicateProvider.LOCATION_NETHERITE_SHIELD;
         }
         VertexConsumer ivertexBuilder = renderMaterial.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffer, shieldModel.renderType(renderMaterial.atlasLocation()), true, stack.hasFoil()));
         this.shieldModel.handle().render(matrixStack, ivertexBuilder, combinedLight, combinedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);

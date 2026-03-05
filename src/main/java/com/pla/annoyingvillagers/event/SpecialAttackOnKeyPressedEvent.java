@@ -304,13 +304,7 @@ public class SpecialAttackOnKeyPressedEvent {
                     if (!success) {
                         LivingEntity livingEntity = (LivingEntity) entity;
                         livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-                        livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F);
-                        new DelayedTask(20) {
-                            @Override
-                            public void run() {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
-                            }
-                        };
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F);
                     }
                     return;
                 }
@@ -337,7 +331,7 @@ public class SpecialAttackOnKeyPressedEvent {
                     return;
                 }
             }
-            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HARD_GREATSWORD.get())) {
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.GREAT_SWORD.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F);
                     return;

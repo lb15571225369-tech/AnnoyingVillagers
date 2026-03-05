@@ -1,8 +1,3 @@
 {
-	"type": "annoyingvillagers:av_greatsword",
-	"attributes": {
-		"common": {
-  			"impact": 0.7
-		}
-	}
+	"type": "annoyingvillagers:av_greatsword"
 }

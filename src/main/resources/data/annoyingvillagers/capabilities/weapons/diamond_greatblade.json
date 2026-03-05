@@ -1,9 +1,0 @@
-{
-	"type": "annoyingvillagers:av_tachi",
-	"attributes": {
-		"common": {
-  			"impact": 1.7,
-			"max_strikes": 7
-		}
-	}
-}

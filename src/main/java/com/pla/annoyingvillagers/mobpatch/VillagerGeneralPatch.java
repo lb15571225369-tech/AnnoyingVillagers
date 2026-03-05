@@ -3,9 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.AVNpc;
-import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
-import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
+import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.GreenVillagerGeneralEntity;
@@ -110,6 +108,77 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
                         Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        )
+                )
+        );
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, NpcTachi.AV_DUAL_TACHI
+                        ));
+
+        this.guardHitMotions.put(WeaponCategories.TACHI,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        )
+                )
+        );
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, NpcDagger.DAGGER,
+                                Styles.TWO_HAND, NpcDagger.DUAL_DAGGER
+                        ));
+
+        this.guardHitMotions.put(WeaponCategories.DAGGER,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
                                 Animations.SWORD_GUARD_ACTIVE_HIT1,
                                 Animations.SWORD_GUARD_ACTIVE_HIT2,
                                 Animations.SWORD_GUARD_ACTIVE_HIT3

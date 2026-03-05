@@ -29,7 +29,7 @@ public class AVSkills {
     public static Skill SHADOW_OBSIDIAN_SWORD_DUAL;
     public static Skill LEGENDARY_SWORD;
     public static Skill WOOPIE_THE_SWORD;
-    public static Skill HARD_GREAT_SWORD;
+    public static Skill GREAT_SWORD;
     public static Skill CRAFTING_TABLE;
     public static Skill WOODEN_DOOR;
     public static Skill TRAPDOOR;
@@ -54,7 +54,7 @@ public class AVSkills {
         AVSkills.SHADOW_OBSIDIAN_SWORD_DUAL = modRegistry.build("shadow_obsidian_sword_dual", ShadowObsidianSwordDualSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.LEGENDARY_SWORD = modRegistry.build("legendary_sword", LegendarySwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.WOOPIE_THE_SWORD = modRegistry.build("woopie_the_sword", WoopieTheSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
-        AVSkills.HARD_GREAT_SWORD = modRegistry.build("hard_greatsword", HardGreatSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
+        AVSkills.GREAT_SWORD = modRegistry.build("great_sword", GreatSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
         AVSkills.CRAFTING_TABLE = modRegistry.build("crafting_table", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AnimsSolar.SOLAR_AUTO_2).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.WOODEN_DOOR = modRegistry.build("wooden_door", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(WOMAnimations.TORMENT_BERSERK_DASH).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.TRAPDOOR = modRegistry.build("trapdoor", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.GIANT_WHIRLWIND).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();

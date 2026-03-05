@@ -6,6 +6,8 @@ import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.HookedDiamondSwordItem;
+import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -255,9 +257,13 @@ public class RedVillagerGeneralEntity extends AVNpc {
 
         TeamUtil.addOrJoinTeam(this, "villagers");
 
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
-        // Noteice: add woopie, diamond_blade, diamond_dagger chance
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
+        this.setItemSlot(EquipmentSlot.MAINHAND, VillagerUtil.generateMainWeaponItem());
+        if (this.getMainHandItem().getItem() instanceof WoopieTheSwordItem
+                || this.getMainHandItem().getItem() instanceof HookedDiamondSwordItem) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.HEATER_SHIELD.get()));
+        } else {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
+        }
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_HELMET_FIX.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_CHESTPLATE.get()));
         this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(AnnoyingVillagersModItems.VILLAGER_GENERAL_LEGGINGS.get()));

@@ -46,7 +46,7 @@ public abstract class RubyArmorItem extends ArmorItem {
             }
 
             public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack((ItemLike) AnnoyingVillagersModItems.RUBY.get()), new ItemStack(Items.GOLD_INGOT)});
+                return Ingredient.of(new ItemStack[]{new ItemStack((ItemLike) AnnoyingVillagersModItems.DARK_NETHERITE.get()), new ItemStack(Items.GOLD_INGOT)});
             }
 
             public String getName() {

@@ -27,11 +27,22 @@ public class ModModelPredicateProvider {
                     (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F,
                     AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()
             );
+            addShieldPropertyOverrides(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blocking"),
+                    (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F,
+                    AnnoyingVillagersModItems.HEATER_SHIELD.get()
+            );
+            addShieldPropertyOverrides(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blocking"),
+                    (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F,
+                    AnnoyingVillagersModItems.GEM_SHIELD.get()
+            );
+            addShieldPropertyOverrides(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blocking"),
+                    (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F,
+                    AnnoyingVillagersModItems.NETHERITE_SHIELD.get()
+            );
         });
     }
 
-    private static void addShieldPropertyOverrides(ResourceLocation override, ClampedItemPropertyFunction propertyGetter,
-                                                   ItemLike... shields) {
+    private static void addShieldPropertyOverrides(ResourceLocation override, ClampedItemPropertyFunction propertyGetter, ItemLike... shields) {
         for (ItemLike shield : shields) {
             ItemProperties.register(shield.asItem(), override, propertyGetter);
         }
@@ -42,7 +53,10 @@ public class ModModelPredicateProvider {
     public static void onStitch(Pre event) {
         if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             for (Material textures : new Material[] {
-                    LOCATION_JESSICA_THE_DARK_SHIELD
+                    LOCATION_JESSICA_THE_DARK_SHIELD,
+                    LOCATION_HEATER_SHIELD,
+                    LOCATION_GEM_SHIELD,
+                    LOCATION_NETHERITE_SHIELD
             }) {
                 event.addSprite(textures.texture());
             }
@@ -64,6 +78,9 @@ public class ModModelPredicateProvider {
     }
 
     public static final Material LOCATION_JESSICA_THE_DARK_SHIELD = material("item/jessica_the_dark_shield");
+    public static final Material LOCATION_HEATER_SHIELD = material("item/heater_shield");
+    public static final Material LOCATION_GEM_SHIELD = material("item/gem_shield");
+    public static final Material LOCATION_NETHERITE_SHIELD = material("item/netherite_shield");
 
     @SuppressWarnings("deprecation")
     private static Material material(String path) {

@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/legendary_sword_wake_up",
-  "textures": {
-    "0": "annoyingvillagers:item/legendary_sword_wake_up",
-    "particle": "annoyingvillagers:item/legendary_sword_wake_up"
-  }
-}

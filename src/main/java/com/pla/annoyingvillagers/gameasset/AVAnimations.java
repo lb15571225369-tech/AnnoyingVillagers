@@ -84,6 +84,7 @@ import com.pla.annoyingvillagers.util.*;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -111,6 +112,7 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -122,12 +124,14 @@ import yesman.epicfight.api.animation.Keyframe;
 import yesman.epicfight.api.animation.TransformSheet;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -395,6 +399,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> CLONE_NAPOLEON_WATERLOW_SHOOT;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -2039,7 +2044,27 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
                         .addEvents(new AnimationEvent[]{
-                                AnimationEvent.InPeriodEvent.create(0.0F, 0.4F, (entityPatch, self, params) -> {
+                                AnimationEvent.InTimeEvent.create(0.0F, (entityPatch, self, params) -> {
+                                    Level level = entityPatch.getOriginal().level();
+                                    LivingEntity entity = entityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                                }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.1F, (entityPatch, self, params) -> {
+                                    Level level = entityPatch.getOriginal().level();
+                                    LivingEntity entity = entityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                                }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.2F, (entityPatch, self, params) -> {
+                                    Level level = entityPatch.getOriginal().level();
+                                    LivingEntity entity = entityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                                }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.3F, (entityPatch, self, params) -> {
+                                    Level level = entityPatch.getOriginal().level();
+                                    LivingEntity entity = entityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                                }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.4F, (entityPatch, self, params) -> {
                                     Level level = entityPatch.getOriginal().level();
                                     LivingEntity entity = entityPatch.getOriginal();
                                     level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
@@ -3093,6 +3118,106 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
                         .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 0.4F)
                         .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), SoundEvents.ANVIL_LAND, SoundSource.MASTER, 0.3F, 1.2F - ((new Random()).nextFloat() - 0.5F) * 0.2F), Side.CLIENT)}));
+        AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT = builder.nextAccessor("biped/wom_clone/clone_napoleon_waterlow_shoot",
+                (accessor) -> (new SpecialAttackAnimation(0.1F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.1F, 0.3F, 0.35F, 0.35F, humanoidArmature.get().toolR, null),
+                        new Phase(0.35F, 0.8F, 0.9F, 0.94F, 0.94F, humanoidArmature.get().toolR, null),
+                        new Phase(0.94F, 0.95F, 1.1F, 1.1F, Float.MAX_VALUE, humanoidArmature.get().rootJoint, WOMWeaponColliders.NAPOLEON_WATERLOW_SHOOT)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(6.0F), 2)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F), 2)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.58F), 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.8F))
+                        .addProperty(WomAnimationProperty.CAN_SPAM, true)
+                        .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER,
+                                (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> {
+                            if (elapsedTime > 0.8F && elapsedTime < 0.9F) {
+                                float dpx = (float) livingEntityPatch.getOriginal().getX();
+                                float dpy = (float) livingEntityPatch.getOriginal().getY() - 1.0F;
+                                float dpz = (float) livingEntityPatch.getOriginal().getZ();
+                                BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz));
+                                livingEntityPatch.getOriginal().setDeltaMovement(0.0F, -2.0F, 0.0F);
+                                LivingEntity entity = livingEntityPatch.getOriginal();
+                                if ((block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR) && dpy > -64.0F && !block.is(Blocks.WATER) && !(entity.onGround())) {
+                                    return (elapsedTime - 0.8F) / 0.1F;
+                                }
+                                return 2.0F;
+                            }
+
+                            return 1.0F;
+                        })
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.15F, (livingEntityPatch, self, params) -> {
+                                Level level = livingEntityPatch.getOriginal().level();
+                                LivingEntity entity = livingEntityPatch.getOriginal();
+                                level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.25F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.35F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.45F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.75F, (livingEntityPatch, self, params) -> {
+                                Level level = livingEntityPatch.getOriginal().level();
+                                LivingEntity entity = livingEntityPatch.getOriginal();
+                                level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.85F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.95F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(1.05F, (livingEntityPatch, self, params) -> {
+                                    Level level = livingEntityPatch.getOriginal().level();
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                            }, Side.CLIENT),
+                                AnimationEvent.InPeriodEvent.create(0.0F, 1.05F, (livingEntityPatch, self, params) -> {
+                                livingEntityPatch.getOriginal().resetFallDistance();
+                                Entity livingEntity = livingEntityPatch.getOriginal();
+                                if (livingEntity instanceof Player player) {
+                                    player.yCloak = 0.0F;
+                                    player.yCloakO = 0.0F;
+                                }
+                            }, Side.BOTH))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.9F, reascer.wom.gameasset.ReuseableEvents.BODY_BIG_GROUNDSLAM, Side.CLIENT))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        )
+                        .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true)
+                        .newTimePair(0.0F, 0.35F).addState(EntityState.CAN_SKILL_EXECUTION, false)
+                        .newTimePair(0.55F, 1.1F).addState(EntityState.CAN_SKILL_EXECUTION, false));
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {

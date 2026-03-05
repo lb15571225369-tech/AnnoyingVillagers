@@ -49,7 +49,7 @@ public class RenderLegendarySword extends RenderItemBase {
                     || dynamicAnimation == AVAnimations.YELLOW_SOLAR_AUTO_2
                     || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUTO_3
                     || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT
-                    || dynamicAnimation == AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT
+                    || dynamicAnimation == AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT
                     || dynamicAnimation == AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3) {
                 itemstack = new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
                 poseStack.pushPose();

@@ -13,7 +13,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.MathUtils;
@@ -44,13 +43,13 @@ public class RenderHardGreatSword extends RenderItemBase {
             ItemStack itemstack;
 
             if (dynamicAnimation != AVAnimations.HARD_GREATSWORD_GUARD_SKILL && !dynamicAnimation.equals(AVAnimations.HARD_GREATSWORD_GUARD)) {
-                itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD.get());
+                itemstack = new ItemStack(AnnoyingVillagersModItems.GREAT_SWORD.get());
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
                 poseStack.popPose();
             } else {
-                itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD_SKILL.get());
+                itemstack = new ItemStack(AnnoyingVillagersModItems.GREAT_SWORD_SKILL.get());
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);

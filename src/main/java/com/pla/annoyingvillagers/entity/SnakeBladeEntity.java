@@ -31,7 +31,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
@@ -42,11 +45,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class SnakeBladeEntity extends Entity {
     private static final EntityDataAccessor<Optional<UUID>> CREATOR_ID =
@@ -260,7 +259,10 @@ public class SnakeBladeEntity extends Entity {
 
             LivingEntityPatch<?> creatorPatch = EpicFightCapabilities.getEntityPatch(creator, LivingEntityPatch.class);
             if (creatorPatch != null) {
-                creatorPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(creatorPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation, creatorPatch) && !(dynamicAnimation.get() instanceof ExecutionAttackAnimation)) {
+                    creatorPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                }
             }
         }
 

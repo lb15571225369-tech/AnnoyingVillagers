@@ -1,76 +1,45 @@
 package com.pla.annoyingvillagers.item;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableMultimap.Builder;
-import com.google.common.collect.Multimap;
-import com.pla.annoyingvillagers.entity.BlueDemonTridentEntity;
-import com.pla.annoyingvillagers.tobe_removed.BlueDemonTridentOnRangedItemUseProcedure;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
+import java.util.List;
 
-public class BlueDemonTridentItem extends Item {
-
+public class BlueDemonTridentItem extends SwordItem {
     public BlueDemonTridentItem() {
-        super((new Properties()).durability(2031));
+        super(new Tier() {
+            public int getUses() {
+                return 1561;
+            }
+
+            public float getSpeed() {
+                return 8.0F;
+            }
+
+            public float getAttackDamageBonus() {
+                return 5.5F;
+            }
+
+            public int getLevel() {
+                return 3;
+            }
+
+            public int getEnchantmentValue() {
+                return 10;
+            }
+
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            }
+        }, 3, -2.7F, (new Properties()));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
-        player.startUsingItem(interactionhand);
-        return new InteractionResultHolder(InteractionResult.SUCCESS, player.getItemInHand(interactionhand));
-    }
-
-    public UseAnim getUseAnimation(ItemStack itemstack) {
-        return UseAnim.SPEAR;
-    }
-
-    public int getUseDuration(ItemStack itemstack) {
-        return 72000;
-    }
-
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentslot) {
-        if (equipmentslot == EquipmentSlot.MAINHAND) {
-            Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-
-            builder.putAll(super.getDefaultAttributeModifiers(equipmentslot));
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BlueDemonTridentItem.BASE_ATTACK_DAMAGE_UUID, "Ranged item modifier", 6.4D, Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BlueDemonTridentItem.BASE_ATTACK_SPEED_UUID, "Ranged item modifier", -2.4D, Operation.ADDITION));
-            return builder.build();
-        } else {
-            return super.getDefaultAttributeModifiers(equipmentslot);
-        }
-    }
-
-    public void releaseUsing(ItemStack itemstack, Level level, LivingEntity livingentity, int i) {
-        if (!level.isClientSide() && livingentity instanceof ServerPlayer) {
-            ServerPlayer serverplayer = (ServerPlayer) livingentity;
-            double d0 = serverplayer.getX();
-            double d1 = serverplayer.getY();
-            double d2 = serverplayer.getZ();
-            BlueDemonTridentEntity bluedemontridententity = BlueDemonTridentEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.1F, 9.0D, 4);
-
-            itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
-                serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
-            });
-            bluedemontridententity.pickup = Pickup.DISALLOWED;
-            BlueDemonTridentOnRangedItemUseProcedure.execute(level, d0, d1, d2, serverplayer);
-        }
-
+    @Override
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
+        super.appendHoverText(itemstack, level, list, tooltipflag);
+        list.add(Component.translatable("tooltip.annoyingvillagers.future_update"));
     }
 }
-

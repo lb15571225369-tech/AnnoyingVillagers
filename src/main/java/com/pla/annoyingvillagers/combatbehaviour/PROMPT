@@ -949,3 +949,39 @@ all of element should has
 each combo should be 5 to 10 element has at least 2 to 3 animation from group 1, no need to follow the order, 1 to 2 from group 2, 1 from group 4, follow the tab rule from the code I sent, no need to create new function or clean code, no comment, for .withinDistance(0.0D, 3.0D) begin of the chain can be 0 3 next can be 0 4 but next should be increased to 0 5, 0 5 and next should be 0 6 this is max
 The combo chain should be like example any animation from group 1 -> any from group 2 or 3 or 4 or 5 -> any animation from group 1 or group 2 or 3 or 4 or 5 -> any animation from group 1 or group 2 or 3 or 4 or 5 ->...
 help me create 25 different moves, and please generate into one code block to let me copy everything in a button
+
+== STAFF ==
+help me mix there movement
+group 1
+WOMAnimations.STAFF_AUTO_1
+WOMAnimations.STAFF_AUTO_2
+WOMAnimations.STAFF_AUTO_3
+
+group 2
+AVAnimations.SPEAR_THRUST
+WOMAnimations.STAFF_SQUALL
+WOMAnimations.STAFF_KINKONG
+WOMAnimations.STAFF_CHARYBDIS
+
+group 3
+AVAnimations.KICK_1
+AVAnimations.KICK_2
+AVAnimations.KICK_3
+AVAnimations.KICK_4
+AVAnimations.KICK_C
+AVAnimations.KICK_RUSH
+AVAnimations.KICK_H
+
+group 4
+Animations.BIPED_ROLL_BACKWARD
+Animations.BIPED_ROLL_FORWARD
+
+help me mix into a combo chain like this
+
+all of element should has
+.custom(CombatCommon::canPerformNormalAttackLogic)
+.withinDistance(0.0D, 3.0D)
+
+each combo should be 5 to 10 element has at least 1 to 3 animation from group 1, but it should follow the order in the group 1 from to bottom, 1 animation from group 2, 1 from group 3, 1 from group 4, 1 from group 5 follow the tab rule from the code I sent, no need to create new function or clean code, no comment, for .withinDistance(0.0D, 3.0D) begin of the chain can be 0 3 next can be 0 3 but next should be increased to 0 4, 0 4 and next should be 0 5
+The combo chain should be like example first animation from group 1 -> any from group 2 or 3 or 4 or 5 -> second animation from group 1 or any from group 2 or 3 or 4 or 5 -> third animation from group 1 or any from group 2 or 3 or 4 or 5
+help me create 15 different moves, and please generate into one code block to let me copy everything in a button

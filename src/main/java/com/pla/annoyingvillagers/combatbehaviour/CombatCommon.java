@@ -709,7 +709,7 @@ public class CombatCommon {
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());
         entity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
 
-        if (entity instanceof VillagerScoutEntity
+        if (entity instanceof VillagerScoutEntity && AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()
                 && !entity.level().isClientSide() && entity.level().getServer() != null) {
             Objects.requireNonNull(entity.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Fire!"), false);
         }

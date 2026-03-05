@@ -231,8 +231,7 @@ public class BlueVillagerGeneralEntity extends AVNpc {
 
         TeamUtil.addOrJoinTeam(this, "villagers");
 
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
-        // Noteice: add woopie, diamond_blade, diamond_dagger chance
+        this.setItemSlot(EquipmentSlot.MAINHAND, VillagerUtil.generateMainWeaponItem());
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_HELMET_FIX.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_CHESTPLATE.get()));
