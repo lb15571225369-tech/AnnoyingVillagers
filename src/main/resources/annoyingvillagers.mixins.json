@@ -10,6 +10,7 @@
     "SkeletonMixin",
     "ZombieMixin",
     "GuardSkillMixin",
+    "ImpactGuardSkillMixin",
     "ExplosionMixin",
     "RaiderMixin",
     "MixinPHumanoidRenderer",

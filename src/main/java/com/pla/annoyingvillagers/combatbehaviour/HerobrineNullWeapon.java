@@ -969,7 +969,7 @@ public class HerobrineNullWeapon {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30.0D)
+                            .weight(15.0D)
                             .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()

@@ -758,7 +758,7 @@ public class SteveLadder {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30.0D)
+                            .weight(15.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 3.0D)

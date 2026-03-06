@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.item.BedrockWeaponItem;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.skill.BedrockWeaponSkill;
@@ -30,7 +29,7 @@ public abstract class ImpactGuardSkillMixin {
 
     @Inject(method = {"dealEvent"}, at = {@At("HEAD")}, cancellable = true)
     private void playerOnGuard(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
-        boolean isSpecialSource = isAdvancedBlockableDamageSource((DamageSource)event.getDamageSource());
+        boolean isSpecialSource = isAdvancedBlockableDamageSource(event.getDamageSource());
         if (!isSpecialSource) {
             Player player = playerpatch.getOriginal();
             if (!(player instanceof ServerPlayer serverPlayer)) return;

@@ -751,7 +751,7 @@ public class NullSkeletonSword {
             .newBehaviorRoot(
                     CECombatBehaviors.BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30.0D)
+                            .weight(15.0D)
                             .addFirstBehavior(
                                     CECombatBehaviors.Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
