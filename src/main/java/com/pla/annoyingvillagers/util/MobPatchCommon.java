@@ -95,27 +95,15 @@ public class MobPatchCommon {
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcTachi.AV_TACHI;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcTachi.AV_DUAL_TACHI;
-            }
+            return PlayerNpcTachi.AV_TACHI;
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_FALCHION.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcTachi.AV_TACHI;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcTachi.AV_DUAL_TACHI;
-            }
+            return PlayerNpcTachi.AV_TACHI;
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_GREAT_FALCHION.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcTachi.AV_TACHI;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcTachi.AV_DUAL_TACHI;
-            }
+            return PlayerNpcTachi.AV_TACHI;
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_SABRE.get().getDefaultInstance())) {
@@ -157,11 +145,7 @@ public class MobPatchCommon {
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LAEVATEINN.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcTachi.AV_TACHI;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcTachi.AV_DUAL_TACHI;
-            }
+            return PlayerNpcTachi.AV_TACHI;
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get().getDefaultInstance())) {
@@ -303,11 +287,7 @@ public class MobPatchCommon {
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.NETHERITE_FALCHION.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcTachi.AV_TACHI;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcTachi.AV_DUAL_TACHI;
-            }
+            return PlayerNpcTachi.AV_TACHI;
         }
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_HALBERD.get().getDefaultInstance())) {

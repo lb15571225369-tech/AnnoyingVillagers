@@ -81,9 +81,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(stack);
 
         if (cap instanceof WeaponCapability weaponCapability) {
-            return weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ||
-                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.TACHI ||
-                    weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
+            return weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
                     weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.FIST ||
                     weaponCapability.getWeaponCategory() == CapabilityItem.WeaponCategories.DAGGER
                     || addMoreDualCap(weaponCapability);
