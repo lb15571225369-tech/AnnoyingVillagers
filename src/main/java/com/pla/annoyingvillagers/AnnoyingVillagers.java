@@ -8,8 +8,7 @@ import com.mojang.serialization.Codec;
 import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersSpawnConfig;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVSkillCategories;
-import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
+import com.pla.annoyingvillagers.gameasset.*;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
 import com.pla.annoyingvillagers.event.NpcGearLoadEvent;
@@ -42,7 +41,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.pla.annoyingvillagers.capabilities.AVWeaponCapabilityPresets;
-import com.pla.annoyingvillagers.gameasset.AVSounds;
 import yesman.epicfight.gameasset.Armatures;
 
 @Mod(AnnoyingVillagers.MODID)
@@ -78,6 +76,7 @@ public class AnnoyingVillagers {
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersSpawnConfig.SPEC, "annoyingvillagers-spawns.toml");
         AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
         AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
+        AVSkillDataKeys.DATA_KEYS.register(modEventBus);
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);

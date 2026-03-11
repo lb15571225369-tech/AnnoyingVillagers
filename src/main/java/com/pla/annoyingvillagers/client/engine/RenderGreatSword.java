@@ -23,8 +23,8 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderHardGreatSword extends RenderItemBase {
-    public RenderHardGreatSword(JsonElement json) {
+public class RenderGreatSword extends RenderItemBase {
+    public RenderGreatSword(JsonElement json) {
         super(json);
     }
 

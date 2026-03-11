@@ -32,7 +32,8 @@
     "EnderHandMixin"
   ],
   "client": [
-    "client.ModelPartMixin"
+    "client.ModelPartMixin",
+    "client.WeaponInnateSkillMixin"
   ],
   "minVersion": "0.8"
 }

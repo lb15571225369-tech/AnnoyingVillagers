@@ -13,7 +13,7 @@ public class AnnoyingVillagersModSounds {
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, AnnoyingVillagers.MODID);
 
     public static final RegistryObject<SoundEvent> TRIDENTFS_SKILL = register("tridentfs_skill");
-    public static final RegistryObject<SoundEvent> ELECTIFY = register("electify");
+    public static final RegistryObject<SoundEvent> ELECTRIFY = register("electrify");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_YC = register("bluedemonsayyc");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_PLAYER_INTERESTING = register("bluedemon_say_player_interesting");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_YOU_NO_KNOW = register("bluedemon_say_you_no_know");
@@ -33,12 +33,12 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> OBSIDIAN_HIT = register("obsidian_hit");
     public static final RegistryObject<SoundEvent> HEAVY_HIT = register("heavy_hit");
     public static final RegistryObject<SoundEvent> WOOSH_HARD = register("woosh_hard");
-    public static final RegistryObject<SoundEvent> SOUL_LEGEND = register("soul_legend");
     public static final RegistryObject<SoundEvent> WING = register("wing");
     public static final RegistryObject<SoundEvent> WHOOSH = register("whoosh");
     public static final RegistryObject<SoundEvent> HEROBRINE_ENOUGH = register("herobrine_enough");
     public static final RegistryObject<SoundEvent> HEROBRINE_ATTACK_1 = register("herobrine_attack_1");
     public static final RegistryObject<SoundEvent> HEROBRINE_ATTACK_2 = register("herobrine_attack_2");
+    public static final RegistryObject<SoundEvent> HEROBRINE_ATTACK_3 = register("herobrine_attack_3");
     public static final RegistryObject<SoundEvent> HEROBRINE_YOU_ARE_WEAK = register("herobrine_youareweak");
     public static final RegistryObject<SoundEvent> HEROBRINE_HOWFOOLISH = register("herobrine_howfoolish");
     public static final RegistryObject<SoundEvent> HEROBRINE_AREYOUTALKINGABOUTME = register("herobrine_areyoutalkingaboutme");

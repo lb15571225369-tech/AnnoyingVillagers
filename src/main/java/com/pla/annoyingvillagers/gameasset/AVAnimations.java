@@ -44,7 +44,25 @@
  *       Local license text: third_party/licenses/AFL-3.0.md
  *       Scope: assets (possible adapted portions)
  *
- *   [7] Weapons of Miracles (dependency mod) - reacer
+ *   [7] Epic Fight - Battle Arts - Forixaim
+ *       License: CC-BY-SA
+ *       Source: https://github.com/Forixaim/Epic-Fight-Battle-Arts
+ *       Local license text: third_party/licenses/CC-BY-SA-4.0.md
+ *       Scope: animations / assets (adapted or reused portions)
+ *
+ *   [8] Visitors from Omneria - Forixaim
+ *       License: CC-BY-NC-SA
+ *       Source: https://github.com/Forixaim/Visitors-from-Omneria
+ *       Local license text: third_party/licenses/CC-BY-NC-SA-4.0.md
+ *       Scope: animations / assets (adapted or reused portions)
+ *
+ *   [9] EpicFight - Awaken - ShelMarow
+ *       License: GPL-3.0
+ *       Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-awaken
+ *       Local license text: third_party/licenses/GPL-3.0.md
+ *       Scope: animations / assets (adapted or reused portions)
+ *
+ *   [10] Weapons of Miracles (dependency mod) - reacer
  *       License: Proprietary / All Rights Reserved
  *       Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
  *       Local license text: third_party/licenses/LicenseRef-WOM-Proprietary.md
@@ -84,18 +102,24 @@ import com.pla.annoyingvillagers.util.*;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -112,7 +136,6 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -129,15 +152,17 @@ import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
+import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
+import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
@@ -155,6 +180,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AVAnimations {
@@ -174,6 +200,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_FIST_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_FIST_AUTO3;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SHADOW_HEROBRINE_BIPED_LANDING;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> NERF_TSUNAMI_REINFORCED;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
@@ -322,6 +349,23 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_2;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_4;
+
+    // Animation from Community EpicFight Battle Arts
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> ADVANCED_LANCER_AUTO1;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> ADVANCED_LANCER_AUTO3;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> ADVANCED_DUELIST_WHIRLEDGE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> ADVANCED_DUELIST_SHOOTING_STAR;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_1;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> TRIDENT_THROW_5;
+
+    // Animation from Visitors from Omneria
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> TRIDENT_THROW_3;
+
+    // Animation from EpicFight-Awaken
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CUT_DP_AIR_ATTACK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CUT_HOOK_SPIN_SLASH_AIR;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -400,6 +444,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> CLONE_NAPOLEON_WATERLOW_SHOOT;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CUT_ENDERBLASTER_TWOHAND_RELOAD;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -500,6 +545,29 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         ));
+        AVAnimations.NERF_TSUNAMI_REINFORCED = builder.nextAccessor("biped/epicfight_clone/tsunami_reinforced", (accessor) -> (new AttackAnimation(0.2F, 0.2F, 0.35F, 0.65F, 1.3F, ColliderPreset.BIPED_BODY_COLLIDER, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
+                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
+                .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.RAW_COORD_WITH_X_ROT)
+                .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
+                .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.15F, 0.85F))
+                .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                .addProperty(StaticAnimationProperty.POSE_MODIFIER, ReusableSources.ROOT_X_MODIFIER)
+                .addEvents(StaticAnimationProperty.ON_END_EVENTS, AnimationEvent.SimpleEvent.create(ReusableSources.RESTORE_BOUNDING_BOX, Side.BOTH))
+                .addEvents(StaticAnimationProperty.TICK_EVENTS, AnimationEvent.SimpleEvent.create(ReusableSources.RESIZE_BOUNDING_BOX, Side.BOTH)
+                        .params(EntityDimensions.scalable(0.6F, 1.0F)))
+                .addEvents(AnimationEvent.InPeriodEvent.create(0.35F, 1.0F, (entitypatch, animation, params) -> {
+            Vec3 pos = entitypatch.getOriginal().position();
+
+            for(int x = -1; x <= 1; x += 2) {
+                for(int z = -1; z <= 1; z += 2) {
+                    Vec3 rand = (new Vec3(Math.random() * (double)x, Math.random(), Math.random() * (double)z)).normalize().scale(2.0F);
+                    entitypatch.getOriginal().level().addParticle(EpicFightParticles.TSUNAMI_SPLASH.get(), pos.x + rand.x, pos.y + rand.y - (double)1.0F, pos.z + rand.z, rand.x * 0.1, rand.y * 0.1, rand.z * 0.1);
+                }
+            }
+
+        }, Side.CLIENT))
+                .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3, 0.0F, 0.0F), Side.CLIENT), AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.setAirborneState(true), Side.SERVER)}));
 
         // Animation from EpicFight Infernal Gainer
         AVAnimations.KICK_C = builder.nextAccessor("biped/epicfight_infernal_gainer/kick_c",
@@ -979,10 +1047,10 @@ public class AVAnimations {
         AVAnimations.SPEAR_GUARD_HIT = builder.nextAccessor("biped/pugilist_steve/spear_guard_hit",
                 (accessor) -> (new GuardAnimation(0.05F, 0.2F, accessor, humanoidArmature))
                         .addEvents(new AnimationEvent.InTimeEvent[]{
-                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.FAST_SPINING, Side.CLIENT)}));
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.FAST_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.FAST_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.FAST_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.FAST_SPINNING, Side.CLIENT)}));
         AVAnimations.LEGENDARY_SWORD_GUARD = builder.nextAccessor("biped/pugilist_steve/legendary_sword_guard",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.LEGENDARY_SWORD_GUARD_HIT = builder.nextAccessor("biped/pugilist_steve/legendary_sword_guard_hit",
@@ -1474,6 +1542,208 @@ public class AVAnimations {
                 (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.633F, 0.69F, 0.8F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, AVCollider.SHADOW_OBSIDIAN_PILLAR), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F));
+        AVAnimations.TRIDENT_THROW_2 = builder.nextAccessor("biped/pugilist_steve/trident_throw_2",
+                (accessor) -> (new BasicAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
+                        ));
+        AVAnimations.TRIDENT_THROW_4 = builder.nextAccessor("biped/pugilist_steve/trident_throw_4",
+                (accessor) -> new BasicAttackAnimation(0.13F, 0.1F, 0.15F, 0.15F, ColliderPreset.DUAL_DAGGER_DASH, humanoidArmature.get().toolR, accessor, humanoidArmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.0F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.12F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
+                        ));
+
+        // Animation from Community EpicFight Battle Arts
+        AVAnimations.ADVANCED_LANCER_AUTO1 = builder.nextAccessor("biped/battle_style/advanced_lancer_auto1", access ->
+                new BasicAttackAnimation(0.2f, 0.0f, 0.2f, 0.3f, 0.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, v, v1, v2) ->
+                                v * 0.5f));
+        AVAnimations.ADVANCED_LANCER_AUTO3 = builder.nextAccessor("biped/battle_style/advanced_lancer_auto3", access ->
+                new AttackAnimation(0.2f, 0.0f, 0.75f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, v, v1, v2) ->
+                                v * 0.5f)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
+                                AnimationEvent.InTimeEvent.create(0.2f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.35f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
+                                AnimationEvent.InTimeEvent.create(0.35f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        Vec3 tridentTip = EpicfightUtil.getJointWithTranslation(
+                                                livingEntityPatch.getOriginal(), new Vec3f(0,0,0), Armatures.BIPED.get().toolR, 1.2F, 0.0F
+                                        );
+                                        if (tridentTip != null) {
+                                            BlockPos.MutableBlockPos checkPos = BlockPos.containing(tridentTip).mutable();
+                                            while (checkPos.getY() > serverLevel.getMinBuildHeight()
+                                                    && !serverLevel.getBlockState(checkPos).isSolidRender(serverLevel, checkPos)) {
+                                                checkPos.move(0, -1, 0);
+                                            }
+                                            if (serverLevel.getBlockState(checkPos).isSolidRender(serverLevel, checkPos)) {
+                                                LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
+                                                if (lightningBolt != null) {
+                                                    lightningBolt.moveTo(
+                                                            checkPos.getX() + 0.5D,
+                                                            checkPos.getY() + 1.0D,
+                                                            checkPos.getZ() + 0.5D
+                                                    );
+                                                    serverLevel.addFreshEntity(lightningBolt);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }, Side.SERVER)
+                        ));
+        AVAnimations.TRIDENT_THROW_1 = builder.nextAccessor("biped/battle_style/trident_throw_1", access ->
+                new BasicAttackAnimation(0.2f, 0.0f, 0.2f, 0.3f, 0.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, v, v1, v2) ->
+                                v * 0.5f)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.0f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.15f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)));
+        AVAnimations.TRIDENT_THROW_5 = builder.nextAccessor("biped/battle_style/trident_throw_5", access ->
+                new AttackAnimation(0.2f, 0.0f, 0.75f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, v, v1, v2) ->
+                                v * 0.5f)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
+                                AnimationEvent.InTimeEvent.create(0.2f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.35f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
+                                AnimationEvent.InTimeEvent.create(0.35f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.4f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.5f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)));
+        AVAnimations.ADVANCED_DUELIST_WHIRLEDGE = builder.nextAccessor("biped/battle_style/advanced_duelist_whirledge", access ->
+                new AttackAnimation(0.2f, access, humanoidArmature,
+                        new AttackAnimation.Phase(0.0f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.1f)),
+                        new AttackAnimation.Phase(0.4f, 0.0f, 0.4f, 0.5f, 0.5f, 0.5f, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.15f)),
+                        new AttackAnimation.Phase(0.5f, 0.0f, 0.5f, 0.6f, 0.6f, 0.6f, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2f)),
+                        new AttackAnimation.Phase(0.6f, 0.0f, 0.6f, 0.7f, 0.7f, 0.7f, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f)),
+                        new AttackAnimation.Phase(0.7f, 0.0f, 0.7f, 0.8f, 0.8f, 0.8f, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.3f)),
+                        new AttackAnimation.Phase(0.8f, 0.0f, 0.8f, 0.9f, 0.9f, 0.9f, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.35f)),
+                        new AttackAnimation.Phase(0.9f, 0.0f, 1.25f, 1.35f, 2f, 2f, InteractionHand.MAIN_HAND, humanoidArmature.get().rootJoint, ColliderPreset.BATTOJUTSU_DASH)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f)))
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, v, v1, v2) ->
+                                v * 0.3f)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.7F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.7F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.0F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.0F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER)));
+        AVAnimations.ADVANCED_DUELIST_SHOOTING_STAR = builder.nextAccessor("biped/battle_style/advanced_duelist_shooting_star", access ->
+                new AttackAnimation(0.2f, 0.6f, 0.5f, 0.6f, 1.9f, ColliderPreset.BATTOJUTSU_DASH, Armatures.BIPED.get().rootJoint, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0f, 0.5f))
+                        .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicAnimation, livingEntityPatch, speed, prevElapsedTime, elapsedTime) ->
+                        {
+                            if (elapsedTime >= 0.5F && elapsedTime < 0.6F) {
+                                float dpx = (float) livingEntityPatch.getOriginal().getX();
+                                float dpy = (float) livingEntityPatch.getOriginal().getY();
+                                float dpz = (float) livingEntityPatch.getOriginal().getZ();
+
+                                for(BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                                    --dpy;
+                                }
+
+                                float distanceToGround = (float)Math.max(Math.abs(livingEntityPatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
+                                LivingEntity livingentity = livingEntityPatch.getOriginal();
+                                Vec3f direction = new Vec3f(2.5F, -1.5F, 0.0F);
+                                OpenMatrix4f rotation = new OpenMatrix4f().rotate(-(float)Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                                OpenMatrix4f.transform3v(rotation, direction, direction);
+                                if (distanceToGround > 0.5F) {
+                                    livingentity.move(MoverType.SELF, direction.toDoubleVector());
+                                    return 0.025F;
+                                } else {
+                                    return speed * 0.7f;
+                                }
+                            } else {
+                                return speed * 0.7f;
+                            }
+                        })
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.5f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT)
+                                        .params(SoundEvents.TRIDENT_HIT_GROUND),
+                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.6f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER)
+                                        .params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().rootJoint, 1.2, 1F)));
+
+        // Animation from Visitors from Omneria
+        AVAnimations.TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),
+                new Phase(0.3F, 0.5F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidArmature.get().toolR, WOMWeaponColliders.PUNCH))
+                .addProperty(AttackPhaseProperty.SWING_SOUND, SoundEvents.TRIDENT_RETURN)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                .addEvents(
+                        AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_WEAPON_RIGHT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_WEAPON_RIGHT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, p) -> {
+                            if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                BlueDemonThunderBeamEntity beam = new BlueDemonThunderBeamEntity(
+                                        AnnoyingVillagersModEntities.BLUE_DEMON_THUNDER_BEAM.get(),
+                                        serverLevel,
+                                        livingEntityPatch.getOriginal(),
+                                        10,
+                                        6,
+                                        7.5F
+                                );
+                                serverLevel.addFreshEntity(beam);
+                            }
+                        }, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.PLAY_TRIDENT_EFFECT_WEAPON_RIGHT, Side.SERVER)
+                ));
+
+        // Animation from EpicFight-Awaken
+        AVAnimations.CUT_DP_AIR_ATTACK = builder.nextAccessor("biped/epicfight_awaken/cut_dp_airattack",
+                (accessor) -> (new AttackAnimation(0.05F, accessor, Armatures.BIPED,
+                        new AttackAnimation.Phase(0.0F, 0.167F, 0.167F, 0.38F, 1.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolL, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.8F))
+                        .addProperty(AttackAnimationProperty.REMOVE_DELTA_MOVEMENT, false)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .newTimePair(0.0F, 0.3F)
+                        .addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                        .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false)
+                        .newTimePair(0.3F, 10.0F));
+
+         AVAnimations.CUT_HOOK_SPIN_SLASH_AIR = builder.nextAccessor("biped/epicfight_awaken/cut_hook_spin_slash_air",
+                 (accessor) -> (new AttackAnimation(0.15F, accessor, Armatures.BIPED,
+                         (new Phase(0.0F, 0.0F, 0.8F, 0.9F, 0.9F, 0.9F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
+                         (new Phase(0.9F, 0.9F, 0.95F, 1.05F, 1.05F, 1.05F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
+                         (new Phase(1.05F, 1.05F, 1.15F, 1.25F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)))
+                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                         .addProperty(ActionAnimationProperty.AFFECT_SPEED, true)
+                         .addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
+                         .newTimePair(0.0F, 1.45F)
+                         .addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                         .newTimePair(0.0F, 1.95F)
+                         .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
 
         // Animation made by me
         AVAnimations.HEROBRINE_ANIMATE = builder.nextAccessor("biped/pla/herobrine_animate",
@@ -1623,7 +1893,7 @@ public class AVAnimations {
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addEvents(new AnimationEvent[]{
+                        .addEvents(new AnimationEvent[] {
                                 AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
@@ -3218,6 +3488,19 @@ public class AVAnimations {
                         .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true)
                         .newTimePair(0.0F, 0.35F).addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .newTimePair(0.55F, 1.1F).addState(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.CUT_ENDERBLASTER_TWOHAND_RELOAD = builder.nextAccessor("biped/wom_clone/cut_enderblaster_twohand_reload",
+                (accessor) -> (new StaticAnimation(0.1F, false, accessor, humanoidArmature))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.25F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.35F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.35F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.35F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT)));
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {
@@ -3232,8 +3515,178 @@ public class AVAnimations {
     }
 
     private static class ReuseableEvents {
-        public static final AnimationEvent.E0 FAST_SPINING =
+        public static final AnimationEvent.E0 FAST_SPINNING =
                 (livingentitypatch, staticAnimation, aobject) -> livingentitypatch.getOriginal().level().playSound((Player) livingentitypatch.getOriginal(), livingentitypatch.getOriginal(), EpicFightSounds.WHOOSH.get(), SoundSource.NEUTRAL, 0.5F, 1.1F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
+        public static final AnimationEvent.E0 TRIDENT_SPINNING =
+                (livingentitypatch, staticAnimation, aobject) -> livingentitypatch.getOriginal().level().playSound((Player) livingentitypatch.getOriginal(), livingentitypatch.getOriginal(), SoundEvents.TRIDENT_RETURN, SoundSource.NEUTRAL, 0.5F, 1.1F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
+        public static final AnimationEvent.E0 PLAY_TRIDENT_EFFECT_HAND_LEFT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Item weapon = livingEntity.getMainHandItem().getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handL, new Random().nextFloat(-1.0F, 1.0F), 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            serverLevel.sendParticles(
+                                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                                    jointVec.x, jointVec.y, jointVec.z,
+                                    1,
+                                    0.0D, 0.0D, 0.0D,
+                                    0.0D
+                            );
+
+                            float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
+                            float pitch = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
+
+                            serverLevel.playSound(
+                                    null,
+                                    BlockPos.containing(jointVec.x, jointVec.y, jointVec.z),
+                                    AnnoyingVillagersModSounds.ELECTRIFY.get(),
+                                    SoundSource.NEUTRAL,
+                                    volume,
+                                    pitch
+                            );
+                        };
+                    }
+                };
+        public static final AnimationEvent.E0 PLAY_TRIDENT_EFFECT_WEAPON_RIGHT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Item weapon = livingEntity.getMainHandItem().getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().toolR, new Random().nextFloat(-1.0F, 1.0F), 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            serverLevel.sendParticles(
+                                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                                    jointVec.x, jointVec.y, jointVec.z,
+                                    1,
+                                    0.0D, 0.0D, 0.0D,
+                                    0.0D
+                            );
+
+                            float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
+                            float pitch = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
+
+                            serverLevel.playSound(
+                                    null,
+                                    BlockPos.containing(jointVec.x, jointVec.y, jointVec.z),
+                                    AnnoyingVillagersModSounds.ELECTRIFY.get(),
+                                    SoundSource.NEUTRAL,
+                                    volume,
+                                    pitch
+                            );
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 PLAY_TRIDENT_EFFECT_HAND_RIGHT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Item weapon = livingEntity.getMainHandItem().getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handR, new Random().nextFloat(-1.0F, 1.0F), 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            serverLevel.sendParticles(
+                                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                                    jointVec.x, jointVec.y, jointVec.z,
+                                    1,
+                                    0.0D, 0.0D, 0.0D,
+                                    0.0D
+                            );
+
+                            float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
+                            float pitch = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
+
+                            serverLevel.playSound(
+                                    null,
+                                    BlockPos.containing(jointVec.x, jointVec.y, jointVec.z),
+                                    AnnoyingVillagersModSounds.ELECTRIFY.get(),
+                                    SoundSource.NEUTRAL,
+                                    volume,
+                                    pitch
+                            );
+                        };
+                    }
+                };
+        public static final AnimationEvent.E0 THROW_TRIDENT_HAND_LEFT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        ItemStack stack =  livingEntity.getOffhandItem();
+                        Item weapon = stack.getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            if (livingEntity instanceof Player player) {
+                                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.OFF_HAND));
+                            }
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handL, 0.0F, 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
+                            if (direction == null || direction.lengthSqr() < 1.0E-7) return;
+                            ThrownTrident trident = new ThrownTrident(serverLevel, livingEntity, livingEntity.getMainHandItem().copy());
+                            trident.setPos(jointVec.x, jointVec.y, jointVec.z);
+
+                            trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
+                            trident.setXRot((float)(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * (180F / Math.PI)));
+
+                            float speed = 2.5F;
+                            float inaccuracy = 1.0F;
+
+                            trident.pickup = AbstractArrow.Pickup.DISALLOWED;
+                            trident.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+                            serverLevel.addFreshEntity(trident);
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 THROW_TRIDENT_HAND_RIGHT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        ItemStack stack = livingEntity.getMainHandItem();
+                        Item weapon = stack.getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            if (livingEntity instanceof Player player) {
+                                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                            }
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handR, 0.0F, 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
+                            if (direction == null || direction.lengthSqr() < 1.0E-7) return;
+                            ThrownTrident trident = new ThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.setPos(jointVec.x, jointVec.y, jointVec.z);
+
+                            trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
+                            trident.setXRot((float)(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * (180F / Math.PI)));
+
+                            float speed = 2.5F;
+                            float inaccuracy = 1.0F;
+
+                            trident.pickup = AbstractArrow.Pickup.DISALLOWED;
+                            trident.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+                            serverLevel.addFreshEntity(trident);
+                        }
+                    }
+                };
         public static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_RIGHT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();

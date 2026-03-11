@@ -47,26 +47,26 @@
       }
     ]
   },
-  "electify": {
+  "electrify": {
     "sounds": [
       {
-        "name": "annoyingvillagers:electify_1",
+        "name": "annoyingvillagers:electrify_1",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:electify_2",
+        "name": "annoyingvillagers:electrify_2",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:electify_3",
+        "name": "annoyingvillagers:electrify_3",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:electify_4",
+        "name": "annoyingvillagers:electrify_4",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:electify_5",
+        "name": "annoyingvillagers:electrify_5",
         "stream": false
       }
     ]
@@ -275,10 +275,10 @@
       }
     ]
   },
-  "soul_legend": {
+  "herobrine_attack_3": {
     "sounds": [
       {
-        "name": "annoyingvillagers:soul_legend",
+        "name": "annoyingvillagers:herobrine_attack_3",
         "stream": false
       }
     ]

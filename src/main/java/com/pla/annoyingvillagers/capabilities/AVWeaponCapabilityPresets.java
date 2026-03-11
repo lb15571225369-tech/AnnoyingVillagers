@@ -349,6 +349,46 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
 
+    public static final Function<Item, Builder> BLUE_DEMON_TRIDENT = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.SPEAR)
+                    .canBePlacedOffhand(true)
+                    .collider(ColliderPreset.SPEAR)
+                    .swingSound(SoundEvents.TRIDENT_THROW)
+                    .hitSound(SoundEvents.TRIDENT_RETURN)
+                    .styleProvider(
+                            (livingentitypatch) -> livingentitypatch.getOriginal().getItemInHand(InteractionHand.OFF_HAND).getItem().equals(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()) ? Styles.TWO_HAND : Styles.ONE_HAND)
+                    .collider(ColliderPreset.SPEAR)
+                    .newStyleCombo(Styles.ONE_HAND,
+                            AVAnimations.ADVANCED_LANCER_AUTO1,
+                            AVAnimations.NERF_TSUNAMI_REINFORCED,
+                            AVAnimations.ADVANCED_DUELIST_SHOOTING_STAR)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.ADVANCED_LANCER_AUTO1,
+                            AVAnimations.DUAL_SWORD_AUTO2,
+                            AVAnimations.ADVANCED_DUELIST_SHOOTING_STAR,
+                            AVAnimations.CUT_DP_AIR_ATTACK,
+                            AVAnimations.ADVANCED_LANCER_AUTO3,
+                            AVAnimations.ADVANCED_DUELIST_WHIRLEDGE,
+                            AVAnimations.NERF_TSUNAMI_REINFORCED,
+                            AVAnimations.CUT_HOOK_SPIN_SLASH_AIR)
+                    .innateSkill(Styles.ONE_HAND,
+                            (itemstack) -> EpicFightSkills.WRATHFUL_LIGHTING)
+                    .innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> AVSkills.TRIDENT_FESTIVAL)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    .weaponCombinationPredicator(
+                            (livingentitypatch) -> livingentitypatch.getOriginal().getItemInHand(InteractionHand.OFF_HAND).getItem().equals(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
+
     public static final Function<Item, Builder> WOOPIE_THE_SWORD = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.SWORD)
@@ -394,7 +434,7 @@ public class AVWeaponCapabilityPresets {
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
-    public static final Function<Item, Builder> HARD_GREATSWORD = (item) ->
+    public static final Function<Item, Builder> GREAT_SWORD = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.SWORD)
                     .styleProvider(
@@ -801,8 +841,9 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "shadow_obsidian_pillar"), AVWeaponCapabilityPresets.SHADOW_OBSIDIAN_PILLAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "shadow_obsidian_sword"), AVWeaponCapabilityPresets.SHADOW_OBSIDIAN_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blue_demon_trident"), AVWeaponCapabilityPresets.BLUE_DEMON_TRIDENT);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_the_sword"), AVWeaponCapabilityPresets.WOOPIE_THE_SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword"), AVWeaponCapabilityPresets.HARD_GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "great_sword"), AVWeaponCapabilityPresets.GREAT_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_sword"), AVWeaponCapabilityPresets.AV_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_axe"), AVWeaponCapabilityPresets.AV_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_spear"), AVWeaponCapabilityPresets.AV_SPEAR);

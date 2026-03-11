@@ -27,6 +27,7 @@ public class AVSkills {
     public static Skill SHADOW_OBSIDIAN_PILLAR_SWORD;
     public static Skill SHADOW_OBSIDIAN_SWORD;
     public static Skill SHADOW_OBSIDIAN_SWORD_DUAL;
+    public static Skill TRIDENT_FESTIVAL;
     public static Skill LEGENDARY_SWORD;
     public static Skill WOOPIE_THE_SWORD;
     public static Skill GREAT_SWORD;
@@ -53,6 +54,7 @@ public class AVSkills {
         AVSkills.SHADOW_OBSIDIAN_SWORD = modRegistry.build("shadow_obsidian_sword", ShadowObsidianSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.SHADOW_OBSIDIAN_SWORD_DUAL = modRegistry.build("shadow_obsidian_sword_dual", ShadowObsidianSwordDualSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.LEGENDARY_SWORD = modRegistry.build("legendary_sword", LegendarySwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkills.TRIDENT_FESTIVAL = modRegistry.build("trident_festival", TridentFestivalSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.WOOPIE_THE_SWORD = modRegistry.build("woopie_the_sword", WoopieTheSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.GREAT_SWORD = modRegistry.build("great_sword", GreatSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
         AVSkills.CRAFTING_TABLE = modRegistry.build("crafting_table", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AnimsSolar.SOLAR_AUTO_2).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();

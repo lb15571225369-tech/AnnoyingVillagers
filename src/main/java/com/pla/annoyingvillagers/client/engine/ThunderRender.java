@@ -383,7 +383,8 @@ public class ThunderRender {
         public static class ThunderRenderInfo {
 
             public static final ThunderRenderInfo DEFAULT = new ThunderRenderInfo();
-            public static final ThunderRenderInfo ELECTRICITY = electricity();
+            public static final ThunderRenderInfo DRAGON_THUNDER = dragonThunder();
+            public static final ThunderRenderInfo BLUE_DEMON_THUNDER = blueDemonThunder();
             private float parallelNoise = 0.1F;
             private float spreadFactor = 0.0F;
             private float branchInitiationFactor = 0.0F;
@@ -395,13 +396,24 @@ public class ThunderRender {
             private final SpreadFunction spreadFunction = SpreadFunction.DEFAULT;
             private SegmentSpreader segmentSpreader = SegmentSpreader.DEFAULT;
 
-            public static ThunderRenderInfo electricity() {
-            return new ThunderRenderInfo(
+            public static ThunderRenderInfo dragonThunder() {
+                return new ThunderRenderInfo(
+                            0.15F,
+                            0.025F,
+                            0.0F,
+                            0.0F,
+                            new Vector4f(0.85F, 0.55F, 1.0F, 0.85F),
+                            0.8F
+                    );
+            }
+
+            public static ThunderRenderInfo blueDemonThunder() {
+                return new ThunderRenderInfo(
                         0.15F,
                         0.025F,
                         0.0F,
                         0.0F,
-                        new Vector4f(0.85F, 0.55F, 1.0F, 0.85F),
+                        new Vector4f(0.65F, 1.0F, 1.0F, 0.9F),
                         0.8F
                 );
             }

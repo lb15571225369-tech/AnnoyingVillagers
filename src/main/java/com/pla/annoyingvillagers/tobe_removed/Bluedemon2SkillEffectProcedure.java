@@ -15,10 +15,10 @@ public class Bluedemon2SkillEffectProcedure {
         if (!(entity instanceof Mob mob)) return;
 
         LivingEntity target = mob.getTarget();
-        if (target != null && !target.level().isClientSide()) {
-            target.addEffect(new MobEffectInstance(
-                    AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 1, 0, false, false));
-        }
+//        if (target != null && !target.level().isClientSide()) {
+//            target.addEffect(new MobEffectInstance(
+//                    AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 1, 0, false, false));
+//        }
         new DelayedTask(2) {
             @Override
             public void run() {
@@ -35,10 +35,10 @@ public class Bluedemon2SkillEffectProcedure {
             @Override
             public void run() {
                 LivingEntity t = mob.getTarget();
-                if (t != null && !t.level().isClientSide()) {
-                    t.addEffect(new MobEffectInstance(
-                            AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 20, 0, false, false));
-                }
+//                if (t != null && !t.level().isClientSide()) {
+//                    t.addEffect(new MobEffectInstance(
+//                            AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 20, 0, false, false));
+//                }
 
                 if (world instanceof Level level && !level.isClientSide()) {
                     level.explode(null, x, y, z, 2.0F, Level.ExplosionInteraction.NONE);
@@ -50,9 +50,9 @@ public class Bluedemon2SkillEffectProcedure {
 
     private static void applyEffect(LevelAccessor world, Mob mob) {
         LivingEntity target = mob.getTarget();
-        if (target != null && !target.level().isClientSide()) {
-            target.addEffect(new MobEffectInstance(
-                    AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 1, 0, false, false));
-        }
+//        if (target != null && !target.level().isClientSide()) {
+//            target.addEffect(new MobEffectInstance(
+//                    AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 1, 0, false, false));
+//        }
     }
 }

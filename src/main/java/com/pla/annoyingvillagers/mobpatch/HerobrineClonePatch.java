@@ -22,7 +22,6 @@ import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
@@ -121,6 +120,8 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
             } else if (chance <= 0.6) {
                 soundEvent = AnnoyingVillagersModSounds.HEROBRINE_ATTACK_2.get();
             } else if (chance <= 0.8) {
+                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_ATTACK_3.get();
+            } else if (chance <= 0.9) {
                 soundEvent = AnnoyingVillagersModSounds.HEROBRINE_YOU_ARE_WEAK.get();
             } else {
                 soundEvent = AnnoyingVillagersModSounds.HEROBRINE_HOWFOOLISH.get();

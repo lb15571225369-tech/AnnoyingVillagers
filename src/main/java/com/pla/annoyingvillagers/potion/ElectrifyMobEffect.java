@@ -11,14 +11,14 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public class ElectifyMobEffect extends MobEffect {
+public class ElectrifyMobEffect extends MobEffect {
 
-    public ElectifyMobEffect() {
+    public ElectrifyMobEffect() {
         super(MobEffectCategory.HARMFUL, -16711681);
     }
 
     public @NotNull String getDescriptionId() {
-        return "effect.annoyingvillagers.electify";
+        return "effect.annoyingvillagers.electrify";
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
@@ -42,7 +42,7 @@ public class ElectifyMobEffect extends MobEffect {
                     serverLevel.playSound(
                             null,
                             BlockPos.containing(d0, d1, d2),
-                            AnnoyingVillagersModSounds.ELECTIFY.get(),
+                            AnnoyingVillagersModSounds.ELECTRIFY.get(),
                             SoundSource.NEUTRAL,
                             volume,
                             pitch

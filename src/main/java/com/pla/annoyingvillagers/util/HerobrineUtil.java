@@ -286,7 +286,7 @@ public class HerobrineUtil {
                     );
                     serverLevel.playSound(
                             null
-                            , x, y, z, AnnoyingVillagersModSounds.ELECTIFY.get(),
+                            , x, y, z, AnnoyingVillagersModSounds.ELECTRIFY.get(),
                             SoundSource.NEUTRAL,
                             new Random().nextFloat(0.05F, 0.4F),
                             new Random().nextFloat(0.5F, 1.2F));

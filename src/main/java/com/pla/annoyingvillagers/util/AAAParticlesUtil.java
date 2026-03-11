@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.client.emitterinfo.BlueDemonThunderBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.DragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
+import com.pla.annoyingvillagers.entity.BlueDemonThunderBeamEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
@@ -33,6 +35,13 @@ public class AAAParticlesUtil {
                 new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_beam_hit"))
                         .clone()
                         .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
+    }
+
+    public static void sendBlueDemonThunderBeam(Level level, BlueDemonThunderBeamEntity blueDemonThunderBeamEntity) {
+        new BlueDemonThunderBeamParticleEmitterInfo(
+                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blue_demon_thunder_beam"))
+                .followBeam(blueDemonThunderBeamEntity, blueDemonThunderBeamEntity.getDuration(), BlueDemonThunderBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
+                .spawnInWorld(level, null);
     }
 
     public static void sendHerobrinePortal(Level level, double x, double y, double z) {

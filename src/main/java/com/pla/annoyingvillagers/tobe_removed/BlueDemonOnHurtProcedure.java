@@ -30,7 +30,7 @@ public class BlueDemonOnHurtProcedure {
                     public void run() {
                         broadcast(world, "<" + entity.getDisplayName().getString() + "> You're way too predictable.");
                         playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
-                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
+//                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
                         applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
                         applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
                         runParticle(entity);
@@ -40,7 +40,7 @@ public class BlueDemonOnHurtProcedure {
                 new DelayedTask(20) {
                     @Override
                     public void run() {
-                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+//                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                         runParticle(entity);
                     }
                 };
@@ -53,7 +53,7 @@ public class BlueDemonOnHurtProcedure {
                         new DelayedTask(20) {
                             @Override
                             public void run() {
-                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
+//                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
                                 applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
                                 runParticle(entity);
                             }
@@ -69,7 +69,7 @@ public class BlueDemonOnHurtProcedure {
                             public void run() {
                                 broadcast(world, "<" + entity.getDisplayName().getString() + "> Looking down on us undead creatures only highlights how ignorant you are.");
                                 playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
-                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+//                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                                 runParticle(entity);
                             }
                         };
@@ -85,7 +85,7 @@ public class BlueDemonOnHurtProcedure {
                                 broadcast(world, "<" + entity.getDisplayName().getString() + "> How interesting. But I really want to know what is your motive?");
                                 playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
                                 runParticle(entity);
-                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);
+//                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);
                                 applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
 
                                 if (world instanceof Level level && !level.isClientSide()) {

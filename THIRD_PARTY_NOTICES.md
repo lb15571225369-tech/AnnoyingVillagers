@@ -68,6 +68,14 @@ All required upstream notices must be preserved.
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/epicfight_infernal_gainer
 
+### A5) EpicFight - Awaken - ShelMarow - GPL-3.0
+- Type: assets adapted from upstream
+- License text: `third_party/licenses/GPL-3.0.md`
+- Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-awaken
+
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/epicfight_awaken
+
 ---
 
 ## B) LGPL Components
@@ -179,6 +187,22 @@ All required upstream notices must be preserved.
 - com/pla/annoyingvillagers/mixin/ItemRendererMixin.java
 - com/pla/annoyingvillagers/client/renderer/HerobrineEnderEyeGlintRenderTypes.java
 - com/pla/annoyingvillagers/mixin/RenderBuffersMixin.java
+
+### F2) EpicFight - Battle Arts - Forixaim - CC-BY-SA
+- Type: assets adapted from upstream
+- License text: `third_party/licenses/CC-BY-SA.md`
+- Source: https://github.com/Forixaim/Epic-Fight-Battle-Arts
+
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/battle_style
+
+### F3) Visitors from Omneria - Forixaim - CC-BY-NC-SA
+- Type: assets adapted from upstream
+- License text: `third_party/licenses/CC-BY-NC-SA-4.0.md`
+- Source: https://github.com/Forixaim/Visitors-from-Omneria
+
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/omneria
 
 ---
 

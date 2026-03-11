@@ -84,6 +84,23 @@ public class SpecialAttackOnKeyPressedEvent {
             ItemStack holdingItem = player.getMainHandItem();
             ItemStack offHandItem = player.getOffhandItem();
 
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get())) {
+                if (entity.level() instanceof ServerLevel) {
+                    if (offHandItem.getItem().equals(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get())) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.CUT_ENDERBLASTER_TWOHAND_RELOAD, 0.0F);
+                        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                        if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                            SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.TRIDENT_FESTIVAL);
+                            if (skillContainer != null && skillContainer.getSkill() instanceof TridentFestivalSkill tridentFestivalSkill) {
+                                tridentFestivalSkill.toggleMode(skillContainer);
+                            }
+                        }
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.TRIDENT_THROW_3, 0.0F);
+                    }
+                    return;
+                }
+            }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
