@@ -155,6 +155,7 @@ import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimation
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
@@ -350,7 +351,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_2;
-    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_4;
 
     // Animation from Community EpicFight Battle Arts
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> ADVANCED_LANCER_AUTO1;
@@ -366,6 +366,9 @@ public class AVAnimations {
     // Animation from EpicFight-Awaken
     public static AnimationManager.AnimationAccessor<AttackAnimation> CUT_DP_AIR_ATTACK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> CUT_HOOK_SPIN_SLASH_AIR;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> DP_THROW_BLADE_AUTO_1;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> DP_THROW_BLADE_AUTO_2;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> THROW_HOOK_SLASH_AIR;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -1551,12 +1554,6 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
                         ));
-        AVAnimations.TRIDENT_THROW_4 = builder.nextAccessor("biped/pugilist_steve/trident_throw_4",
-                (accessor) -> new BasicAttackAnimation(0.13F, 0.1F, 0.15F, 0.15F, ColliderPreset.DUAL_DAGGER_DASH, humanoidArmature.get().toolR, accessor, humanoidArmature)
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.0F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.12F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
-                        ));
 
         // Animation from Community EpicFight Battle Arts
         AVAnimations.ADVANCED_LANCER_AUTO1 = builder.nextAccessor("biped/battle_style/advanced_lancer_auto1", access ->
@@ -1726,24 +1723,61 @@ public class AVAnimations {
                         .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false)
                         .newTimePair(0.3F, 10.0F));
 
-         AVAnimations.CUT_HOOK_SPIN_SLASH_AIR = builder.nextAccessor("biped/epicfight_awaken/cut_hook_spin_slash_air",
-                 (accessor) -> (new AttackAnimation(0.15F, accessor, Armatures.BIPED,
-                         (new Phase(0.0F, 0.0F, 0.8F, 0.9F, 0.9F, 0.9F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
-                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
-                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
-                         (new Phase(0.9F, 0.9F, 0.95F, 1.05F, 1.05F, 1.05F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
-                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
-                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
-                         (new Phase(1.05F, 1.05F, 1.15F, 1.25F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
-                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
-                                 .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)))
-                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
-                         .addProperty(ActionAnimationProperty.AFFECT_SPEED, true)
-                         .addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
-                         .newTimePair(0.0F, 1.45F)
-                         .addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
-                         .newTimePair(0.0F, 1.95F)
-                         .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.CUT_HOOK_SPIN_SLASH_AIR = builder.nextAccessor("biped/epicfight_awaken/cut_hook_spin_slash_air",
+             (accessor) -> (new AttackAnimation(0.15F, accessor, Armatures.BIPED,
+                     (new Phase(0.0F, 0.0F, 0.8F, 0.9F, 0.9F, 0.9F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                             .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                             .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
+                     (new Phase(0.9F, 0.9F, 0.95F, 1.05F, 1.05F, 1.05F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                             .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                             .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL),
+                     (new Phase(1.05F, 1.05F, 1.15F, 1.25F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                             .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
+                             .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)))
+                     .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                     .addProperty(ActionAnimationProperty.AFFECT_SPEED, true)
+                     .addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
+                     .newTimePair(0.0F, 1.45F)
+                     .addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                     .newTimePair(0.0F, 1.95F)
+                     .addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
+
+        AVAnimations.DP_THROW_BLADE_AUTO_1 = builder.nextAccessor("biped/epicfight_awaken/throw_blade_auto_1",
+                (accessor) -> (new AttackAnimation(0.15F, 0.33F, 0.33F, 1.33F, 1.33F, ColliderPreset.FIST, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.25F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.25F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.33F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.33F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .newTimePair(0.0F, 0.6F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                        .newTimePair(0.0F, 0.83F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.DP_THROW_BLADE_AUTO_2 = builder.nextAccessor("biped/epicfight_awaken/throw_blade_auto_2",
+                (accessor) -> (new AttackAnimation(0.15F, 0.53F, 0.53F, 1.2F, 1.2F, ColliderPreset.FIST, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
+                .addEvents(
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER))
+                .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                .newTimePair(0.0F, 0.76F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                .newTimePair(0.0F, 1.0F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.THROW_HOOK_SLASH_AIR = builder.nextAccessor("biped/epicfight_awaken/throw_hook_slash_air",
+                (accessor) -> (new AttackAnimation(0.15F, accessor, Armatures.BIPED,
+                        (new Phase(0.0F, 0.0F, 0.33F, 0.46F, 0.46F, 0.46F, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F)),
+                        (new Phase(0.46F, 0.46F, 0.47F, 0.6F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
+                                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.AFFECT_SPEED, true).addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
+                        .newTimePair(0.0F, 0.85F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
+                        .newTimePair(0.0F, 1.35F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)
+                        ));
 
         // Animation made by me
         AVAnimations.HEROBRINE_ANIMATE = builder.nextAccessor("biped/pla/herobrine_animate",
@@ -3550,7 +3584,7 @@ public class AVAnimations {
                                     volume,
                                     pitch
                             );
-                        };
+                        }
                     }
                 };
         public static final AnimationEvent.E0 PLAY_TRIDENT_EFFECT_WEAPON_RIGHT =
@@ -3618,7 +3652,7 @@ public class AVAnimations {
                                     volume,
                                     pitch
                             );
-                        };
+                        }
                     }
                 };
         public static final AnimationEvent.E0 THROW_TRIDENT_HAND_LEFT =

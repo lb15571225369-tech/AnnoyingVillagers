@@ -95,11 +95,17 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
                         } else if (dynamicAnimation != null && dynamicAnimation == AVAnimations.TRIDENT_THROW_2) {
                             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_THROW_3, 0.0F);
                         } else if (dynamicAnimation != null && dynamicAnimation == AVAnimations.TRIDENT_THROW_3) {
-                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_THROW_4, 0.0F);
-                        } else if (dynamicAnimation != null && dynamicAnimation == AVAnimations.TRIDENT_THROW_4) {
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.DP_THROW_BLADE_AUTO_2, 0.0F);
+                        } else if (dynamicAnimation != null && dynamicAnimation == AVAnimations.DP_THROW_BLADE_AUTO_2) {
                             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_THROW_5, 0.0F);
                         } else {
-                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_THROW_1, 0.0F);
+                            if (playerPatch.getOriginal().isSprinting()) {
+                                skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.DP_THROW_BLADE_AUTO_1, 0.0F);
+                            } else if (!playerPatch.getOriginal().onGround() && !playerPatch.getOriginal().isInWater()) {
+                                skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.THROW_HOOK_SLASH_AIR, 0.0F);
+                            } else {
+                                skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_THROW_1, 0.0F);
+                            }
                         }
                     }
                 });
