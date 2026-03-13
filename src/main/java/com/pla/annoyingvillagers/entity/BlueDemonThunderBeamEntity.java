@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.AAAParticlesUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -300,7 +302,7 @@ public class BlueDemonThunderBeamEntity extends Entity {
 
         if (!playSound) {
             playSound = true;
-            playSound(AnnoyingVillagersModSounds.ENDER_SHOT.get(), 1.0F, 1.0F);
+            playSound(AnnoyingVillagersModSounds.ELECTRIC_SHOOT.get(), 1.0F, 1.0F);
         }
 
         List<LivingEntity> hit = raytraceEntities(level(), start, end).entities;
@@ -311,10 +313,11 @@ public class BlueDemonThunderBeamEntity extends Entity {
                 else target.hurt(damageSources().magic(), (float) power);
 
                 target.hurtMarked = true;
-                target.setDeltaMovement(Vec3.ZERO);
-
-                LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
-                if (patch != null) patch.applyStun(StunType.LONG, 40.0F);
+                target.addEffect(new MobEffectInstance(
+                        AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                        60,
+                        1
+                ));
             }
         }
 

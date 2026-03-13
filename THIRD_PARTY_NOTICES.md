@@ -117,6 +117,14 @@ All required upstream notices must be preserved.
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/epicfight_dual_greatsword
 
+### C4) ETactical Imbuements - M3tte - MIT
+- Type: code/assets adapted
+- License text: `third_party/licenses/MIT.md`
+- Source: https://www.curseforge.com/minecraft/mc-mods/tactical-imbuements
+
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/tactical_imbuements
+
 ---
 
 ## D) Apache-2.0 Components

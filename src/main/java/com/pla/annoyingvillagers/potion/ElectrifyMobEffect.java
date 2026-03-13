@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.potion;
 
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
+
+import java.util.Objects;
 
 public class ElectrifyMobEffect extends MobEffect {
 
@@ -25,6 +34,20 @@ public class ElectrifyMobEffect extends MobEffect {
         double d0 = livingentity.getX();
         double d1 = livingentity.getY();
         double d2 = livingentity.getZ();
+
+        if (livingentity.tickCount % 20 == 0) {
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(livingentity, LivingEntityPatch.class);
+
+            if (livingEntityPatch != null) {
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (dynamicAnimation != null
+                        && !livingEntityPatch.isStunned()
+                        && !ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch)) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.ZAP, 0.0F);
+                }
+            }
+        }
+
         if (Math.random() <= 0.1D) {
             if (livingentity.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(
@@ -51,8 +74,8 @@ public class ElectrifyMobEffect extends MobEffect {
             }
         }
 
-        if (Math.random() <= 0.001D) {
-            livingentity.hurt(livingentity.level().damageSources().generic(), 1.0F);
+        if (Math.random() <= 0.1D) {
+            livingentity.hurt(livingentity.level().damageSources().generic(), 0.2F);
         }
     }
 

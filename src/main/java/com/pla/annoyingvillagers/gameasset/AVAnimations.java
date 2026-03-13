@@ -62,7 +62,13 @@
  *       Local license text: third_party/licenses/GPL-3.0.md
  *       Scope: animations / assets (adapted or reused portions)
  *
- *   [10] Weapons of Miracles (dependency mod) - reacer
+ *   [10] Tactical Imbuements - M3tte
+ *       License: GPL-3.0
+ *       Source: https://www.curseforge.com/minecraft/mc-mods/tactical-imbuements
+ *       Local license text: third_party/licenses/MIT.md
+ *       Scope: animations / assets (adapted or reused portions)
+ *
+ *   [11] Weapons of Miracles (dependency mod) - reacer
  *       License: Proprietary / All Rights Reserved
  *       Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
  *       Local license text: third_party/licenses/LicenseRef-WOM-Proprietary.md
@@ -89,6 +95,7 @@ import com.pla.annoyingvillagers.animations.RushSwordAnimation;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -107,12 +114,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -155,8 +158,6 @@ import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimation
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
-import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -181,7 +182,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AVAnimations {
@@ -369,6 +369,10 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> DP_THROW_BLADE_AUTO_1;
     public static AnimationManager.AnimationAccessor<AttackAnimation> DP_THROW_BLADE_AUTO_2;
     public static AnimationManager.AnimationAccessor<AttackAnimation> THROW_HOOK_SLASH_AIR;
+
+    // Animation from Tactical Imbuements
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP;
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP_LONG;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -1581,14 +1585,15 @@ public class AVAnimations {
                                                 checkPos.move(0, -1, 0);
                                             }
                                             if (serverLevel.getBlockState(checkPos).isSolidRender(serverLevel, checkPos)) {
-                                                LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
-                                                if (lightningBolt != null) {
-                                                    lightningBolt.moveTo(
+                                                TridentLightningBolt tridentLightningBolt = new TridentLightningBolt(AnnoyingVillagersModEntities.TRIDENT_LIGHTNING_BOLT.get(), serverLevel);
+                                                if (tridentLightningBolt != null) {
+                                                    tridentLightningBolt.setOwner(livingEntityPatch.getOriginal());
+                                                    tridentLightningBolt.moveTo(
                                                             checkPos.getX() + 0.5D,
                                                             checkPos.getY() + 1.0D,
                                                             checkPos.getZ() + 0.5D
                                                     );
-                                                    serverLevel.addFreshEntity(lightningBolt);
+                                                    serverLevel.addFreshEntity(tridentLightningBolt);
                                                 }
                                             }
                                         }
@@ -1612,7 +1617,7 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.35f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
                                 AnimationEvent.InTimeEvent.create(0.35f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.4f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.5f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)));
+                                AnimationEvent.InTimeEvent.create(0.5f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_EXPLODE, Side.SERVER)));
         AVAnimations.ADVANCED_DUELIST_WHIRLEDGE = builder.nextAccessor("biped/battle_style/advanced_duelist_whirledge", access ->
                 new AttackAnimation(0.2f, access, humanoidArmature,
                         new AttackAnimation.Phase(0.0f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null)
@@ -1714,8 +1719,6 @@ public class AVAnimations {
         AVAnimations.CUT_DP_AIR_ATTACK = builder.nextAccessor("biped/epicfight_awaken/cut_dp_airattack",
                 (accessor) -> (new AttackAnimation(0.05F, accessor, Armatures.BIPED,
                         new AttackAnimation.Phase(0.0F, 0.167F, 0.167F, 0.38F, 1.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolL, null)))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.8F))
                         .addProperty(AttackAnimationProperty.REMOVE_DELTA_MOVEMENT, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                         .newTimePair(0.0F, 0.3F)
@@ -1756,9 +1759,9 @@ public class AVAnimations {
                 (accessor) -> (new AttackAnimation(0.15F, 0.53F, 0.53F, 1.2F, 1.2F, ColliderPreset.FIST, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
                 .addEvents(
                         AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT_LIGHTNING, Side.SERVER),
                         AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER))
+                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_LIGHTNING, Side.SERVER))
                 .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                 .newTimePair(0.0F, 0.76F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
                 .newTimePair(0.0F, 1.0F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
@@ -1778,6 +1781,18 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)
                         ));
+
+        // Animation from Tactical Imbuements
+        AVAnimations.ZAP = builder.nextAccessor("biped/tactical_imbuements/zap",
+                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+        );
+        AVAnimations.ZAP_LONG = builder.nextAccessor("biped/tactical_imbuements/zap_long",
+                (accessor) -> (LongHitAnimation)(new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+        );
 
         // Animation made by me
         AVAnimations.HEROBRINE_ANIMATE = builder.nextAccessor("biped/pla/herobrine_animate",
@@ -3673,7 +3688,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            ThrownTrident trident = new ThrownTrident(serverLevel, livingEntity, livingEntity.getMainHandItem().copy());
+                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
                             trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
@@ -3706,7 +3721,109 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            ThrownTrident trident = new ThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.setPos(jointVec.x, jointVec.y, jointVec.z);
+
+                            trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
+                            trident.setXRot((float)(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * (180F / Math.PI)));
+
+                            float speed = 2.5F;
+                            float inaccuracy = 1.0F;
+
+                            trident.pickup = AbstractArrow.Pickup.DISALLOWED;
+                            trident.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+                            serverLevel.addFreshEntity(trident);
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 THROW_TRIDENT_HAND_LEFT_LIGHTNING =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        ItemStack stack =  livingEntity.getOffhandItem();
+                        Item weapon = stack.getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            if (livingEntity instanceof Player player) {
+                                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.OFF_HAND));
+                            }
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handL, 0.0F, 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
+                            if (direction == null || direction.lengthSqr() < 1.0E-7) return;
+                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.setMode(TridentMode.LIGHTNING);
+                            trident.setPos(jointVec.x, jointVec.y, jointVec.z);
+
+                            trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
+                            trident.setXRot((float)(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * (180F / Math.PI)));
+
+                            float speed = 2.5F;
+                            float inaccuracy = 1.0F;
+
+                            trident.pickup = AbstractArrow.Pickup.DISALLOWED;
+                            trident.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+                            serverLevel.addFreshEntity(trident);
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 THROW_TRIDENT_HAND_RIGHT_LIGHTNING =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        ItemStack stack = livingEntity.getMainHandItem();
+                        Item weapon = stack.getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            if (livingEntity instanceof Player player) {
+                                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                            }
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handR, 0.0F, 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
+                            if (direction == null || direction.lengthSqr() < 1.0E-7) return;
+                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.setMode(TridentMode.LIGHTNING);
+                            trident.setPos(jointVec.x, jointVec.y, jointVec.z);
+
+                            trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
+                            trident.setXRot((float)(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * (180F / Math.PI)));
+
+                            float speed = 2.5F;
+                            float inaccuracy = 1.0F;
+
+                            trident.pickup = AbstractArrow.Pickup.DISALLOWED;
+                            trident.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
+                            serverLevel.addFreshEntity(trident);
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 THROW_TRIDENT_HAND_RIGHT_EXPLODE =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        ItemStack stack = livingEntity.getMainHandItem();
+                        Item weapon = stack.getItem();
+                        if (weapon instanceof BlueDemonTridentItem) {
+                            if (livingEntity instanceof Player player) {
+                                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                            }
+                            Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                    livingEntity, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().handR, 0.0F, 0.0F
+                            );
+                            if (jointVec == null) return;
+
+                            Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
+                            if (direction == null || direction.lengthSqr() < 1.0E-7) return;
+                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.setMode(TridentMode.EXPLOSION);
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
                             trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));

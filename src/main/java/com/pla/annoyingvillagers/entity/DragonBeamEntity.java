@@ -31,8 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +68,6 @@ public class DragonBeamEntity extends Entity {
     public float prevYaw;
     public float prevPitch;
     private Vec3 targetPos;
-    @OnlyIn(Dist.CLIENT)
     private boolean renderBeam = false;
     private boolean playSound = false;
     private static final EntityDataAccessor<Boolean> USE_NO_VFX_THUNDER = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.BOOLEAN);
@@ -458,24 +455,26 @@ public class DragonBeamEntity extends Entity {
 
         this.calculateEndPos();
 
-        if (this.isRenderable() && this.level().isClientSide() && !renderBeam) {
-            if (ModList.get().isLoaded("aaa_particles")) {
-                if (this.tickCount >= 3) {
-                    renderBeam = true;
-                    AAAParticlesUtil.sendDragonBeam(caster.beamMouthPos(1.0F), target.getEyePosition(1.0F), this.level(), caster, target);
-                }
-            } else {
-                if (this.tickCount >= 3) {
-                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, true,
-                            caster.beamMouthPos(1.0F).x + new Random().nextDouble(-1, 1),
-                            caster.beamMouthPos(1.0F).y + new Random().nextDouble(-1, 1),
-                            caster.beamMouthPos(1.0F).z + new Random().nextDouble(-1, 1),
-                            0, 0, 0);
-                }
-                if (this.tickCount >= 50) {
-                    renderBeam = true;
-                    setUseNoVfxThunder(true);
-                    setThunderStartStop(caster.beamMouthPos(1.0F), target.getOnPos().getCenter());
+        if (this.level().isClientSide) {
+            if (this.isRenderable() && !renderBeam) {
+                if (ModList.get().isLoaded("aaa_particles")) {
+                    if (this.tickCount >= 3) {
+                        renderBeam = true;
+                        AAAParticlesUtil.sendDragonBeam(caster.beamMouthPos(1.0F), target.getEyePosition(1.0F), this.level(), caster, target);
+                    }
+                } else {
+                    if (this.tickCount >= 3) {
+                        this.level().addParticle(ParticleTypes.DRAGON_BREATH, true,
+                                caster.beamMouthPos(1.0F).x + new Random().nextDouble(-1, 1),
+                                caster.beamMouthPos(1.0F).y + new Random().nextDouble(-1, 1),
+                                caster.beamMouthPos(1.0F).z + new Random().nextDouble(-1, 1),
+                                0, 0, 0);
+                    }
+                    if (this.tickCount >= 50) {
+                        renderBeam = true;
+                        setUseNoVfxThunder(true);
+                        setThunderStartStop(caster.beamMouthPos(1.0F), target.getOnPos().getCenter());
+                    }
                 }
             }
         }

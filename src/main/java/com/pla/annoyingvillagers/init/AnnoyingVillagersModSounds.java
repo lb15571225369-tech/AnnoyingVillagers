@@ -12,13 +12,14 @@ public class AnnoyingVillagersModSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS =
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, AnnoyingVillagers.MODID);
 
-    public static final RegistryObject<SoundEvent> TRIDENTFS_SKILL = register("tridentfs_skill");
     public static final RegistryObject<SoundEvent> ELECTRIFY = register("electrify");
+    public static final RegistryObject<SoundEvent> ELECTRIC_SHOOT = register("electric_shoot");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_YC = register("bluedemonsayyc");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_PLAYER_INTERESTING = register("bluedemon_say_player_interesting");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_YOU_NO_KNOW = register("bluedemon_say_you_no_know");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_PLAYER = register("bluedemonsayplayer");
     public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_DONT_BE = register("bluedemonsaydontbe");
+    public static final RegistryObject<SoundEvent> BLUEDEMON_SAY_TRIDENT_FESTIVAL = register("bluedemonsaytridentfestival");
     public static final RegistryObject<SoundEvent> OB_PLACE = register("ob_place");
     public static final RegistryObject<SoundEvent> METAL_HIT = register("metal_hit");
     public static final RegistryObject<SoundEvent> TARGET_BLOCK_HIT = register("target_block_hit");

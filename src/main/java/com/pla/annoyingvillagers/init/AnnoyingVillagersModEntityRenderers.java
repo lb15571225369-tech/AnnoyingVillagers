@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.client.renderer.*;
+import net.minecraft.client.renderer.entity.LightningBoltRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.ThrownTridentRenderer;
 import net.minecraft.client.renderer.entity.WitherSkeletonRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
@@ -13,6 +15,7 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 import yesman.epicfight.client.renderer.patched.entity.PIllagerRenderer;
+import yesman.epicfight.client.renderer.patched.item.RenderTrident;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
 public class AnnoyingVillagersModEntityRenderers {
@@ -75,6 +78,8 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.SHOCKWAVE_BLOCK.get(), ShockWaveBlockRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.NULL_SKELETON.get(), WitherSkeletonRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_THUNDER_BEAM.get(), BlueDemonThunderBeamRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.TRIDENT_LIGHTNING_BOLT.get(), LightningBoltRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_THROWN_TRIDENT.get(), ThrownTridentRenderer::new);
     }
 
     @SubscribeEvent
