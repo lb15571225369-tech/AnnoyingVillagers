@@ -24,6 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -31,9 +32,19 @@ import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 public class BlueDemonThrownTrident extends ThrownTrident {
     private TridentMode mode = TridentMode.DEFAULT;
+
+    private static final int MAX_GROUNDED_TRIDENTS_PER_OWNER = 20;
+    private static final double OWNER_BOX_HALF_SIZE = 25.0D;
+    private static final String TAG_SPAWN_SEQUENCE = "BlueDemonSpawnSequence";
+    private static final String TAG_OWNER_SHOT_COUNTER = "BlueDemonOwnerShotCounter";
+
+    private long spawnSequence;
 
     private boolean specialImpactTriggered = false;
     private static final EntityDataAccessor<Byte> DATA_STUCK_FACE =
@@ -67,20 +78,8 @@ public class BlueDemonThrownTrident extends ThrownTrident {
         this.entityData.define(DATA_STUCK_FACE, (byte)255);
     }
 
-    public TridentMode getMode() {
-        return this.mode;
-    }
-
     public void setMode(TridentMode mode) {
         this.mode = mode == null ? TridentMode.DEFAULT : mode;
-    }
-
-    public boolean hasTriggeredSpecialImpact() {
-        return this.specialImpactTriggered;
-    }
-
-    public void setTriggeredSpecialImpact(boolean triggered) {
-        this.specialImpactTriggered = triggered;
     }
 
     @Nullable
@@ -123,6 +122,14 @@ public class BlueDemonThrownTrident extends ThrownTrident {
     @Override
     public void tick() {
         super.tick();
+
+        if (!this.level().isClientSide && this.inGround && this.tickCount % 10 == 0) {
+            this.discardIfGroundedAndFarFromOwner();
+            if (!this.isAlive()) {
+                return;
+            }
+        }
+
         if (this.level() instanceof ServerLevel serverLevel && this.tickCount % 5 == 0) {
             if (Math.random() <= 0.1D) {
                 serverLevel.sendParticles(
@@ -197,6 +204,95 @@ public class BlueDemonThrownTrident extends ThrownTrident {
         );
     }
 
+    public void assignSpawnSequence(@NotNull LivingEntity owner) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        CompoundTag ownerData = owner.getPersistentData();
+        int shotCounter = (ownerData.getInt(TAG_OWNER_SHOT_COUNTER) + 1) & 0xFFFF;
+        ownerData.putInt(TAG_OWNER_SHOT_COUNTER, shotCounter);
+
+        this.spawnSequence = (serverLevel.getGameTime() << 16) | (shotCounter & 0xFFFFL);
+    }
+
+    public long getSpawnSequence() {
+        return this.spawnSequence;
+    }
+
+    private static AABB makeOwnerGroundBox(Entity owner) {
+        Level level = owner.level();
+        return new AABB(
+                owner.getX() - OWNER_BOX_HALF_SIZE,
+                level.getMinBuildHeight(),
+                owner.getZ() - OWNER_BOX_HALF_SIZE,
+                owner.getX() + OWNER_BOX_HALF_SIZE,
+                level.getMaxBuildHeight(),
+                owner.getZ() + OWNER_BOX_HALF_SIZE
+        );
+    }
+
+    private boolean isGroundedForLimit() {
+        return this.inGround;
+    }
+
+    private boolean hasSameOwner(UUID ownerUuid) {
+        Entity owner = this.getOwner();
+        return owner != null && owner.getUUID().equals(ownerUuid);
+    }
+
+    private boolean isOutsideOwnerGroundBox(Entity owner) {
+        return Math.abs(this.getX() - owner.getX()) > OWNER_BOX_HALF_SIZE
+                || Math.abs(this.getZ() - owner.getZ()) > OWNER_BOX_HALF_SIZE;
+    }
+
+    public void trimOldGroundedTridentsAroundOwnerOnSpawn() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        LivingEntity owner = this.getOwnerLiving();
+        if (owner == null) {
+            return;
+        }
+
+        UUID ownerUuid = owner.getUUID();
+
+        List<BlueDemonThrownTrident> grounded = serverLevel.getEntitiesOfClass(
+                BlueDemonThrownTrident.class,
+                makeOwnerGroundBox(owner),
+                trident -> trident != this
+                        && trident.isAlive()
+                        && trident.isGroundedForLimit()
+                        && trident.hasSameOwner(ownerUuid)
+        );
+
+        int removeCount = grounded.size() - MAX_GROUNDED_TRIDENTS_PER_OWNER + 1;
+        if (removeCount <= 0) {
+            return;
+        }
+
+        grounded.sort(
+                Comparator.comparingLong(BlueDemonThrownTrident::getSpawnSequence)
+                        .thenComparing(BlueDemonThrownTrident::getUUID)
+        );
+
+        for (int i = 0; i < removeCount; i++) {
+            grounded.get(i).discard();
+        }
+    }
+
+    private void discardIfGroundedAndFarFromOwner() {
+        if (!this.inGround) {
+            return;
+        }
+
+        LivingEntity owner = this.getOwnerLiving();
+        if (owner != null && this.isOutsideOwnerGroundBox(owner)) {
+            this.discard();
+        }
+    }
+
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
@@ -221,12 +317,12 @@ public class BlueDemonThrownTrident extends ThrownTrident {
             this.yRotO = this.getYRot();
         }
 
-        if (this.specialImpactTriggered) {
-            return;
+        if (!this.specialImpactTriggered) {
+            this.specialImpactTriggered = true;
+            this.handleModeImpact(result.getBlockPos(), null);
         }
 
-        this.specialImpactTriggered = true;
-        this.handleModeImpact(result.getBlockPos(), null);
+        this.discardIfGroundedAndFarFromOwner();
     }
 
     @Override
@@ -234,6 +330,7 @@ public class BlueDemonThrownTrident extends ThrownTrident {
         super.addAdditionalSaveData(tag);
         tag.putString("BlueDemonMode", this.mode.name());
         tag.putBoolean("SpecialImpactTriggered", this.specialImpactTriggered);
+        tag.putLong(TAG_SPAWN_SEQUENCE, this.spawnSequence);
         Direction face = this.getStuckFace();
         if (face != null) {
             tag.putByte("StuckFace", (byte) face.get3DDataValue());
@@ -253,6 +350,7 @@ public class BlueDemonThrownTrident extends ThrownTrident {
         }
 
         this.specialImpactTriggered = tag.getBoolean("SpecialImpactTriggered");
+        this.spawnSequence = tag.getLong(TAG_SPAWN_SEQUENCE);
 
         if (tag.contains("StuckFace")) {
             this.setStuckFace(Direction.from3DDataValue(tag.getByte("StuckFace")));

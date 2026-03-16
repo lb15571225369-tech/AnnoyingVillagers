@@ -3689,6 +3689,8 @@ public class AVAnimations {
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
                             BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.assignSpawnSequence(livingEntity);
+                            trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
                             trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
@@ -3722,6 +3724,8 @@ public class AVAnimations {
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
                             BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.assignSpawnSequence(livingEntity);
+                            trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
                             trident.setYRot((float)(Mth.atan2(direction.x, direction.z) * (180F / Math.PI)));
@@ -3755,6 +3759,8 @@ public class AVAnimations {
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
                             BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.assignSpawnSequence(livingEntity);
+                            trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.LIGHTNING);
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
@@ -3789,6 +3795,8 @@ public class AVAnimations {
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
                             BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.assignSpawnSequence(livingEntity);
+                            trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.LIGHTNING);
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
@@ -3823,6 +3831,8 @@ public class AVAnimations {
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
                             BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            trident.assignSpawnSequence(livingEntity);
+                            trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.EXPLOSION);
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
 
