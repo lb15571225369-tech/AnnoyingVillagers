@@ -20,7 +20,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 
-import com.pla.annoyingvillagers.client.renderer.HerobrineEnderEyeGlintRenderTypes;
+import com.pla.annoyingvillagers.client.renderer.ColoredGlintRenderTypes;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 
 import net.minecraft.client.renderer.RenderBuffers;
@@ -36,6 +36,6 @@ public class RenderBuffersMixin {
 
     @Inject(method = "put", at = @At("HEAD"))
     private static void addGlintTypes(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> mapBuildersIn, RenderType renderTypeIn, CallbackInfo callbackInfo) {
-        HerobrineEnderEyeGlintRenderTypes.registerIntoFixed(mapBuildersIn);
+        ColoredGlintRenderTypes.registerIntoFixed(mapBuildersIn);
     }
 }

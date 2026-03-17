@@ -2,11 +2,14 @@ package com.pla.annoyingvillagers.skill;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
+import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillDataManager;
@@ -43,7 +46,23 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
         if (!this.isActivated(skillContainer)) {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
-            skillContainer.getExecutor().playAnimationSynchronized(Animations.WRATHFUL_LIGHTING, 0.0F);
+            if (this.isRangedMode(skillContainer)) {
+                Player player = skillContainer.getExecutor().getOriginal();
+                ItemStack mainHand = player.getMainHandItem();
+                ItemStack offHand = player.getOffhandItem();
+                boolean bothFullyCharged =
+                        BlueDemonTridentItem.isBlueDemonTrident(mainHand)
+                                && BlueDemonTridentItem.isBlueDemonTrident(offHand)
+                                && BlueDemonTridentItem.isFullyCharged(mainHand)
+                                && BlueDemonTridentItem.isFullyCharged(offHand);
+                if (bothFullyCharged) {
+                    skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_FESTIVAL, 0.0F);
+                } else {
+                    skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.TRIDENT_ATTACK, 0.0F);
+                }
+            } else {
+                skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ELECTRIC_FIELD, 0.0F);
+            }
         }
     }
 
@@ -109,11 +128,24 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
                         }
                     }
                 });
+        container.getExecutor().getEventListener().addEventListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID, (pre) -> {
+            if (pre.getPlayerPatch().isLogicalClient()) return;
+
+            final PlayerPatch<?> playerPatch = pre.getPlayerPatch();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (dynamicAnimation == null) return;
+
+            if (dynamicAnimation == AVAnimations.TRIDENT_ATTACK || dynamicAnimation == AVAnimations.ELECTRIC_FIELD || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL) {
+                pre.setCanceled(true);
+                pre.setResult(AttackResult.ResultType.BLOCKED);
+            }
+        });
     }
 
     @Override
     public void onRemoved(SkillContainer container) {
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID);
     }
 
     @Override

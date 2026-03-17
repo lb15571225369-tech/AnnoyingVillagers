@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.google.common.collect.Sets;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -10,7 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -20,11 +18,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.PlayMessages;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class TridentLightningBolt extends LightningBolt {
@@ -32,6 +29,11 @@ public class TridentLightningBolt extends LightningBolt {
     private int tridentFlashes;
     private long tridentSeed;
     private final Set<Entity> tridentHitEntities = Sets.newHashSet();
+    boolean superLightning = false;
+
+    public void setSuperLightning(boolean superLightning) {
+        this.superLightning = superLightning;
+    }
 
     @Nullable
     private LivingEntity owner;
@@ -106,7 +108,7 @@ public class TridentLightningBolt extends LightningBolt {
                             this,
                             new AABB(
                                     this.getX() - 15.0D, this.getY() - 15.0D, this.getZ() - 15.0D,
-                                    this.getX() + 15.0D, this.getY() + 6.0D + 15.0D, this.getZ() + 15.0D
+                                    this.getX() + 15.0D, this.getY() + 21.0D, this.getZ() + 15.0D
                             ),
                             entity -> entity.isAlive() && !this.tridentHitEntities.contains(entity)
                     );
@@ -121,8 +123,6 @@ public class TridentLightningBolt extends LightningBolt {
                 --this.tridentFlashes;
                 this.tridentLife = 1;
                 this.tridentSeed = this.random.nextLong();
-
-                // No fire spawn here either
             }
         }
 
@@ -134,21 +134,48 @@ public class TridentLightningBolt extends LightningBolt {
                         this,
                         new AABB(
                                 this.getX() - 3.0D, this.getY() - 3.0D, this.getZ() - 3.0D,
-                                this.getX() + 3.0D, this.getY() + 6.0D + 3.0D, this.getZ() + 3.0D
+                                this.getX() + 3.0D, this.getY() + 9.0D, this.getZ() + 3.0D
                         ),
-                        Entity::isAlive
+                        entity -> entity.isAlive()
+                                && entity != this.owner
+                                && !(entity instanceof BlueDemonThrownTridentEntity)
+                                && !(entity instanceof TridentLightningBolt)
                 );
 
-                for (Entity entity : list) {
-                    if (entity == this.owner) {
-                        continue;
-                    }
+                if (this.superLightning) {
+                    serverLevel.explode(
+                            this.owner,
+                            this.getX(),
+                            this.getY(),
+                            this.getZ(),
+                            new Random().nextFloat(6.0F, 8.0F),
+                            Level.ExplosionInteraction.BLOCK
+                    );
+                }
 
+                for (Entity entity : list) {
                     if (!ForgeEventFactory.onEntityStruckByLightning(entity, this)) {
                         if (entity instanceof LivingEntity livingEntity) {
-                            livingEntity.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTRIFY.get(), 60, 1));
+                            if (this.superLightning) {
+                                livingEntity.addEffect(new MobEffectInstance(
+                                        AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                                        100,
+                                        2
+                                ));
+                            } else {
+                                livingEntity.addEffect(new MobEffectInstance(
+                                        AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                                        60,
+                                        1
+                                ));
+                            }
                         }
-                        entity.hurt(level().damageSources().indirectMagic(this, owner), 5.0F);
+
+                        if (this.superLightning) {
+                            entity.hurt(level().damageSources().indirectMagic(this, owner), 15.0F);
+                        } else {
+                            entity.hurt(level().damageSources().indirectMagic(this, owner), 5.0F);
+                        }
                     }
                 }
 
@@ -159,13 +186,5 @@ public class TridentLightningBolt extends LightningBolt {
                 }
             }
         }
-    }
-
-    public long getTridentSeed() {
-        return this.tridentSeed;
-    }
-
-    public Set<Entity> getTridentHitEntities() {
-        return this.tridentHitEntities;
     }
 }

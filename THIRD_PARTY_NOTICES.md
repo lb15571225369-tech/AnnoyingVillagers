@@ -193,7 +193,7 @@ All required upstream notices must be preserved.
 
 **Paths / Files**
 - com/pla/annoyingvillagers/mixin/ItemRendererMixin.java
-- com/pla/annoyingvillagers/client/renderer/HerobrineEnderEyeGlintRenderTypes.java
+- com/pla/annoyingvillagers/client/renderer/ColoredGlintRenderTypes.java
 - com/pla/annoyingvillagers/mixin/RenderBuffersMixin.java
 
 ### F2) EpicFight - Battle Arts - Forixaim - CC-BY-SA

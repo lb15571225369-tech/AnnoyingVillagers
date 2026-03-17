@@ -16,7 +16,6 @@ import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Objects;
 
@@ -30,29 +29,35 @@ public class ElectrifyMobEffect extends MobEffect {
         return "effect.annoyingvillagers.electrify";
     }
 
-    public void applyEffectTick(LivingEntity livingentity, int i) {
-        double d0 = livingentity.getX();
-        double d1 = livingentity.getY();
-        double d2 = livingentity.getZ();
+    @Override
+    public void applyEffectTick(@NotNull LivingEntity pLivingEntity, int pAmplifier) {
+        super.applyEffectTick(pLivingEntity, pAmplifier);
+        double d0 = pLivingEntity.getX();
+        double d1 = pLivingEntity.getY();
+        double d2 = pLivingEntity.getZ();
 
-        if (livingentity.tickCount % 20 == 0) {
-            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(livingentity, LivingEntityPatch.class);
+        if (pLivingEntity.tickCount % 20 == 0) {
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(pLivingEntity, LivingEntityPatch.class);
 
             if (livingEntityPatch != null) {
                 AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                 if (dynamicAnimation != null
                         && !livingEntityPatch.isStunned()
                         && !ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch)) {
-                    livingEntityPatch.playAnimationSynchronized(AVAnimations.ZAP, 0.0F);
+                    if (pAmplifier > 1) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ZAP_LONG, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ZAP, 0.0F);
+                    }
                 }
             }
         }
 
         if (Math.random() <= 0.1D) {
-            if (livingentity.level() instanceof ServerLevel serverLevel) {
+            if (pLivingEntity.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(
                         AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
-                        livingentity.getX(), livingentity.getY(), livingentity.getZ(),
+                        pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(),
                         1,
                         0.3D, 1.2D, 0.3D,
                         0.0D
@@ -74,8 +79,8 @@ public class ElectrifyMobEffect extends MobEffect {
             }
         }
 
-        if (Math.random() <= 0.1D) {
-            livingentity.hurt(livingentity.level().damageSources().generic(), 0.2F);
+        if (Math.random() <= (pAmplifier > 1 ? 1.0D : 0.1D)) {
+            pLivingEntity.hurt(pLivingEntity.level().damageSources().generic(),  (pAmplifier > 1 ? 2.0F : 0.2F));
         }
     }
 

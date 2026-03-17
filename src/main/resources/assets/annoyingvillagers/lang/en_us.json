@@ -301,6 +301,8 @@
   "tooltip.annoyingvillagers.enchanted_bed": "Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying.",
   "tooltip.annoyingvillagers.obsidian": "Obsidian Fired by Herobrine's Clone",
   "tooltip.annoyingvillagers.shadow_obsidian": "Shadow Obsidian Fired by Shadow Herobrine's Clone",
+  "tooltip.annoyingvillagers.blue_demon_trident": "Equip 2 fully charged §bBlue Demon§r Tridents to unlock Trident Festival in Ranged Style.\nWhile holding this item during a thunderstorm, you have a high chance of being struck by lightning. Being struck by lightning charges it.",
+  "tooltip.annoyingvillagers.blue_demon_chestplate": "Taking damage builds up charge. When fully charged, enemies that hit you are §bElectrified§r.",
   "tooltip.annoyingvillagers.future_update": "§4This weapon currently has no abilities and will be updated along with its corresponding character.§r",
   "tooltip.annoyingvillagers.beta_update": "§6This weapon currently has no abilities and will be updated soon.§r",
   "epicfight.skill_slot.av_kick": "Kick",
@@ -330,6 +332,7 @@
   "skill.annoyingvillagers.wooden_door": "Put Me Back In Your House",
   "skill.annoyingvillagers.trapdoor": "This is Not A Real Door",
   "skill.annoyingvillagers.ladder": "Place Me On A Wall, Not A Face",
+  "skill.annoyingvillagers.trident_festival": "§bTrident Festival§r",
   "skill.annoyingvillagers.bedrock_weapon.tooltip": "Enter auto parry (15 seconds), fully §7blocks§r§8 all damage and §r§7heals§r§8 2 HP per block.§r",
   "skill.annoyingvillagers.demoniac_voltage_reaver.tooltip": "Attacks nearby entities and §7drains stamina§r§8 on hit.§r\n\n§5Snake Blade Guard§r§8 (Guard with Innate)§r\n§8Block all incoming damage, damaging and draining stamina of nearby entities.§r\n\n§7Hitting enemies with Snake Blade charges your Innate Skill.§r",
   "skill.annoyingvillagers.ender_aegis.tooltip": "Enter Second Form (10 seconds)\nNormal Attacks release a §7Shockwave§r§8 that §r§6knocks down§r§8 entities in its path.§r\n§8Blocking damage also releases a §r§7Shockwave§r§8 and §r§6extends the duration§r.\n\n§7Blocking damage charges your Innate Skill.§r",
@@ -348,5 +351,6 @@
   "skill.annoyingvillagers.crafting_table.tooltip": "Slam the Crafting Table into your enemy's face",
   "skill.annoyingvillagers.wooden_door.tooltip": "Slam the Wooden Door into your enemy's face",
   "skill.annoyingvillagers.trapdoor.tooltip": "Slam the Trapdoor into your enemy's face.",
-  "skill.annoyingvillagers.ladder.tooltip": "Slam the Ladder into your enemy's face"
+  "skill.annoyingvillagers.ladder.tooltip": "Slam the Ladder into your enemy's face",
+  "skill.annoyingvillagers.trident_festival.tooltip": "This weapon has 2 styles\n\n§bMelee Style§r\n§8Unleashes an §7Electric Field§r§8 around the wielder and at any grounded Trident thrown in §5Ranged Style§r§8. Entities hit are §7Electrified§r§8.\n\n§bRanged Style§r\n§8Commands all nearby grounded Tridents to strike nearby enemies and summons a §7Lightning Bolt§r§8 at each Trident. Targets hit are §6Electrified§r§8.\n\n§bTrident Festival§r\n§8Unleashes an §7Electric Field§r§8 around the wielder, then commands all nearby grounded Tridents to strike nearby enemies and summons a §7Lightning Bolt§r§8 and an §7Explosion§r§8 at each Trident.\n\n§7Press Special Attack to switch styles.§r"
 }

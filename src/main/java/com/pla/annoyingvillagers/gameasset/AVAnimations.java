@@ -119,7 +119,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
@@ -250,6 +249,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR;
 
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
+    public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_FESTIVAL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_DASH;
@@ -375,6 +375,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP_LONG;
 
     // Animation made by me
+    public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNOCKED_ELITE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ANIMATE;
@@ -393,6 +394,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
 
     // Animation clone and re-registered from WOM
+    public static AnimationManager.AnimationAccessor<ActionAnimation> ELECTRIC_FIELD;
     public static AnimationManager.AnimationAccessor<StaticAnimation> GLOWING_AGONY_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
@@ -854,6 +856,49 @@ public class AVAnimations {
                         ));
 
         // Animation from Pugilist Steve Annoying Villagers 1.18.2
+        AVAnimations.TRIDENT_FESTIVAL = builder.nextAccessor("biped/pugilist_steve/trident_festival",
+                (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.spawnDamageZones(serverLevel, livingEntityPatch.getOriginal());
+                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.5F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.summonSuperLightningAtGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                        if (livingEntityPatch.getOriginal() instanceof Player player) {
+                                            BlueDemonTridentItem.setStormEnergy(player.getMainHandItem(), 0);
+                                            BlueDemonTridentItem.setStormEnergy(player.getOffhandItem(), 0);
+                                        }
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER)
+                        ));
         AVAnimations.COUNTER = builder.nextAccessor("biped/pugilist_steve/counter",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.3F, 0.08F, 0.1F, 0.15F, 0.525F, ColliderPreset.FIST, humanoidArmature.get().legR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
@@ -927,10 +972,6 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SHOCK_WAVE, Side.SERVER)
                                 })
         );
-        AVAnimations.BLUE_DEMON_START_SKILL = builder.nextAccessor("biped/pugilist_steve/blue_demon_start_skill",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
-        AVAnimations.BLUE_DEMON_END_SKILL = builder.nextAccessor("biped/pugilist_steve/blue_demon_end_skill",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.HACKER_SWORD_SKILL = builder.nextAccessor("biped/pugilist_steve/hacker_sword_skill",
                 (accessor) -> (new AttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.016F, 0.066F, 0.133F, 0.133F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.133F, 0.133F, 0.183F, 0.25F, 0.25F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.25F, 0.25F, 0.3F, 0.366F, 0.366F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.366F, 0.366F, 0.416F, 0.483F, 0.483F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.483F, 0.483F, 0.533F, 0.6F, 0.6F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.6F, 0.6F, 0.65F, 0.716F, 0.716F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.716F, 0.716F, 0.766F, 0.833F, 0.833F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.833F, 0.833F, 0.883F, 1.1F, 1.1F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.933F, 1.133F, 1.183F, 1.6F, 1.6F, humanoidArmature.get().toolL, ColliderPreset.SWORD))).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 4.0F));
         AVAnimations.DUAL_SWORD_AUTO1 = builder.nextAccessor("biped/pugilist_steve/dual_sword_auto1",
@@ -1795,6 +1836,39 @@ public class AVAnimations {
         );
 
         // Animation made by me
+        AVAnimations.TRIDENT_ATTACK = builder.nextAccessor("biped/pla/trident_attack",
+                (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(4.0F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.summonLightningAtGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER)
+                        ));
         AVAnimations.HEROBRINE_ANIMATE = builder.nextAccessor("biped/pla/herobrine_animate",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.HEROBRINE_HEALING = builder.nextAccessor("biped/pla/herobrine_healing",
@@ -1842,7 +1916,34 @@ public class AVAnimations {
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/pla/place_block",
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
 
-        // Animation clone and re-registered from WOM
+        AVAnimations.ELECTRIC_FIELD = builder.nextAccessor("biped/wom_clone/electric_field",
+                (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.spawnDamageZones(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(2.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER)
+                        ));
         AVAnimations.GLOWING_AGONY_GUARD = builder.nextAccessor("biped/wom_clone/glowing_agony_guard",
                 (accessor) -> (new StaticAnimation(0.05F, true, accessor, humanoidArmature))
                         .addEvents(AnimationEvent.InTimeEvent.create(0.0F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING_AGONY, Side.CLIENT),
@@ -3688,7 +3789,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, livingEntity, stack.copy());
                             trident.assignSpawnSequence(livingEntity);
                             trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
@@ -3723,7 +3824,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, livingEntity, stack.copy());
                             trident.assignSpawnSequence(livingEntity);
                             trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setPos(jointVec.x, jointVec.y, jointVec.z);
@@ -3758,7 +3859,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, livingEntity, stack.copy());
                             trident.assignSpawnSequence(livingEntity);
                             trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.LIGHTNING);
@@ -3794,7 +3895,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, livingEntity, stack.copy());
                             trident.assignSpawnSequence(livingEntity);
                             trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.LIGHTNING);
@@ -3830,7 +3931,7 @@ public class AVAnimations {
 
                             Vec3 direction = BlueDemonTridentItem.getTridentThrowDirection(livingEntity, jointVec);
                             if (direction == null || direction.lengthSqr() < 1.0E-7) return;
-                            BlueDemonThrownTrident trident = new BlueDemonThrownTrident(serverLevel, livingEntity, stack.copy());
+                            BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, livingEntity, stack.copy());
                             trident.assignSpawnSequence(livingEntity);
                             trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
                             trident.setMode(TridentMode.EXPLOSION);
