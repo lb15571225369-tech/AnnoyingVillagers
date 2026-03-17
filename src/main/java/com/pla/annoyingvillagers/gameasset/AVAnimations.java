@@ -394,6 +394,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
 
     // Animation clone and re-registered from WOM
+    public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_1;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_2;
     public static AnimationManager.AnimationAccessor<ActionAnimation> ELECTRIC_FIELD;
     public static AnimationManager.AnimationAccessor<StaticAnimation> GLOWING_AGONY_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
@@ -443,6 +445,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<DodgeAnimation> HEROBRINE_MOB_ENDERSTEP_OBSCURIS;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL;
     public static AnimationManager.AnimationAccessor<MovementAnimation> OLD_MOONLESS_RUN;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> TRIDENT_TWO_HAND_RUN;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_STRONG_KICK;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_3;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_1;
@@ -1916,6 +1919,25 @@ public class AVAnimations {
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/pla/place_block",
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
 
+        // Animations cloned and registered from WOM
+        AVAnimations.TRIDENT_GUARD_HIT_1 = builder.nextAccessor("biped/wom_clone/trident_guard_hit1",
+                (accessor) -> (new StaticAnimation(false, accessor, humanoidArmature))
+                        .addEvents(
+                                new AnimationEvent[]{
+                                        AnimationEvent.InTimeEvent.create(0.1F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.2F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.3F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.4F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT)
+                                }));
+        AVAnimations.TRIDENT_GUARD_HIT_2 = builder.nextAccessor("biped/wom_clone/trident_guard_hit2",
+                (accessor) -> (new StaticAnimation(false, accessor, humanoidArmature))
+                        .addEvents(
+                                new AnimationEvent[]{
+                                        AnimationEvent.InTimeEvent.create(0.1F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.2F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.3F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.4F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT)
+                                }));
         AVAnimations.ELECTRIC_FIELD = builder.nextAccessor("biped/wom_clone/electric_field",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
@@ -3321,6 +3343,8 @@ public class AVAnimations {
                         )
         );
         AVAnimations.OLD_MOONLESS_RUN = builder.nextAccessor("biped/wom_clone/old_moonless_run",
+                (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
+        AVAnimations.TRIDENT_TWO_HAND_RUN = builder.nextAccessor("biped/wom_clone/trident_two_hand_run",
                 (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
         AVAnimations.OBSIDIAN_STRONG_KICK = builder.nextAccessor("biped/wom_clone/obsidian_kick",
                 (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.0F, 0.15F, 0.35F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(2.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.0F))

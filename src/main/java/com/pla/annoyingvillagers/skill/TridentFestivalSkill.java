@@ -1,15 +1,27 @@
 package com.pla.annoyingvillagers.skill;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillDataManager;
@@ -18,6 +30,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 public class TridentFestivalSkill extends WeaponInnateSkill {
@@ -138,6 +151,23 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
             if (dynamicAnimation == AVAnimations.TRIDENT_ATTACK || dynamicAnimation == AVAnimations.ELECTRIC_FIELD || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL) {
                 pre.setCanceled(true);
                 pre.setResult(AttackResult.ResultType.BLOCKED);
+            }
+
+            if (playerPatch.getOriginal().isSprinting() && pre.getDamageSource().getDirectEntity() instanceof Projectile projectile) {
+                Vec3 entityPosition = projectile.position();
+                Vec3 entityViewVector = pre.getPlayerPatch().getOriginal().getViewVector(1.0F);
+                Vec3 entitySubtract = entityPosition.subtract(pre.getPlayerPatch().getOriginal().getEyePosition()).normalize();
+
+                if (entitySubtract.dot(entityViewVector) > 0.0D) {
+                    pre.setCanceled(true);
+                    pre.setResult(AttackResult.ResultType.BLOCKED);
+                    playerPatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                    if (new Random().nextBoolean()) {
+                        playerPatch.playAnimationSynchronized(AVAnimations.TRIDENT_GUARD_HIT_1, 0.0F);
+                    } else {
+                        playerPatch.playAnimationSynchronized(AVAnimations.TRIDENT_GUARD_HIT_2, 0.0F);
+                    }
+                }
             }
         });
     }

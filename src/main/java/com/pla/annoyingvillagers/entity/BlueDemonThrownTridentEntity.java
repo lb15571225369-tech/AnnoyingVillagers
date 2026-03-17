@@ -22,6 +22,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
@@ -53,6 +54,9 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private Vec3 relaunchAnimationStart = Vec3.ZERO;
     private Vec3 relaunchAnimationEnd = Vec3.ZERO;
     private boolean loadedFromDisk = false;
+    private boolean relaunchDelayActive = false;
+    private int relaunchDelayTicks = 0;
+    private int relaunchDelayTick = 0;
 
     @Nullable
     private UUID queuedTargetUUID = null;
@@ -61,6 +65,23 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private float queuedLaunchSpeed = 0.0F;
 
     private long spawnSequence;
+
+    private boolean isRelaunchLocked() {
+        return this.relaunchAnimationActive || this.relaunchDelayActive;
+    }
+
+    @Override
+    public void playerTouch(@NotNull Player player) {
+        if (this.isRelaunchLocked()) {
+            return;
+        }
+        super.playerTouch(player);
+    }
+
+    @Override
+    protected boolean tryPickup(@NotNull Player player) {
+        return false;
+    }
 
     private boolean specialImpactTriggered = false;
     private static final EntityDataAccessor<Byte> DATA_STUCK_FACE =
@@ -147,9 +168,16 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
             return;
         }
 
-        if (!this.level().isClientSide && this.relaunchAnimationActive) {
+        if (!this.level().isClientSide && (this.relaunchAnimationActive || this.relaunchDelayActive)) {
             this.baseTick();
-            this.tickAnimatedRelaunch();
+            this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+            if (this.relaunchAnimationActive) {
+                this.tickAnimatedRelaunch();
+            } else {
+                this.tickRelaunchDelay();
+            }
+
             this.tickElectricEffects();
             return;
         }
@@ -387,8 +415,8 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         }
 
         this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
         Vec3 normalized = direction.normalize();
-        Vec3 newPos = this.position().add(normalized.scale(0.35D));
 
         this.setStuckFace(null);
         this.inGround = false;
@@ -403,7 +431,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
         this.setGlowingTag(true);
 
-        this.setPos(newPos.x, newPos.y + 0.05D, newPos.z);
         this.setDeltaMovement(Vec3.ZERO);
 
         this.setYRot((float) (Mth.atan2(normalized.x, normalized.z) * (180F / Math.PI)));
@@ -427,8 +454,8 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         }
     }
 
-    public void beginAnimatedRelaunch(@Nullable LivingEntity target, @Nullable Vec3 fallbackDirection, float speed, float inaccuracy) {
-        if (this.relaunchAnimationActive) {
+    public void beginAnimatedRelaunch(@Nullable LivingEntity target, @Nullable Vec3 fallbackDirection, float speed, float inaccuracy, int launchDelayTicks) {
+        if (this.relaunchAnimationActive || this.relaunchDelayActive) {
             return;
         }
 
@@ -458,6 +485,12 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.relaunchAnimationTick = 0;
         this.relaunchAnimationActive = true;
 
+        this.relaunchDelayActive = false;
+        this.relaunchDelayTicks = Math.max(0, launchDelayTicks);
+        this.relaunchDelayTick = 0;
+
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
         this.setStuckFace(null);
         this.inGround = false;
         this.inGroundTime = 0;
@@ -470,6 +503,44 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.setDeltaMovement(Vec3.ZERO);
         this.hasImpulse = false;
         this.setGlowingTag(true);
+    }
+
+    private void tickRelaunchDelay() {
+        this.relaunchDelayTick++;
+
+        this.setDeltaMovement(Vec3.ZERO);
+
+        Vec3 direction = this.resolveQueuedLaunchDirection();
+        if (direction != null) {
+            this.updateRotationFromMovement(direction);
+        }
+
+        if (this.relaunchDelayTick >= this.relaunchDelayTicks) {
+            this.relaunchDelayActive = false;
+            this.launchQueuedRelaunch();
+        }
+    }
+
+    private void launchQueuedRelaunch() {
+        float speed = this.queuedLaunchSpeed;
+        Vec3 direction = this.resolveQueuedLaunchDirection();
+
+        this.queuedTargetUUID = null;
+        this.queuedFallbackDirection = null;
+
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = true;
+        this.specialImpactTriggered = false;
+        this.inGround = false;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.dealtDamage = false;
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+        if (direction != null && direction.lengthSqr() > 1.0E-7D) {
+            this.relaunchTowards(direction, speed, 0.0F);
+        }
     }
 
     @Nullable
@@ -533,27 +604,14 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.updateRotationFromMovement(moveDelta);
 
         if (this.relaunchAnimationTick >= RELAUNCH_ANIMATION_DURATION) {
-            float speed = this.queuedLaunchSpeed;
-
             this.relaunchAnimationActive = false;
             this.relaunchAnimationTick = 0;
 
-            Vec3 direction = this.resolveQueuedLaunchDirection();
-
-            this.queuedTargetUUID = null;
-            this.queuedFallbackDirection = null;
-
-            this.setNoPhysics(false);
-            this.setNoGravity(false);
-            this.hasImpulse = true;
-            this.specialImpactTriggered = false;
-            this.inGround = false;
-            this.inGroundTime = 0;
-            this.shakeTime = 0;
-            this.dealtDamage = false;
-
-            if (direction != null && direction.lengthSqr() > 1.0E-7D) {
-                this.relaunchTowards(direction, speed, 0.0F);
+            if (this.relaunchDelayTicks > 0) {
+                this.relaunchDelayActive = true;
+                this.relaunchDelayTick = 0;
+            } else {
+                this.launchQueuedRelaunch();
             }
         }
     }

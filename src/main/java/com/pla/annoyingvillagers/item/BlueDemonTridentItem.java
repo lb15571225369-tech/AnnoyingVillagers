@@ -197,20 +197,30 @@ public class BlueDemonTridentItem extends SwordItem {
                     ? com.pla.annoyingvillagers.item.BlueDemonTridentItem.getTridentThrowDirection(owner, trident.position())
                     : null;
 
-            trident.beginAnimatedRelaunch(target, fallback, RELAUNCH_SPEED, 0.0F);
+            int extraDelay = 2 + i * 2 + serverLevel.random.nextInt(3); // staggered wave
+            trident.beginAnimatedRelaunch(target, fallback, RELAUNCH_SPEED, 0.0F, extraDelay);
         }
     }
 
     public static void summonLightningAtGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
-        for (BlueDemonThrownTridentEntity trident : getGroundedOwnerTridents(serverLevel, owner)) {
+        for (BlueDemonThrownTridentEntity trident : getAllOwnerTridents(serverLevel, owner)) {
             trident.summonLightningAtSelf();
         }
     }
 
     public static void summonSuperLightningAtGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
-        for (BlueDemonThrownTridentEntity trident : getGroundedOwnerTridents(serverLevel, owner)) {
+        for (BlueDemonThrownTridentEntity trident : getAllOwnerTridents(serverLevel, owner)) {
             trident.summonSuperLightningAtSelf();
         }
+    }
+
+    private static List<BlueDemonThrownTridentEntity> getAllOwnerTridents(ServerLevel serverLevel, LivingEntity owner) {
+        return serverLevel.getEntitiesOfClass(
+                BlueDemonThrownTridentEntity.class,
+                makeOwnerBox(owner),
+                trident -> trident.isAlive()
+                        && trident.belongsToOwner(owner)
+        );
     }
 
     private static List<BlueDemonThrownTridentEntity> getGroundedOwnerTridents(ServerLevel serverLevel, LivingEntity owner) {
