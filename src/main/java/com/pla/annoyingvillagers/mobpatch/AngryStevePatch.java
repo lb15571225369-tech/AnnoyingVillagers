@@ -93,8 +93,8 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
-                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.LEGENDARY_SWORD_IDLE),
+                                        Pair.of(LivingMotions.WALK, AVAnimations.TORMENT_BERSERK_WALK),
                                         Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
                                         Pair.of(LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)

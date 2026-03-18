@@ -304,13 +304,18 @@ public class SpecialAttackOnKeyPressedEvent {
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LEGENDARY_SWORD.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     boolean success = false;
+                    boolean holdingTridentOffhand = offHandItem.getItem().equals(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get());
 
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.LEGENDARY_SWORD);
-                        if (skillContainer != null && skillContainer.getSkill() instanceof LegendarySwordSkill legendarySwordSkill && player.level() instanceof ServerLevel serverLevel) {
+                        if (skillContainer != null && skillContainer.getSkill() instanceof LegendarySwordSkill legendarySwordSkill && player.level() instanceof ServerLevel) {
                             if (skillContainer.getStack() >= 1) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3, 0.0F);
+                                if (holdingTridentOffhand) {
+                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.ELECTRIC_FIELD, 0.0F);
+                                } else {
+                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3, 0.0F);
+                                }
                                 legendarySwordSkill.getResourceType().consumer
                                         .consume(skillContainer, serverPlayerPatch, legendarySwordSkill.getDefaultConsumptionAmount(serverPlayerPatch));
                                 success = true;
@@ -319,9 +324,12 @@ public class SpecialAttackOnKeyPressedEvent {
                     }
 
                     if (!success) {
-                        LivingEntity livingEntity = (LivingEntity) entity;
-                        livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F);
+                        if (holdingTridentOffhand) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.TRIDENT_THROW_LEGENDARY, 0.0F);
+                        } else {
+                            player.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F);
+                        }
                     }
                     return;
                 }

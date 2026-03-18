@@ -351,6 +351,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_2;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_LEGENDARY;
 
     // Animation from Community EpicFight Battle Arts
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> ADVANCED_LANCER_AUTO1;
@@ -374,6 +375,10 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP_LONG;
 
+    // Animation from Sculk Steve
+    public static AnimationManager.AnimationAccessor<StaticAnimation> PLAYER_HEROBRINE_POSSESSION;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> LEGENDARY_SWORD_IDLE;
+
     // Animation made by me
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -394,6 +399,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
 
     // Animation clone and re-registered from WOM
+    public static AnimationManager.AnimationAccessor<MovementAnimation> TORMENT_BERSERK_WALK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_1;
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_2;
     public static AnimationManager.AnimationAccessor<ActionAnimation> ELECTRIC_FIELD;
@@ -1603,6 +1609,15 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.7F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
+                        ));
+        AVAnimations.TRIDENT_THROW_LEGENDARY = builder.nextAccessor("biped/pugilist_steve/trident_throw_legendary",
+                (accessor) -> (new BasicAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
                         ));
 
@@ -1841,6 +1856,12 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
         );
 
+        // Animation from Sculk Steve
+        AVAnimations.PLAYER_HEROBRINE_POSSESSION = builder.nextAccessor("biped/sculk_steve/player_herobrine_possession",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
+        AVAnimations.LEGENDARY_SWORD_IDLE = builder.nextAccessor("biped/sculk_steve/legendary_sword_idle",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+
         // Animation made by me
         AVAnimations.TRIDENT_ATTACK = builder.nextAccessor("biped/pla/trident_attack",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
@@ -1923,6 +1944,7 @@ public class AVAnimations {
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
 
         // Animations cloned and registered from WOM
+        AVAnimations.TORMENT_BERSERK_WALK = builder.nextAccessor("biped/wom_clone/torment_berserk_walk", (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
         AVAnimations.TRIDENT_GUARD_HIT_1 = builder.nextAccessor("biped/wom_clone/trident_guard_hit1",
                 (accessor) -> (new StaticAnimation(false, accessor, humanoidArmature))
                         .addEvents(

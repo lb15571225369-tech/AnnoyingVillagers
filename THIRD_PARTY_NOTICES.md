@@ -232,7 +232,19 @@ All required upstream notices must be preserved.
 
 ---
 
-## H) Credits - Annoying Villagers (textures / models / languages)
+## H) Assets authorized by another author (Owned by the Original Author, you should contact the original author if you want to use it)
+
+### H1) Sculk Steve
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/sculk_steve
+
+### H2) M3tte
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/m3tte_emote
+
+---
+
+## I) Credits - Annoying Villagers (textures / models / languages)
 
 This section credits contributors for original work and contributions used in AnnoyingVillagers.
 Unless otherwise stated in this document, these credited contributions are part of the project’s distribution and
@@ -256,7 +268,7 @@ may be subject to the repository’s licensing policy (see `LICENSE` and this `T
 
 ---
 
-## I) Compliance Notes (Important)
+## J) Compliance Notes (Important)
 - Keep upstream license texts in `/third_party/licenses/`.
 - Keep upstream copyright and permission notices where required (MIT/Apache/CC).
 - GPL/LGPL portions may require additional obligations if you distribute binaries or modified source for those portions.

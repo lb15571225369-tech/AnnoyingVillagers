@@ -391,7 +391,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     }
                     final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                     if (livingentitypatch != null && !this.level().isClientSide()) {
-                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.PLAYER_HEROBRINE_POSSESSION, 0.0F);
                     }
                     this.initialSpawn = false;
                 }
