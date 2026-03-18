@@ -80,7 +80,7 @@ public class ElectrifyMobEffect extends MobEffect {
         }
 
         if (Math.random() <= (pAmplifier > 1 ? 1.0D : 0.1D)) {
-            pLivingEntity.hurt(pLivingEntity.level().damageSources().generic(),  (pAmplifier > 1 ? 2.0F : 0.2F));
+            pLivingEntity.hurt(pLivingEntity.level().damageSources().generic(),  (pAmplifier > 1 ? 5.0F : 0.2F));
         }
     }
 

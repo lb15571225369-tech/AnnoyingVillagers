@@ -561,7 +561,7 @@ public class AVAnimations {
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.RAW_COORD_WITH_X_ROT)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
-                .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.15F, 0.85F))
                 .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, ReusableSources.ROOT_X_MODIFIER)
@@ -569,17 +569,20 @@ public class AVAnimations {
                 .addEvents(StaticAnimationProperty.TICK_EVENTS, AnimationEvent.SimpleEvent.create(ReusableSources.RESIZE_BOUNDING_BOX, Side.BOTH)
                         .params(EntityDimensions.scalable(0.6F, 1.0F)))
                 .addEvents(AnimationEvent.InPeriodEvent.create(0.35F, 1.0F, (entitypatch, animation, params) -> {
-            Vec3 pos = entitypatch.getOriginal().position();
+                    Vec3 pos = entitypatch.getOriginal().position();
 
-            for(int x = -1; x <= 1; x += 2) {
-                for(int z = -1; z <= 1; z += 2) {
-                    Vec3 rand = (new Vec3(Math.random() * (double)x, Math.random(), Math.random() * (double)z)).normalize().scale(2.0F);
-                    entitypatch.getOriginal().level().addParticle(EpicFightParticles.TSUNAMI_SPLASH.get(), pos.x + rand.x, pos.y + rand.y - (double)1.0F, pos.z + rand.z, rand.x * 0.1, rand.y * 0.1, rand.z * 0.1);
-                }
-            }
+                    for(int x = -1; x <= 1; x += 2) {
+                        for(int z = -1; z <= 1; z += 2) {
+                            Vec3 rand = (new Vec3(Math.random() * (double)x, Math.random(), Math.random() * (double)z)).normalize().scale(2.0F);
+                            entitypatch.getOriginal().level().addParticle(EpicFightParticles.TSUNAMI_SPLASH.get(), pos.x + rand.x, pos.y + rand.y - (double)1.0F, pos.z + rand.z, rand.x * 0.1, rand.y * 0.1, rand.z * 0.1);
+                        }
+                    }
 
-        }, Side.CLIENT))
-                .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3, 0.0F, 0.0F), Side.CLIENT), AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.setAirborneState(true), Side.SERVER)}));
+                }, Side.CLIENT))
+                .addEvents(new AnimationEvent[]{
+                        AnimationEvent.InTimeEvent.create(0.35F,
+                        (entitypatch, animation, params) -> entitypatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3, 0.0F, 0.0F), Side.CLIENT),
+                        AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.setAirborneState(true), Side.SERVER)}));
 
         // Animation from EpicFight Infernal Gainer
         AVAnimations.KICK_C = builder.nextAccessor("biped/epicfight_infernal_gainer/kick_c",

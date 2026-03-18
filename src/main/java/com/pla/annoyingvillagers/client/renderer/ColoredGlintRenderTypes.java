@@ -157,6 +157,25 @@ public final class ColoredGlintRenderTypes extends RenderType {
                     .createCompositeState(false)
     );
 
+    public static final RenderType ARMOR_ENTITY_GLINT_CYAN = RenderType.create(
+            "armor_entity_glint_cyan",
+            DefaultVertexFormat.POSITION_TEX,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            false,
+            CompositeState.builder()
+                    .setShaderState(RenderStateShard.RENDERTYPE_ARMOR_ENTITY_GLINT_SHADER)
+                    .setTextureState(new TextureStateShard(CYAN_TEX, true, false))
+                    .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                    .setCullState(RenderStateShard.NO_CULL)
+                    .setDepthTestState(RenderStateShard.EQUAL_DEPTH_TEST)
+                    .setTransparencyState(RenderStateShard.GLINT_TRANSPARENCY)
+                    .setTexturingState(RenderStateShard.ENTITY_GLINT_TEXTURING)
+                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+                    .createCompositeState(false)
+    );
+
     public static void registerIntoFixed(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> map) {
         put(map, GLINT_DIRECT_ORANGE);
         put(map, ENTITY_GLINT_DIRECT_ORANGE);
@@ -167,6 +186,7 @@ public final class ColoredGlintRenderTypes extends RenderType {
         put(map, ENTITY_GLINT_DIRECT_CYAN);
         put(map, GLINT_CYAN);
         put(map, ENTITY_GLINT_CYAN);
+        put(map, ARMOR_ENTITY_GLINT_CYAN);
     }
 
     private static void put(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> map, RenderType rt) {

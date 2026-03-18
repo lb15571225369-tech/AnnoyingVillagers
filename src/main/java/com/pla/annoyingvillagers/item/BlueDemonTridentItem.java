@@ -197,7 +197,7 @@ public class BlueDemonTridentItem extends SwordItem {
                     ? com.pla.annoyingvillagers.item.BlueDemonTridentItem.getTridentThrowDirection(owner, trident.position())
                     : null;
 
-            int extraDelay = 2 + i * 2 + serverLevel.random.nextInt(3); // staggered wave
+            int extraDelay = 2 + i * 2 + serverLevel.random.nextInt(3);
             trident.beginAnimatedRelaunch(target, fallback, RELAUNCH_SPEED, 0.0F, extraDelay);
         }
     }

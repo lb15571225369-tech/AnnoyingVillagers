@@ -6,7 +6,6 @@
   "block.annoyingvillagers.crying_obsidian": "哭泣的黑曜石",
   "block.annoyingvillagers.shadow_obsidian": "暗影黑曜石",
   "block.annoyingvillagers.obsidian": "黑曜石",
-  "item.annoyingvillagers.great_sword": "破伤风之刃",
   "item.annoyingvillagers.heavy_attack_legendary_sword": "传奇之剑",
   "item.annoyingvillagers.blue_demon_spawn_egg": "§b蓝色恶魔刷怪蛋",
   "item.annoyingvillagers.enchant_bed_item": "附魔床",
@@ -301,6 +300,8 @@
   "tooltip.annoyingvillagers.shadow_obsidian": "由暗影Him克隆体发射的暗影黑曜石",
   "tooltip.annoyingvillagers.future_update": "§4这件武器目前没有任何能力，将会和对应的角色一起更新。§r",
   "tooltip.annoyingvillagers.beta_update": "§6这件武器目前没有任何特殊能力，很快就会进行更新。§r",
+  "tooltip.annoyingvillagers.blue_demon_trident": "装备两把充满能量的§b蓝魔§r三叉戟即可解锁远程攻击风格“三叉戟庆典”  \n。在雷雨天气携带此物品时，有很高的几率被闪电击中。被闪电击中后，三叉戟会充能。",
+  "tooltip.annoyingvillagers.blue_demon_chestplate": "受到伤害会积攒能量。能量充满后，攻击你的敌人会被 §b电动§r。",
   "epicfight.skill_slot.av_kick": "踢",
   "epicfight.skill_slot.av_stun_escape": "眩晕逃脱",
   "skill.epicfight.av_kick.category": "被动的",
@@ -328,6 +329,7 @@
   "skill.annoyingvillagers.wooden_door": "把我送回你家",
   "skill.annoyingvillagers.trapdoor": "这不是一扇真正的门",
   "skill.annoyingvillagers.ladder": "请将我刻在墙上，而不是脸上。",
+  "skill.annoyingvillagers.trident_festival": "§b三叉戟节§r",
   "skill.annoyingvillagers.bedrock_weapon.tooltip": "进入自动招架（15 秒），完全格挡所有伤害，每次格挡恢复 2 点生命值。§r",
   "skill.annoyingvillagers.demoniac_voltage_reaver.tooltip": "攻击附近的实体，并在命中时§7消耗耐力§r§8。§r\n\n§5蛇刃防御§r§8（固有防御）§r\n§8格挡所有受到的伤害并对附近的实体造成伤害。§r\n\n§7用蛇刃攻击敌人会为你的固有技能充能。§r",
   "skill.annoyingvillagers.ender_aegis.tooltip": "进入第二形态（10秒）\n普通攻击会释放一道§7冲击波§r§8，§r§6击倒§r§8路径上的实体。§r\n§8格挡伤害也会释放一道§r§7冲击波§r§8，并§r§6延长持续时间§r。\n\n§7格挡伤害会为你的固有技能充能。§r",
@@ -346,5 +348,6 @@
   "skill.annoyingvillagers.crafting_table.tooltip": "把工作台猛砸敌人的脸",
   "skill.annoyingvillagers.wooden_door.tooltip": "把木门猛地砸在敌人脸上。",
   "skill.annoyingvillagers.trapdoor.tooltip": "把活板门砸向敌人的脸。",
-  "skill.annoyingvillagers.ladder.tooltip": "把梯子猛砸敌人的脸"
+  "skill.annoyingvillagers.ladder.tooltip": "把梯子猛砸敌人的脸",
+  "skill.annoyingvillagers.trident_festival.tooltip": "此武器有两种攻击方式，按下§7特殊攻击§r§8即可切换。§r\n\n§b近战方式§r\n§8在使用者周围以及任何投掷到地面的三叉戟上释放§7电场§r§8。§b远程方式§r§8。被击中的目标会被§7带电§r§8。\n\n§b远程方式§r\n§8命令附近所有被击中的地面目标会被§7带电§r§8。\n\n§b三叉戟盛宴§r\n§8在使用者周围释放§7电场§r§8，然后命令附近所有被击中的三叉戟攻击附近的敌人，并在每个三叉戟上召唤§7闪电§r§8和§7爆炸§r§8。\n\n§7奔跑时自动格挡来自前方的飞行道具。§r"
 }

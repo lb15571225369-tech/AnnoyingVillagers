@@ -14,7 +14,6 @@
     "ExplosionMixin",
     "RaiderMixin",
     "MixinPHumanoidRenderer",
-    "ItemRendererMixin",
     "RenderBuffersMixin",
     "VillagerMixin",
     "VindicatorMixin",
@@ -33,7 +32,10 @@
   ],
   "client": [
     "client.ModelPartMixin",
-    "client.WeaponInnateSkillMixin"
+    "client.WeaponInnateSkillMixin",
+    "client.HumanoidArmorLayerMixin",
+    "client.ItemRendererMixin",
+    "client.WearableItemLayerMixin"
   ],
   "minVersion": "0.8"
 }
