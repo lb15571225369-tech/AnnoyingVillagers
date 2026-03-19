@@ -13,6 +13,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Random;
+
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class BlueDemonChestplateEvent {
     @SubscribeEvent
@@ -35,11 +37,20 @@ public final class BlueDemonChestplateEvent {
         if (BlueDemonChestplateItem.isBuffActive(chest)) {
             Entity sourceEntity = event.getSource().getEntity();
             if (sourceEntity instanceof LivingEntity attacker && attacker != wearer) {
-                attacker.addEffect(new MobEffectInstance(
-                        AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
-                        20,
-                        2
-                ));
+                float chance = new Random().nextFloat();
+                if (chance <= 0.2F) {
+                    attacker.addEffect(new MobEffectInstance(
+                            AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                            20,
+                            2
+                    ));
+                } else if (chance <= 0.6F) {
+                    attacker.addEffect(new MobEffectInstance(
+                            AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                            20,
+                            1
+                    ));
+                }
             }
         } else {
             if (!BlueDemonChestplateItem.isFullyCharged(chest)) {
