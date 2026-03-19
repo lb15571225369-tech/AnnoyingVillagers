@@ -27,7 +27,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
-@Mixin(value = EnderHand.class, remap = false)
+@Mixin(value = EnderHand.class, remap = true)
 public abstract class EnderHandMixin {
     @Inject(method = "customServerAiStep", at = @At("TAIL"), cancellable = true)
     private void makeEnderHandCanDamagePlayer(CallbackInfo ci) {

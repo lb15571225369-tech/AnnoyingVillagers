@@ -302,7 +302,7 @@
   "tooltip.annoyingvillagers.obsidian": "Obsidian Fired by Herobrine's Clone",
   "tooltip.annoyingvillagers.shadow_obsidian": "Shadow Obsidian Fired by Shadow Herobrine's Clone",
   "tooltip.annoyingvillagers.blue_demon_trident": "Equip 2 fully charged §bBlue Demon§r Tridents to unlock Trident Festival in Ranged Style.\nWhile holding this item during a thunderstorm, you have a high chance of being struck by lightning. Being struck by lightning charges it.",
-  "tooltip.annoyingvillagers.blue_demon_chestplate": "Taking damage builds up charge. When fully charged, enemies that hit you are §bElectrified§r.",
+  "tooltip.annoyingvillagers.blue_demon_chestplate": "Taking damage builds up charge. When fully charged HOLD Special Attack to activate buff.\n\nDuring the buff, enemies that hit you become §bElectrified§r. Nearby tridents are pulled toward you and heal the wielder.",
   "tooltip.annoyingvillagers.future_update": "§4This weapon currently has no abilities and will be updated along with its corresponding character.§r",
   "tooltip.annoyingvillagers.beta_update": "§6This weapon currently has no abilities and will be updated soon.§r",
   "epicfight.skill_slot.av_kick": "Kick",

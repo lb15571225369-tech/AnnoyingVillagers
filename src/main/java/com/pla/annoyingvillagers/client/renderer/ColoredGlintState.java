@@ -22,7 +22,8 @@ public final class ColoredGlintState {
             mode = ORANGE;
         } else if (
                 (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()) && BlueDemonTridentItem.isFullyCharged(stack))
-                        || (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()) && BlueDemonChestplateItem.isFullyCharged(stack))
+                        || (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get())
+                        && (BlueDemonChestplateItem.isFullyCharged(stack) || BlueDemonChestplateItem.isBuffActive(stack)))
         ) {
             mode = CYAN;
         }

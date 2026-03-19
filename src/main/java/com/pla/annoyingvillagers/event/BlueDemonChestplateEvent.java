@@ -32,21 +32,20 @@ public final class BlueDemonChestplateEvent {
             return;
         }
 
-        int gainedCharge = Math.max(1, Mth.ceil(finalDamage));
-        BlueDemonChestplateItem.addStoredCharge(chest, gainedCharge);
-
-        if (!BlueDemonChestplateItem.isFullyCharged(chest)) {
-            return;
-        }
-
-        Entity sourceEntity = event.getSource().getEntity();
-        if (sourceEntity instanceof LivingEntity attacker && attacker != wearer) {
-            attacker.addEffect(new MobEffectInstance(
-                    AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
-                    20,
-                    2
-            ));
-            BlueDemonChestplateItem.setStoredCharge(chest, 0);
+        if (BlueDemonChestplateItem.isBuffActive(chest)) {
+            Entity sourceEntity = event.getSource().getEntity();
+            if (sourceEntity instanceof LivingEntity attacker && attacker != wearer) {
+                attacker.addEffect(new MobEffectInstance(
+                        AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
+                        20,
+                        2
+                ));
+            }
+        } else {
+            if (!BlueDemonChestplateItem.isFullyCharged(chest)) {
+                int gainedCharge = Math.max(1, Mth.ceil(finalDamage));
+                BlueDemonChestplateItem.addStoredCharge(chest, gainedCharge);
+            }
         }
     }
 }

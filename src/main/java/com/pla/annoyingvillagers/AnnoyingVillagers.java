@@ -99,11 +99,6 @@ public class AnnoyingVillagers {
         @SubscribeEvent
         public static void init(FMLCommonSetupEvent fmlCommonSetupEvent) {
             AnnoyingVillagers.addNetworkMessage(
-                    TextboxSetMessage.class,
-                    TextboxSetMessage::buffer,
-                    TextboxSetMessage::new,
-                    TextboxSetMessage::handler);
-            AnnoyingVillagers.addNetworkMessage(
                     ClientboundGlaiveExplosionFx.class,
                     ClientboundGlaiveExplosionFx::encode,
                     ClientboundGlaiveExplosionFx::decode,

@@ -22,13 +22,18 @@ import yesman.epicfight.client.renderer.patched.layer.WearableItemLayer;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @Mixin(value = WearableItemLayer.class, remap = false)
-public abstract class WearableItemLayerMixin<E extends LivingEntity, T extends LivingEntityPatch<E>, M extends HumanoidModel<E>, AM extends HumanoidMesh> {
+public abstract class WearableItemLayerMixin<
+        E extends LivingEntity,
+        T extends LivingEntityPatch<E>,
+        M extends HumanoidModel<E>,
+        AM extends HumanoidMesh> {
 
     @WrapOperation(
-            method = "renderLayer",
+            method = "renderLayer(Lyesman/epicfight/world/capabilities/entitypatch/LivingEntityPatch;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I[Lyesman/epicfight/api/utils/math/OpenMatrix4f;FFFF)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/ItemStack;hasFoil()Z"
+                    target = "Lnet/minecraft/world/item/ItemStack;hasFoil()Z",
+                    remap = true
             )
     )
     private boolean captureEpicFightArmorStack(ItemStack stack, Operation<Boolean> original) {
@@ -36,7 +41,10 @@ public abstract class WearableItemLayerMixin<E extends LivingEntity, T extends L
         return original.call(stack);
     }
 
-    @Inject(method = "renderLayer", at = @At("RETURN"))
+    @Inject(
+            method = "renderLayer(Lyesman/epicfight/world/capabilities/entitypatch/LivingEntityPatch;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/layers/HumanoidArmorLayer;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I[Lyesman/epicfight/api/utils/math/OpenMatrix4f;FFFF)V",
+            at = @At("RETURN")
+    )
     private void clearEpicFightArmorStack(
             T entitypatch,
             E entityliving,
@@ -55,10 +63,11 @@ public abstract class WearableItemLayerMixin<E extends LivingEntity, T extends L
     }
 
     @ModifyExpressionValue(
-            method = "renderGlint",
+            method = "renderGlint(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILyesman/epicfight/api/client/model/SkinnedMesh;Lyesman/epicfight/api/model/Armature;[Lyesman/epicfight/api/utils/math/OpenMatrix4f;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/RenderType;armorEntityGlint()Lnet/minecraft/client/renderer/RenderType;"
+                    target = "Lnet/minecraft/client/renderer/RenderType;armorEntityGlint()Lnet/minecraft/client/renderer/RenderType;",
+                    remap = true
             )
     )
     private RenderType colorEpicFightArmorGlint(RenderType original) {

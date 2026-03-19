@@ -399,6 +399,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
 
     // Animation clone and re-registered from WOM
+    public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
     public static AnimationManager.AnimationAccessor<MovementAnimation> TORMENT_BERSERK_WALK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_1;
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_2;
@@ -1944,6 +1945,20 @@ public class AVAnimations {
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
 
         // Animations cloned and registered from WOM
+        AVAnimations.CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",
+                ( (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                                    if (livingEntity.level()
+                                            instanceof ServerLevel
+                                            && livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof BlueDemonChestplateItem) {
+                                        BlueDemonChestplateItem.activateBuff(livingEntity.getItemBySlot(EquipmentSlot.CHEST));
+                                    }
+                                }, Side.SERVER))));
         AVAnimations.TORMENT_BERSERK_WALK = builder.nextAccessor("biped/wom_clone/torment_berserk_walk", (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
         AVAnimations.TRIDENT_GUARD_HIT_1 = builder.nextAccessor("biped/wom_clone/trident_guard_hit1",
                 (accessor) -> (new StaticAnimation(false, accessor, humanoidArmature))

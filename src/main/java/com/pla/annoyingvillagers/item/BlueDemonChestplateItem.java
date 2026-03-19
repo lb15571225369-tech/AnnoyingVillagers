@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.BlueDemonThrownTridentEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,6 +40,10 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
     private static final int CHEST_CHARGE_DIM_COLOR = 0x233338;
     private static final int CHEST_CHARGE_TEXT_COLOR = 0xBDFBFF;
     private static final int CHEST_CHARGE_FULL_COLOR = 0x7CFFFF;
+
+    private static final String TAG_CHEST_BUFF_TICKS = "BlueDemonChestBuffTicks";
+    public static final int CHEST_BUFF_DURATION_TICKS = 20 * 30;
+    private static final double CHEST_TRIDENT_ABSORB_BOX_HALF = 2.5D;
 
 
     public BlueDemonChestplateItem(ArmorItem.Type type, Properties properties) {
@@ -136,7 +141,143 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
-        return super.isFoil(stack) || isFullyCharged(stack);
+        return super.isFoil(stack) || isFullyCharged(stack) || isBuffActive(stack);
+    }
+
+    public static int getBuffTicks(ItemStack stack) {
+        if (!isBlueDemonChestplate(stack)) {
+            return 0;
+        }
+
+        CompoundTag tag = stack.getTag();
+        return tag == null ? 0 : Math.max(0, tag.getInt(TAG_CHEST_BUFF_TICKS));
+    }
+
+    public static void setBuffTicks(ItemStack stack, int ticks) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        stack.getOrCreateTag().putInt(TAG_CHEST_BUFF_TICKS, Math.max(0, ticks));
+    }
+
+    public static boolean isBuffActive(ItemStack stack) {
+        return getBuffTicks(stack) > 0;
+    }
+
+    public static void activateBuff(ItemStack stack) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        if (!isFullyCharged(stack)) {
+            return;
+        }
+
+        setBuffTicks(stack, CHEST_BUFF_DURATION_TICKS);
+        setStoredCharge(stack, 0);
+    }
+
+    public static void stopBuff(ItemStack stack) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        setBuffTicks(stack, 0);
+    }
+
+    public static void tickActiveBuff(ItemStack stack, Player player) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        int ticks = getBuffTicks(stack);
+        if (ticks <= 0) {
+            return;
+        }
+
+        if (player.level() instanceof ServerLevel serverLevel) {
+            player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED,
+                    1,
+                    1,
+                    false,
+                    false,
+                    false
+            ));
+
+            player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.JUMP,
+                    1,
+                    1,
+                    false,
+                    false,
+                    false
+            ));
+
+            player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+                    1,
+                    2,
+                    false,
+                    false,
+                    false
+            ));
+
+            if (serverLevel.random.nextDouble() <= 0.1D) {
+                serverLevel.sendParticles(
+                        AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                        player.getX(), player.getY(), player.getZ(),
+                        1,
+                        0.3D, 1.2D, 0.3D,
+                        0.0D
+                );
+
+                if (serverLevel.random.nextDouble() <= 0.8D) {
+                    float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
+                    float pitch = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
+
+                    serverLevel.playSound(
+                            null,
+                            BlockPos.containing(player.getX(), player.getY(), player.getZ()),
+                            AnnoyingVillagersModSounds.ELECTRIFY.get(),
+                            SoundSource.NEUTRAL,
+                            volume,
+                            pitch
+                    );
+                }
+            }
+
+            if (player.tickCount % 2 == 0) {
+                absorbNearbyGroundedOwnerTridents(serverLevel, player);
+            }
+        }
+
+        setBuffTicks(stack, ticks - 1);
+    }
+
+    private static void absorbNearbyGroundedOwnerTridents(ServerLevel serverLevel, Player player) {
+        AABB box = new AABB(
+                player.getX() - CHEST_TRIDENT_ABSORB_BOX_HALF,
+                player.getY() - CHEST_TRIDENT_ABSORB_BOX_HALF,
+                player.getZ() - CHEST_TRIDENT_ABSORB_BOX_HALF,
+                player.getX() + CHEST_TRIDENT_ABSORB_BOX_HALF,
+                player.getY() + CHEST_TRIDENT_ABSORB_BOX_HALF,
+                player.getZ() + CHEST_TRIDENT_ABSORB_BOX_HALF
+        );
+
+        List<BlueDemonThrownTridentEntity> tridents = serverLevel.getEntitiesOfClass(
+                BlueDemonThrownTridentEntity.class,
+                box,
+                trident -> trident.isAlive()
+                        && trident.isGroundedTrident()
+                        && trident.belongsToOwner(player)
+                        && !trident.isAbsorbingToWearer()
+        );
+
+        for (BlueDemonThrownTridentEntity trident : tridents) {
+            trident.beginAbsorbToWearer(player);
+        }
     }
 
     public static class Chestplate extends BlueDemonChestplateItem {
@@ -151,38 +292,16 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         @Override
         public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
-            if (isFullyCharged(stack)) {
-                if (Math.random() <= 0.1D) {
-                    if (player.level() instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(
-                                AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
-                                player.getX(), player.getY(), player.getZ(),
-                                1,
-                                0.3D, 1.2D, 0.3D,
-                                0.0D
-                        );
 
-                        if (serverLevel.random.nextDouble() <= 0.8D) {
-                            float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
-                            float pitch  = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
+            if (player.getItemBySlot(EquipmentSlot.CHEST) != stack) {
+                return;
+            }
 
-                            serverLevel.playSound(
-                                    null,
-                                    BlockPos.containing(player.getX(), player.getY(), player.getZ()),
-                                    AnnoyingVillagersModSounds.ELECTRIFY.get(),
-                                    SoundSource.NEUTRAL,
-                                    volume,
-                                    pitch
-                            );
-                        }
-                    }
-                }
-            }
-            if (player.getItemBySlot(EquipmentSlot.CHEST) == stack) {
-                dropArmorSlot(player, EquipmentSlot.FEET, "Blue Demon Chestplate");
-                dropArmorSlot(player, EquipmentSlot.LEGS, "Blue Demon Chestplate");
-                dropArmorSlot(player, EquipmentSlot.HEAD, "Blue Demon Chestplate");
-            }
+            dropArmorSlot(player, EquipmentSlot.FEET, "Blue Demon Chestplate");
+            dropArmorSlot(player, EquipmentSlot.LEGS, "Blue Demon Chestplate");
+            dropArmorSlot(player, EquipmentSlot.HEAD, "Blue Demon Chestplate");
+
+            tickActiveBuff(stack, player);
         }
 
         @Override

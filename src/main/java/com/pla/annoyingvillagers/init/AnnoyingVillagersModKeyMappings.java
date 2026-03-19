@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.init;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.network.ThrowingEnderPearlMessage;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -12,7 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.network.KickMessage;
-import com.pla.annoyingvillagers.network.WeaponsMoreAttackMessage;
+import com.pla.annoyingvillagers.network.SpecialAttackMessage;
 import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
@@ -48,17 +47,37 @@ public class AnnoyingVillagersModKeyMappings {
         return left ? -1 : 1;
     }
 
-    public static final KeyMapping WEAPONS_MORE_ATTACK = new KeyMapping(
+    public static final KeyMapping SPECIAL_ATTACK = new KeyMapping(
             "key.annoyingvillagers.special_attack",
             GLFW.GLFW_KEY_C,
             "key.categories.annoyingvillagers") {
-        private boolean isDownOld = false;
+        private static final int HOLD_THRESHOLD_TICKS = 10; // 10 ticks = 0.5 second
 
+        private boolean isDownOld = false;
+        private int pressedAtTick = -1;
+
+        @Override
         public void setDown(boolean flag) {
             super.setDown(flag);
-            if (this.isDownOld != flag && flag && Minecraft.getInstance().player != null) {
-                AnnoyingVillagers.PACKET_HANDLER.sendToServer(new WeaponsMoreAttackMessage(0, 0));
-                WeaponsMoreAttackMessage.pressAction(Minecraft.getInstance().player, 0, 0);
+
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.player == null) {
+                this.isDownOld = flag;
+                return;
+            }
+
+            if (!this.isDownOld && flag) {
+                this.pressedAtTick = minecraft.player.tickCount;
+            }
+
+            if (this.isDownOld && !flag) {
+                int heldTicks = this.pressedAtTick >= 0
+                        ? minecraft.player.tickCount - this.pressedAtTick
+                        : 0;
+
+                int type = heldTicks >= HOLD_THRESHOLD_TICKS ? 1 : 0;
+                AnnoyingVillagers.PACKET_HANDLER.sendToServer(new SpecialAttackMessage(type, heldTicks));
+                this.pressedAtTick = -1;
             }
 
             this.isDownOld = flag;
@@ -90,7 +109,7 @@ public class AnnoyingVillagersModKeyMappings {
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(AnnoyingVillagersModKeyMappings.KICK);
-        event.register(AnnoyingVillagersModKeyMappings.WEAPONS_MORE_ATTACK);
+        event.register(AnnoyingVillagersModKeyMappings.SPECIAL_ATTACK);
         event.register(AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL);
         event.register(AnnoyingVillagersModKeyMappings.DRAGON_FLIGHT_DESCENT_KEY);
     }
@@ -102,7 +121,7 @@ public class AnnoyingVillagersModKeyMappings {
         public static void onClientTick(ClientTickEvent clienttickevent) {
             if (Minecraft.getInstance().screen == null) {
                 AnnoyingVillagersModKeyMappings.KICK.consumeClick();
-                AnnoyingVillagersModKeyMappings.WEAPONS_MORE_ATTACK.consumeClick();
+                AnnoyingVillagersModKeyMappings.SPECIAL_ATTACK.consumeClick();
                 AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL.consumeClick();
             }
 

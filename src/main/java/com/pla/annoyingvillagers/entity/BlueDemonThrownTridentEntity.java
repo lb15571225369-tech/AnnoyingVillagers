@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.item.BlueDemonChestplateItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +22,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -65,9 +67,151 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private float queuedLaunchSpeed = 0.0F;
 
     private long spawnSequence;
+    private static final float ABSORB_HEAL_AMOUNT = 2.0F; // 1 heart
+    private static final double ABSORB_FINISH_DISTANCE_SQR = 1.0D;
+
+    private boolean absorbToWearerActive = false;
+
+    @Nullable
+    private UUID absorbWearerUUID = null;
+
+    private Vec3 absorbStartGroundPos = Vec3.ZERO;
+
+    @Nullable
+    private Direction absorbReturnFace = null;
 
     private boolean isRelaunchLocked() {
-        return this.relaunchAnimationActive || this.relaunchDelayActive;
+        return this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive;
+    }
+
+    public boolean isAbsorbingToWearer() {
+        return this.absorbToWearerActive;
+    }
+
+    public void beginAbsorbToWearer(@NotNull Player player) {
+        if (this.absorbToWearerActive || this.relaunchAnimationActive || this.relaunchDelayActive) {
+            return;
+        }
+
+        if (!this.inGround || !this.belongsToOwner(player)) {
+            return;
+        }
+
+        this.absorbToWearerActive = true;
+        this.absorbWearerUUID = player.getUUID();
+        this.absorbStartGroundPos = this.position();
+        this.absorbReturnFace = this.getStuckFace();
+
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+        this.setStuckFace(null);
+        this.inGround = false;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+
+        this.setNoPhysics(true);
+        this.setNoGravity(true);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = false;
+        this.setGlowingTag(true);
+    }
+
+    @Nullable
+    private Player getAbsorbWearer() {
+        if (!(this.level() instanceof ServerLevel serverLevel) || this.absorbWearerUUID == null) {
+            return null;
+        }
+
+        Entity entity = serverLevel.getEntity(this.absorbWearerUUID);
+        return entity instanceof Player player && player.isAlive() ? player : null;
+    }
+
+    private boolean canContinueAbsorbToWearer(@NotNull Player player) {
+        if (!this.belongsToOwner(player)) {
+            return false;
+        }
+
+        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        return BlueDemonChestplateItem.isBlueDemonChestplate(chest)
+                && BlueDemonChestplateItem.isBuffActive(chest);
+    }
+
+    private void cancelAbsorbToWearer() {
+        this.absorbToWearerActive = false;
+        this.absorbWearerUUID = null;
+
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = false;
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+        this.setPos(this.absorbStartGroundPos.x, this.absorbStartGroundPos.y, this.absorbStartGroundPos.z);
+        this.setDeltaMovement(Vec3.ZERO);
+
+        this.inGround = true;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(this.absorbReturnFace);
+        this.setGlowingTag(false);
+    }
+
+    private void finishAbsorbToWearer(@NotNull Player player) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            player.heal(ABSORB_HEAL_AMOUNT);
+
+            serverLevel.sendParticles(
+                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                    this.getX(), this.getY(), this.getZ(),
+                    6,
+                    0.15D, 0.15D, 0.15D,
+                    0.02D
+            );
+
+            serverLevel.playSound(
+                    null,
+                    BlockPos.containing(this.getX(), this.getY(), this.getZ()),
+                    SoundEvents.TRIDENT_RETURN,
+                    SoundSource.PLAYERS,
+                    0.8F,
+                    1.35F
+            );
+        }
+
+        this.discard();
+    }
+
+    private void tickAbsorbToWearer() {
+        Player player = this.getAbsorbWearer();
+        if (player == null || !this.canContinueAbsorbToWearer(player)) {
+            this.cancelAbsorbToWearer();
+            return;
+        }
+
+        Vec3 targetPos = player.position().add(0.0D, player.getBbHeight() * 0.55D, 0.0D);
+        Vec3 toTarget = targetPos.subtract(this.position());
+        double distanceSqr = toTarget.lengthSqr();
+
+        if (distanceSqr <= ABSORB_FINISH_DISTANCE_SQR) {
+            this.finishAbsorbToWearer(player);
+            return;
+        }
+
+        double distance = Math.sqrt(distanceSqr);
+        Vec3 move = toTarget.normalize().scale(Math.min(0.85D, 0.18D + distance * 0.12D));
+
+        this.setPos(this.getX() + move.x, this.getY() + move.y, this.getZ() + move.z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.updateRotationFromMovement(move);
+
+        if (this.level() instanceof ServerLevel serverLevel && serverLevel.random.nextDouble() <= 0.25D) {
+            serverLevel.sendParticles(
+                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                    this.getX(), this.getY(), this.getZ(),
+                    1,
+                    0.05D, 0.05D, 0.05D,
+                    0.0D
+            );
+        }
     }
 
     @Override
@@ -165,6 +309,14 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     public void tick() {
         if (!this.level().isClientSide && this.loadedFromDisk) {
             this.discard();
+            return;
+        }
+
+        if (!this.level().isClientSide && this.absorbToWearerActive) {
+            this.baseTick();
+            this.pickup = AbstractArrow.Pickup.DISALLOWED;
+            this.tickAbsorbToWearer();
+            this.tickElectricEffects();
             return;
         }
 
