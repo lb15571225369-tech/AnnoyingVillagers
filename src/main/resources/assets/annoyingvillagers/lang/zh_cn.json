@@ -301,7 +301,7 @@
   "tooltip.annoyingvillagers.future_update": "§4这件武器目前没有任何能力，将会和对应的角色一起更新。§r",
   "tooltip.annoyingvillagers.beta_update": "§6这件武器目前没有任何特殊能力，很快就会进行更新。§r",
   "tooltip.annoyingvillagers.blue_demon_trident": "装备两把充满能量的§b蓝魔§r三叉戟即可解锁远程攻击风格“三叉戟庆典”  \n。在雷雨天气携带此物品时，有很高的几率被闪电击中。被闪电击中后，三叉戟会充能。",
-  "tooltip.annoyingvillagers.blue_demon_chestplate": "受到伤害会积攒能量。能量充满后，攻击你的敌人会被 §b电动§r。",
+  "tooltip.annoyingvillagers.blue_demon_chestplate": "受到傷害會積攢能量。能量充滿後，按住特殊攻擊鍵即可啟動增益效果。\n\n增益效果期間，攻擊使用者的敵人有幾率被「帶電」。附近的三角戟會被拉向使用者並治療使用者。",
   "epicfight.skill_slot.av_kick": "踢",
   "epicfight.skill_slot.av_stun_escape": "眩晕逃脱",
   "skill.epicfight.av_kick.category": "被动的",

@@ -9,6 +9,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Double> HEROBRINE_POSSESS_RATE;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
+    public static ForgeConfigSpec.ConfigValue<Double> ANGRY_STEVE_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Integer> ANGRY_STEVE_LEAVE_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> ANGRY_STEVE_LEAVE_MAX_TIME;
     public static ForgeConfigSpec.ConfigValue<Double> KICK_STAMINA_DECREASE_PERCENTAGE;
@@ -43,6 +44,10 @@ public class AnnoyingVillagersConfig {
                         "The maximum value (in minutes) for Herobrine's random recall time. This value should be greater than or equal to the minimum. " +
                                 "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
                 .defineInRange("herobrineRecallMaxTime", 300, 1, 10080);
+
+        ANGRY_STEVE_CHANCE = BUILDER.comment(
+                        "Chance for Steve to be Angry after getting killed")
+                .defineInRange("angrySteveChance", 0.2, 0, 1);
 
         ANGRY_STEVE_LEAVE_MIN_TIME = BUILDER.comment(
                         "The minimum value (in minutes) for Angry Steve's random leave time. This value should be lower than or equal the maximum. " +

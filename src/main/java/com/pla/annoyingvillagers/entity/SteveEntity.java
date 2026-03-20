@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -27,12 +28,15 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
@@ -46,7 +50,10 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class SteveEntity extends AVNpc {
     // 0: normal
@@ -229,28 +236,170 @@ public class SteveEntity extends AVNpc {
     @Override
     public void die(@NotNull DamageSource pDamageSource) {
         if (this.level() instanceof ServerLevel serverLevel) {
-            LivingEntity target = null;
-            if (pDamageSource.getEntity() instanceof LivingEntity living && living.isAlive()) {
-                target = living;
-            } else if (this.getTarget() != null && this.getTarget().isAlive()) {
-                target = this.getTarget();
-            } else if (this.getLastHurtByMob() != null && this.getLastHurtByMob().isAlive()) {
-                target = this.getLastHurtByMob();
-            }
+            if (new Random().nextFloat() <= AnnoyingVillagersConfig.ANGRY_STEVE_CHANCE.get()) {
+                LivingEntity target = null;
+                if (pDamageSource.getEntity() instanceof LivingEntity living && living.isAlive()) {
+                    target = living;
+                } else if (this.getTarget() != null && this.getTarget().isAlive()) {
+                    target = this.getTarget();
+                } else if (this.getLastHurtByMob() != null && this.getLastHurtByMob().isAlive()) {
+                    target = this.getLastHurtByMob();
+                }
 
-            AngrySteveEntity angrySteveEntity = new AngrySteveEntity(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
+                AngrySteveEntity angrySteveEntity = new AngrySteveEntity(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
 
-            angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
-            InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
-            this.discard();
-            SteveData steveData = SteveData.get(serverLevel);
-            steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
+                angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
+                InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
+                this.discard();
+                SteveData steveData = SteveData.get(serverLevel);
+                steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
 
-            angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            serverLevel.addFreshEntity(angrySteveEntity);
-            if (target != null) {
-                angrySteveEntity.setTarget(target);
-                angrySteveEntity.setLastHurtByMob(target);
+                angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                serverLevel.addFreshEntity(angrySteveEntity);
+                if (target != null) {
+                    angrySteveEntity.setTarget(target);
+                    angrySteveEntity.setLastHurtByMob(target);
+                }
+            } else {
+                serverLevel.playSound(
+                        null,
+                        this.getX(), this.getY(), this.getZ(),
+                        AnnoyingVillagersModSounds.STEVE_NO.get(),
+                        SoundSource.NEUTRAL,
+                        1.0F, 1.0F
+                );
+
+                final double x = this.getX();
+                final double y = this.getY() + 1.0D;
+                final double z = this.getZ();
+
+                Consumer<ItemStack> dropStack = (stack) -> {
+                    ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
+                    drop.setPickUpDelay(10);
+                    serverLevel.addFreshEntity(drop);
+                };
+
+                Consumer<Integer> dropArrows = (count) -> {
+                    for (int i = 0; i < count; i++) dropStack.accept(new ItemStack(Items.ARROW));
+                };
+
+                List<ItemStack> damagedStacks = new ArrayList<>();
+
+                ItemStack compressedDiamondHelmet = new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get());
+                compressedDiamondHelmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+                compressedDiamondHelmet.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
+                compressedDiamondHelmet.enchant(Enchantments.FIRE_PROTECTION, 5);
+                compressedDiamondHelmet.enchant(Enchantments.BLAST_PROTECTION, 5);
+                damagedStacks.add(compressedDiamondHelmet);
+
+                ItemStack compressedDiamondChestplate = new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get());
+                compressedDiamondChestplate.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+                compressedDiamondChestplate.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
+                compressedDiamondChestplate.enchant(Enchantments.FIRE_PROTECTION, 5);
+                compressedDiamondChestplate.enchant(Enchantments.BLAST_PROTECTION, 5);
+                damagedStacks.add(compressedDiamondChestplate);
+
+                ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                diamondSword.enchant(Enchantments.SHARPNESS, 5);
+                diamondSword.enchant(Enchantments.SMITE, 5);
+                damagedStacks.add(diamondSword);
+
+                if (new Random().nextBoolean()) {
+                    damagedStacks.add(diamondSword);
+                }
+
+                ItemStack bow = this.getBowItem();
+                bow.enchant(Enchantments.POWER_ARROWS, 5);
+                bow.enchant(Enchantments.PUNCH_ARROWS, 5);
+                damagedStacks.add(bow);
+
+                double chance = new Random().nextDouble(0.0, 1.0);
+                if (chance < 0.2) {
+                    ItemStack woodenDoor = new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get());
+                    woodenDoor.enchant(Enchantments.SHARPNESS, 5);
+                    woodenDoor.enchant(Enchantments.KNOCKBACK, 3);
+                    woodenDoor.enchant(Enchantments.MENDING, 5);
+                    damagedStacks.add(woodenDoor);
+                } else if (chance < 0.4) {
+                    ItemStack craftingTable = new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
+                    craftingTable.enchant(Enchantments.SMITE, 5);
+                    craftingTable.enchant(Enchantments.KNOCKBACK, 3);
+                    craftingTable.enchant(Enchantments.MENDING, 5);
+                    damagedStacks.add(craftingTable);
+                } else if (chance < 0.6) {
+                    ItemStack ladder = new ItemStack(AnnoyingVillagersModItems.LADDER.get());
+                    ladder.enchant(Enchantments.SMITE, 5);
+                    ladder.enchant(Enchantments.SWEEPING_EDGE, 3);
+                    ladder.enchant(Enchantments.MENDING, 5);
+                    damagedStacks.add(ladder);
+                } else if (chance < 0.8) {
+                    ItemStack trapDoor = new ItemStack(AnnoyingVillagersModItems.TRAPDOOR.get());
+                    trapDoor.enchant(Enchantments.KNOCKBACK, 5);
+                    trapDoor.enchant(Enchantments.SWEEPING_EDGE, 3);
+                    trapDoor.enchant(Enchantments.MENDING, 5);
+                    damagedStacks.add(trapDoor);
+                } else {
+                    ItemStack mendingDiamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                    mendingDiamondSword.enchant(Enchantments.SHARPNESS, 5);
+                    mendingDiamondSword.enchant(Enchantments.SMITE, 5);
+                    mendingDiamondSword.enchant(Enchantments.MENDING, 5);
+                    damagedStacks.add(mendingDiamondSword);
+                }
+
+                ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
+                woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
+                woopieTheSword.enchant(Enchantments.SMITE, 5);
+                woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
+                damagedStacks.add(woopieTheSword);
+                damagedStacks.add(new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
+
+                for (ItemStack stack : damagedStacks) {
+                    stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
+                    dropStack.accept(stack);
+                }
+
+                ItemLike[] simpleDrops = new ItemLike[] {
+                        Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE,
+                        Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE,
+                        Items.ENCHANTED_GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE,
+
+                        Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL,
+                        Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL,
+
+                        Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT,
+
+                        Blocks.TNT, Blocks.TNT,
+                        Blocks.DIAMOND_BLOCK,
+                        Blocks.DRAGON_EGG,
+
+                        Items.WHITE_BED,
+                        Items.CAKE,
+                        Items.WATER_BUCKET,
+                        Items.COOKED_BEEF, Items.COOKED_BEEF, Items.COOKED_BEEF,
+                        Items.FISHING_ROD,
+                        Items.LIGHT_GRAY_DYE,
+                        Items.CARROT, Items.CARROT,
+                        Items.BAKED_POTATO, Items.BAKED_POTATO,
+
+                        Items.STICK, Items.STICK, Items.STICK, Items.STICK, Items.STICK,
+                        Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT,
+                        Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND,
+
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                        AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
+                };
+
+                for (ItemLike itemLike : simpleDrops) {
+                    dropStack.accept(new ItemStack(itemLike));
+                }
+                dropArrows.accept(new Random().nextInt(10, 30));
             }
         }
 

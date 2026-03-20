@@ -277,20 +277,11 @@ public class AngrySteveEntity extends AVNpc {
                 damagedStacks.add(mendingDiamondSword);
             }
 
-            if (new Random().nextBoolean()) {
-                ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
-                woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
-                woopieTheSword.enchant(Enchantments.SMITE, 5);
-                woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                damagedStacks.add(woopieTheSword);
-                damagedStacks.add(new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
-            } else {
-                ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                legendarySword.enchant(Enchantments.SHARPNESS, 5);
-                legendarySword.enchant(Enchantments.SMITE, 5);
-                legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                damagedStacks.add(legendarySword);
-            }
+            ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
+            legendarySword.enchant(Enchantments.SHARPNESS, 5);
+            legendarySword.enchant(Enchantments.SMITE, 5);
+            legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
+            damagedStacks.add(legendarySword);
 
             for (ItemStack stack : damagedStacks) {
                 stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
