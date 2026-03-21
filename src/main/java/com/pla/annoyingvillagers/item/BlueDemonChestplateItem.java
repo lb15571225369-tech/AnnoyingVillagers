@@ -158,11 +158,29 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             return;
         }
 
-        stack.getOrCreateTag().putInt(TAG_CHEST_BUFF_TICKS, Math.max(0, ticks));
+        int clamped = Math.max(0, ticks);
+        CompoundTag tag = stack.getTag();
+
+        if (clamped == 0) {
+            if (tag != null) {
+                tag.remove(TAG_CHEST_BUFF_TICKS);
+
+                if (tag.isEmpty()) {
+                    stack.setTag(null);
+                }
+            }
+            return;
+        }
+
+        stack.getOrCreateTag().putInt(TAG_CHEST_BUFF_TICKS, clamped);
     }
 
-    public static boolean isBuffActive(ItemStack stack) {
-        return getBuffTicks(stack) > 0;
+    public static void stopBuff(ItemStack stack) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        setBuffTicks(stack, 0);
     }
 
     public static void activateBuff(ItemStack stack) {
@@ -173,17 +191,14 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         if (!isFullyCharged(stack)) {
             return;
         }
+        stopBuff(stack);
 
         setBuffTicks(stack, CHEST_BUFF_DURATION_TICKS);
         setStoredCharge(stack, 0);
     }
 
-    public static void stopBuff(ItemStack stack) {
-        if (!isBlueDemonChestplate(stack)) {
-            return;
-        }
-
-        setBuffTicks(stack, 0);
+    public static boolean isBuffActive(ItemStack stack) {
+        return getBuffTicks(stack) > 0;
     }
 
     public static void tickActiveBuff(ItemStack stack, Player player) {
@@ -294,6 +309,9 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
 
             if (player.getItemBySlot(EquipmentSlot.CHEST) != stack) {
+                if (isBuffActive(stack)) {
+                    stopBuff(stack);
+                }
                 return;
             }
 
@@ -316,7 +334,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
 
         private static void addChestChargeTooltip(List<Component> tooltip, int charge) {
             tooltip.add(
-                    Component.literal("Thunder Armor Charge")
+                    Component.literal(Component.translatable("tooltip.annoyingvillagers.blue_demon_chestplate_thunder_charge").getString())
                             .withStyle(style -> style.withBold(true).withColor(TextColor.fromRgb(CHEST_CHARGE_COLOR)))
             );
 
@@ -329,7 +347,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
 
             if (charge >= MAX_CHEST_CHARGE) {
                 tooltip.add(
-                        Component.literal("Charged")
+                        Component.literal(Component.translatable("tooltip.annoyingvillagers.thunder_charged").getString())
                                 .withStyle(style -> style.withBold(true).withColor(TextColor.fromRgb(CHEST_CHARGE_FULL_COLOR)))
                 );
             }

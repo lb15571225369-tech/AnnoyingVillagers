@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,6 +18,18 @@ import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class BlueDemonChestplateEvent {
+    @SubscribeEvent
+    public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (event.getSlot() != EquipmentSlot.CHEST) {
+            return;
+        }
+
+        ItemStack oldStack = event.getFrom();
+        if (BlueDemonChestplateItem.isBlueDemonChestplate(oldStack)) {
+            BlueDemonChestplateItem.stopBuff(oldStack);
+        }
+    }
+
     @SubscribeEvent
     public static void onLivingDamage(LivingHurtEvent event) {
         LivingEntity wearer = event.getEntity();

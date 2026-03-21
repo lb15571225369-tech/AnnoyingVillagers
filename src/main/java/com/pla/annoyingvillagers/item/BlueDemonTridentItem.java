@@ -317,7 +317,7 @@ public class BlueDemonTridentItem extends SwordItem {
 
     private static void addStormChargeTooltip(List<Component> tooltip, int energy) {
         tooltip.add(
-                Component.literal("Thunder Charge")
+                Component.literal(Component.translatable("tooltip.annoyingvillagers.blue_demon_trident_thunder_charge").getString())
                         .withStyle(style -> style.withBold(true).withColor(TextColor.fromRgb(ENERGY_COLOR)))
         );
 
@@ -330,7 +330,7 @@ public class BlueDemonTridentItem extends SwordItem {
 
         if (energy >= MAX_STORM_ENERGY) {
             tooltip.add(
-                    Component.literal("Charged")
+                    Component.literal(Component.translatable("tooltip.annoyingvillagers.thunder_charged").getString())
                             .withStyle(style -> style.withBold(true).withColor(TextColor.fromRgb(ENERGY_FULL_COLOR)))
             );
         }
