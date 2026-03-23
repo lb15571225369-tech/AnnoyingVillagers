@@ -76,9 +76,4 @@ public class LegendarySwordItem extends SwordItem {
         super.appendHoverText(itemStack, level, componentList, tooltipFlag);
         componentList.add(Component.translatable("tooltip.annoyingvillagers.legendary_sword"));
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean isFoil(@NotNull ItemStack itemStack) {
-        return true;
-    }
 }

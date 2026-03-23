@@ -1,21 +1,27 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.BbqEntity;
-import net.minecraft.client.model.ChickenModel;
+import com.pla.annoyingvillagers.client.model.ModelBbq;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.ChickenRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.animal.Chicken;
 import org.jetbrains.annotations.NotNull;
 
-public class BbqRenderer extends MobRenderer<BbqEntity, ChickenModel<BbqEntity>> {
+public class BbqRenderer extends ChickenRenderer {
+    public BbqRenderer(EntityRendererProvider.Context context) {
+        super(context);
 
-    public BbqRenderer(Context context) {
-        super(context, new ChickenModel<>(context.bakeLayer(ModelLayers.CHICKEN)), 0.5F);
+        this.model = new ModelBbq<>(context.bakeLayer(ModelLayers.CHICKEN));
+        this.addLayer(new BbqHeldItemLayer(this, context.getItemInHandRenderer()));
     }
 
-    public @NotNull ResourceLocation getTextureLocation(@NotNull BbqEntity bbqEntity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/chicken.png");
+    @Override
+    public @NotNull ResourceLocation getTextureLocation(@NotNull Chicken entity) {
+        return ResourceLocation.fromNamespaceAndPath(
+                AnnoyingVillagers.MODID,
+                "textures/entities/chicken.png"
+        );
     }
 }

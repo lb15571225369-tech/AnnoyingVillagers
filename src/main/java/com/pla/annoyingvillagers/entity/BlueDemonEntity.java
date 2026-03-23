@@ -10,9 +10,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -31,7 +31,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
@@ -39,6 +38,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
 
 public class BlueDemonEntity extends Monster {
     private BbqEntity bbqEntityToProtect;
@@ -53,8 +53,8 @@ public class BlueDemonEntity extends Monster {
         this.bbqUUID = bbqUUID;
     }
 
-    public BlueDemonEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON.get(), level);
+    public BlueDemonEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.BLUE_DEMON.get(), level);
     }
 
     public UUID getBbqUUID() {
@@ -82,7 +82,7 @@ public class BlueDemonEntity extends Monster {
         return super.canBeAffected(effect);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -123,7 +123,7 @@ public class BlueDemonEntity extends Monster {
         }
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -135,12 +135,12 @@ public class BlueDemonEntity extends Monster {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
+        return SoundEvents.DROWNED_HURT;
     }
 
-    public SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
+    public @NotNull SoundEvent getDeathSound() {
+        return SoundEvents.DROWNED_DEATH;
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
@@ -155,13 +155,12 @@ public class BlueDemonEntity extends Monster {
         return super.hurt(damagesource, f);
     }
 
-    public void die(DamageSource damagesource) {
+    public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
-        BlueDemonOnEntityDeathProcedure.execute(this.level(), this, damagesource.getEntity());
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (bbqUUID != null) {
             tag.putUUID("BbqUUID", bbqUUID);
@@ -170,7 +169,7 @@ public class BlueDemonEntity extends Monster {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("BbqUUID")) {
             bbqUUID = tag.getUUID("BbqUUID");
@@ -180,12 +179,12 @@ public class BlueDemonEntity extends Monster {
 
     private void spawnBbq() {
         if (this.level() instanceof ServerLevel serverLevel) {
-            BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
+            BbqEntity bbqEntity = new BbqEntity(AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
             bbqEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
 
-            bbqEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            bbqEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
             serverLevel.addFreshEntity(bbqEntity);
 
             this.setProtectingBbq(bbqEntity);
@@ -193,7 +192,7 @@ public class BlueDemonEntity extends Monster {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverlevelaccessor, @NotNull DifficultyInstance difficultyinstance, @NotNull MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
             ServerLevel serverLevel = serverlevelaccessor.getLevel();
             BluedemonData bluedemonData = BluedemonData.get(serverLevel);
@@ -212,16 +211,6 @@ public class BlueDemonEntity extends Monster {
         return super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
     }
 
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        BlueDemonOnEntityKillOtherEntityProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
-    }
-
-    public void baseTick() {
-        super.baseTick();
-        BlueDemonOnEntityUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-    }
-
     public static boolean canSpawn(EntityType<BlueDemonEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         return false;
 //        ServerLevel serverLevel = level.getLevel();
@@ -233,7 +222,7 @@ public class BlueDemonEntity extends Monster {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(@NotNull RemovalReason reason) {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
@@ -244,8 +233,8 @@ public class BlueDemonEntity extends Monster {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.4D);
-        builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
+        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
         builder = builder.add(Attributes.ARMOR, 5.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 10.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
