@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonThrownTridentEntity;
 import com.pla.annoyingvillagers.entity.ElectricAreaEntity;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -194,7 +195,7 @@ public class BlueDemonTridentItem extends SwordItem {
 
             LivingEntity target = targets.isEmpty() ? null : targets.get(i % targets.size());
             Vec3 fallback = target == null
-                    ? com.pla.annoyingvillagers.item.BlueDemonTridentItem.getTridentThrowDirection(owner, trident.position())
+                    ? BlueDemonTridentItem.getTridentThrowDirection(owner, trident.position())
                     : null;
 
             int extraDelay = 2 + i * 2 + serverLevel.random.nextInt(3);
@@ -250,6 +251,16 @@ public class BlueDemonTridentItem extends SwordItem {
         }
 
         if (!target.isAlive() || target.isSpectator()) {
+            return false;
+        }
+
+        if (target instanceof Player player && player.isCreative()) {
+            return false;
+        }
+
+        if (owner instanceof BlueDemonEntity blueDemonEntity
+                && blueDemonEntity.getBbqEntity() != null
+                && target == blueDemonEntity.getBbqEntity()) {
             return false;
         }
 

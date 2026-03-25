@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -138,6 +139,9 @@ public class TridentLightningBolt extends LightningBolt {
                         ),
                         entity -> entity.isAlive()
                                 && entity != this.owner
+                                && (this.owner instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.getBbqEntity() != null && entity != blueDemonEntity.getBbqEntity())
+                                && !(entity.isSpectator())
+                                && !(entity instanceof Player player && player.isCreative())
                                 && !(entity instanceof BlueDemonThrownTridentEntity)
                                 && !(entity instanceof TridentLightningBolt)
                 );

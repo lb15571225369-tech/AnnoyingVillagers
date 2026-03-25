@@ -107,6 +107,15 @@ public class MobClashBladeMixin {
             return;
         }
 
+        if (defender instanceof BlueDemonEntity
+                && (defenderDynamicAnimation == AVAnimations.CUT_ANTITHEUS_ASCENSION
+                || defenderDynamicAnimation == AVAnimations.TRIDENT_ATTACK
+                || defenderDynamicAnimation == AVAnimations.ELECTRIC_FIELD
+                || defenderDynamicAnimation == AVAnimations.TRIDENT_FESTIVAL)) {
+            cir.setReturnValue(true);
+            return;
+        }
+
         if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile projectile
                 && defender.onGround()
                 && !defender.isPassenger()

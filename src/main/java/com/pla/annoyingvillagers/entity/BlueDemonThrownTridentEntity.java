@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class BlueDemonThrownTridentEntity extends ThrownTrident {
@@ -55,7 +57,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private int relaunchAnimationTick = 0;
     private Vec3 relaunchAnimationStart = Vec3.ZERO;
     private Vec3 relaunchAnimationEnd = Vec3.ZERO;
-    private boolean loadedFromDisk = false;
     private boolean relaunchDelayActive = false;
     private int relaunchDelayTicks = 0;
     private int relaunchDelayTick = 0;
@@ -88,17 +89,17 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         return this.absorbToWearerActive;
     }
 
-    public void beginAbsorbToWearer(@NotNull Player player) {
+    public void beginAbsorbToWearer(@NotNull LivingEntity entity) {
         if (this.absorbToWearerActive || this.relaunchAnimationActive || this.relaunchDelayActive) {
             return;
         }
 
-        if (!this.inGround || !this.belongsToOwner(player)) {
+        if (!this.inGround || !this.belongsToOwner(entity)) {
             return;
         }
 
         this.absorbToWearerActive = true;
-        this.absorbWearerUUID = player.getUUID();
+        this.absorbWearerUUID = entity.getUUID();
         this.absorbStartGroundPos = this.position();
         this.absorbReturnFace = this.getStuckFace();
 
@@ -117,23 +118,31 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     }
 
     @Nullable
-    private Player getAbsorbWearer() {
+    private LivingEntity getAbsorbWearer() {
         if (!(this.level() instanceof ServerLevel serverLevel) || this.absorbWearerUUID == null) {
             return null;
         }
 
         Entity entity = serverLevel.getEntity(this.absorbWearerUUID);
-        return entity instanceof Player player && player.isAlive() ? player : null;
+        return entity instanceof LivingEntity living && living.isAlive() ? living : null;
     }
 
-    private boolean canContinueAbsorbToWearer(@NotNull Player player) {
-        if (!this.belongsToOwner(player)) {
+    private boolean canContinueAbsorbToWearer(@NotNull LivingEntity entity) {
+        if (!this.belongsToOwner(entity)) {
             return false;
         }
 
-        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-        return BlueDemonChestplateItem.isBlueDemonChestplate(chest)
-                && BlueDemonChestplateItem.isBuffActive(chest);
+        if (entity instanceof Player player) {
+            ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+            return BlueDemonChestplateItem.isBlueDemonChestplate(chest)
+                    && BlueDemonChestplateItem.isBuffActive(chest);
+        }
+
+        if (entity instanceof BlueDemonEntity blueDemonEntity) {
+            return blueDemonEntity.getHealingTick() > 0;
+        }
+
+        return false;
     }
 
     private void cancelAbsorbToWearer() {
@@ -155,9 +164,9 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.setGlowingTag(false);
     }
 
-    private void finishAbsorbToWearer(@NotNull Player player) {
+    private void finishAbsorbToWearer(@NotNull LivingEntity entity) {
         if (this.level() instanceof ServerLevel serverLevel) {
-            player.heal(ABSORB_HEAL_AMOUNT);
+            entity.heal(ABSORB_HEAL_AMOUNT);
 
             serverLevel.sendParticles(
                     AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
@@ -181,18 +190,18 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     }
 
     private void tickAbsorbToWearer() {
-        Player player = this.getAbsorbWearer();
-        if (player == null || !this.canContinueAbsorbToWearer(player)) {
+        LivingEntity entity = this.getAbsorbWearer();
+        if (entity == null || !this.canContinueAbsorbToWearer(entity)) {
             this.cancelAbsorbToWearer();
             return;
         }
 
-        Vec3 targetPos = player.position().add(0.0D, player.getBbHeight() * 0.55D, 0.0D);
+        Vec3 targetPos = entity.position().add(0.0D, entity.getBbHeight() * 0.55D, 0.0D);
         Vec3 toTarget = targetPos.subtract(this.position());
         double distanceSqr = toTarget.lengthSqr();
 
         if (distanceSqr <= ABSORB_FINISH_DISTANCE_SQR) {
-            this.finishAbsorbToWearer(player);
+            this.finishAbsorbToWearer(entity);
             return;
         }
 
@@ -243,7 +252,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     @Override
     public boolean shouldBeSaved() {
-        return false;
+        return this.inGround && !this.relaunchAnimationActive && !this.relaunchDelayActive && !this.absorbToWearerActive;
     }
 
     public BlueDemonThrownTridentEntity(EntityType<? extends ThrownTrident> type, Level level) {
@@ -255,7 +264,9 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     }
 
     public BlueDemonThrownTridentEntity(Level level, LivingEntity shooter, ItemStack stack) {
-        super(level, shooter, stack);
+        super(AnnoyingVillagersModEntities.BLUE_DEMON_THROWN_TRIDENT.get(), level);
+        this.setOwner(shooter);
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
     }
 
     @Override
@@ -287,7 +298,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         boolean hurtSuccess = target.hurt(damageSource, damage);
 
         if (hurtSuccess) {
-            if (target instanceof LivingEntity livingTarget) {
+            if (target instanceof LivingEntity livingTarget && new Random().nextFloat() <= 0.15F) {
                 livingTarget.addEffect(new MobEffectInstance(
                         AnnoyingVillagersModMobEffects.ELECTRIFY.get(),
                         20,
@@ -307,11 +318,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     @Override
     public void tick() {
-        if (!this.level().isClientSide && this.loadedFromDisk) {
-            this.discard();
-            return;
-        }
-
         if (!this.level().isClientSide && this.absorbToWearerActive) {
             this.baseTick();
             this.pickup = AbstractArrow.Pickup.DISALLOWED;
@@ -836,6 +842,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         tag.putString("BlueDemonMode", this.mode.name());
         tag.putBoolean("SpecialImpactTriggered", this.specialImpactTriggered);
         tag.putLong(TAG_SPAWN_SEQUENCE, this.spawnSequence);
+
         Direction face = this.getStuckFace();
         if (face != null) {
             tag.putByte("StuckFace", (byte) face.get3DDataValue());
@@ -845,7 +852,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.loadedFromDisk = true;
 
         if (tag.contains("BlueDemonMode")) {
             try {
@@ -853,6 +859,8 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
             } catch (IllegalArgumentException ignored) {
                 this.mode = TridentMode.DEFAULT;
             }
+        } else {
+            this.mode = TridentMode.DEFAULT;
         }
 
         this.specialImpactTriggered = tag.getBoolean("SpecialImpactTriggered");
@@ -863,5 +871,28 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         } else {
             this.setStuckFace(null);
         }
+
+        this.relaunchAnimationActive = false;
+        this.relaunchAnimationTick = 0;
+        this.relaunchAnimationStart = Vec3.ZERO;
+        this.relaunchAnimationEnd = Vec3.ZERO;
+
+        this.relaunchDelayActive = false;
+        this.relaunchDelayTicks = 0;
+        this.relaunchDelayTick = 0;
+
+        this.queuedTargetUUID = null;
+        this.queuedFallbackDirection = null;
+        this.queuedLaunchSpeed = 0.0F;
+
+        this.absorbToWearerActive = false;
+        this.absorbWearerUUID = null;
+        this.absorbStartGroundPos = Vec3.ZERO;
+        this.absorbReturnFace = null;
+
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = false;
+        this.setGlowingTag(false);
     }
 }

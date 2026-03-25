@@ -20,11 +20,12 @@ public final class ColoredGlintState {
 
         if (stack.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
             mode = ORANGE;
-        } else if (
+        }else if (
                 (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()) && BlueDemonTridentItem.isFullyCharged(stack))
                         || (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get())
-                        && (BlueDemonChestplateItem.isFullyCharged(stack) || BlueDemonChestplateItem.isBuffActive(stack)))
-        ) {
+                        && (BlueDemonChestplateItem.isFullyCharged(stack)
+                        || BlueDemonChestplateItem.isBuffActive(stack)
+                        || BlueDemonChestplateItem.hasBlueDemonHealingFoil(stack)))) {
             mode = CYAN;
         }
 

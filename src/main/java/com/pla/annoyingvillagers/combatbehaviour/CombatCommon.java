@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -171,7 +172,7 @@ public class CombatCommon {
 
         LivingEntityPatch<?> victimEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
         if (victimEntityPatch != null
-                && (attacker instanceof PlayerNpcEntity || attacker instanceof AVNpc || attacker instanceof HerobrineMob || attacker instanceof NullSkeletonEntity)) {
+                && (attacker instanceof PlayerNpcEntity || attacker instanceof AVNpc || attacker instanceof HerobrineMob || attacker instanceof NullSkeletonEntity || attacker instanceof BlueDemonEntity)) {
             AssetAccessor<? extends StaticAnimation> currentAnimation =
                     Objects.requireNonNull(victimEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
@@ -259,6 +260,17 @@ public class CombatCommon {
                 && !(livingEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof SwordItem
                 || livingEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AxeItem
                 || livingEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem);
+    }
+
+    public static boolean canBlueDemonPerformHealing(MobPatch<?> mobpatch) {
+        if (canExecute(mobpatch)) return false;
+        if (mobpatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
+            if (blueDemonEntity.getHealingCooldown() > 0) {
+                return false;
+            }
+            return blueDemonEntity.getHealingTick() == 0;
+        }
+        return false;
     }
 
     public static boolean canPerformEating(MobPatch<?> mobpatch) {
@@ -915,5 +927,13 @@ public class CombatCommon {
         self.yBodyRotO = yaw;
         self.yHeadRotO = yaw;
         self.getLookControl().setLookAt(target, 90.0F, 90.0F);
+    }
+
+    public static void performBlueDemonHealing(MobPatch<?> mobpatch) {
+        LivingEntity entity = mobpatch.getOriginal();
+        if (entity instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.level() instanceof ServerLevel) {
+            blueDemonEntity.setHealingCooldown();
+            blueDemonEntity.setHealingTick(600);
+        }
     }
 }

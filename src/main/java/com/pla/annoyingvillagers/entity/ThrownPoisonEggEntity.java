@@ -10,13 +10,12 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.PlayMessages;
+import org.jetbrains.annotations.NotNull;
 
 public class ThrownPoisonEggEntity extends ThrowableItemProjectile {
     public ThrownPoisonEggEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
@@ -50,21 +49,21 @@ public class ThrownPoisonEggEntity extends ThrowableItemProjectile {
         AreaEffectCloud cloud = new AreaEffectCloud(level, x, y, z);
         cloud.setRadius(3.0F);
         cloud.setRadiusPerTick(-0.05F);
-        cloud.setDuration(60);
+        cloud.setDuration(20);
         cloud.setWaitTime(0);
         cloud.setFixedColor(0x4E9331);
         cloud.setParticle(ParticleTypes.ENTITY_EFFECT);
-        cloud.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0));
+        cloud.addEffect(new MobEffectInstance(MobEffects.POISON, 20, 0));
         level.addFreshEntity(cloud);
     }
 
 
-    protected void onHitEntity(EntityHitResult pResult) {
+    protected void onHitEntity(@NotNull EntityHitResult pResult) {
         super.onHitEntity(pResult);
         pResult.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), 0.5F);
     }
 
-    protected void onHit(HitResult pResult) {
+    protected void onHit(@NotNull HitResult pResult) {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
             if (this.random.nextFloat() < 0.5F) {
@@ -75,7 +74,7 @@ public class ThrownPoisonEggEntity extends ThrowableItemProjectile {
         }
     }
 
-    protected Item getDefaultItem() {
+    protected @NotNull Item getDefaultItem() {
         return AnnoyingVillagersModItems.POISON_EGG_ITEM.get();
     }
 }

@@ -168,8 +168,8 @@ public class BlueDemon2Entity extends Monster {
 
             BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
             bbqEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            bbqEntity.setFollowTarget(this);
-            bbqEntity.setFollowTargetUUID(this.getUUID());
+//            bbqEntity.setFollowTarget(this);
+//            bbqEntity.setFollowTargetUUID(this.getUUID());
             bbqEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(bbqEntity);
 

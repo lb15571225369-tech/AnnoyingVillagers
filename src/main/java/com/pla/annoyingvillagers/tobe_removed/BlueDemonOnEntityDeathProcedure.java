@@ -19,24 +19,24 @@ public class BlueDemonOnEntityDeathProcedure {
         if (entity == null || entity1 == null) return;
 
         // Summon Blue Demon replacement
-        if (world instanceof ServerLevel serverLevel) {
-            if (entity instanceof BlueDemonEntity blueDemon && blueDemon.getBbqUUID() != null) {
-                Entity bbq = serverLevel.getEntity(blueDemon.getBbqUUID());
-                if (bbq instanceof BbqEntity && bbq.isAlive()) {
-                    bbq.discard();
-                }
-            }
-
-            BlueDemonStagingEntity blueDemonStagingEntity = new BlueDemonStagingEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_STAGING.get(), serverLevel);
-            blueDemonStagingEntity.moveTo(entity.getX(), entity.getY(), entity.getZ());
-
-            entity.discard();
-
-            BluedemonData bluedemonData = BluedemonData.get(serverLevel);
-            bluedemonData.forceClaim(serverLevel, blueDemonStagingEntity.getUUID());
-            blueDemonStagingEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(blueDemonStagingEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            serverLevel.addFreshEntity(blueDemonStagingEntity);
-        }
+//        if (world instanceof ServerLevel serverLevel) {
+//            if (entity instanceof BlueDemonEntity blueDemon && blueDemon.getBbqUUID() != null) {
+//                Entity bbq = serverLevel.getEntity(blueDemon.getBbqUUID());
+//                if (bbq instanceof BbqEntity && bbq.isAlive()) {
+//                    bbq.discard();
+//                }
+//            }
+//
+//            BlueDemonStagingEntity blueDemonStagingEntity = new BlueDemonStagingEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_STAGING.get(), serverLevel);
+//            blueDemonStagingEntity.moveTo(entity.getX(), entity.getY(), entity.getZ());
+//
+//            entity.discard();
+//
+//            BluedemonData bluedemonData = BluedemonData.get(serverLevel);
+//            bluedemonData.forceClaim(serverLevel, blueDemonStagingEntity.getUUID());
+//            blueDemonStagingEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(blueDemonStagingEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+//            serverLevel.addFreshEntity(blueDemonStagingEntity);
+//        }
 //
 //        entity1.getPersistentData().putBoolean("b_d", true);
 //

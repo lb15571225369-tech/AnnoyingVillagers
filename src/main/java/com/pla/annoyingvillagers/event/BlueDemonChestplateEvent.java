@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -33,6 +34,7 @@ public final class BlueDemonChestplateEvent {
     @SubscribeEvent
     public static void onLivingDamage(LivingHurtEvent event) {
         LivingEntity wearer = event.getEntity();
+        if (!(wearer instanceof Player)) return;
         if (!wearer.isAlive()) {
             return;
         }

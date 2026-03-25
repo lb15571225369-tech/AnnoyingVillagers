@@ -12,6 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -99,7 +100,9 @@ public class ElectricAreaEntity extends Entity {
 
     private void damageEntitiesInZone() {
         LivingEntity owner = this.getOwnerLiving();
-        for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, this.makeDamageBox(), living -> this.isValidTarget(owner, living))) {
+        for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.makeDamageBox(),
+                living -> this.isValidTarget(owner, living))) {
             target.setDeltaMovement(0, 0, 0);
             target.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTRIFY.get(), 12, 2));
         }
@@ -115,6 +118,16 @@ public class ElectricAreaEntity extends Entity {
         }
 
         if (target == owner) {
+            return false;
+        }
+
+        if (target instanceof Player player && player.isCreative()) {
+            return false;
+        }
+
+        if (owner instanceof BlueDemonEntity blueDemonEntity
+                && blueDemonEntity.getBbqEntity() != null
+                && target == blueDemonEntity.getBbqEntity()) {
             return false;
         }
 
@@ -157,17 +170,12 @@ public class ElectricAreaEntity extends Entity {
     }
 
     @Override
-    public boolean isPickable() {
-        return false;
-    }
-
-    @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
         return false;
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

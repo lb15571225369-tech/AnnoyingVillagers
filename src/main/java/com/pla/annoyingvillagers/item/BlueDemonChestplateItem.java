@@ -43,8 +43,8 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
 
     private static final String TAG_CHEST_BUFF_TICKS = "BlueDemonChestBuffTicks";
     public static final int CHEST_BUFF_DURATION_TICKS = 20 * 30;
-    private static final double CHEST_TRIDENT_ABSORB_BOX_HALF = 2.5D;
-
+    public static final double CHEST_TRIDENT_ABSORB_BOX_HALF = 2.5D;
+    private static final String TAG_BLUE_DEMON_HEALING_FOIL = "BlueDemonHealingFoil";
 
     public BlueDemonChestplateItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
@@ -139,9 +139,39 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         return getStoredCharge(stack) >= MAX_CHEST_CHARGE;
     }
 
+    public static boolean hasBlueDemonHealingFoil(ItemStack stack) {
+        if (!isBlueDemonChestplate(stack)) {
+            return false;
+        }
+
+        CompoundTag tag = stack.getTag();
+        return tag != null && tag.getBoolean(TAG_BLUE_DEMON_HEALING_FOIL);
+    }
+
+    public static void setBlueDemonHealingFoil(ItemStack stack, boolean foil) {
+        if (!isBlueDemonChestplate(stack)) {
+            return;
+        }
+
+        if (foil) {
+            stack.getOrCreateTag().putBoolean(TAG_BLUE_DEMON_HEALING_FOIL, true);
+        } else {
+            CompoundTag tag = stack.getTag();
+            if (tag != null) {
+                tag.remove(TAG_BLUE_DEMON_HEALING_FOIL);
+                if (tag.isEmpty()) {
+                    stack.setTag(null);
+                }
+            }
+        }
+    }
+
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
-        return super.isFoil(stack) || isFullyCharged(stack) || isBuffActive(stack);
+        return super.isFoil(stack)
+                || isFullyCharged(stack)
+                || isBuffActive(stack)
+                || hasBlueDemonHealingFoil(stack);
     }
 
     public static int getBuffTicks(ItemStack stack) {
