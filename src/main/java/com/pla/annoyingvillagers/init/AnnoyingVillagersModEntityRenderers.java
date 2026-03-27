@@ -24,11 +24,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.HEROBRINE_CLONE.get(), HerobrineCloneRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON.get(), BlueDemonRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_CLONE.get(), ShadowHerobrineRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_STAGING.get(), BlueDemonStagingRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_2.get(), BlueDemon2Renderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING.get(), BlueDemonEndStagingRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BD_TRIDENT.get(), BlueDemonTridentParticleRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUEDEMONTRIDENT.get(), BlueDemonTridentRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), VillagerScoutRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), VillagerScoutCaptainRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), BlueVillagerGeneralRenderer::new);

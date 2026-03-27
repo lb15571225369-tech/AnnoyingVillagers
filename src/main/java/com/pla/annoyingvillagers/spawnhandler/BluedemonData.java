@@ -1,9 +1,6 @@
 package com.pla.annoyingvillagers.spawnhandler;
 
-import com.pla.annoyingvillagers.entity.BlueDemon2Entity;
-import com.pla.annoyingvillagers.entity.BlueDemonEndStagingEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;
-import com.pla.annoyingvillagers.entity.BlueDemonStagingEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -50,8 +47,7 @@ public class BluedemonData extends SavedData {
     public boolean isOccupied(ServerLevel serverLevel) {
         if (activeId != null) {
             Entity entity = serverLevel.getEntity(activeId);
-            if ((entity instanceof BlueDemonEntity || entity instanceof BlueDemon2Entity
-                    || entity instanceof BlueDemonStagingEntity || entity instanceof BlueDemonEndStagingEntity) && entity.isAlive()) {
+            if (entity instanceof BlueDemonEntity && entity.isAlive()) {
                 return true;
             } else {
                 activeId = null;

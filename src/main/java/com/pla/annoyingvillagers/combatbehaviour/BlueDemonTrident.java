@@ -948,6 +948,47 @@ public class BlueDemonTrident {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(20)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::isTargetingHerobrineDragon)
+                                            .withinDistance(10.0D, 80.0D)
+                                            .animationBehavior(AVAnimations.TRIDENT_THROW_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .custom(CombatCommon::isTargetingHerobrineDragon)
+                                                            .withinDistance(10.0D, 80.0D)
+                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .custom(CombatCommon::isTargetingHerobrineDragon)
+                                                                            .withinDistance(10.0D, 80.0D)
+                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .custom(CombatCommon::isTargetingHerobrineDragon)
+                                                                                            .withinDistance(10.0D, 80.0D)
+                                                                                            .animationBehavior(AVAnimations.DP_THROW_BLADE_AUTO_2, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .custom(CombatCommon::isTargetingHerobrineDragon)
+                                                                                                            .withinDistance(10.0D, 80.0D)
+                                                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(10.0D)
                             .maxCooldown (80)
                             .addFirstBehavior(

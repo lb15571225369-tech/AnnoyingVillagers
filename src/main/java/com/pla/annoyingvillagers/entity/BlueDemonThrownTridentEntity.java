@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -47,7 +46,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private TridentMode mode = TridentMode.DEFAULT;
 
     private static final int MAX_GROUNDED_TRIDENTS_PER_OWNER = 20;
-    private static final double OWNER_BOX_HALF_SIZE = 25.0D;
+    private static final double OWNER_BOX_HALF_SIZE = 50.0D;
     private static final String TAG_SPAWN_SEQUENCE = "BlueDemonSpawnSequence";
     private static final String TAG_OWNER_SHOT_COUNTER = "BlueDemonOwnerShotCounter";
 
@@ -87,6 +86,32 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     public boolean isAbsorbingToWearer() {
         return this.absorbToWearerActive;
+    }
+
+    public TridentMode getMode() {
+        return mode;
+    }
+
+    public void placeAsGroundedSupport(@NotNull LivingEntity owner, @NotNull BlockPos standPos) {
+        this.setOwner(owner);
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+        this.specialImpactTriggered = true;
+        this.dealtDamage = false;
+
+        Vec3 pos = new Vec3(
+                standPos.getX() + 0.5D,
+                standPos.getY() + 0.05D,
+                standPos.getZ() + 0.5D
+        );
+
+        this.setPos(pos.x, pos.y, pos.z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = false;
+        this.setGlowingTag(false);
+
+        this.onHitBlock(new BlockHitResult(pos, Direction.UP, standPos.below(), false));
     }
 
     public void beginAbsorbToWearer(@NotNull LivingEntity entity) {
@@ -139,7 +164,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         }
 
         if (entity instanceof BlueDemonEntity blueDemonEntity) {
-            return blueDemonEntity.getHealingTick() > 0;
+            return blueDemonEntity.getHealingTick() != 0;
         }
 
         return false;

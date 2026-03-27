@@ -3,7 +3,9 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.SauceType;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSounds;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.BlueDemonChestplateItem;
@@ -17,6 +19,9 @@ import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -33,7 +38,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -55,6 +59,9 @@ import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -64,10 +71,26 @@ public class BlueDemonEntity extends Monster {
     private BbqEntity bbqSauce;
     @Nullable
     private UUID bbqSauceUUID;
-    private int bbqSauceResolveCooldown;
-    private int bbqSauceOrderCooldown;
-    private int bbqSauceHeadAttackCooldown;
-    private int bbqSauceModeCooldown;
+
+    @Nullable
+    private BbqEntity honeyMustardSauce;
+    @Nullable
+    private UUID honeyMustardSauceUUID;
+
+    @Nullable
+    private BbqEntity soySauce;
+    @Nullable
+    private UUID soySauceUUID;
+
+    @Nullable
+    private BbqEntity sweetOnionSauce;
+    @Nullable
+    private UUID sweetOnionSauceUUID;
+
+    private int bbqResolveCooldown;
+    private int bbqOrderCooldown;
+    private int bbqHeadAttackCooldown;
+    private int bbqModeCooldown;
 
     private int healingTick = 0;
     private int healingCooldown = 0;
@@ -77,7 +100,35 @@ public class BlueDemonEntity extends Monster {
     private int swapWeaponCooldown;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
-    private int state = 0;
+    private static final EntityDataAccessor<Integer> STATE =
+            SynchedEntityData.defineId(BlueDemonEntity.class, EntityDataSerializers.INT);
+    private int stateTransformCooldown = -1;
+    @Nullable
+    private UUID savedTargetUUID;
+
+    private int squadArrivalTicks = -1;
+    private float sauceSquadAngle = 0.0F;
+
+    public void setStateTransformCooldown(int stateTransformCooldown) {
+        this.stateTransformCooldown = stateTransformCooldown;
+
+        if (stateTransformCooldown > 0) {
+            this.sauceSquadAngle = this.random.nextFloat() * ((float)Math.PI * 2.0F);
+        }
+    }
+
+    private double getSauceLaneOffset(SauceType sauceType) {
+        return switch (sauceType) {
+            case BBQ_SAUCE -> -2.25D;
+            case HONEY_MUSTARD_SAUCE -> -0.75D;
+            case SOY_SAUCE -> 0.75D;
+            case SWEET_ONION_SAUCE -> 2.25D;
+        };
+    }
+
+    public float getSauceSquadAngle() {
+        return this.sauceSquadAngle;
+    }
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -92,6 +143,12 @@ public class BlueDemonEntity extends Monster {
         efnGuardHitCooldown = 100;
     }
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(STATE, 0);
+    }
+
     public int getStunEscapeCooldown() {
         return stunEscapeCooldown;
     }
@@ -101,7 +158,7 @@ public class BlueDemonEntity extends Monster {
     }
 
     public void setVoiceCooldown() {
-        this.voiceCooldown = new Random().nextInt(60, 200);
+        this.voiceCooldown = new Random().nextInt(300, 600);
     }
 
     public int getVoiceCooldown() {
@@ -140,12 +197,312 @@ public class BlueDemonEntity extends Monster {
         return healingCooldown;
     }
 
+    public boolean isSauceArrivalPending() {
+        return this.squadArrivalTicks > 0;
+    }
+
+    private void backupCurrentTarget() {
+        LivingEntity target = this.getTarget();
+        this.savedTargetUUID = target != null && target.isAlive() ? target.getUUID() : null;
+    }
+
+    private void restoreBackedUpTarget() {
+        if (!(this.level() instanceof ServerLevel serverLevel) || this.savedTargetUUID == null) {
+            return;
+        }
+
+        Entity entity = serverLevel.getEntity(this.savedTargetUUID);
+        if (entity instanceof LivingEntity living && living.isAlive()) {
+            this.setTarget(living);
+        }
+
+        this.savedTargetUUID = null;
+    }
+
+    private void startSauceRetreat(SauceType sauceType) {
+        BbqEntity sauce = this.getSauce(sauceType);
+        if (sauce != null && sauce.isAlive()) {
+            sauce.startRetreat();
+        }
+
+        this.setSauce(sauceType, null);
+    }
+
+    private void retreatAllSauces() {
+        this.startSauceRetreat(SauceType.BBQ_SAUCE);
+        this.startSauceRetreat(SauceType.HONEY_MUSTARD_SAUCE);
+        this.startSauceRetreat(SauceType.SOY_SAUCE);
+        this.startSauceRetreat(SauceType.SWEET_ONION_SAUCE);
+    }
+
+    public void beginStateTwoTransform() {
+        this.backupCurrentTarget();
+        this.retreatAllSauces();
+
+        this.setNoAi(true);
+        this.setHealingTick(0);
+        this.setState(2);
+        this.setStateTransformCooldown(600);
+    }
+
+    private void finishStateTwoTransform(ServerLevel serverLevel) {
+        this.setHealingTick(-1);
+        this.setNoAi(false);
+        this.setState(3);
+        this.restoreBackedUpTarget();
+
+        this.squadArrivalTicks = 20 * 20;
+
+        ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
+        legendaryStack.enchant(Enchantments.SHARPNESS, 5);
+        legendaryStack.enchant(Enchantments.SMITE, 5);
+        legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
+
+        this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
+        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+
+        ItemStack armorStack = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get());
+        armorStack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+        armorStack.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
+        armorStack.enchant(Enchantments.FIRE_PROTECTION, 5);
+        armorStack.enchant(Enchantments.BLAST_PROTECTION, 5);
+        this.setItemSlot(EquipmentSlot.CHEST, armorStack);
+
+        if (this.getLivingEntityPatch() != null) {
+            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+        }
+
+        this.setSwapWeaponCooldown(new Random().nextInt(200, 600));
+
+        this.ensureStateSauces();
+        serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                Component.literal("<" + Component.translatable(SauceType.BBQ_SAUCE.getTranslationKey()).getString() + "> " + Component.translatable("subtitles.bbq_sauce_squad_arrived").getString()),
+                false
+        );
+    }
+
+    private void tickSquadArrival(ServerLevel serverLevel) {
+        if (this.squadArrivalTicks <= 0) {
+            return;
+        }
+
+        this.squadArrivalTicks--;
+        if (this.squadArrivalTicks > 0) {
+            return;
+        }
+
+        BbqEntity bbq = this.getSauce(SauceType.BBQ_SAUCE);
+        BbqEntity honey = this.getSauce(SauceType.HONEY_MUSTARD_SAUCE);
+        BbqEntity soy = this.getSauce(SauceType.SOY_SAUCE);
+        BbqEntity onion = this.getSauce(SauceType.SWEET_ONION_SAUCE);
+
+        if (bbq != null) bbq.teleportNearLeaderIfTooFar();
+        if (honey != null) honey.teleportNearLeaderIfTooFar();
+        if (soy != null) soy.teleportNearLeaderIfTooFar();
+        if (onion != null) onion.teleportNearLeaderIfTooFar();
+    }
+
     public int getState() {
-        return state;
+        return this.entityData.get(STATE);
     }
 
     public void setState(int state) {
-        this.state = state;
+        this.entityData.set(STATE, state);
+    }
+
+    private @Nullable BbqEntity getSauce(SauceType sauceType) {
+        return switch (sauceType) {
+            case BBQ_SAUCE -> this.bbqSauce;
+            case HONEY_MUSTARD_SAUCE -> this.honeyMustardSauce;
+            case SOY_SAUCE -> this.soySauce;
+            case SWEET_ONION_SAUCE -> this.sweetOnionSauce;
+        };
+    }
+
+    private @Nullable UUID getSauceUUID(SauceType sauceType) {
+        return switch (sauceType) {
+            case BBQ_SAUCE -> this.bbqSauceUUID;
+            case HONEY_MUSTARD_SAUCE -> this.honeyMustardSauceUUID;
+            case SOY_SAUCE -> this.soySauceUUID;
+            case SWEET_ONION_SAUCE -> this.sweetOnionSauceUUID;
+        };
+    }
+
+    private void setSauce(SauceType sauceType, @Nullable BbqEntity sauce) {
+        UUID uuid = sauce == null ? null : sauce.getUUID();
+
+        switch (sauceType) {
+            case BBQ_SAUCE -> {
+                this.bbqSauce = sauce;
+                this.bbqSauceUUID = uuid;
+            }
+            case HONEY_MUSTARD_SAUCE -> {
+                this.honeyMustardSauce = sauce;
+                this.honeyMustardSauceUUID = uuid;
+            }
+            case SOY_SAUCE -> {
+                this.soySauce = sauce;
+                this.soySauceUUID = uuid;
+            }
+            case SWEET_ONION_SAUCE -> {
+                this.sweetOnionSauce = sauce;
+                this.sweetOnionSauceUUID = uuid;
+            }
+        }
+    }
+
+    private void ensureSauceExists(SauceType sauceType) {
+        BbqEntity current = this.getSauce(sauceType);
+        if (current != null && current.isAlive()) {
+            return;
+        }
+
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        UUID uuid = this.getSauceUUID(sauceType);
+        if (uuid != null) {
+            Entity entity = serverLevel.getEntity(uuid);
+            if (entity instanceof BbqEntity sauce && sauce.isAlive()) {
+                this.setSauce(sauceType, sauce);
+                return;
+            }
+        }
+
+        BbqEntity sauce = new BbqEntity(AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
+
+        double baseAngle = switch (sauceType) {
+            case BBQ_SAUCE -> 0.0D;
+            case HONEY_MUSTARD_SAUCE -> Math.PI * 0.5D;
+            case SOY_SAUCE -> Math.PI;
+            case SWEET_ONION_SAUCE -> Math.PI * 1.5D;
+        };
+
+        double spawnX;
+        double spawnZ;
+
+        if (this.getState() == 3) {
+            float angle = this.getSauceSquadAngle();
+            double distance = 18.0D + this.random.nextDouble() * 4.0D;
+            double laneOffset = this.getSauceLaneOffset(sauceType);
+
+            double forwardX = Mth.cos(angle);
+            double forwardZ = Mth.sin(angle);
+            double sideX = -forwardZ;
+            double sideZ = forwardX;
+
+            spawnX = this.getX() + forwardX * distance + sideX * laneOffset;
+            spawnZ = this.getZ() + forwardZ * distance + sideZ * laneOffset;
+        } else {
+            double angle = this.random.nextDouble() * (Math.PI * 2.0D);
+            double radius = 2.5D + this.random.nextDouble() * 1.5D;
+            spawnX = this.getX() + Math.cos(angle) * radius;
+            spawnZ = this.getZ() + Math.sin(angle) * radius;
+        }
+
+        int spawnY = serverLevel.getHeightmapPos(
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                BlockPos.containing(spawnX, this.getY(), spawnZ)
+        ).getY();
+
+        sauce.moveTo(spawnX, spawnY, spawnZ, this.random.nextFloat() * 360.0F, 0.0F);
+        sauce.setLeader(this);
+        sauce.setSauceType(sauceType);
+        sauce.finalizeSpawn(
+                serverLevel,
+                serverLevel.getCurrentDifficultyAt(sauce.blockPosition()),
+                MobSpawnType.MOB_SUMMONED,
+                null,
+                null
+        );
+
+        serverLevel.addFreshEntity(sauce);
+        this.setSauce(sauceType, sauce);
+    }
+
+    private void ensureStateSauces() {
+        if (this.getState() == 0 || this.getState() == 1) {
+            this.ensureSauceExists(SauceType.BBQ_SAUCE);
+            return;
+        }
+
+        if (this.getState() == 3) {
+            this.ensureSauceExists(SauceType.BBQ_SAUCE);
+            this.ensureSauceExists(SauceType.HONEY_MUSTARD_SAUCE);
+            this.ensureSauceExists(SauceType.SOY_SAUCE);
+            this.ensureSauceExists(SauceType.SWEET_ONION_SAUCE);
+        }
+    }
+
+    @Nullable
+    private LivingEntity resolveSauceTarget(@Nullable LivingEntity target) {
+        if (target == null || !target.isAlive()) {
+            return null;
+        }
+
+        if (target instanceof HerobrineMob herobrineMob
+                && (herobrineMob.isSacrificing() || herobrineMob.isHealing())) {
+            if (herobrineMob.getFirstPossessedHerobrine() instanceof LivingEntity living && living.isAlive()) {
+                return living;
+            }
+            if (herobrineMob.getSecondPossessedHerobrine() instanceof LivingEntity living && living.isAlive()) {
+                return living;
+            }
+            if (herobrineMob.getThirdPossessedHerobrine() instanceof LivingEntity living && living.isAlive()) {
+                return living;
+            }
+            if (herobrineMob.getFourthPossessedHerobrine() instanceof LivingEntity living && living.isAlive()) {
+                return living;
+            }
+        }
+
+        if (target instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity
+                && lowHerobrineCloneEntity.isHealing()
+                && lowHerobrineCloneEntity.getPossessedByEntity() != null
+                && lowHerobrineCloneEntity.getPossessedByEntity().isAlive()) {
+            return lowHerobrineCloneEntity.getPossessedByEntity();
+        }
+
+        if (target instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity
+                && (lowShadowHerobrineCloneEntity.isSacrificing() || lowShadowHerobrineCloneEntity.isHealing())
+                && lowShadowHerobrineCloneEntity.getPossessedByEntity() != null
+                && lowShadowHerobrineCloneEntity.getPossessedByEntity().isAlive()) {
+            return lowShadowHerobrineCloneEntity.getPossessedByEntity();
+        }
+
+        return target;
+    }
+
+    public @Nullable BlueDemonThrownTridentEntity getNearestGroundedOwnedTrident(double radius) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return null;
+        }
+
+        AABB box = this.getBoundingBox().inflate(radius);
+
+        List<BlueDemonThrownTridentEntity> tridents = serverLevel.getEntitiesOfClass(
+                BlueDemonThrownTridentEntity.class,
+                box,
+                trident -> trident.isAlive()
+                        && trident.isGroundedTrident()
+                        && trident.belongsToOwner(this)
+                        && !trident.isAbsorbingToWearer()
+                        && trident.distanceToSqr(this) > 9.0D
+        );
+
+        BlueDemonThrownTridentEntity best = null;
+        double bestDistance = Double.MAX_VALUE;
+
+        for (BlueDemonThrownTridentEntity trident : tridents) {
+            double distance = this.distanceToSqr(trident);
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = trident;
+            }
+        }
+
+        return best;
     }
 
     @Nullable
@@ -210,6 +567,25 @@ public class BlueDemonEntity extends Monster {
         if (damagesource.is(DamageTypes.TRIDENT)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.getDirectEntity() instanceof ThrownPoisonEggEntity) return false;
+        if (this.level() instanceof ServerLevel serverLevel && this.getState() == 2) {
+            if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
+                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+            }
+            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                    this, damagesource.getEntity());
+            return false;
+        }
+        if (this.level() instanceof ServerLevel serverLevel && this.getLivingEntityPatch() != null) {
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (dynamicAnimation == AVAnimations.CUT_ANTITHEUS_ASCENSION
+                        || dynamicAnimation == AVAnimations.TRIDENT_ATTACK
+                        || dynamicAnimation == AVAnimations.ELECTRIC_FIELD
+                        || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL) {
+                EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                        this, damagesource.getEntity());
+                return false;
+            }
+        }
         return super.hurt(damagesource, f);
     }
 
@@ -219,12 +595,12 @@ public class BlueDemonEntity extends Monster {
             return this.bbqSauce;
         }
 
-        if (this.bbqSauceResolveCooldown > 0) {
-            this.bbqSauceResolveCooldown--;
+        if (this.bbqResolveCooldown > 0) {
+            this.bbqResolveCooldown--;
             return null;
         }
 
-        this.bbqSauceResolveCooldown = 20;
+        this.bbqResolveCooldown = 20;
 
         if (!this.level().isClientSide && this.bbqSauceUUID != null) {
             Entity entity = ((ServerLevel) this.level()).getEntity(this.bbqSauceUUID);
@@ -240,36 +616,6 @@ public class BlueDemonEntity extends Monster {
     public void setBbqEntity(@Nullable BbqEntity bbqEntity) {
         this.bbqSauce = bbqEntity;
         this.bbqSauceUUID = bbqEntity == null ? null : bbqEntity.getUUID();
-    }
-
-    private void ensureBbqExists(BbqEntity bbqEntity, UUID uuid, Component name) {
-        if (bbqEntity != null) {
-            return;
-        }
-
-        if (uuid != null) {
-            return;
-        }
-
-        if (!(this.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-
-        bbqEntity = new BbqEntity(AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
-
-        double angle = this.random.nextDouble() * (Math.PI * 2.0D);
-        double radius = 2.5D;
-        double spawnX = this.getX() + Math.cos(angle) * radius;
-        double spawnZ = this.getZ() + Math.sin(angle) * radius;
-        int spawnY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlockPos.containing(spawnX, this.getY(), spawnZ)).getY();
-
-        bbqEntity.moveTo(spawnX, spawnY, spawnZ, this.random.nextFloat() * 360.0F, 0.0F);
-        bbqEntity.setLeader(this);
-        bbqEntity.setCustomName(name);
-        bbqEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(bbqEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-        serverLevel.addFreshEntity(bbqEntity);
-
-        this.setBbqEntity(bbqEntity);
     }
 
     @Nullable
@@ -313,8 +659,13 @@ public class BlueDemonEntity extends Monster {
         return target;
     }
 
-    private void tickBbqOrders(BbqEntity bbqEntity) {
+    private void tickBbqOrders(@Nullable BbqEntity bbqEntity) {
         if (bbqEntity == null) {
+            return;
+        }
+
+        if (this.isSauceArrivalPending()) {
+            bbqEntity.clearCombat();
             return;
         }
 
@@ -324,7 +675,7 @@ public class BlueDemonEntity extends Monster {
             return;
         }
 
-        LivingEntity bbqTarget = this.resolveBbqTarget(blueDemonTarget);
+        LivingEntity bbqTarget = this.resolveSauceTarget(blueDemonTarget);
         if (bbqTarget == null || !bbqTarget.isAlive()) {
             bbqEntity.clearCombat();
             return;
@@ -332,16 +683,16 @@ public class BlueDemonEntity extends Monster {
 
         bbqEntity.setCombatTarget(bbqTarget);
 
-        if (this.bbqSauceHeadAttackCooldown > 0) {
-            this.bbqSauceHeadAttackCooldown--;
+        if (this.bbqHeadAttackCooldown > 0) {
+            this.bbqHeadAttackCooldown--;
         }
 
-        if (this.bbqSauceOrderCooldown > 0) {
-            this.bbqSauceOrderCooldown--;
+        if (this.bbqOrderCooldown > 0) {
+            this.bbqOrderCooldown--;
         }
 
-        if (this.bbqSauceModeCooldown > 0) {
-            this.bbqSauceModeCooldown--;
+        if (this.bbqModeCooldown > 0) {
+            this.bbqModeCooldown--;
         }
 
         double blueDistance = this.distanceTo(blueDemonTarget);
@@ -350,61 +701,61 @@ public class BlueDemonEntity extends Monster {
         if (blueDistance > 10.0D) {
             bbqEntity.startParallelPursuit(bbqTarget, 25);
 
-            if (this.bbqSauceOrderCooldown <= 0) {
+            if (this.bbqOrderCooldown <= 0) {
                 bbqEntity.shootChain(bbqTarget, 3, 10);
-                this.bbqSauceOrderCooldown = 40;
+                this.bbqOrderCooldown = 40;
             }
             return;
         }
 
-        if (this.bbqSauceHeadAttackCooldown <= 0 && blueDistance < 4.5D && bbqDistance < 6.5D && !bbqEntity.isHeadAttacking()) {
+        if (this.bbqHeadAttackCooldown <= 0 && blueDistance < 4.5D && bbqDistance < 6.5D && !bbqEntity.isHeadAttacking()) {
             bbqEntity.startHeadAttack(bbqTarget, 35);
-            this.bbqSauceHeadAttackCooldown = 110;
-            this.bbqSauceModeCooldown = 20;
-            this.bbqSauceOrderCooldown = 16;
+            this.bbqHeadAttackCooldown = 110;
+            this.bbqModeCooldown = 20;
+            this.bbqOrderCooldown = 16;
             return;
         }
 
-        if (!bbqEntity.isHeadAttacking() && this.bbqSauceModeCooldown <= 0) {
+        if (!bbqEntity.isHeadAttacking() && this.bbqModeCooldown <= 0) {
             int roll = this.random.nextInt(100);
 
             if (roll < 25) {
                 bbqEntity.startParallelPursuit(bbqTarget, 28);
-                this.bbqSauceModeCooldown = 28 + this.random.nextInt(12);
+                this.bbqModeCooldown = 40;
             } else if (roll < 60) {
                 bbqEntity.startGroundOrbit(bbqTarget, 36);
-                this.bbqSauceModeCooldown = 34 + this.random.nextInt(14);
+                this.bbqModeCooldown = 42;
             } else {
                 bbqEntity.startOrbit(bbqTarget, 28);
-                this.bbqSauceModeCooldown = 26 + this.random.nextInt(12);
+                this.bbqModeCooldown = 38;
             }
         }
 
-        if (bbqEntity.isHeadAttacking() || this.bbqSauceOrderCooldown > 0) {
+        if (bbqEntity.isHeadAttacking() || this.bbqOrderCooldown > 0) {
             return;
         }
 
         switch (bbqEntity.getCombatMode()) {
             case PARALLEL -> {
                 bbqEntity.shootChain(bbqTarget, 3, 10);
-                this.bbqSauceOrderCooldown = 40;
+                this.bbqOrderCooldown = 40;
             }
             case GROUND_ORBIT -> {
                 if (bbqDistance > 7.0D) {
                     bbqEntity.shootChain(bbqTarget, 3, 9);
-                    this.bbqSauceOrderCooldown = 36;
+                    this.bbqOrderCooldown = 36;
                 } else {
                     bbqEntity.shootCluster(bbqTarget, 3, 1.05F, 10.0F);
-                    this.bbqSauceOrderCooldown = 48;
+                    this.bbqOrderCooldown = 48;
                 }
             }
             case ORBIT -> {
                 if (bbqDistance > 7.0D) {
                     bbqEntity.shootChain(bbqTarget, 4, 8);
-                    this.bbqSauceOrderCooldown = 38;
+                    this.bbqOrderCooldown = 38;
                 } else {
                     bbqEntity.shootCluster(bbqTarget, 4, 1.1F, 10.0F);
-                    this.bbqSauceOrderCooldown = 52;
+                    this.bbqOrderCooldown = 52;
                 }
             }
             default -> {
@@ -412,9 +763,80 @@ public class BlueDemonEntity extends Monster {
         }
     }
 
+    private void tickShockSauceOrders(@Nullable BbqEntity sauce) {
+        if (sauce == null) {
+            return;
+        }
+
+        if (this.isSauceArrivalPending()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        LivingEntity blueDemonTarget = this.getTarget();
+        if (blueDemonTarget == null || !blueDemonTarget.isAlive()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        LivingEntity sauceTarget = this.resolveSauceTarget(blueDemonTarget);
+        if (sauceTarget == null || !sauceTarget.isAlive()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        sauce.setCombatTarget(sauceTarget);
+
+        double blueDistance = this.distanceTo(blueDemonTarget);
+        double sauceDistance = sauce.distanceTo(sauceTarget);
+
+        if (blueDistance > 10.0D) {
+            sauce.startParallelPursuit(sauceTarget, 25);
+            return;
+        }
+
+        if (!sauce.isHeadAttacking() && this.tickCount % 60 == 0 && blueDistance < 4.5D && sauceDistance < 6.5D && this.random.nextInt(4) == 0) {
+            sauce.startHeadAttack(sauceTarget, 28);
+            return;
+        }
+
+        if (!sauce.isHeadAttacking() && this.tickCount % 40 == 0) {
+            if (this.random.nextBoolean()) {
+                sauce.startGroundOrbit(sauceTarget, 34);
+            } else {
+                sauce.startOrbit(sauceTarget, 28);
+            }
+        }
+    }
+
+    private void tickSweetOnionOrders(@Nullable BbqEntity sauce) {
+        if (sauce == null) {
+            return;
+        }
+
+        if (this.isSauceArrivalPending()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        LivingEntity blueDemonTarget = this.getTarget();
+        if (blueDemonTarget == null || !blueDemonTarget.isAlive()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        LivingEntity sauceTarget = this.resolveSauceTarget(blueDemonTarget);
+        if (sauceTarget == null || !sauceTarget.isAlive()) {
+            sauce.clearCombat();
+            return;
+        }
+
+        sauce.setCombatTarget(sauceTarget);
+    }
+
     private void tickArmorBuff(ServerLevel serverLevel) {
-        this.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED,
+        this.addEffect(new MobEffectInstance(
+                MobEffects.MOVEMENT_SPEED,
                 1,
                 1,
                 false,
@@ -422,8 +844,8 @@ public class BlueDemonEntity extends Monster {
                 false
         ));
 
-        this.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                net.minecraft.world.effect.MobEffects.JUMP,
+        this.addEffect(new MobEffectInstance(
+                MobEffects.JUMP,
                 1,
                 1,
                 false,
@@ -431,8 +853,8 @@ public class BlueDemonEntity extends Monster {
                 false
         ));
 
-        this.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+        this.addEffect(new MobEffectInstance(
+                MobEffects.DAMAGE_RESISTANCE,
                 1,
                 2,
                 false,
@@ -503,6 +925,22 @@ public class BlueDemonEntity extends Monster {
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
             if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
             if (healingCooldown > 0) healingCooldown--;
+            if (stateTransformCooldown > 0) {
+                if (stateTransformCooldown % 2 == 0) {
+                    this.heal(1.0F);
+                }
+
+                if (stateTransformCooldown <= 200 && stateTransformCooldown % 50 == 0) {
+                    BlueDemonTridentItem.spawnDamageZones(serverLevel, this);
+                }
+
+                stateTransformCooldown--;
+                if (stateTransformCooldown == 0) {
+                    this.finishStateTwoTransform(serverLevel);
+                }
+            }
+
+            this.tickSquadArrival(serverLevel);
             if (healingTick != 0) {
                 if (healingTick > 0) {
                     healingTick--;
@@ -538,34 +976,78 @@ public class BlueDemonEntity extends Monster {
                 }
             }
 
-            if (this.state == 2) {
+            if (this.getState() == 3) {
                 this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 3, 3));
+                this.tickShockSauceOrders(this.getSauce(SauceType.HONEY_MUSTARD_SAUCE));
+                this.tickShockSauceOrders(this.getSauce(SauceType.SOY_SAUCE));
+                this.tickSweetOnionOrders(this.getSauce(SauceType.SWEET_ONION_SAUCE));
             }
 
-            this.ensureBbqExists(this.bbqSauce, this.bbqSauceUUID, Component.literal(Component.translatable("entity.annoyingvillagers.bbq_sauce").getString()));
-            this.tickBbqOrders(this.bbqSauce);
+            this.ensureStateSauces();
+
+            this.tickBbqOrders(this.getSauce(SauceType.BBQ_SAUCE));
         }
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+
         if (this.bbqSauceUUID != null) {
-            tag.putUUID("BbqUUID", this.bbqSauceUUID);
+            tag.putUUID("BbqSauceUUID", this.bbqSauceUUID);
         }
+        if (this.honeyMustardSauceUUID != null) {
+            tag.putUUID("HoneyMustardSauceUUID", this.honeyMustardSauceUUID);
+        }
+        if (this.soySauceUUID != null) {
+            tag.putUUID("SoySauceUUID", this.soySauceUUID);
+        }
+        if (this.sweetOnionSauceUUID != null) {
+            tag.putUUID("SweetOnionSauceUUID", this.sweetOnionSauceUUID);
+        }
+
         tag.putInt("HealingCooldown", healingCooldown);
         tag.putInt("HealingTick", healingTick);
+        tag.putInt("StateTransformCooldown", stateTransformCooldown);
+        tag.putInt("State", getState());
+
+        if (this.savedTargetUUID != null) {
+            tag.putUUID("SavedTargetUUID", this.savedTargetUUID);
+        }
+
+        tag.putInt("SquadArrivalTicks", this.squadArrivalTicks);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.hasUUID("BbqUUID")) {
-            this.bbqSauceUUID = tag.getUUID("BbqUUID");
+
+        if (tag.hasUUID("BbqSauceUUID")) {
+            this.bbqSauceUUID = tag.getUUID("BbqSauceUUID");
         }
+        if (tag.hasUUID("HoneyMustardSauceUUID")) {
+            this.honeyMustardSauceUUID = tag.getUUID("HoneyMustardSauceUUID");
+        }
+        if (tag.hasUUID("SoySauceUUID")) {
+            this.soySauceUUID = tag.getUUID("SoySauceUUID");
+        }
+        if (tag.hasUUID("SweetOnionSauceUUID")) {
+            this.sweetOnionSauceUUID = tag.getUUID("SweetOnionSauceUUID");
+        }
+
         healingCooldown = tag.getInt("HealingCooldown");
         healingTick = tag.getInt("HealingTick");
+        stateTransformCooldown = tag.getInt("StateTransformCooldown");
+        setState(tag.contains("State") ? tag.getInt("State") : 0);
+
+        if (tag.hasUUID("SavedTargetUUID")) {
+            this.savedTargetUUID = tag.getUUID("SavedTargetUUID");
+        } else {
+            this.savedTargetUUID = null;
+        }
+
+        this.squadArrivalTicks = tag.contains("SquadArrivalTicks") ? tag.getInt("SquadArrivalTicks") : -1;
     }
 
     public void rollItem() {
@@ -578,13 +1060,14 @@ public class BlueDemonEntity extends Monster {
         legendaryStack.enchant(Enchantments.SHARPNESS, 5);
         legendaryStack.enchant(Enchantments.SMITE, 5);
         legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
-        if (new Random().nextBoolean()) {
+        if (this.getMainHandItem().getItem() instanceof BlueDemonTridentItem) {
             this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
+            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         } else {
             this.setItemInHand(InteractionHand.MAIN_HAND, tridentStack);
             this.setItemInHand(InteractionHand.OFF_HAND, tridentStack);
         }
-        this.swapWeaponCooldown = new Random().nextInt(200, 600);
+        this.swapWeaponCooldown = new Random().nextInt(600, 900);
     }
 
     private void syncChestplateHealingFoil() {
@@ -651,12 +1134,13 @@ public class BlueDemonEntity extends Monster {
             if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
         }
         if (this.level() instanceof ServerLevel
-                && this.state == 0 && (this.getHealth() - f1) <= 1.0F) {
+                && this.getState() == 0 && (this.getHealth() - f1) <= 1.0F) {
             this.setHealth(1.0F);
-            this.state = 1;
+            this.setState(1);
             if (this.getLivingEntityPatch() != null) {
                 BlueDemonTridentItem.addStormEnergy(this.getMainHandItem(), 100);
                 BlueDemonTridentItem.addStormEnergy(this.getOffhandItem(), 100);
+                this.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
                 this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.TRIDENT_FESTIVAL, 0.0F);
             }
             return;
@@ -682,7 +1166,7 @@ public class BlueDemonEntity extends Monster {
     public static @NotNull Builder createAttributes() {
         return Zombie.createAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
-                .add(Attributes.MAX_HEALTH, 250.0D)
+                .add(Attributes.MAX_HEALTH, 300.0D)
                 .add(Attributes.ARMOR, 75.0D)
                 .add(Attributes.ATTACK_DAMAGE, 0.0D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D);

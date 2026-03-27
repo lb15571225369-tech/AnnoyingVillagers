@@ -22,6 +22,10 @@ public class BlueDemonRenderer extends HumanoidMobRenderer<BlueDemonEntity, Huma
     }
 
     public @NotNull ResourceLocation getTextureLocation(@NotNull BlueDemonEntity blueDemonEntity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon.png");
+        if (blueDemonEntity.getState() == 2) {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon_exhausted.png");
+        } else {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon.png");
+        }
     }
 }

@@ -1,10 +1,12 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.pla.annoyingvillagers.entity.TridentLightningBolt;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.util.ExplosionFxMute;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 @Mixin(value = {Explosion.class}, remap = true)
 public abstract class ExplosionMixin {
@@ -29,8 +32,11 @@ public abstract class ExplosionMixin {
     @Shadow @Nullable
     public abstract LivingEntity getIndirectSourceEntity();
 
+    @Shadow @Final @Nullable
+    private Entity source;
+
     @Unique
-    private boolean av$muteAtThisPos() {
+    private boolean muteAtThisPos() {
         if (!this.level.isClientSide()) return false;
 
         Vec3 pos = ((Explosion)(Object)this).getPosition();
@@ -47,8 +53,8 @@ public abstract class ExplosionMixin {
             ),
             index = 5 // volume
     )
-    private float av$muteExplosionSound(float vol) {
-        return av$muteAtThisPos() ? 0.0F : vol;
+    private float muteExplosionSound(float vol) {
+        return muteAtThisPos() ? 0.0F : vol;
     }
 
     @ModifyVariable(
@@ -56,8 +62,8 @@ public abstract class ExplosionMixin {
             at = @At("HEAD"),
             argsOnly = true
     )
-    private boolean av$disableParticlesWhenMuted(boolean spawnParticles) {
-        return av$muteAtThisPos() ? false : spawnParticles;
+    private boolean disableParticlesWhenMuted(boolean spawnParticles) {
+        return muteAtThisPos() ? false : spawnParticles;
     }
 
     @ModifyArg(
@@ -68,7 +74,7 @@ public abstract class ExplosionMixin {
             ),
             index = 1
     )
-    private BlockState av$replaceVanillaFire(BlockState originalState) {
+    private BlockState replaceVanillaFire(BlockState originalState) {
         if (!(originalState.getBlock() instanceof BaseFireBlock)) return originalState;
 
         LivingEntity owner = this.getIndirectSourceEntity();
@@ -79,5 +85,33 @@ public abstract class ExplosionMixin {
             }
         }
         return originalState;
+    }
+
+    @Redirect(
+            method = "explode",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/Entity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V"
+            )
+    )
+    private void noKnockbackFromTridentLightning(Entity instance, Vec3 pDeltaMovement) {
+        if (this.source instanceof TridentLightningBolt) {
+            return;
+        }
+        instance.setDeltaMovement(pDeltaMovement);
+    }
+
+    @Redirect(
+            method = "explode",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"
+            )
+    )
+    private Object noPlayerExplosionVector(Map<?, ?> map, Object key, Object value) {
+        if (this.source instanceof TridentLightningBolt) {
+            return null;
+        }
+        return ((Map<Object, Object>) map).put(key, value);
     }
 }

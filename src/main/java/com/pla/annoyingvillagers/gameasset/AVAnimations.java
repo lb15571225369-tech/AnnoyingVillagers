@@ -247,14 +247,13 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR;
 
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_STATE_TRANSFORM;
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_FESTIVAL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> WHIRLWIND_KICK;
     public static AnimationManager.AnimationAccessor<HeavyAttackAnimation> LEGENDARY_SWORD_HEAVY_ATTACK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_START_SKILL;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_END_SKILL;
     public static AnimationManager.AnimationAccessor<AttackAnimation> HACKER_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO2;
@@ -867,6 +866,8 @@ public class AVAnimations {
                         ));
 
         // Animation from Pugilist Steve Annoying Villagers 1.18.2
+        AVAnimations.BLUE_DEMON_STATE_TRANSFORM = builder.nextAccessor("biped/pugilist_steve/blue_demon_state_transform",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.TRIDENT_FESTIVAL = builder.nextAccessor("biped/pugilist_steve/trident_festival",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
@@ -904,24 +905,8 @@ public class AVAnimations {
                                         BlueDemonTridentItem.setStormEnergy(livingEntityPatch.getOriginal().getMainHandItem(), 0);
                                         BlueDemonTridentItem.setStormEnergy(livingEntityPatch.getOriginal().getOffhandItem(), 0);
                                         if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
-                                            blueDemonEntity.setHealth(blueDemonEntity.getMaxHealth());
-                                            blueDemonEntity.setHealingTick(-1);
-                                            ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                                            legendaryStack.enchant(Enchantments.SHARPNESS, 5);
-                                            legendaryStack.enchant(Enchantments.SMITE, 5);
-                                            legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
-
-                                            blueDemonEntity.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
-
-                                            ItemStack armorStack = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get());
-                                            armorStack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
-                                            armorStack.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
-                                            armorStack.enchant(Enchantments.FIRE_PROTECTION, 5);
-                                            armorStack.enchant(Enchantments.BLAST_PROTECTION, 5);
-                                            blueDemonEntity.setItemSlot(EquipmentSlot.CHEST, armorStack);
-
-                                            blueDemonEntity.setSwapWeaponCooldown(new Random().nextInt(200, 600));
-                                            blueDemonEntity.setState(2);
+                                            blueDemonEntity.beginStateTwoTransform();
+                                            livingEntityPatch.playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
                                         }
                                     }
                                 }, Side.SERVER),

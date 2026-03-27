@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -34,7 +32,6 @@ import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
-
 
 public class HerobrineChrisEntity extends HerobrineMob {
     public HerobrineChrisEntity(SpawnEntity spawnEntity, Level level) {

@@ -86,7 +86,6 @@ public class CommonGoals {
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Monster.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, true, false));
-        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, true, false));
 
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, SteveEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AngrySteveEntity.class, true, false));
@@ -112,9 +111,6 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowShadowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, EliteHerobrineKnockedEntity.class, true, false));
-
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, false, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, false, false));
         mob.targetSelector.addGoal(2, new HurtByTargetGoal(mob));
         mob.goalSelector.addGoal(2, new MeleeAttackGoal(mob, 1.2D, false) {
             protected double getAttackReachSqr(@NotNull LivingEntity livingentity) {
@@ -140,7 +136,7 @@ public class CommonGoals {
         if (!(mob.getTarget() instanceof PurpleVillagerGeneralEntity)) {
             mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.4D));
         }
-        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity)));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity || target instanceof BlueDemonEntity)));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
         mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(@NotNull LivingEntity livingEntity) {
@@ -170,7 +166,6 @@ public class CommonGoals {
         mob.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(mob, GreenVillagerGeneralEntity.class, false, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, PurpleVillagerGeneralEntity.class, false, false));
         mob.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, false, false));
-        mob.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, false, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, EliteHerobrineKnockedEntity.class, true, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, false, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, false, false));
@@ -192,7 +187,6 @@ public class CommonGoals {
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, LowHerobrineCloneEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, LowShadowHerobrineCloneEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemonEntity.class, true));
-        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemon2Entity.class, true));
         playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, EliteHerobrineKnockedEntity.class, true));
     }
 

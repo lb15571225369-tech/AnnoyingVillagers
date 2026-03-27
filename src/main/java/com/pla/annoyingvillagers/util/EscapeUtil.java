@@ -29,15 +29,6 @@ public class EscapeUtil {
         LivingEntityPatch<?> targetLivingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
         if (target == null || targetLivingEntityPatch == null) return false;
         AssetAccessor<? extends StaticAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
-        if (target instanceof HerobrineMob herobrineMob) {
-            if (herobrineMob instanceof SwordsmanHerobrineEntity) {
-                return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD)
-                        || targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT;
-            }
-            if (herobrineMob instanceof SledgehammerHerobrineEntity) {
-                return targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT || targetDynamicAnimation == WOMAnimations.TORMENT_DASH;
-            }
-        }
         return isAnimationDangerous(targetDynamicAnimation);
     }
 }

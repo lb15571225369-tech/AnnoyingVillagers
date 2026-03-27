@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.TridentLightningBolt;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
@@ -12,6 +13,7 @@ import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.level.ExplosionEvent;
@@ -34,6 +36,10 @@ import java.util.Objects;
 public class ExplosionDamageEvent {
     @SubscribeEvent
     public static void onExplode(ExplosionEvent.Detonate detonate) {
+        if (detonate.getExplosion().getDirectSourceEntity() instanceof TridentLightningBolt) {
+            detonate.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity);
+        }
+
         LivingEntity livingEntity = detonate.getExplosion().getIndirectSourceEntity();
         final Vec3 center = detonate.getExplosion().getPosition();
 

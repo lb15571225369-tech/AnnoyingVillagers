@@ -286,7 +286,6 @@ public class HerobrineGregEntity extends Monster {
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, JevEntity.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, ChrisEntity.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BlueDemonEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BlueDemon2Entity.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BbqEntity.class, 12.0F, 1.2D, 1.8D));
 
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));

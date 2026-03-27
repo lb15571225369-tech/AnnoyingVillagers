@@ -1,14 +1,21 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.clazz.BbqCombatMode;
+import com.pla.annoyingvillagers.clazz.SauceType;
+import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.TeamUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -17,6 +24,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -42,6 +51,8 @@ public class BbqEntity extends Chicken {
     private int meleeCooldown;
     private float orbitAngle;
     private float orbitRadius = 5.0F;
+    private SauceType sauceType = SauceType.BBQ_SAUCE;
+    private int retreatTicks;
 
     public BbqEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.BBQ.get(), level);
@@ -95,6 +106,20 @@ public class BbqEntity extends Chicken {
         return null;
     }
 
+    public SauceType getSauceType() {
+        return this.sauceType;
+    }
+
+    public void setSauceType(SauceType sauceType) {
+        this.sauceType = sauceType == null ? SauceType.BBQ_SAUCE : sauceType;
+        this.setCustomName(Component.translatable(this.sauceType.getTranslationKey()));
+
+        if (this.sauceType.isShockSauce() && this.getMainHandItem().isEmpty()) {
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
+            this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        }
+    }
+
     public BbqCombatMode getCombatMode() {
         return combatMode;
     }
@@ -122,6 +147,56 @@ public class BbqEntity extends Chicken {
         }
 
         return null;
+    }
+
+    public void startRetreat() {
+        if (!this.isAlive()) {
+            return;
+        }
+
+        this.clearCombat();
+        this.retreatTicks = 60 + this.random.nextInt(20);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.literal("<" + this.getName().getString() + "> " + Component.translatable("subtitles.bbq_retreat").getString()),
+                    false
+            );
+        }
+    }
+
+    private void tickRetreat() {
+        BlueDemonEntity leader = this.getLeader();
+        if (leader == null || !leader.isAlive()) {
+            this.discard();
+            return;
+        }
+
+        Vec3 away = this.position().subtract(leader.position());
+        away = new Vec3(away.x, 0.0D, away.z);
+
+        if (away.lengthSqr() < 1.0E-4D) {
+            away = new Vec3(this.random.nextDouble() - 0.5D, 0.0D, this.random.nextDouble() - 0.5D);
+        }
+
+        away = away.normalize();
+
+        double x = this.getX() + away.x * 10.0D;
+        double z = this.getZ() + away.z * 10.0D;
+
+        if (this.sauceType == SauceType.SWEET_ONION_SAUCE) {
+            this.setNoGravity(true);
+            this.getNavigation().stop();
+            this.moveAerialTowards(x, this.getY() + 1.5D, z, 0.22D, 0.88D);
+        } else {
+            this.setNoGravity(false);
+            this.getNavigation().moveTo(x, this.getY(), z, 1.45D);
+        }
+
+        this.retreatTicks--;
+        if (this.retreatTicks <= 0) {
+            this.discard();
+        }
     }
 
     public void startOrbit(@Nullable LivingEntity target, int ticks) {
@@ -197,10 +272,6 @@ public class BbqEntity extends Chicken {
     }
 
     private void tickManualAttacks() {
-        if (this.chainShotCooldown > 0) {
-            this.chainShotCooldown--;
-        }
-
         if (this.chainShotsRemaining <= 0) {
             return;
         }
@@ -223,6 +294,124 @@ public class BbqEntity extends Chicken {
         } else {
             this.chainShotCooldown = 35;
         }
+    }
+
+    private void tickShockTouch(LivingEntity target) {
+        if (!this.sauceType.isShockSauce()) {
+            return;
+        }
+
+        if (this.meleeCooldown > 0) {
+            return;
+        }
+
+        if (this.distanceToSqr(target.getX(), target.getEyeY(), target.getZ()) > 2.25D) {
+            return;
+        }
+
+        target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+
+        if (this.random.nextFloat() < 0.35F) {
+            target.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTRIFY.get(), 20, 1));
+        }
+
+        this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F + this.random.nextFloat() * 0.2F);
+        this.meleeCooldown = 12;
+    }
+
+    private void tickSweetOnionSupport() {
+        BlueDemonEntity leader = this.getLeader();
+        LivingEntity enemy = this.getCombatTarget();
+
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+
+        if (leader == null || !leader.isAlive()) {
+            this.tickLeaderFollow();
+            return;
+        }
+
+        if (this.getMainHandItem().isEmpty()) {
+            BlueDemonThrownTridentEntity trident = leader.getNearestGroundedOwnedTrident(12.0D);
+
+            if (trident != null) {
+                if (this.distanceToSqr(trident) > 2.25D) {
+                    this.getNavigation().moveTo(trident.getX(), trident.getY(), trident.getZ(), 1.35D);
+                } else {
+                    ItemStack carried = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get());
+                    carried.getOrCreateTag().putString("CarriedTridentMode", trident.getMode().name());
+
+                    trident.discard();
+                    this.setItemSlot(EquipmentSlot.MAINHAND, carried);
+                    this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+                    this.getNavigation().stop();
+                }
+                return;
+            }
+        }
+
+        if (this.getMainHandItem().is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get())) {
+            if (this.distanceTo(leader) > 2.5D) {
+                this.getNavigation().moveTo(leader, 1.35D);
+            } else if (this.level() instanceof ServerLevel serverLevel) {
+                TridentMode mode = TridentMode.DEFAULT;
+                CompoundTag tag = this.getMainHandItem().getTag();
+
+                if (tag != null && tag.contains("CarriedTridentMode")) {
+                    try {
+                        mode = TridentMode.valueOf(tag.getString("CarriedTridentMode"));
+                    } catch (IllegalArgumentException ignored) {
+                    }
+                }
+
+                BlockPos standPos = serverLevel.getHeightmapPos(
+                        net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                        BlockPos.containing(
+                                leader.getX() + (this.random.nextDouble() - 0.5D) * 2.0D,
+                                leader.getY(),
+                                leader.getZ() + (this.random.nextDouble() - 0.5D) * 2.0D
+                        )
+                );
+
+                BlueDemonThrownTridentEntity placed = new BlueDemonThrownTridentEntity(
+                        AnnoyingVillagersModEntities.BLUE_DEMON_THROWN_TRIDENT.get(),
+                        serverLevel
+                );
+                placed.setMode(mode);
+                placed.assignSpawnSequence(leader);
+
+                serverLevel.addFreshEntity(placed);
+                placed.placeAsGroundedSupport(leader, standPos);
+                placed.trimOldGroundedTridentsAroundOwnerOnSpawn();
+
+                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                this.getNavigation().stop();
+            }
+            return;
+        }
+
+        if (enemy != null && enemy.isAlive()) {
+            Vec3 away = leader.position().subtract(enemy.position());
+            away = new Vec3(away.x, 0.0D, away.z);
+
+            if (away.lengthSqr() < 1.0E-4D) {
+                away = this.position().subtract(enemy.position());
+                away = new Vec3(away.x, 0.0D, away.z);
+            }
+
+            if (away.lengthSqr() < 1.0E-4D) {
+                away = new Vec3(1.0D, 0.0D, 0.0D);
+            }
+
+            away = away.normalize().scale(8.0D + this.random.nextDouble() * 3.0D);
+            Vec3 desired = leader.position().add(away);
+
+            this.getNavigation().moveTo(desired.x, leader.getY(), desired.z, 1.4D);
+            this.getLookControl().setLookAt(enemy, 30.0F, 30.0F);
+            return;
+        }
+
+        this.tickLeaderFollow();
     }
 
     private void firePoisonEgg(LivingEntity target, float power, float inaccuracy) {
@@ -452,6 +641,12 @@ public class BbqEntity extends Chicken {
             return;
         }
 
+        if (this.retreatTicks > 0) {
+            this.tickRetreat();
+            return;
+        }
+
+        this.teleportNearLeaderIfTooFar();
         BlueDemonEntity leader = this.getLeader();
 
         if (this.combatModeTicks > 0) {
@@ -462,15 +657,27 @@ public class BbqEntity extends Chicken {
             this.meleeCooldown--;
         }
 
+        if (this.chainShotCooldown > 0) {
+            this.chainShotCooldown--;
+        }
+
+        if (this.sauceType.isSupport()) {
+            this.tickSweetOnionSupport();
+            return;
+        }
+
         LivingEntity target = this.getCombatTarget();
 
         if (target != null && target.isAlive()) {
-            if (leader != null && leader.isAlive() && leader.getTarget() == target && leader.distanceTo(target) > 10.0D && this.combatMode != BbqCombatMode.PARALLEL) {
+            if (leader != null && leader.isAlive() && leader.getTarget() != null && leader.distanceTo(leader.getTarget()) > 10.0D && this.combatMode != BbqCombatMode.PARALLEL) {
                 this.startParallelPursuit(target, 20);
             }
 
             this.getLookControl().setLookAt(target, 45.0F, 45.0F);
-            this.tickManualAttacks();
+
+            if (this.sauceType == SauceType.BBQ_SAUCE) {
+                this.tickManualAttacks();
+            }
 
             switch (this.combatMode) {
                 case HEAD_ATTACK -> {
@@ -494,6 +701,8 @@ public class BbqEntity extends Chicken {
                     }
                 }
             }
+
+            this.tickShockTouch(target);
             return;
         }
 
@@ -501,8 +710,49 @@ public class BbqEntity extends Chicken {
         this.tickLeaderFollow();
     }
 
+    public void teleportNearLeaderIfTooFar() {
+        if (this.level().isClientSide || this.retreatTicks > 0) {
+            return;
+        }
+
+        BlueDemonEntity leader = this.getLeader();
+        if (leader == null || !leader.isAlive() || leader.isSauceArrivalPending()) {
+            return;
+        }
+
+        if (this.distanceToSqr(leader) <= 400.0D) {
+            return;
+        }
+
+        float angle = leader.getSauceSquadAngle();
+        double laneOffset = switch (this.getSauceType()) {
+            case BBQ_SAUCE -> -2.25D;
+            case HONEY_MUSTARD_SAUCE -> -0.75D;
+            case SOY_SAUCE -> 0.75D;
+            case SWEET_ONION_SAUCE -> 2.25D;
+        };
+
+        double forwardX = Mth.cos(angle);
+        double forwardZ = Mth.sin(angle);
+        double sideX = -forwardZ;
+        double sideZ = forwardX;
+
+        double radius = 1.8D;
+        double x = leader.getX() - forwardX * radius + sideX * laneOffset;
+        double z = leader.getZ() - forwardZ * radius + sideZ * laneOffset;
+        double y = leader.getY();
+
+        this.teleportTo(x, y, z);
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+    }
+
     @Override
     public boolean hurt(@NotNull DamageSource damageSource, float amount) {
+        if (damageSource.is(DamageTypes.LIGHTNING_BOLT)) return false;
+        if (damageSource.is(DamageTypes.EXPLOSION)) return false;
         boolean result = super.hurt(damageSource, amount);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
@@ -534,16 +784,30 @@ public class BbqEntity extends Chicken {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+
         if (this.leaderUUID != null) {
             tag.putUUID("LeaderUUID", this.leaderUUID);
         }
+
+        tag.putString("SauceType", this.sauceType.name());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+
         if (tag.hasUUID("LeaderUUID")) {
             this.leaderUUID = tag.getUUID("LeaderUUID");
+        }
+
+        if (tag.contains("SauceType")) {
+            try {
+                this.setSauceType(SauceType.valueOf(tag.getString("SauceType")));
+            } catch (IllegalArgumentException ignored) {
+                this.setSauceType(SauceType.BBQ_SAUCE);
+            }
+        } else {
+            this.setSauceType(SauceType.BBQ_SAUCE);
         }
     }
 

@@ -137,18 +137,12 @@ public class TridentLightningBolt extends LightningBolt {
                                 this.getX() - 3.0D, this.getY() - 3.0D, this.getZ() - 3.0D,
                                 this.getX() + 3.0D, this.getY() + 9.0D, this.getZ() + 3.0D
                         ),
-                        entity -> entity.isAlive()
-                                && entity != this.owner
-                                && (this.owner instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.getBbqEntity() != null && entity != blueDemonEntity.getBbqEntity())
-                                && !(entity.isSpectator())
-                                && !(entity instanceof Player player && player.isCreative())
-                                && !(entity instanceof BlueDemonThrownTridentEntity)
-                                && !(entity instanceof TridentLightningBolt)
+                        entity -> entity instanceof LivingEntity && entity.isAlive() && entity != this.owner && this.owner instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.getBbqEntity() != null && entity != blueDemonEntity.getBbqEntity() && !entity.isSpectator() && !(entity instanceof Player player && player.isCreative())
                 );
 
                 if (this.superLightning) {
                     serverLevel.explode(
-                            this.owner,
+                            this,
                             this.getX(),
                             this.getY(),
                             this.getZ(),

@@ -8,8 +8,10 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -40,6 +42,7 @@ import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -121,8 +124,25 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
     public AttackResult attack(EpicFightDamageSource epicFightDamageSource, Entity entity, InteractionHand interactionhand) {
         AttackResult attackresult = super.attack(epicFightDamageSource, entity, interactionhand);
 
-        if (attackresult.resultType == ResultType.SUCCESS && entity.isAlive()) {
-            // More logic when mob attack success
+        if (attackresult.resultType == ResultType.SUCCESS
+                && entity.isAlive()
+                && this.getOriginal() instanceof BlueDemonEntity blueDemonEntity
+                && blueDemonEntity.getVoiceCooldown() == 0) {
+            blueDemonEntity.setVoiceCooldown();
+            SoundEvent soundEvent;
+            float chance = new Random().nextFloat();
+            if (chance <= 0.2) {
+                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_YC.get();
+            } else if (chance <= 0.4) {
+                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_PLAYER_INTERESTING.get();
+            } else if (chance <= 0.6) {
+                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_YOU_NO_KNOW.get();
+            } else if (chance <= 0.8) {
+                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_PLAYER.get();
+            } else {
+                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_DONT_BE.get();
+            }
+            this.getOriginal().playSound(soundEvent, 1.0F, 1.0F);
         }
 
         return attackresult;

@@ -381,7 +381,7 @@ public class CombatCommon {
         } else if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             return (herobrineMob instanceof ArmoredHerobrineEntity || herobrineMob instanceof ShadowHerobrineEntity) && herobrineMob.getSwapWeaponCooldown() == 0 ;
         } else if (mobpatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
-            return blueDemonEntity.getState() == 1 && blueDemonEntity.getSwapWeaponCooldown() == 0;
+            return blueDemonEntity.getState() == 3 && blueDemonEntity.getSwapWeaponCooldown() == 0;
         }
 
         return false;

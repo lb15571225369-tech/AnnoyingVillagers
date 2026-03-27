@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -15,7 +14,6 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
-import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
@@ -34,7 +32,7 @@ public class BlueDemonLegendarySword {
             serverLevel.playSound(
                     null,
                     blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_ATTACK.get(),
+                    AnnoyingVillagersModSounds.BLUEDEMON_SAY_DONT_BE.get(),
                     SoundSource.NEUTRAL,
                     1.0F, 1.0F
             );
@@ -86,10 +84,10 @@ public class BlueDemonLegendarySword {
     }
 
     static void legendarySwordSpecialAttack(MobPatch<?> mobpatch) {
-        AngrySteveEntity steveEntity = (AngrySteveEntity) mobpatch.getOriginal();
-        ItemStack itemStack = steveEntity.getMainHandItem();
-        if (itemStack.getItem() instanceof LegendarySwordItem && steveEntity.level() instanceof ServerLevel) {
-            steveEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+        BlueDemonEntity blueDemonEntity = (BlueDemonEntity) mobpatch.getOriginal();
+        ItemStack itemStack = blueDemonEntity.getMainHandItem();
+        if (itemStack.getItem() instanceof LegendarySwordItem && blueDemonEntity.level() instanceof ServerLevel) {
+            blueDemonEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
             new DelayedTask(20) {
                 @Override
                 public void run() {
@@ -785,7 +783,7 @@ public class BlueDemonLegendarySword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 15.0D)
-                                                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_LEGENDARY, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -1025,7 +1023,7 @@ public class BlueDemonLegendarySword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 15.0D)
-                                                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_LEGENDARY, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -1235,7 +1233,7 @@ public class BlueDemonLegendarySword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 15.0D)
-                                                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_LEGENDARY, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -1408,7 +1406,7 @@ public class BlueDemonLegendarySword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.TRIDENT_THROW_LEGENDARY, 0.0F)
+                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
                                             .addExBehavior(BlueDemonLegendarySword::legendarySwordSpecialAttack)
                             )
             )

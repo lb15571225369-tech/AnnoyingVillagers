@@ -482,6 +482,16 @@ public class NullWeapon extends Monster {
             this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
         }
         if (!level().isClientSide) {
+            if (nullEntity != null && !nullEntity.isAlive()) {
+                this.discard();
+                return;
+            }
+
+            if (nullEntity == null && nullUUID == null && player == null && playerUUID == null) {
+                this.discard();
+                return;
+            }
+
             ItemStack stack = this.getMainHandItem();
             this.setHealth(stack.getMaxDamage() - stack.getDamageValue());
             if (nullEntity == null && nullUUID != null) {

@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -60,7 +61,9 @@ public class ThrownPoisonEggEntity extends ThrowableItemProjectile {
 
     protected void onHitEntity(@NotNull EntityHitResult pResult) {
         super.onHitEntity(pResult);
-        pResult.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), 0.5F);
+        if (!(pResult.getEntity() instanceof BbqEntity)) {
+            pResult.getEntity().hurt(this.damageSources().thrown(this, this.getOwner()), 0.5F);
+        }
     }
 
     protected void onHit(@NotNull HitResult pResult) {
