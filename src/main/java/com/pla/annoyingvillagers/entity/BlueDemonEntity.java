@@ -578,9 +578,10 @@ public class BlueDemonEntity extends Monster {
         if (this.level() instanceof ServerLevel serverLevel && this.getLivingEntityPatch() != null) {
             AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
             if (dynamicAnimation == AVAnimations.CUT_ANTITHEUS_ASCENSION
-                        || dynamicAnimation == AVAnimations.TRIDENT_ATTACK
-                        || dynamicAnimation == AVAnimations.ELECTRIC_FIELD
-                        || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL) {
+                    || dynamicAnimation == AVAnimations.TRIDENT_ATTACK
+                    || dynamicAnimation == AVAnimations.ELECTRIC_FIELD
+                    || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL
+                    || dynamicAnimation == AVAnimations.BLUE_DEMON_STATE_TRANSFORM) {
                 EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
                         this, damagesource.getEntity());
                 return false;
@@ -926,6 +927,9 @@ public class BlueDemonEntity extends Monster {
             if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
             if (healingCooldown > 0) healingCooldown--;
             if (stateTransformCooldown > 0) {
+                if (this.getLivingEntityPatch() != null) {
+                    this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
+                }
                 if (stateTransformCooldown % 2 == 0) {
                     this.heal(1.0F);
                 }
