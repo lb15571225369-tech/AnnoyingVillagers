@@ -14,6 +14,8 @@ import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
+import net.shelmarow.combat_evolution.gameassets.ExecutionSkillAnimations;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
@@ -44,6 +46,9 @@ public class EpicfightUtil {
                 AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1.get().getRegistryName().toString(),
                 AVAnimations.AEGIS_SHIELD_SHOOT.get().getRegistryName().toString(),
                 AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT.get().getRegistryName().toString(),
+                AVAnimations.TRIDENT_FESTIVAL.get().getRegistryName().toString(),
+                AVAnimations.TRIDENT_ATTACK.get().getRegistryName().toString(),
+                AVAnimations.ELECTRIC_FIELD.get().getRegistryName().toString(),
                 AnimsAgony.AGONY_SKY_DIVE_X.get().getRegistryName().toString(),
                 AnimsAgony.AGONY_SKY_DIVE.get().getRegistryName().toString(),
                 WOMAnimations.TORMENT_CHARGED_ATTACK_2.get().getRegistryName().toString(),
@@ -65,7 +70,11 @@ public class EpicfightUtil {
                 AnimsSolar.SOLAR_BRASERO_INFIERNO.get().getRegistryName().toString(),
                 AnimsNapoleon.NAPOLEON_AUSTERLITZ_SHOOT.get().getRegistryName().toString(),
                 AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT.get().getRegistryName().toString(),
-                AnimsOrbit.ORBIT_LIGHT_BEAM.get().getRegistryName().toString()
+                AnimsOrbit.ORBIT_LIGHT_BEAM.get().getRegistryName().toString(),
+                ExecutionSkillAnimations.EXECUTION_DAGGER.get().getRegistryName().toString(),
+                ExecutionSkillAnimations.EXECUTION_GREATSWORD.get().getRegistryName().toString(),
+                ExecutionSkillAnimations.EXECUTION_SWORD.get().getRegistryName().toString(),
+                ExecutionSkillAnimations.EXECUTION_TACHI.get().getRegistryName().toString()
         ));
 
         if (ModList.get().isLoaded("efn")) {

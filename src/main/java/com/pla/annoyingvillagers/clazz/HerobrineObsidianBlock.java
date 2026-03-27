@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.clazz;
 import java.util.*;
 
 import com.pla.annoyingvillagers.blockentity.*;
+import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
@@ -233,6 +234,13 @@ public class HerobrineObsidianBlock extends Block {
             int currentValue = avNpc.getStunEscapeCooldown();
             if (currentValue < 100) {
                 avNpc.setStunEscapeCooldown(currentValue + 20);
+            }
+        }
+
+        if (entity instanceof BlueDemonEntity blueDemonEntity) {
+            int currentValue = blueDemonEntity.getStunEscapeCooldown();
+            if (currentValue < 100) {
+                blueDemonEntity.setStunEscapeCooldown(currentValue + 20);
             }
         }
 

@@ -152,7 +152,7 @@ public class TridentLightningBolt extends LightningBolt {
                             this.getX(),
                             this.getY(),
                             this.getZ(),
-                            new Random().nextFloat(6.0F, 8.0F),
+                            new Random().nextFloat(10.0F, 15.0F),
                             Level.ExplosionInteraction.BLOCK
                     );
                 }
@@ -176,7 +176,7 @@ public class TridentLightningBolt extends LightningBolt {
                         }
 
                         if (this.superLightning) {
-                            entity.hurt(level().damageSources().indirectMagic(this, owner), 15.0F);
+                            entity.hurt(level().damageSources().indirectMagic(this, owner), 50.0F);
                         } else {
                             entity.hurt(level().damageSources().indirectMagic(this, owner), 5.0F);
                         }

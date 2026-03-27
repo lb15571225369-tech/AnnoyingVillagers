@@ -97,10 +97,7 @@ import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.entity.*;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
@@ -122,6 +119,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -564,7 +562,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         ));
-        AVAnimations.NERF_TSUNAMI_REINFORCED = builder.nextAccessor("biped/epicfight_clone/tsunami_reinforced", (accessor) -> (new AttackAnimation(0.2F, 0.2F, 0.35F, 0.65F, 1.3F, ColliderPreset.BIPED_BODY_COLLIDER, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
+        AVAnimations.NERF_TSUNAMI_REINFORCED = builder.nextAccessor("biped/epicfight_clone/tsunami_reinforced", (accessor) -> (new AttackAnimation(0.1F, 0.2F, 0.35F, 0.45F, 0.5F, ColliderPreset.BIPED_BODY_COLLIDER, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.RAW_COORD_WITH_X_ROT)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
@@ -903,9 +901,27 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(3.5F, (livingEntityPatch, self, p) -> {
                                     if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
                                         BlueDemonTridentItem.summonSuperLightningAtGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
-                                        if (livingEntityPatch.getOriginal() instanceof Player player) {
-                                            BlueDemonTridentItem.setStormEnergy(player.getMainHandItem(), 0);
-                                            BlueDemonTridentItem.setStormEnergy(player.getOffhandItem(), 0);
+                                        BlueDemonTridentItem.setStormEnergy(livingEntityPatch.getOriginal().getMainHandItem(), 0);
+                                        BlueDemonTridentItem.setStormEnergy(livingEntityPatch.getOriginal().getOffhandItem(), 0);
+                                        if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
+                                            blueDemonEntity.setHealth(blueDemonEntity.getMaxHealth());
+                                            blueDemonEntity.setHealingTick(-1);
+                                            ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
+                                            legendaryStack.enchant(Enchantments.SHARPNESS, 5);
+                                            legendaryStack.enchant(Enchantments.SMITE, 5);
+                                            legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
+
+                                            blueDemonEntity.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
+
+                                            ItemStack armorStack = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get());
+                                            armorStack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+                                            armorStack.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
+                                            armorStack.enchant(Enchantments.FIRE_PROTECTION, 5);
+                                            armorStack.enchant(Enchantments.BLAST_PROTECTION, 5);
+                                            blueDemonEntity.setItemSlot(EquipmentSlot.CHEST, armorStack);
+
+                                            blueDemonEntity.setSwapWeaponCooldown(new Random().nextInt(200, 600));
+                                            blueDemonEntity.setState(2);
                                         }
                                     }
                                 }, Side.SERVER),

@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -8,6 +7,7 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.task.MobExecutionTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -25,7 +25,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -40,9 +39,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.shelmarow.combat_evolution.ai.util.BehaviorUtils;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
-import net.shelmarow.combat_evolution.execution.ExecutionTask;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
@@ -55,6 +52,7 @@ import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -206,7 +204,7 @@ public class CombatCommon {
             return false;
         }
         if (victim != null) {
-            if (isTargetKnockedDown(mobpatch)) {
+            if (isTargetKnockedDown(mobpatch) || canExecute(mobpatch)) {
                 return false;
             } else {
                 return !ExecutionHandler.isExecutingTarget(attacker, victim);
@@ -217,6 +215,14 @@ public class CombatCommon {
 
     public static boolean canJump(MobPatch<?> mobpatch) {
         return mobpatch.getOriginal().onGround() && !mobpatch.getOriginal().isPassenger();
+    }
+
+    public static boolean canPerformTridentAttack(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.level() instanceof ServerLevel serverLevel) {
+            List<BlueDemonThrownTridentEntity> tridents = BlueDemonTridentItem.getGroundedOwnerTridents(serverLevel, blueDemonEntity);
+            return !tridents.isEmpty();
+        }
+        return false;
     }
 
     public static boolean isNotRiding(MobPatch<?> mobpatch) {
@@ -374,6 +380,8 @@ public class CombatCommon {
             return steveEntity.getBlockDamage() == null && steveEntity.getSwapWeaponCooldown() == 0 || (steveEntity.getState() == 0 && steveEntity.getHealth() <= 20 && !steveEntity.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD));
         } else if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             return (herobrineMob instanceof ArmoredHerobrineEntity || herobrineMob instanceof ShadowHerobrineEntity) && herobrineMob.getSwapWeaponCooldown() == 0 ;
+        } else if (mobpatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
+            return blueDemonEntity.getState() == 1 && blueDemonEntity.getSwapWeaponCooldown() == 0;
         }
 
         return false;
@@ -793,6 +801,9 @@ public class CombatCommon {
         }
         if (entity instanceof HerobrineMob herobrineMob) {
             herobrineMob.rollItem();
+        }
+        if (entity instanceof BlueDemonEntity blueDemonEntity) {
+            blueDemonEntity.rollItem();
         }
     }
 

@@ -155,10 +155,16 @@ public class MobClashBladeMixin {
                         || defender instanceof ArmoredHerobrineEntity)) {
                     herobrineMob.setBlockDamage(projectile);
                     cir.setReturnValue(true);
-                } else if (!(projectile instanceof AbstractArrow)) {
+                } else if (!(projectile instanceof AbstractArrow && !(projectile instanceof BlueDemonThrownTridentEntity))) {
                     cir.setReturnValue(true);
                     return;
                 }
+            }
+
+            if (defender instanceof BlueDemonEntity blueDemonEntity) {
+                blueDemonEntity.setBlockDamage(projectile);
+                cir.setReturnValue(true);
+                return;
             }
 
         } else if (!(livingAttackEvent.getSource().getDirectEntity() instanceof Projectile)
@@ -205,6 +211,13 @@ public class MobClashBladeMixin {
                 if (defender instanceof HerobrineMob herobrineMob
                         && herobrineMob.getBlockDamage() == null) {
                     herobrineMob.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
+                    cir.setReturnValue(true);
+                    return;
+                }
+
+                if (defender instanceof BlueDemonEntity blueDemonEntity
+                        && blueDemonEntity.getBlockDamage() == null) {
+                    blueDemonEntity.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
                     cir.setReturnValue(true);
                     return;
                 }

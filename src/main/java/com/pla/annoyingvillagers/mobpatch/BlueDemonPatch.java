@@ -3,10 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.combatbehaviour.BlueDemonTrident;
-import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
-import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcSpear;
+import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;
@@ -85,6 +82,33 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
                 ImmutableMap.of(
                         Styles.TWO_HAND, List.of(
                                 Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.GREATSWORD,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.LEGENDARY_SWORD_IDLE),
+                                        Pair.of(LivingMotions.WALK, AVAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.GREATSWORD,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, BlueDemonLegendarySword.LEGENDARY_SWORD
+                        ));
+
+        this.guardHitMotions.put(WeaponCategories.GREATSWORD,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.GREATSWORD_GUARD_HIT
                         )
                 )
         );

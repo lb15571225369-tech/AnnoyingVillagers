@@ -41,6 +41,8 @@ public class SnakeBladeHit {
             if (!entity.equals(attacker)
                     && !attacker.isAlliedTo(entity)
                     && !entity.isAlliedTo(attacker)
+                    && !entity.isSpectator()
+                    && !(entity instanceof Player player && player.isCreative())
                     && (entity instanceof Mob || entity instanceof Player)
                     && attacker.hasLineOfSight(entity)) {
                 if (closestValid == null || attacker.distanceTo(entity) < attacker.distanceTo(closestValid)) {
@@ -68,6 +70,8 @@ public class SnakeBladeHit {
             if (!entity.equals(attacker)
                     && !attacker.isAlliedTo(entity)
                     && !entity.isAlliedTo(attacker)
+                    && !entity.isSpectator()
+                    && !(entity instanceof Player player && player.isCreative())
                     && (entity instanceof Mob || entity instanceof Player)
                     && attacker.hasLineOfSight(entity)) {
                 if (closestValid == null || attacker.distanceTo(entity) < attacker.distanceTo(closestValid)) {

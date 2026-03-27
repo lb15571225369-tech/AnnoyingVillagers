@@ -52,7 +52,6 @@ public class BbqEntity extends Chicken {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
@@ -66,6 +65,9 @@ public class BbqEntity extends Chicken {
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
         if (effect.getEffect() == MobEffects.POISON) {
+            if (!this.level().isClientSide && this.isAlive()) {
+                this.heal(2.0F);
+            }
             return false;
         }
         return super.canBeAffected(effect);

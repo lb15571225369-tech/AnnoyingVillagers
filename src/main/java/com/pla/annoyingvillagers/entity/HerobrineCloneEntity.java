@@ -93,7 +93,7 @@ public class HerobrineCloneEntity extends HerobrineMob {
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 9.0D);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         builder = builder.add(Attributes.ATTACK_KNOCKBACK, 2.0D);
         return builder;

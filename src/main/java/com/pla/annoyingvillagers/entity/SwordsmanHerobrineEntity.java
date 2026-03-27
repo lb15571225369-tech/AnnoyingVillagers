@@ -47,7 +47,7 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
+        if (damagesource.getDirectEntity() instanceof AbstractArrow && !(damagesource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         return super.hurt(damagesource, f);
     }
 
@@ -102,8 +102,7 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
         builder = builder.add(Attributes.ARMOR, 75.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);
-        builder = builder.add(Attributes.ATTACK_SPEED, 2.0D);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }

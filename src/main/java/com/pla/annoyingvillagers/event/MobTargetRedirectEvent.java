@@ -20,6 +20,7 @@ public class MobTargetRedirectEvent {
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity livingEntity = event.getEntity();
         if (livingEntity instanceof Mob mob) {
+            if (mob instanceof BlueDemonEntity || mob instanceof BbqEntity) return;
             if (mob.getTarget() instanceof HerobrineMob herobrineMob
                     && (herobrineMob.isSacrificing() || herobrineMob.isHealing())) {
                 if (herobrineMob.getFirstPossessedHerobrine() != null

@@ -65,7 +65,7 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
+        if (damagesource.getDirectEntity() instanceof AbstractArrow && !(damagesource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         if (damagesource.is(DamageTypes.PLAYER_ATTACK)) return false;
         if (damagesource.is(DamageTypes.THROWN)) return false;
         if (damagesource.is(DamageTypes.EXPLOSION)) return false;

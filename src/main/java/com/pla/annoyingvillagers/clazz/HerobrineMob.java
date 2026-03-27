@@ -880,6 +880,7 @@ public class HerobrineMob extends Monster {
                     || this instanceof NullEntity
                     || this instanceof ShadowHerobrineEntity)) {
                 this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 3, 3));
                 if (this instanceof NullEntity || this instanceof ShadowHerobrineEntity) {
                     if (new Random().nextBoolean()) {
                         serverLevel.sendParticles(
