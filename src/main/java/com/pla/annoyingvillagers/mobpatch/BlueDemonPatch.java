@@ -71,7 +71,7 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.RUN, AVAnimations.TRIDENT_TWO_HAND_RUN),
                                         Pair.of(LivingMotions.CHASE, AVAnimations.TRIDENT_TWO_HAND_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                        Pair.of(LivingMotions.DEATH, AVAnimations.BLUE_DEMON_STATE_TRANSFORM)
                                 )
                         ));
 
@@ -99,7 +99,7 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.WALK, AVAnimations.TORMENT_BERSERK_WALK),
                                         Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
                                         Pair.of(LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                        Pair.of(LivingMotions.DEATH, AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK)
                                 )
                         ));
         this.weaponAttackMotions

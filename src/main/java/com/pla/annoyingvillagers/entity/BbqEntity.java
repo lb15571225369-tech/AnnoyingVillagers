@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.clazz.BbqCombatMode;
-import com.pla.annoyingvillagers.clazz.SauceType;
-import com.pla.annoyingvillagers.clazz.TridentMode;
+import com.pla.annoyingvillagers.clazz.*;
+import com.pla.annoyingvillagers.entity.goal.EscapeAvoidGoal;
+import com.pla.annoyingvillagers.entity.goal.FollowEscapeLeaderGoal;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,7 +25,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -33,6 +35,7 @@ import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class BbqEntity extends Chicken {
@@ -53,6 +56,73 @@ public class BbqEntity extends Chicken {
     private float orbitRadius = 5.0F;
     private SauceType sauceType = SauceType.BBQ_SAUCE;
     private int retreatTicks;
+    @Nullable
+    private BbqEntity sauceLeader;
+    @Nullable
+    private UUID sauceLeaderUUID;
+    private boolean escapeMode;
+    private boolean escapeFlying;
+    private int escapeLocomotionTicks;
+    private float escapeFlightHeight = 1.5F;
+
+    private boolean deathAssemblyMode;
+    private int deathAssemblyTicks;
+    private double deathAssemblyX;
+    private double deathAssemblyY;
+    private double deathAssemblyZ;
+    private boolean pendingDeathMainhandTrident;
+    private boolean pendingDeathOffhandChestplate;
+    @Nullable
+    private UUID pendingDeathEscapeLeaderUUID;
+    private boolean deathWatchMode;
+
+    public boolean isEscapeFlying() {
+        return this.escapeMode && this.escapeFlying;
+    }
+
+    public double getEscapeFlightHeight() {
+        return this.escapeFlightHeight;
+    }
+
+    public void tickEscapeLocomotionMode() {
+        if (!this.escapeMode) {
+            this.escapeFlying = false;
+            this.escapeLocomotionTicks = 0;
+            this.escapeFlightHeight = 1.5F;
+            this.setNoGravity(false);
+            return;
+        }
+
+        if (this.escapeLocomotionTicks > 0) {
+            this.escapeLocomotionTicks--;
+            return;
+        }
+
+        float airChance;
+
+        if (this.getSauceLeader() != null) {
+            airChance = 0.45F;
+        } else {
+            airChance = 0.30F;
+        }
+
+        if (this.sauceType == SauceType.SWEET_ONION_SAUCE) {
+            airChance += 0.20F;
+        }
+
+        this.escapeFlying = this.random.nextFloat() < airChance;
+        this.escapeLocomotionTicks = this.random.nextInt(25, 60);
+        this.escapeFlightHeight = 1.0F + this.random.nextFloat() * 4.0F; // 1 to 5 blocks
+
+        if (!this.escapeFlying) {
+            this.setNoGravity(false);
+            this.fallDistance = 0.0F;
+        }
+    }
+
+    public void moveEscapeAerialTowards(double x, double y, double z, double accel, double drag) {
+        this.moveAerialTowards(x, y, z, accel, drag);
+    }
 
     public BbqEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.BBQ.get(), level);
@@ -65,12 +135,83 @@ public class BbqEntity extends Chicken {
         this.setNoAi(false);
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
+    }
+
+    public void startLeaderDeathWatch(@Nullable BlueDemonEntity leader) {
+        if (leader == null || !leader.isAlive()) {
+            return;
+        }
+
+        this.deathWatchMode = true;
+        this.deathAssemblyMode = false;
+        this.escapeMode = false;
+        this.retreatTicks = 0;
+        this.clearCombat();
+
+        this.setLeader(leader);
+        this.sauceLeader = null;
+        this.sauceLeaderUUID = null;
+
+        this.escapeFlying = false;
+        this.escapeLocomotionTicks = 0;
+
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+    }
+
+    private void tickLeaderDeathWatch() {
+        BlueDemonEntity leader = this.getLeader();
+        if (leader == null || !leader.isAlive() || !leader.isInFinalDeathSequence()) {
+            this.deathWatchMode = false;
+            return;
+        }
+
+        this.clearCombat();
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+        this.getLookControl().setLookAt(leader, 45.0F, 45.0F);
+
+        float baseOffset = switch (this.sauceType) {
+            case BBQ_SAUCE -> 0.0F;
+            case HONEY_MUSTARD_SAUCE -> (float)(Math.PI * 0.5D);
+            case SOY_SAUCE -> (float)Math.PI;
+            case SWEET_ONION_SAUCE -> (float)(Math.PI * 1.5D);
+        };
+
+        double radius = switch (this.sauceType) {
+            case BBQ_SAUCE -> 1.1D;
+            case HONEY_MUSTARD_SAUCE -> 1.45D;
+            case SOY_SAUCE -> 1.45D;
+            case SWEET_ONION_SAUCE -> 1.8D;
+        };
+
+        float angle = (leader.tickCount * 0.18F) + baseOffset;
+        double x = leader.getX() + Mth.cos(angle) * radius;
+        double z = leader.getZ() + Mth.sin(angle) * radius;
+
+        if (this.distanceToSqr(leader) > 16.0D) {
+            this.getNavigation().moveTo(leader, 1.8D);
+        } else {
+            this.getNavigation().moveTo(x, leader.getY(), z, 1.35D);
+        }
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+
+        this.goalSelector.addGoal(1, new EscapeAvoidGoal<>(this, Player.class, 12.0F, 2.0D, 2.0D));
+        this.goalSelector.addGoal(1, new EscapeAvoidGoal<>(this, HerobrineMob.class, 12.0F, 2.0D, 2.0D));
+        this.goalSelector.addGoal(1, new EscapeAvoidGoal<>(this, Monster.class, 12.0F, 2.0D, 2.0D));
+        this.goalSelector.addGoal(1, new EscapeAvoidGoal<>(this, PlayerNpcEntity.class, 12.0F, 2.0D, 2.0D));
+        this.goalSelector.addGoal(1, new EscapeAvoidGoal<>(this, AVNpc.class, 12.0F, 2.0D, 2.0D));
+
+        this.goalSelector.addGoal(2, new FollowEscapeLeaderGoal(this));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -87,6 +228,159 @@ public class BbqEntity extends Chicken {
     public void setLeader(@Nullable BlueDemonEntity leader) {
         this.leader = leader;
         this.leaderUUID = leader == null ? null : leader.getUUID();
+    }
+
+    public boolean isEscapeMode() {
+        return this.escapeMode;
+    }
+
+    public void enterEscapeMode(@Nullable BbqEntity sauceLeader) {
+        this.escapeMode = true;
+        this.deathWatchMode = false;
+        this.retreatTicks = 0;
+        this.clearCombat();
+
+        this.leader = null;
+        this.leaderUUID = null;
+
+        if (sauceLeader != null && sauceLeader.isAlive() && sauceLeader != this) {
+            this.sauceLeader = sauceLeader;
+            this.sauceLeaderUUID = sauceLeader.getUUID();
+        } else {
+            this.sauceLeader = null;
+            this.sauceLeaderUUID = null;
+        }
+
+        this.escapeFlying = false;
+        this.escapeLocomotionTicks = 0;
+        this.escapeFlightHeight = 1.5F;
+
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+    }
+
+    public void startDeathAssembly(double x, double y, double z,
+                                   boolean giveMainhandTrident,
+                                   boolean giveOffhandChestplate,
+                                   @Nullable BbqEntity escapeLeader) {
+        this.escapeMode = false;
+        this.clearCombat();
+        this.retreatTicks = 0;
+        this.deathWatchMode = false;
+
+        this.deathAssemblyMode = true;
+        this.deathAssemblyTicks = 1;
+        this.deathAssemblyX = x;
+        this.deathAssemblyY = y;
+        this.deathAssemblyZ = z;
+
+        this.pendingDeathMainhandTrident = giveMainhandTrident;
+        this.pendingDeathOffhandChestplate = giveOffhandChestplate;
+        this.pendingDeathEscapeLeaderUUID =
+                escapeLeader != null && escapeLeader != this && escapeLeader.isAlive()
+                        ? escapeLeader.getUUID()
+                        : null;
+
+        this.leader = null;
+        this.leaderUUID = null;
+        this.sauceLeader = null;
+        this.sauceLeaderUUID = null;
+
+        this.escapeFlying = false;
+        this.escapeLocomotionTicks = 0;
+
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+
+        double offsetX = 0.0D;
+        double offsetZ = 0.0D;
+
+        switch (this.sauceType) {
+            case BBQ_SAUCE -> {
+                offsetX = 0.0D;
+                offsetZ = 0.0D;
+            }
+            case HONEY_MUSTARD_SAUCE -> {
+                offsetX = 0.9D;
+                offsetZ = 0.0D;
+            }
+            case SOY_SAUCE -> {
+                offsetX = -0.9D;
+                offsetZ = 0.0D;
+            }
+            case SWEET_ONION_SAUCE -> {
+                offsetX = 0.0D;
+                offsetZ = 0.9D;
+            }
+        }
+
+        this.moveTo(x + offsetX, y, z + offsetZ);
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+    }
+
+    private void tickDeathAssembly() {
+        this.clearCombat();
+        this.getNavigation().stop();
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoGravity(false);
+        this.fallDistance = 0.0F;
+        this.getLookControl().setLookAt(this.deathAssemblyX, this.deathAssemblyY + 0.5D, this.deathAssemblyZ);
+
+        if (this.deathAssemblyTicks > 0) {
+            this.deathAssemblyTicks--;
+        }
+
+        if (this.deathAssemblyTicks > 0) {
+            return;
+        }
+
+        this.deathAssemblyMode = false;
+
+        if (this.pendingDeathMainhandTrident) {
+            this.setItemInHand(InteractionHand.MAIN_HAND,
+                    new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
+        }
+
+        if (this.pendingDeathOffhandChestplate) {
+            this.setItemInHand(InteractionHand.OFF_HAND,
+                    new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
+        }
+
+        BbqEntity escapeLeader = null;
+        if (this.pendingDeathEscapeLeaderUUID != null && this.level() instanceof ServerLevel serverLevel) {
+            Entity entity = serverLevel.getEntity(this.pendingDeathEscapeLeaderUUID);
+            if (entity instanceof BbqEntity bbq && bbq.isAlive()) {
+                escapeLeader = bbq;
+            }
+        }
+
+        this.pendingDeathMainhandTrident = false;
+        this.pendingDeathOffhandChestplate = false;
+        this.pendingDeathEscapeLeaderUUID = null;
+
+        this.enterEscapeMode(escapeLeader);
+    }
+
+    @Nullable
+    public BbqEntity getSauceLeader() {
+        if (this.sauceLeader != null && this.sauceLeader.isAlive()) {
+            return this.sauceLeader;
+        }
+
+        if (!this.level().isClientSide && this.sauceLeaderUUID != null) {
+            Entity entity = ((ServerLevel)this.level()).getEntity(this.sauceLeaderUUID);
+            if (entity instanceof BbqEntity bbq && bbq.isAlive()) {
+                this.sauceLeader = bbq;
+                return bbq;
+            }
+        }
+
+        this.sauceLeader = null;
+        this.sauceLeaderUUID = null;
+        return null;
     }
 
     @Nullable
@@ -116,7 +410,6 @@ public class BbqEntity extends Chicken {
 
         if (this.sauceType.isShockSauce() && this.getMainHandItem().isEmpty()) {
             this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
-            this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
         }
     }
 
@@ -130,6 +423,10 @@ public class BbqEntity extends Chicken {
 
     @Nullable
     public LivingEntity getCombatTarget() {
+        if (this.escapeMode) {
+            return null;
+        }
+
         if (!this.level().isClientSide && this.combatTargetUUID != null) {
             Entity entity = ((ServerLevel) this.level()).getEntity(this.combatTargetUUID);
             if (entity instanceof LivingEntity livingEntity && livingEntity.isAlive()) {
@@ -210,7 +507,7 @@ public class BbqEntity extends Chicken {
         this.combatModeTicks = Math.max(this.combatModeTicks, ticks);
 
         if (this.random.nextInt(4) == 0) {
-            this.orbitRadius = 4.0F + this.random.nextFloat() * 2.0F;
+            this.orbitRadius = new Random().nextFloat(3.5F, 6.5F);
         }
 
         if (this.random.nextInt(6) == 0) {
@@ -343,7 +640,6 @@ public class BbqEntity extends Chicken {
 
                     trident.discard();
                     this.setItemSlot(EquipmentSlot.MAINHAND, carried);
-                    this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
                     this.getNavigation().stop();
                 }
                 return;
@@ -467,7 +763,7 @@ public class BbqEntity extends Chicken {
         this.setNoGravity(false);
 
         if (this.random.nextInt(4) == 0) {
-            this.orbitRadius = 3.5F + this.random.nextFloat() * 2.0F;
+            this.orbitRadius = new Random().nextFloat(3.5F, 6.5F);
         }
 
         if (this.random.nextInt(6) == 0) {
@@ -484,7 +780,7 @@ public class BbqEntity extends Chicken {
         }
 
         if (this.random.nextInt(50) == 0) {
-            this.orbitRadius = 3.5F + this.random.nextFloat() * 2.0F;
+            this.orbitRadius = new Random().nextFloat(3.5F, 6.5F);
         }
 
         this.orbitAngle += 0.12F * this.formationSide;
@@ -519,7 +815,7 @@ public class BbqEntity extends Chicken {
         }
 
         if (this.random.nextInt(50) == 0) {
-            this.orbitRadius = 4.0F + this.random.nextFloat() * 2.0F;
+            this.orbitRadius = new Random().nextFloat(3.5F, 6.5F);
         }
 
         this.orbitAngle += 0.16F * this.formationSide;
@@ -529,6 +825,33 @@ public class BbqEntity extends Chicken {
         double y = target.getEyeY() + 0.4D + Mth.sin((this.tickCount + this.getId()) * 0.25F) * 0.9D;
 
         this.moveAerialTowards(x, y, z, 0.18D, 0.86D);
+    }
+
+    private void dropSpecialHeldItemsBeforeDeath() {
+        if (!(this.escapeMode || this.deathAssemblyMode)) {
+            return;
+        }
+
+        ItemStack main = this.getMainHandItem();
+        if (main.is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get())) {
+            this.spawnAtLocation(new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
+            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        }
+
+        ItemStack off = this.getOffhandItem();
+        if (off.is(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get())) {
+            this.spawnAtLocation(new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
+            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        }
+    }
+
+    @Override
+    public void die(@NotNull DamageSource source) {
+        if (!this.level().isClientSide) {
+            this.dropSpecialHeldItemsBeforeDeath();
+        }
+
+        super.die(source);
     }
 
     private void tickHeadAttack(LivingEntity target) {
@@ -641,6 +964,33 @@ public class BbqEntity extends Chicken {
             return;
         }
 
+        if (this.deathWatchMode) {
+            this.tickLeaderDeathWatch();
+            return;
+        }
+
+        if (this.deathAssemblyMode) {
+            this.tickDeathAssembly();
+            return;
+        }
+
+        if (this.escapeMode) {
+            this.tickEscapeLocomotionMode();
+
+            if (this.sauceLeaderUUID != null && this.getSauceLeader() == null) {
+                this.sauceLeaderUUID = null;
+                this.sauceLeader = null;
+                this.escapeLocomotionTicks = 0;
+            }
+
+            if (!this.escapeFlying) {
+                this.setNoGravity(false);
+                this.fallDistance = 0.0F;
+            }
+
+            return;
+        }
+
         if (this.retreatTicks > 0) {
             this.tickRetreat();
             return;
@@ -711,7 +1061,7 @@ public class BbqEntity extends Chicken {
     }
 
     public void teleportNearLeaderIfTooFar() {
-        if (this.level().isClientSide || this.retreatTicks > 0) {
+        if (this.level().isClientSide || this.retreatTicks > 0 || this.escapeMode) {
             return;
         }
 
@@ -756,6 +1106,10 @@ public class BbqEntity extends Chicken {
         boolean result = super.hurt(damageSource, amount);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
+            if (this.escapeMode || this.deathAssemblyMode || this.deathWatchMode) {
+                return true;
+            }
+
             BlueDemonEntity leader = this.getLeader();
             this.startOrbit(livingEntity, 40);
             if (leader != null) {
@@ -790,6 +1144,11 @@ public class BbqEntity extends Chicken {
         }
 
         tag.putString("SauceType", this.sauceType.name());
+        tag.putBoolean("EscapeMode", this.escapeMode);
+
+        if (this.sauceLeaderUUID != null) {
+            tag.putUUID("SauceLeaderUUID", this.sauceLeaderUUID);
+        }
     }
 
     @Override
@@ -809,12 +1168,20 @@ public class BbqEntity extends Chicken {
         } else {
             this.setSauceType(SauceType.BBQ_SAUCE);
         }
+        this.escapeMode = tag.getBoolean("EscapeMode");
+
+        if (tag.hasUUID("SauceLeaderUUID")) {
+            this.sauceLeaderUUID = tag.getUUID("SauceLeaderUUID");
+        } else {
+            this.sauceLeaderUUID = null;
+        }
+        this.sauceLeader = null;
     }
 
     public static @NotNull Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.27D)
-                .add(Attributes.MAX_HEALTH, 150.0D)
+                .add(Attributes.MAX_HEALTH, 75.0D)
                 .add(Attributes.ARMOR, 40.0D)
                 .add(Attributes.ATTACK_DAMAGE, 7.0D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D)

@@ -26,31 +26,50 @@ public class BbqHeldItemLayer extends RenderLayer<Chicken, ChickenModel<Chicken>
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight,
                        @NotNull Chicken entity, float limbSwing, float limbSwingAmount,
                        float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack stack = entity.getMainHandItem();
-        if (stack.isEmpty()) {
-            return;
+        ItemStack mainHandItem = entity.getMainHandItem();
+        if (!mainHandItem.isEmpty()) {
+            if (this.getParentModel() instanceof ModelBbq<?> bbqModel) {
+                poseStack.pushPose();
+                bbqModel.getBeak().translateAndRotate(poseStack);
+                poseStack.translate(-0.8D, -0.1875D, -0.1875D);
+                poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+
+                this.itemInHandRenderer.renderItem(
+                        entity,
+                        mainHandItem,
+                        ItemDisplayContext.GROUND,
+                        false,
+                        poseStack,
+                        buffer,
+                        packedLight
+                );
+
+                poseStack.popPose();
+            }
         }
 
-        if (!(this.getParentModel() instanceof ModelBbq<?> bbqModel)) {
-            return;
+        ItemStack offHandItem = entity.getOffhandItem();
+        if (!offHandItem.isEmpty()) {
+            if (this.getParentModel() instanceof ModelBbq<?> bbqModel) {
+                poseStack.pushPose();
+                bbqModel.getBeak().translateAndRotate(poseStack);
+                poseStack.translate(0.0D, -0.1875D, -0.1875D);
+                poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+
+                this.itemInHandRenderer.renderItem(
+                        entity,
+                        offHandItem,
+                        ItemDisplayContext.GROUND,
+                        false,
+                        poseStack,
+                        buffer,
+                        packedLight
+                );
+
+                poseStack.popPose();
+            }
         }
-
-        poseStack.pushPose();
-        bbqModel.getBeak().translateAndRotate(poseStack);
-        poseStack.translate(-0.8D, -0.1875D, -0.1875D);
-        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-
-        this.itemInHandRenderer.renderItem(
-                entity,
-                stack,
-                ItemDisplayContext.GROUND,
-                false,
-                poseStack,
-                buffer,
-                packedLight
-        );
-
-        poseStack.popPose();
     }
 }

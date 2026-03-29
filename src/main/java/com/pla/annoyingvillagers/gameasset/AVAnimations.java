@@ -199,6 +199,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_FIST_AUTO3;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SHADOW_HEROBRINE_BIPED_LANDING;
     public static AnimationManager.AnimationAccessor<AttackAnimation> NERF_TSUNAMI_REINFORCED;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE_LEGENDARY_SWORD_START;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
@@ -248,6 +250,8 @@ public class AVAnimations {
 
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_STATE_TRANSFORM;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_STATE_TRANSFORM_END;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE;
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_FESTIVAL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
@@ -587,6 +591,10 @@ public class AVAnimations {
                         AnimationEvent.InTimeEvent.create(0.35F,
                         (entitypatch, animation, params) -> entitypatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3, 0.0F, 0.0F), Side.CLIENT),
                         AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.setAirborneState(true), Side.SERVER)}));
+        AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_START = builder.nextAccessor("biped/epicfight_clone/blue_demon_die_legendary_sword_start",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
+        AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK = builder.nextAccessor("biped/epicfight_clone/blue_demon_die_legendary_sword_tick",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
 
         // Animation from EpicFight Infernal Gainer
         AVAnimations.KICK_C = builder.nextAccessor("biped/epicfight_infernal_gainer/kick_c",
@@ -868,6 +876,10 @@ public class AVAnimations {
         // Animation from Pugilist Steve Annoying Villagers 1.18.2
         AVAnimations.BLUE_DEMON_STATE_TRANSFORM = builder.nextAccessor("biped/pugilist_steve/blue_demon_state_transform",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.BLUE_DEMON_STATE_TRANSFORM_END = builder.nextAccessor("biped/pugilist_steve/blue_demon_state_transform_end",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
+        AVAnimations.BLUE_DEMON_DIE = builder.nextAccessor("biped/pugilist_steve/blue_demon_die",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.TRIDENT_FESTIVAL = builder.nextAccessor("biped/pugilist_steve/trident_festival",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
@@ -1648,15 +1660,13 @@ public class AVAnimations {
                                             }
                                             if (serverLevel.getBlockState(checkPos).isSolidRender(serverLevel, checkPos)) {
                                                 TridentLightningBolt tridentLightningBolt = new TridentLightningBolt(AnnoyingVillagersModEntities.TRIDENT_LIGHTNING_BOLT.get(), serverLevel);
-                                                if (tridentLightningBolt != null) {
-                                                    tridentLightningBolt.setOwner(livingEntityPatch.getOriginal());
-                                                    tridentLightningBolt.moveTo(
-                                                            checkPos.getX() + 0.5D,
-                                                            checkPos.getY() + 1.0D,
-                                                            checkPos.getZ() + 0.5D
-                                                    );
-                                                    serverLevel.addFreshEntity(tridentLightningBolt);
-                                                }
+                                                tridentLightningBolt.setOwner(livingEntityPatch.getOriginal());
+                                                tridentLightningBolt.moveTo(
+                                                        checkPos.getX() + 0.5D,
+                                                        checkPos.getY() + 1.0D,
+                                                        checkPos.getZ() + 0.5D
+                                                );
+                                                serverLevel.addFreshEntity(tridentLightningBolt);
                                             }
                                         }
                                     }

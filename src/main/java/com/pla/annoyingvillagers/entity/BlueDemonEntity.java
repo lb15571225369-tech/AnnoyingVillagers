@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.SauceType;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.gameasset.AVSounds;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.BlueDemonChestplateItem;
@@ -50,10 +49,8 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+
 import net.minecraft.util.RandomSource;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
@@ -108,6 +105,10 @@ public class BlueDemonEntity extends Monster {
 
     private int squadArrivalTicks = -1;
     private float sauceSquadAngle = 0.0F;
+    private boolean spawnedBbqSauce = false;
+    private int dieTick = -1;
+    @Nullable
+    private UUID savedKillerUUID;
 
     public void setStateTransformCooldown(int stateTransformCooldown) {
         this.stateTransformCooldown = stateTransformCooldown;
@@ -253,24 +254,12 @@ public class BlueDemonEntity extends Monster {
 
         this.squadArrivalTicks = 20 * 20;
 
-        ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-        legendaryStack.enchant(Enchantments.SHARPNESS, 5);
-        legendaryStack.enchant(Enchantments.SMITE, 5);
-        legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
-
-        this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
-        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-
         ItemStack armorStack = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get());
         armorStack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
         armorStack.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
         armorStack.enchant(Enchantments.FIRE_PROTECTION, 5);
         armorStack.enchant(Enchantments.BLAST_PROTECTION, 5);
         this.setItemSlot(EquipmentSlot.CHEST, armorStack);
-
-        if (this.getLivingEntityPatch() != null) {
-            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-        }
 
         this.setSwapWeaponCooldown(new Random().nextInt(200, 600));
 
@@ -558,6 +547,260 @@ public class BlueDemonEntity extends Monster {
         return super.canBeAffected(effect);
     }
 
+    private boolean isAliveSauce(@Nullable BbqEntity sauce) {
+        return sauce != null && sauce.isAlive();
+    }
+
+    private void clearSweetTemporaryCarriedTrident(@Nullable BbqEntity sweet) {
+        if (!this.isAliveSauce(sweet)) {
+            return;
+        }
+
+        ItemStack stack = sweet.getMainHandItem();
+        if (!stack.is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get())) {
+            return;
+        }
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("CarriedTridentMode")) {
+            sweet.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        }
+    }
+
+    public boolean isInFinalDeathSequence() {
+        return this.dieTick > 0;
+    }
+
+    private void startFinalDeathSequence(ServerLevel serverLevel, DamageSource damageSource) {
+        if (this.dieTick > 0) {
+            return;
+        }
+
+        this.dieTick = 200;
+        this.setHealth(1.0F);
+        this.setNoAi(true);
+        this.setTarget(null);
+        this.setDeltaMovement(0.0D, 0.0D, 0.0D);
+
+        if (damageSource.getEntity() != null) {
+            this.savedKillerUUID = damageSource.getEntity().getUUID();
+        } else {
+            this.savedKillerUUID = null;
+        }
+
+        if (this.getLivingEntityPatch() != null) {
+            if (this.getMainHandItem().getItem() instanceof BlueDemonTridentItem) {
+                this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_DIE, 0.0F);
+            } else {
+                this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_START, 0.0F);
+            }
+        }
+
+        this.startSauceDeathWatch(serverLevel);
+    }
+
+    private void startSauceDeathWatch(ServerLevel serverLevel) {
+        BbqEntity bbq = this.resolveAliveSauce(serverLevel, SauceType.BBQ_SAUCE);
+        BbqEntity honey = this.resolveAliveSauce(serverLevel, SauceType.HONEY_MUSTARD_SAUCE);
+        BbqEntity soy = this.resolveAliveSauce(serverLevel, SauceType.SOY_SAUCE);
+        BbqEntity sweet = this.resolveAliveSauce(serverLevel, SauceType.SWEET_ONION_SAUCE);
+
+        if (bbq != null) {
+            bbq.startLeaderDeathWatch(this);
+        }
+        if (honey != null) {
+            honey.startLeaderDeathWatch(this);
+        }
+        if (soy != null) {
+            soy.startLeaderDeathWatch(this);
+        }
+        if (sweet != null) {
+            sweet.startLeaderDeathWatch(this);
+        }
+    }
+
+    private void tickFinalDeathSequence(ServerLevel serverLevel) {
+        this.setNoAi(true);
+        this.setTarget(null);
+        this.setDeltaMovement(0.0D, 0.0D, 0.0D);
+
+        if (this.getLivingEntityPatch() != null && (this.dieTick <= 180 && this.dieTick % 10 == 0)) {
+            if (this.getMainHandItem().getItem() instanceof BlueDemonTridentItem) {
+                this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
+            } else {
+                this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK, 0.0F);
+            }
+        }
+
+        if (this.dieTick % 5 == 0 && new Random().nextBoolean()) {
+            this.strikeDeathLightning(serverLevel);
+        }
+
+        this.dieTick--;
+        if (this.dieTick <= 0) {
+            this.finishFinalDeathSequence(serverLevel);
+        }
+    }
+
+    private void strikeDeathLightning(ServerLevel serverLevel) {
+        TridentLightningBolt tridentLightningBolt = new TridentLightningBolt(AnnoyingVillagersModEntities.TRIDENT_LIGHTNING_BOLT.get(), serverLevel);
+        tridentLightningBolt.setOwner(this);
+        tridentLightningBolt.moveTo(
+                this.getX(),
+                this.getY(),
+                this.getZ()
+        );
+        serverLevel.addFreshEntity(tridentLightningBolt);
+    }
+
+    private DamageSource buildSavedKillerDamageSource(ServerLevel serverLevel) {
+        if (this.savedKillerUUID != null) {
+            Entity entity = serverLevel.getEntity(this.savedKillerUUID);
+
+            if (entity instanceof net.minecraft.world.entity.player.Player player) {
+                return this.damageSources().playerAttack(player);
+            }
+
+            if (entity instanceof LivingEntity livingEntity) {
+                return this.damageSources().mobAttack(livingEntity);
+            }
+        }
+
+        return this.damageSources().generic();
+    }
+
+    private void finishFinalDeathSequence(ServerLevel serverLevel) {
+        this.setHealth(0.0F);
+        this.handleSaucesWhenBlueDemonDies(serverLevel);
+        this.dieTick = -1;
+        super.die(this.buildSavedKillerDamageSource(serverLevel));
+    }
+
+    private void handleSaucesWhenBlueDemonDies(ServerLevel serverLevel) {
+        BbqEntity bbq = this.resolveAliveSauce(serverLevel, SauceType.BBQ_SAUCE);
+        BbqEntity honey = this.resolveAliveSauce(serverLevel, SauceType.HONEY_MUSTARD_SAUCE);
+        BbqEntity soy = this.resolveAliveSauce(serverLevel, SauceType.SOY_SAUCE);
+        BbqEntity sweet = this.resolveAliveSauce(serverLevel, SauceType.SWEET_ONION_SAUCE);
+
+        this.clearSweetTemporaryCarriedTrident(sweet);
+
+        boolean bbqAlive = this.isAliveSauce(bbq);
+        boolean honeyAlive = this.isAliveSauce(honey);
+        boolean soyAlive = this.isAliveSauce(soy);
+        boolean sweetAlive = this.isAliveSauce(sweet);
+
+        int aliveCount =
+                (bbqAlive ? 1 : 0) +
+                        (honeyAlive ? 1 : 0) +
+                        (soyAlive ? 1 : 0) +
+                        (sweetAlive ? 1 : 0);
+
+        int existingTridents = (honeyAlive ? 1 : 0) + (soyAlive ? 1 : 0);
+        int missingTridents = Math.max(0, 2 - existingTridents);
+
+        boolean giveBbqMainTrident = false;
+        boolean giveSweetMainTrident = false;
+        boolean giveBbqOffhandChestplate = false;
+        boolean giveSweetOffhandChestplate = false;
+
+        int rawTridentDrops = 0;
+        boolean rawChestplateDrop = false;
+
+        if (aliveCount == 4) {
+            giveSweetOffhandChestplate = true;
+        } else if (aliveCount == 3) {
+            if (sweetAlive) {
+                giveSweetOffhandChestplate = true;
+            } else if (bbqAlive) {
+                giveBbqOffhandChestplate = true;
+            } else {
+                rawChestplateDrop = true;
+            }
+        } else {
+            rawChestplateDrop = true;
+        }
+
+        while (missingTridents > 0) {
+            if (sweetAlive && !giveSweetMainTrident) {
+                giveSweetMainTrident = true;
+            } else if (bbqAlive && !giveBbqMainTrident) {
+                giveBbqMainTrident = true;
+            } else {
+                rawTridentDrops++;
+            }
+            missingTridents--;
+        }
+
+        double deathX = this.getX();
+        double deathY = this.getY();
+        double deathZ = this.getZ();
+
+        if (bbqAlive) {
+            bbq.startDeathAssembly(
+                    deathX, deathY, deathZ,
+                    giveBbqMainTrident,
+                    giveBbqOffhandChestplate,
+                    null
+            );
+        }
+
+        if (honeyAlive) {
+            honey.startDeathAssembly(
+                    deathX, deathY, deathZ,
+                    false,
+                    false,
+                    bbqAlive ? bbq : null
+            );
+        }
+
+        if (soyAlive) {
+            soy.startDeathAssembly(
+                    deathX, deathY, deathZ,
+                    false,
+                    false,
+                    bbqAlive ? bbq : null
+            );
+        }
+
+        if (sweetAlive) {
+            sweet.startDeathAssembly(
+                    deathX, deathY, deathZ,
+                    giveSweetMainTrident,
+                    giveSweetOffhandChestplate,
+                    bbqAlive ? bbq : null
+            );
+        }
+
+        if (rawChestplateDrop) {
+            this.spawnAtLocation(new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
+        }
+
+        for (int i = 0; i < rawTridentDrops; i++) {
+            this.spawnAtLocation(new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()));
+        }
+    }
+
+    @Nullable
+    private BbqEntity resolveAliveSauce(ServerLevel serverLevel, SauceType sauceType) {
+        BbqEntity current = this.getSauce(sauceType);
+        if (current != null && current.isAlive()) {
+            return current;
+        }
+
+        UUID uuid = this.getSauceUUID(sauceType);
+        if (uuid == null) {
+            return null;
+        }
+
+        Entity entity = serverLevel.getEntity(uuid);
+        if (entity instanceof BbqEntity sauce && sauce.isAlive()) {
+            this.setSauce(sauceType, sauce);
+            return sauce;
+        }
+
+        return null;
+    }
+
     public boolean hurt(DamageSource damagesource, float f) {
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
@@ -575,7 +818,19 @@ public class BlueDemonEntity extends Monster {
                     this, damagesource.getEntity());
             return false;
         }
-        if (this.level() instanceof ServerLevel serverLevel && this.getLivingEntityPatch() != null) {
+        if (this.dieTick > 0) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(
+                        serverLevel,
+                        HitParticleType.FRONT_OF_EYES,
+                        HitParticleType.ZERO,
+                        this,
+                        damagesource.getEntity()
+                );
+            }
+            return false;
+        }
+        if (this.level() instanceof ServerLevel serverLevel && this.getLivingEntityPatch() != null && this.dieTick <= 0) {
             AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
             if (dynamicAnimation == AVAnimations.CUT_ANTITHEUS_ASCENSION
                     || dynamicAnimation == AVAnimations.TRIDENT_ATTACK
@@ -921,6 +1176,10 @@ public class BlueDemonEntity extends Monster {
         super.tick();
 
         if (this.level() instanceof ServerLevel serverLevel) {
+            if (!this.spawnedBbqSauce) {
+                this.ensureSauceExists(SauceType.BBQ_SAUCE);
+                this.spawnedBbqSauce = true;
+            }
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
             if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
@@ -928,7 +1187,19 @@ public class BlueDemonEntity extends Monster {
             if (healingCooldown > 0) healingCooldown--;
             if (stateTransformCooldown > 0) {
                 if (this.getLivingEntityPatch() != null) {
-                    this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
+                    if (stateTransformCooldown > 20) {
+                        this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
+                    } else if (stateTransformCooldown == 20) {
+                        this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM_END, 0.0F);
+                    } else if (stateTransformCooldown == 10) {
+                        ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
+                        legendaryStack.enchant(Enchantments.SHARPNESS, 5);
+                        legendaryStack.enchant(Enchantments.SMITE, 5);
+                        legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
+
+                        this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
+                        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                    }
                 }
                 if (stateTransformCooldown % 2 == 0) {
                     this.heal(1.0F);
@@ -942,6 +1213,10 @@ public class BlueDemonEntity extends Monster {
                 if (stateTransformCooldown == 0) {
                     this.finishStateTwoTransform(serverLevel);
                 }
+            }
+            if (this.dieTick > 0) {
+                this.tickFinalDeathSequence(serverLevel);
+                return;
             }
 
             this.tickSquadArrival(serverLevel);
@@ -988,8 +1263,6 @@ public class BlueDemonEntity extends Monster {
                 this.tickSweetOnionOrders(this.getSauce(SauceType.SWEET_ONION_SAUCE));
             }
 
-            this.ensureStateSauces();
-
             this.tickBbqOrders(this.getSauce(SauceType.BBQ_SAUCE));
         }
     }
@@ -1019,8 +1292,13 @@ public class BlueDemonEntity extends Monster {
         if (this.savedTargetUUID != null) {
             tag.putUUID("SavedTargetUUID", this.savedTargetUUID);
         }
+        if (this.savedKillerUUID != null) {
+            tag.putUUID("SavedKillerUUID", this.savedKillerUUID);
+        }
 
         tag.putInt("SquadArrivalTicks", this.squadArrivalTicks);
+        tag.putBoolean("SpawnedBbqSauce", this.spawnedBbqSauce);
+        tag.putInt("DieTick", this.dieTick);
     }
 
     @Override
@@ -1051,7 +1329,15 @@ public class BlueDemonEntity extends Monster {
             this.savedTargetUUID = null;
         }
 
+        if (tag.hasUUID("SavedKillerUUID")) {
+            this.savedKillerUUID = tag.getUUID("SavedKillerUUID");
+        } else {
+            this.savedKillerUUID = null;
+        }
+
         this.squadArrivalTicks = tag.contains("SquadArrivalTicks") ? tag.getInt("SquadArrivalTicks") : -1;
+        this.spawnedBbqSauce = tag.getBoolean("SpawnedBbqSauce");
+        this.dieTick = tag.getInt("DieTick");
     }
 
     public void rollItem() {
@@ -1061,9 +1347,9 @@ public class BlueDemonEntity extends Monster {
         legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
 
         ItemStack tridentStack = new ItemStack(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get());
-        legendaryStack.enchant(Enchantments.SHARPNESS, 5);
-        legendaryStack.enchant(Enchantments.SMITE, 5);
-        legendaryStack.enchant(Enchantments.SWEEPING_EDGE, 5);
+        tridentStack.enchant(Enchantments.SHARPNESS, 5);
+        tridentStack.enchant(Enchantments.SMITE, 5);
+        tridentStack.enchant(Enchantments.SWEEPING_EDGE, 5);
         if (this.getMainHandItem().getItem() instanceof BlueDemonTridentItem) {
             this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
             this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
@@ -1147,6 +1433,12 @@ public class BlueDemonEntity extends Monster {
                 this.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
                 this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.TRIDENT_FESTIVAL, 0.0F);
             }
+            return;
+        }
+        if (this.level() instanceof ServerLevel serverLevel
+                && this.getState() == 3
+                && (this.getHealth() - f1) <= 1.0F) {
+            this.startFinalDeathSequence(serverLevel, pDamageSource);
             return;
         }
         f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);

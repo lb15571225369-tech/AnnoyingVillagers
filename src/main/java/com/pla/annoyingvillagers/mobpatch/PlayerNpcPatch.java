@@ -60,7 +60,7 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
     protected void setWeaponMotions() {
         this.weaponLivingMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND,
+                        ImmutableMap.of(Styles.COMMON,
                                 Set.of(
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
@@ -70,11 +70,11 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.COMMON, PlayerNpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND,
+                        ImmutableMap.of(Styles.COMMON,
                                 Set.of(
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
@@ -84,7 +84,7 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.COMMON, PlayerNpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WOMWeaponCategories.ENDERBLASTER,

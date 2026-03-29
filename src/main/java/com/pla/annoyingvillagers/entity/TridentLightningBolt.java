@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -60,14 +61,6 @@ public class TridentLightningBolt extends LightningBolt {
     @Nullable
     public LivingEntity getOwner() {
         return this.owner;
-    }
-
-    public void setTridentVisualOnly(boolean visualOnly) {
-        this.tridentVisualOnly = visualOnly;
-    }
-
-    public boolean isTridentVisualOnly() {
-        return this.tridentVisualOnly;
     }
 
     @Override
@@ -137,7 +130,7 @@ public class TridentLightningBolt extends LightningBolt {
                                 this.getX() - 3.0D, this.getY() - 3.0D, this.getZ() - 3.0D,
                                 this.getX() + 3.0D, this.getY() + 9.0D, this.getZ() + 3.0D
                         ),
-                        entity -> entity instanceof LivingEntity && entity.isAlive() && entity != this.owner && this.owner instanceof BlueDemonEntity blueDemonEntity && blueDemonEntity.getBbqEntity() != null && entity != blueDemonEntity.getBbqEntity() && !entity.isSpectator() && !(entity instanceof Player player && player.isCreative())
+                        entity -> entity instanceof LivingEntity && entity.isAlive() && entity != this.owner && !(entity instanceof BbqEntity) && !entity.isSpectator() && !(entity instanceof Player player && player.isCreative())
                 );
 
                 if (this.superLightning) {
