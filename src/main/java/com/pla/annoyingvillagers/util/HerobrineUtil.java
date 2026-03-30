@@ -918,8 +918,6 @@ public class HerobrineUtil {
     private static ItemStack createRandomModdedEnchantedBook() {
         List<Enchantment> pool = BuiltInRegistries.ENCHANTMENT.stream()
                 .filter(enchantment -> !enchantment.isCurse())
-                .filter(Enchantment::isAllowedOnBooks)
-                .filter(Enchantment::isDiscoverable)
                 .toList();
 
         if (pool.isEmpty()) {
@@ -927,12 +925,8 @@ public class HerobrineUtil {
         }
 
         Enchantment enchantment = pool.get(new Random().nextInt(pool.size()));
-
-        int rolledLevel = 3 + new Random().nextInt(3);
-        int level = Math.max(1, Math.min(rolledLevel, enchantment.getMaxLevel()));
-
         ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
-        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(enchantment, level));
+        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(enchantment, new Random().nextInt(5, 10)));
         return book;
     }
 

@@ -1,17 +1,20 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "BBB",
-        "BBB",
-        "BBB"
+        "BB ",
+        "B  ",
+        "L  "
     ],
     "key": {
         "B": {
             "item": "minecraft:diamond_block"
+        },
+        "L": {
+            "item": "annoyingvillagers:diamond_longsword"
         }
     },
     "result": {
-        "item": "annoyingvillagers:compressed_diamond",
+        "item": "annoyingvillagers:diamond_chipped_longsword",
         "count": 1
     }
 }

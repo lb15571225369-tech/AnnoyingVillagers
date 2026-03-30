@@ -28,7 +28,8 @@
     "OpenMatrix4fInvertFixMixin",
     "LivingEntityPatchMixin",
     "ExecutionHandlerMixin",
-    "EnderHandMixin"
+    "EnderHandMixin",
+    "BoatMixin"
   ],
   "client": [
     "client.ModelPartMixin",

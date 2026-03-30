@@ -89,6 +89,9 @@ dependencies {
     implementation fg.deobf("curse.maven:mmmmmmmmmmmm-225738:6860192")
     implementation fg.deobf("curse.maven:selene-499980:7541536")
 
+    implementation fg.deobf("curse.maven:epicfight-resurrection-1151542:6931390")
+    implementation fg.deobf("curse.maven:annoying-villagers-x-epicfight-resurrection-1468743:7718865")
+
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

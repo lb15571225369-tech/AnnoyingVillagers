@@ -3,18 +3,18 @@
     "pattern": [
         " R ",
         " R ",
-        " L "
+        " S "
     ],
     "key": {
         "R": {
             "item": "annoyingvillagers:ruby"
         },
-        "L": {
-            "item": "annoyingvillagers:ruby_longsword"
+        "S": {
+            "item": "annoyingvillagers:ruby_sword"
         }
     },
     "result": {
-        "item": "annoyingvillagers:ruby_greatsword",
+        "item": "annoyingvillagers:ruby_longsword",
         "count": 1
     }
 }

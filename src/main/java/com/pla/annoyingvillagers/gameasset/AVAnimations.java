@@ -379,20 +379,20 @@ public class AVAnimations {
     // Animation from Sculk Steve
     public static AnimationManager.AnimationAccessor<StaticAnimation> PLAYER_HEROBRINE_POSSESSION;
     public static AnimationManager.AnimationAccessor<StaticAnimation> LEGENDARY_SWORD_IDLE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ASSISTANCE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNOCKED_ELITE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ANIMATE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_1;
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_2;
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_3;
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_4;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ANIMATE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_HEALING;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ASSISTANCE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_ESCAPE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE_GUARD;
@@ -1869,6 +1869,14 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.LEGENDARY_SWORD_IDLE = builder.nextAccessor("biped/sculk_steve/legendary_sword_idle",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.HEROBRINE_SACRIFICING = builder.nextAccessor("biped/sculk_steve/herobrine_sacrificing",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.HEROBRINE_ASSISTANCE = builder.nextAccessor("biped/sculk_steve/herobrine_assistance",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.HEROBRINE_STAGE_CHANGE = builder.nextAccessor("biped/sculk_steve/herobrine_stage_change",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.PORTAL_SUMMON = builder.nextAccessor("biped/sculk_steve/portal_summon",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
 
         // Animation made by me
         AVAnimations.TRIDENT_ATTACK = builder.nextAccessor("biped/pla/trident_attack",
@@ -1908,16 +1916,8 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.HEROBRINE_HEALING = builder.nextAccessor("biped/pla/herobrine_healing",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
-        AVAnimations.HEROBRINE_SACRIFICING = builder.nextAccessor("biped/pla/herobrine_sacrificing",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
-        AVAnimations.HEROBRINE_ASSISTANCE = builder.nextAccessor("biped/pla/herobrine_assistance",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
-        AVAnimations.HEROBRINE_STAGE_CHANGE = builder.nextAccessor("biped/pla/herobrine_stage_change",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.LOW_CLONE_ESCAPE = builder.nextAccessor("biped/pla/low_clone_escape",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
-        AVAnimations.PORTAL_SUMMON = builder.nextAccessor("biped/pla/portal_summon",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.KNOCKED_ELITE = builder.nextAccessor("biped/pla/knocked_elite",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.EATING_ELITE_1 = builder.nextAccessor("biped/pla/eating_elite_1",

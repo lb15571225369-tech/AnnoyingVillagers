@@ -66,28 +66,40 @@ public class BowFunction {
 
         float xRot;
         float yRot;
+        float arrowInaccuracy = 1.0F;
 
         if (!(shooter instanceof Player)) {
             LivingEntity target = livingEntityPatch.getTarget();
 
             if (target != null && target.isAlive()) {
-                double dx = target.getX() - shooter.getX();
-                double dz = target.getZ() - shooter.getZ();
-                double dy = target.getEyeY() - shooter.getEyeY();
+                double distance = shooter.distanceTo(target);
+
+                double horizontalSpread = 0.15D + distance * 0.03D;
+                double verticalSpread = 0.05D + distance * 0.02D;
+
+                double aimX = target.getX() + (level.getRandom().nextDouble() - 0.5D) * 2.0D * horizontalSpread;
+                double aimY = target.getEyeY() + (level.getRandom().nextDouble() - 0.5D) * 2.0D * verticalSpread;
+                double aimZ = target.getZ() + (level.getRandom().nextDouble() - 0.5D) * 2.0D * horizontalSpread;
+
+                double dx = aimX - shooter.getX();
+                double dz = aimZ - shooter.getZ();
+                double dy = aimY - shooter.getEyeY();
                 double horiz = Math.sqrt(dx * dx + dz * dz);
 
                 yRot = (float) (Mth.atan2(dz, dx) * (180F / Math.PI)) - 90.0F;
                 xRot = (float) (-(Mth.atan2(dy, horiz) * (180F / Math.PI)));
-
                 xRot = Mth.clamp(xRot, -89.9F, 89.9F);
 
                 shooter.setYRot(yRot);
                 shooter.setXRot(xRot);
                 shooter.setYBodyRot(yRot);
                 shooter.setYHeadRot(yRot);
+
+                arrowInaccuracy = 2.0F;
             } else {
                 xRot = shooter.getXRot();
                 yRot = shooter.getYRot();
+                arrowInaccuracy = 2.0F;
             }
         } else {
             xRot = shooter.getXRot();
@@ -95,7 +107,7 @@ public class BowFunction {
         }
 
         abstractArrow.setOwner(shooter);
-        abstractArrow.shootFromRotation(shooter, xRot, yRot, 0.0F, power * 3.0F, 1.0F);
+        abstractArrow.shootFromRotation(shooter, xRot, yRot, 0.0F, power * 3.0F, arrowInaccuracy);
 
         if (!bowStack.isEmpty() && bowStack.getTag() != null) {
             bowStack.getTag().remove("Pulling");

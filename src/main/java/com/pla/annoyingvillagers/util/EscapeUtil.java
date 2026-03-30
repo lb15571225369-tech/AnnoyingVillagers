@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
+import com.pla.annoyingvillagers.compat.EpicFightResurrection;
 import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,6 +72,14 @@ public class EscapeUtil {
         if (ModList.get().isLoaded("sword_soaring")) {
             try {
                 DANGEROUS_ANIMATIONS.addAll(EpicFightSwordSoaring.getDangerousAnimations());
+            } catch (Exception e) {
+                e.fillInStackTrace();
+            }
+        }
+
+        if (ModList.get().isLoaded("cdmoveset")) {
+            try {
+                DANGEROUS_ANIMATIONS.addAll(EpicFightResurrection.getDangerousAnimations());
             } catch (Exception e) {
                 e.fillInStackTrace();
             }

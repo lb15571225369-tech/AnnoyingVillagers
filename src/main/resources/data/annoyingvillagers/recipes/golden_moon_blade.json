@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "GPG",
+        " G G"
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:gold_ingot"
+        },
+        "P": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "annoyingvillagers:golden_moon_blade",
+        "count": 1
+    }
+}

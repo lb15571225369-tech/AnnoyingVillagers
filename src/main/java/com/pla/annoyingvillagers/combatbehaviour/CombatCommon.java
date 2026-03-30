@@ -920,11 +920,13 @@ public class CombatCommon {
         final ExecutionTypeManager.Type execType = ExecutionHandler.getExecutionType(mobPatch, victimPatch);
         faceTargetHard(attacker, victim);
         ExecutionHandler.ExecutionTransform transform = calculateExecutionPosition(attacker.level(), attacker, victim, execType.offset());
-        Vec3 executionPos = transform.position();
-        attacker.teleportTo(executionPos.x, executionPos.y, executionPos.z);
-        faceTargetHard(attacker, victim);
-        TickTaskManager.addTask(victim.getUUID(),
-                new MobExecutionTask(attacker, victim, execType, execType.totalTick()));
+        if (transform != null) {
+            Vec3 executionPos = transform.position();
+            attacker.teleportTo(executionPos.x, executionPos.y, executionPos.z);
+            faceTargetHard(attacker, victim);
+            TickTaskManager.addTask(victim.getUUID(),
+                    new MobExecutionTask(attacker, victim, execType, execType.totalTick()));
+        }
     }
 
     private static void faceTargetHard(Mob self, LivingEntity target) {

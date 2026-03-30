@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " IN",
+        " S I",
+        "P  "
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:stick"
+        },
+        "S": {
+            "item": "annoyingvillagers:diamond_spear"
+        },
+        "N": {
+            "item": "annoyingvillagers:dark_netherite"
+        },
+        "I": {
+            "item": "minecraft:netherite_ingot"
+        }
+    },
+    "result": {
+        "item": "annoyingvillagers:netherite_spear",
+        "count": 1
+    }
+}
