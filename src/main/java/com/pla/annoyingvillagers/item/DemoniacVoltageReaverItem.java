@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.item;
 import java.util.List;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -44,17 +45,17 @@ public class DemoniacVoltageReaverItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
         }, 3, -3.0F, (new Properties()));
     }
 
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString()));
     }
 
-    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+    public void inventoryTick(@NotNull ItemStack itemstack, @NotNull Level level, @NotNull Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag && entity instanceof Player player) {
             PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);

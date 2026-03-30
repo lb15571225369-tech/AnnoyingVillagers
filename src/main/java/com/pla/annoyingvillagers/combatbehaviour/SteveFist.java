@@ -32,7 +32,6 @@ public class SteveFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEscapeRunAway)
@@ -41,7 +40,6 @@ public class SteveFist {
                                     Behavior.builder()
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::canEscape)
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(8.0D, 48.0D)
                                             .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)

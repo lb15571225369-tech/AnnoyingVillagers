@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +42,7 @@ public class EnderSlayerScytheItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
         }, 3, -2.3F, (new Properties()).fireResistant());
     }

@@ -20,7 +20,7 @@
 		"idle": "annoyingvillagers:biped/pla/knocked_elite",
 		"walk": "annoyingvillagers:biped/pla/knocked_elite",
 		"chase": "annoyingvillagers:biped/pla/knocked_elite",
-		"death": "epicfight:biped/living/death"
+		"death": "annoyingvillagers:biped/pla/knocked_elite"
 	},
 	"humanoid_weapon_motions": [
 	],

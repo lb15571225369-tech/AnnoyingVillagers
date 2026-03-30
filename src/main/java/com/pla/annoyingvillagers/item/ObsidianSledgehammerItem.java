@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +42,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
         }, 1.0F, -2.6F, (new Properties()).fireResistant());
     }

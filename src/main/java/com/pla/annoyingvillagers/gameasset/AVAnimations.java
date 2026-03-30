@@ -565,7 +565,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         ));
-        AVAnimations.NERF_TSUNAMI_REINFORCED = builder.nextAccessor("biped/epicfight_clone/tsunami_reinforced", (accessor) -> (new AttackAnimation(0.1F, 0.2F, 0.35F, 0.45F, 0.5F, ColliderPreset.BIPED_BODY_COLLIDER, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
+        AVAnimations.NERF_TSUNAMI_REINFORCED = builder.nextAccessor("biped/epicfight_clone/tsunami_reinforced", (accessor) -> (new AttackAnimation(0.1F, 0.2F, 0.35F, 0.45F, 0.7F, ColliderPreset.BIPED_BODY_COLLIDER, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(2.0F))
                 .addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.RAW_COORD_WITH_X_ROT)
                 .addProperty(ActionAnimationProperty.COORD_SET_TICK, null)
@@ -1762,7 +1762,7 @@ public class AVAnimations {
 
         // Animation from Visitors from Omneria
         AVAnimations.TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),
-                new Phase(0.3F, 0.5F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidArmature.get().toolR, WOMWeaponColliders.PUNCH))
+                new Phase(0.3F, 0.5F, 0.7F, 0.8F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidArmature.get().toolR, WOMWeaponColliders.PUNCH))
                 .addProperty(AttackPhaseProperty.SWING_SOUND, SoundEvents.TRIDENT_RETURN)
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                 .addEvents(
@@ -1778,6 +1778,7 @@ public class AVAnimations {
                                         6,
                                         7.5F
                                 );
+                                beam.initSpawnState();
                                 serverLevel.addFreshEntity(beam);
                             }
                         }, Side.SERVER),

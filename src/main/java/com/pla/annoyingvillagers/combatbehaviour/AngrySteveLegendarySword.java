@@ -116,7 +116,6 @@ public class AngrySteveLegendarySword {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)

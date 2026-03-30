@@ -260,7 +260,7 @@ public class SnakeBladeEntity extends Entity {
             LivingEntityPatch<?> creatorPatch = EpicFightCapabilities.getEntityPatch(creator, LivingEntityPatch.class);
             if (creatorPatch != null) {
                 AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(creatorPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
-                if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation, creatorPatch) && !(dynamicAnimation.get() instanceof ExecutionAttackAnimation)) {
+                if (dynamicAnimation == AVAnimations.SNAKE_BLADE || dynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD) {
                     creatorPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                 }
             }

@@ -48,6 +48,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -560,7 +561,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                         new DelayedTask(new Random().nextInt(5, 10)) {
                             @Override
                             public void run() {
-                                if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
+                                if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive() && entity.getTarget() != null && !ExecutionHandler.isExecutingTarget(entity.getTarget(), entity)) {
                                     CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
                                 } else {
                                     entity.stunEscapeCooldown = 1;

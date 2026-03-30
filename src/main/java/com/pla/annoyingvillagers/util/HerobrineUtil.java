@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -17,9 +18,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,6 +40,7 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.Vec3f;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -910,6 +915,27 @@ public class HerobrineUtil {
         };
     }
 
+    private static ItemStack createRandomModdedEnchantedBook() {
+        List<Enchantment> pool = BuiltInRegistries.ENCHANTMENT.stream()
+                .filter(enchantment -> !enchantment.isCurse())
+                .filter(Enchantment::isAllowedOnBooks)
+                .filter(Enchantment::isDiscoverable)
+                .toList();
+
+        if (pool.isEmpty()) {
+            return new ItemStack(Items.ENCHANTED_BOOK);
+        }
+
+        Enchantment enchantment = pool.get(new Random().nextInt(pool.size()));
+
+        int rolledLevel = 3 + new Random().nextInt(3);
+        int level = Math.max(1, Math.min(rolledLevel, enchantment.getMaxLevel()));
+
+        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(enchantment, level));
+        return book;
+    }
+
     public static void dropNullLoot(LevelAccessor world, double x, double y, double z) {
         if (!(world instanceof Level level) || level.isClientSide()) return;
 
@@ -917,13 +943,18 @@ public class HerobrineUtil {
                 Items.DIAMOND, Items.DIAMOND,
                 Items.ENDER_PEARL, Items.COMPASS,
                 Items.ENDER_PEARL, Items.ENDER_PEARL, Items.EMERALD,
+                Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK,
                 Items.ENCHANTED_GOLDEN_APPLE, Items.NETHERITE_INGOT,
                 Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
                 Items.ENDER_EYE, Items.MUSIC_DISC_11
         };
 
         for (Item item : drops) {
-            ItemEntity entity = new ItemEntity(level, x, y, z, new ItemStack(item));
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
             entity.setPickUpDelay(10);
             level.addFreshEntity(entity);
         }
@@ -942,14 +973,18 @@ public class HerobrineUtil {
                 Items.ENDER_EYE,
                 AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
                 AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                Items.ENCHANTED_BOOK,
+                Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK,
                 Items.COAL
         };
 
         for (Item item : items) {
-            ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
-            drop.setPickUpDelay(10);
-            level.addFreshEntity(drop);
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+            entity.setPickUpDelay(10);
+            level.addFreshEntity(entity);
         }
 
         ItemStack eliteDrop = ItemStack.EMPTY;
@@ -989,14 +1024,18 @@ public class HerobrineUtil {
                 AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
                 AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
 
-                Items.ENCHANTED_BOOK,
+                Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK, Items.ENCHANTED_BOOK,
                 Items.COAL,
                 AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
                 AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()
         };
 
         for (Item item : items) {
-            ItemEntity entity = new ItemEntity(level, x, y, z, new ItemStack(item));
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
             entity.setPickUpDelay(10);
             level.addFreshEntity(entity);
         }
@@ -1022,9 +1061,13 @@ public class HerobrineUtil {
         };
 
         for (Item item : items) {
-            ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
-            drop.setPickUpDelay(10);
-            level.addFreshEntity(drop);
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+            entity.setPickUpDelay(10);
+            level.addFreshEntity(entity);
         }
     }
 
@@ -1032,8 +1075,7 @@ public class HerobrineUtil {
         if (!(world instanceof Level level) || level.isClientSide()) return;
 
         Item[] items = new Item[] {
-                Items.DIAMOND, Items.DIAMOND, Items.IRON_INGOT,
-                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
+                Items.DIAMOND, Items.DIAMOND, Items.IRON_INGOT, Items.EMERALD, Items.EMERALD, Items.EMERALD, Items.EMERALD,
                 Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.GOLDEN_APPLE
         };
 
@@ -1051,16 +1093,20 @@ public class HerobrineUtil {
         }
         Item[] items = new Item[] {
                 Items.DIAMOND, Items.DIAMOND, Items.MUSIC_DISC_11, Items.IRON_INGOT,
-                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD, Items.ENCHANTED_GOLDEN_APPLE,
+                Items.EMERALD, Items.EMERALD, Items.ENCHANTED_GOLDEN_APPLE,
                 Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
                 Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK, AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get(),
                 AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
         };
 
         for (Item item : items) {
-            ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
-            drop.setPickUpDelay(10);
-            level.addFreshEntity(drop);
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+            entity.setPickUpDelay(10);
+            level.addFreshEntity(entity);
         }
     }
 
@@ -1068,13 +1114,17 @@ public class HerobrineUtil {
         if (world instanceof ServerLevel serverLevel) {
             Item[] items = new Item[] {
                     AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(),
-                    AnnoyingVillagersModItems.BEDROCK_WEAPON.get(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), Blocks.OAK_SIGN.asItem(), Blocks.OBSIDIAN.asItem(), Blocks.OBSIDIAN.asItem(), Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE, Items.ENDER_EYE, Items.ENDER_EYE, AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
+                    AnnoyingVillagersModItems.BEDROCK_WEAPON.get(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), Blocks.OAK_SIGN.asItem(), Blocks.OBSIDIAN.asItem(), Blocks.OBSIDIAN.asItem(), Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE, Items.ENDER_EYE, Items.ENDER_EYE, AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(), Items.ENCHANTED_BOOK
             };
 
             for (Item item : items) {
-                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
-                drop.setPickUpDelay(10);
-                serverLevel.addFreshEntity(drop);
+                ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                        ? createRandomModdedEnchantedBook()
+                        : new ItemStack(item);
+
+                ItemEntity entity = new ItemEntity(serverLevel, x, y, z, stack);
+                entity.setPickUpDelay(10);
+                serverLevel.addFreshEntity(entity);
             }
         }
     }
@@ -1096,6 +1146,7 @@ public class HerobrineUtil {
                     Items.ENDER_EYE,
                     Items.ENDER_EYE,
                     Items.SPLASH_POTION,
+                    Items.ENCHANTED_BOOK,
                     Blocks.DIAMOND_BLOCK.asItem(),
                     Items.IRON_SWORD,
                     AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
@@ -1104,9 +1155,13 @@ public class HerobrineUtil {
             };
 
             for (Item item : items) {
-                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
-                drop.setPickUpDelay(10);
-                serverLevel.addFreshEntity(drop);
+                ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                        ? createRandomModdedEnchantedBook()
+                        : new ItemStack(item);
+
+                ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+                entity.setPickUpDelay(10);
+                serverLevel.addFreshEntity(entity);
             }
         }
     }
@@ -1118,8 +1173,7 @@ public class HerobrineUtil {
         }
         Item[] drops = new Item[]{
                 Items.DIAMOND, Items.DIAMOND,
-                Items.MUSIC_DISC_11, Items.IRON_INGOT,
-                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
+                Items.MUSIC_DISC_11, Items.IRON_INGOT, Items.EMERALD, Items.EMERALD,
                 Items.ENCHANTED_GOLDEN_APPLE, Items.NETHERITE_INGOT,
                 Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
                 Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK,
@@ -1128,7 +1182,11 @@ public class HerobrineUtil {
         };
 
         for (Item item : drops) {
-            ItemEntity entity = new ItemEntity(level, x, y, z, new ItemStack(item));
+            ItemStack stack = (item == Items.ENCHANTED_BOOK)
+                    ? createRandomModdedEnchantedBook()
+                    : new ItemStack(item);
+
+            ItemEntity entity = new ItemEntity(level, x, y, z, stack);
             entity.setPickUpDelay(10);
             level.addFreshEntity(entity);
         }

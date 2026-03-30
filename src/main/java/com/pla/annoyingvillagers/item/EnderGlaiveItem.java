@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import net.minecraft.network.chat.Component;
@@ -43,7 +44,7 @@ public class EnderGlaiveItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
         }, 3, -2.5F, (new Properties().fireResistant()));
     }

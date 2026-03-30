@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -41,6 +42,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -204,7 +207,7 @@ public class CombatCommon {
             return false;
         }
         if (victim != null) {
-            if (isTargetKnockedDown(mobpatch) || canExecute(mobpatch)) {
+            if (isTargetKnockedDown(mobpatch) || canExecute(mobpatch) || canEscape(mobpatch)) {
                 return false;
             } else {
                 return !ExecutionHandler.isExecutingTarget(attacker, victim);
@@ -245,11 +248,12 @@ public class CombatCommon {
 
     public static boolean canEscape(MobPatch<?> mobpatch) {
         Mob entity = mobpatch.getOriginal();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(mobpatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+        if (dynamicAnimation.get() instanceof ExecutionAttackAnimation || dynamicAnimation.get() instanceof ExecutionHitAnimation) {
+            return false;
+        }
         if (EscapeUtil.checkEscape(entity)) {
-            if (entity instanceof HerobrineMob herobrineMob) {
-                if (herobrineMob instanceof HerobrineChrisEntity && herobrineMob.getState() > 0) {
-                    return false;
-                }
+            if (entity instanceof HerobrineMob || entity instanceof BlueDemonEntity) {
                 return true;
             } else if (entity instanceof AVNpc AVNpc
                     && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()) {
@@ -872,10 +876,14 @@ public class CombatCommon {
         Entity entity = mobpatch.getOriginal();
         if (entity instanceof LivingEntity livingEntity) {
             double chance = new Random().nextDouble(0.0, 1.0);
-            if (chance <= 0.33) {
+            if (chance <= 0.2) {
                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
-            } else if (chance <= 0.66) {
+            } else if (chance <= 0.4) {
                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MOSSY_COBBLESTONE));
+            } else if (chance <= 0.6) {
+                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIRT));
+            } else if (chance <= 0.8) {
+                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DARK_OAK_PLANKS));
             } else {
                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
             }
@@ -886,10 +894,14 @@ public class CombatCommon {
         LivingEntity entity = mobpatch.getOriginal();
         if (entity instanceof PlayerNpcEntity || entity instanceof AVNpc) {
             double chance = new Random().nextDouble(0.0, 1.0);
-            if (chance <= 0.33) {
+            if (chance <= 0.2) {
                 entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
-            } else if (chance <= 0.66) {
+            } else if (chance <= 0.4) {
                 entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MOSSY_COBBLESTONE));
+            } else if (chance <= 0.6) {
+                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIRT));
+            } else if (chance <= 0.8) {
+                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DARK_OAK_PLANKS));
             } else {
                 entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
             }

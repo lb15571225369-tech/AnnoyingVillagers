@@ -37,6 +37,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -53,6 +54,7 @@ import java.util.*;
 
 import net.minecraft.util.RandomSource;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
+import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -657,7 +659,7 @@ public class BlueDemonEntity extends Monster {
         if (this.savedKillerUUID != null) {
             Entity entity = serverLevel.getEntity(this.savedKillerUUID);
 
-            if (entity instanceof net.minecraft.world.entity.player.Player player) {
+            if (entity instanceof Player player) {
                 return this.damageSources().playerAttack(player);
             }
 
@@ -670,10 +672,12 @@ public class BlueDemonEntity extends Monster {
     }
 
     private void finishFinalDeathSequence(ServerLevel serverLevel) {
+        DamageSource finalSource = this.buildSavedKillerDamageSource(serverLevel);
         this.setHealth(0.0F);
         this.handleSaucesWhenBlueDemonDies(serverLevel);
         this.dieTick = -1;
-        super.die(this.buildSavedKillerDamageSource(serverLevel));
+        this.die(finalSource);
+        this.remove(RemovalReason.KILLED);
     }
 
     private void handleSaucesWhenBlueDemonDies(ServerLevel serverLevel) {
@@ -1243,7 +1247,7 @@ public class BlueDemonEntity extends Monster {
                             new DelayedTask(new Random().nextInt(5, 10)) {
                                 @Override
                                 public void run() {
-                                    if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
+                                    if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive() && entity.getTarget() != null && !ExecutionHandler.isExecutingTarget(entity.getTarget(), entity)) {
                                         CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
                                     } else {
                                         entity.stunEscapeCooldown = 1;

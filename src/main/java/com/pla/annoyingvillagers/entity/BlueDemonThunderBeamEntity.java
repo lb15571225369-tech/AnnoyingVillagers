@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.AAAParticlesUtil;
@@ -193,6 +194,17 @@ public class BlueDemonThunderBeamEntity extends Entity {
         entityData.set(LAST_DIR_Z, (float) dir.z);
     }
 
+    public void initSpawnState() {
+        if (caster == null) return;
+
+        Vec3 fallbackStart = caster.position().add(0.0D, caster.getEyeHeight() * 0.8D, 0.0D);
+        Vec3 fallbackEnd = fallbackStart.add(caster.getLookAngle().scale(getBeamLength()));
+
+        setStartPos(fallbackStart);
+        setEndPos(fallbackEnd);
+        moveTo(fallbackStart.x, fallbackStart.y, fallbackStart.z, caster.getYRot(), caster.getXRot());
+    }
+
     private void updateBeamFromHands() {
         if (caster == null) return;
 
@@ -266,7 +278,6 @@ public class BlueDemonThunderBeamEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-
         prevCollidePosX = collidePosX;
         prevCollidePosY = collidePosY;
         prevCollidePosZ = collidePosZ;

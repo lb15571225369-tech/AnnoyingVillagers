@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.entity.EnderAegisProjectile;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
@@ -51,7 +52,7 @@ public class EnderAegisItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
         }, 3, -2.3F, (new Properties()).fireResistant());
     }

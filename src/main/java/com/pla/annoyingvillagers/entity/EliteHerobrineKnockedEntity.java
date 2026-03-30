@@ -79,7 +79,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         super(entitytype, level);
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
-        this.setNoAi(false);
+        this.setNoAi(true);
         this.setCustomNameVisible(false);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.ELITE_OBSIDIAN_LONG.get()));
@@ -87,7 +87,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get()));
         this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
         this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
-        this.setDropChance(EquipmentSlot.HEAD, 0.0F);
+        this.setDropChance(EquipmentSlot.HEAD, 1.0F);
     }
 
     @Override
@@ -106,9 +106,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
     }
 
     public @NotNull MobType getMobType() {

@@ -1106,7 +1106,11 @@ public class BbqEntity extends Chicken {
         boolean result = super.hurt(damageSource, amount);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
-            if (this.escapeMode || this.deathAssemblyMode || this.deathWatchMode) {
+            if (this.deathAssemblyMode || this.deathWatchMode) {
+                return false;
+            }
+
+            if (this.escapeMode) {
                 return true;
             }
 

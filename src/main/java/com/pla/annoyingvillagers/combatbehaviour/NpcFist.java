@@ -31,7 +31,6 @@ public class NpcFist {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
@@ -39,7 +38,6 @@ public class NpcFist {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(8.0D, 48.0D)
