@@ -4,6 +4,8 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.SauceType;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.entity.goal.KeepPositionGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -35,6 +37,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -63,6 +66,7 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 public class BlueDemonEntity extends Monster {
@@ -538,6 +542,7 @@ public class BlueDemonEntity extends Monster {
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(1, new KeepPositionGoal(this));
         CommonGoals.registerGoalForBlueDemonNpc(this);
     }
 
@@ -1257,6 +1262,18 @@ public class BlueDemonEntity extends Monster {
                         }
                     }
                 }
+            }
+
+            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+                this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
+                this.getNavigation().stop();
+
+                LivingEntity target = this.getTarget();
+                if (target != null) {
+                    this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                }
+            } else {
+                this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
             }
 
             if (this.getState() == 3) {

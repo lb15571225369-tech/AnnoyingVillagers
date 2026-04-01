@@ -189,7 +189,12 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-        // More logic when blocking damage success
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
+    }
+
+    @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

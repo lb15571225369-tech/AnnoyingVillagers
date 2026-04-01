@@ -51,7 +51,7 @@ public abstract class ExplosionMixin {
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/Level;playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"
             ),
-            index = 5 // volume
+            index = 5
     )
     private float muteExplosionSound(float vol) {
         return muteAtThisPos() ? 0.0F : vol;

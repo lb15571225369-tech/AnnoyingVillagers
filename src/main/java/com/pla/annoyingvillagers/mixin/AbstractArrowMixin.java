@@ -28,8 +28,8 @@ public abstract class AbstractArrowMixin {
                     target = "Lnet/minecraft/world/damagesource/DamageSources;arrow(Lnet/minecraft/world/entity/projectile/AbstractArrow;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/damagesource/DamageSource;"
             )
     )
-    private DamageSource av$redirectArrowDamage(DamageSources sources, AbstractArrow arrow, @Nullable Entity shooter) {
-        if (arrow instanceof EnderAegisProjectile stealth) {
+    private DamageSource redirectArrowDamage(DamageSources sources, AbstractArrow arrow, @Nullable Entity shooter) {
+        if (arrow instanceof EnderAegisProjectile) {
             ResourceKey<DamageType> key =
                     (shooter instanceof Player) ? DamageTypes.PLAYER_ATTACK :
                             (shooter instanceof LivingEntity) ? DamageTypes.MOB_ATTACK :

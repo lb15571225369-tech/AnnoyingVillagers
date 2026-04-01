@@ -8,12 +8,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -134,12 +134,27 @@ public class TridentLightningBolt extends LightningBolt {
                 );
 
                 if (this.superLightning) {
+                    DamageSource explosionDamage;
+
+                    if (this.owner != null) {
+                        if (this.owner instanceof ServerPlayer player) {
+                            explosionDamage = serverLevel.damageSources().playerAttack(player);
+                        } else {
+                            explosionDamage = serverLevel.damageSources().mobAttack(this.owner);
+                        }
+                    } else {
+                        explosionDamage = serverLevel.damageSources().explosion(this, null);
+                    }
+
                     serverLevel.explode(
                             this,
+                            explosionDamage,
+                            null,
                             this.getX(),
                             this.getY(),
                             this.getZ(),
                             new Random().nextFloat(10.0F, 15.0F),
+                            false,
                             Level.ExplosionInteraction.BLOCK
                     );
                 }

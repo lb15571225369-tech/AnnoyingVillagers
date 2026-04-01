@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.combatbehaviour.HerobrineObsidianSledgehammer;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -137,7 +138,12 @@ public class SledgehammerHerobrinePatch extends CEHumanoidPatch implements Custo
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-        // More logic when blocking damage success
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
+    }
+
+    @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

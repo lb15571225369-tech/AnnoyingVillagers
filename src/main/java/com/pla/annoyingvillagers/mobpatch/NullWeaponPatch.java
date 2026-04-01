@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.combatbehaviour.NullWeaponSword;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -213,6 +214,11 @@ public class NullWeaponPatch extends CEHumanoidPatch implements CustomExecuteEnt
         return attackresult;
     }
 
+    @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
+    }
+
     public void tick(LivingTickEvent livingTickEvent) {
         super.tick(livingTickEvent);
     }
@@ -235,6 +241,7 @@ public class NullWeaponPatch extends CEHumanoidPatch implements CustomExecuteEnt
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

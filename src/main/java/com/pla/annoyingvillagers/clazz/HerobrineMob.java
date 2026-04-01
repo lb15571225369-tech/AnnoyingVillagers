@@ -6,7 +6,9 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.entity.goal.KeepPositionGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
@@ -70,6 +72,7 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
@@ -387,6 +390,7 @@ public class HerobrineMob extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new KeepPositionGoal(this));
         this.goalSelector.addGoal(1, new Goal() {
             @Override
             public boolean canUse() {
@@ -849,6 +853,18 @@ public class HerobrineMob extends Monster {
 
             if (efnGuardHitCooldown == 0 && efnGuardHitState != 0) {
                 efnGuardHitState = 0;
+            }
+
+            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+                this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
+                this.getNavigation().stop();
+
+                LivingEntity target = this.getTarget();
+                if (target != null) {
+                    this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                }
+            } else {
+                this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
             }
 
             if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {

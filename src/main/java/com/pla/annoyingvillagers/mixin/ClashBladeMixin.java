@@ -1,10 +1,15 @@
 package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
+import com.pla.annoyingvillagers.compat.EpicFightNightFall;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.util.CommonUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import com.pla.efclash_blade.skill.ClashBladeSkill;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraftforge.fml.ModList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,13 +33,22 @@ public class ClashBladeMixin {
     }
 
     @Inject(method = "getWeaponDestroyValueOnClash", at = @At("HEAD"), cancellable = true)
-    private static void forceDestroyWeaponOnClash(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
-                                                                DamageSource damageSource,
-                                                                CallbackInfoReturnable<Integer> cir) {
-//        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] getWeaponDestroyValueOnClash is called with animation played: {}, for mob {}", dynamicAnimation, damageSource.getEntity() != null ? damageSource.getEntity().getDisplayName().getString() : "null");
+    private static void forceDestroyWeaponValueOnClash(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
+                                                       DamageSource damageSource,
+                                                       PlayerPatch<?> playerPatch,
+                                                       ServerLevel serverLevel,
+                                                       CallbackInfoReturnable<Integer> cir) {
+        if (EscapeUtil.isAnimationDangerous(dynamicAnimation)) {
+            if (ModList.get().isLoaded("efn")) {
+                if (EpicFightNightFall.isEfnWeapons(playerPatch.getOriginal().getMainHandItem()) && CommonUtil.isAvDamageableEfnWeaponsMob(damageSource.getEntity())) {
+                    cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get() * EpicFightNightFall.MULTIPLIER_DAMAGE_VALUE);
+                }
+            }
+            cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get());
+        }
     }
 
-    @Inject(method = "moreLogicAfterClashing", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "moreLogicAfterClashing", at = @At("HEAD"))
     private static void forceMoreLogicAfterClash(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
                                                   DamageSource damageSource,
                                                   PlayerPatch<?> playerPatch,

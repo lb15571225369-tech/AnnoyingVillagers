@@ -364,7 +364,7 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.ADVANCED_DUELIST_SHOOTING_STAR)
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.ADVANCED_LANCER_AUTO1,
-                            AVAnimations.DUAL_SWORD_AUTO2,
+                            AVAnimations.TRIDENT_DUAL_AUTO2,
                             AVAnimations.ADVANCED_DUELIST_SHOOTING_STAR,
                             AVAnimations.CUT_DP_AIR_ATTACK,
                             AVAnimations.ADVANCED_LANCER_AUTO3,

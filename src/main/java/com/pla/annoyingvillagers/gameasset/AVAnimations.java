@@ -119,7 +119,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -261,6 +260,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> HACKER_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO2;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_DUAL_AUTO2;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO3;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO5;
@@ -585,12 +585,7 @@ public class AVAnimations {
                             entitypatch.getOriginal().level().addParticle(EpicFightParticles.TSUNAMI_SPLASH.get(), pos.x + rand.x, pos.y + rand.y - (double)1.0F, pos.z + rand.z, rand.x * 0.1, rand.y * 0.1, rand.z * 0.1);
                         }
                     }
-
-                }, Side.CLIENT))
-                .addEvents(new AnimationEvent[]{
-                        AnimationEvent.InTimeEvent.create(0.35F,
-                        (entitypatch, animation, params) -> entitypatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3, 0.0F, 0.0F), Side.CLIENT),
-                        AnimationEvent.InTimeEvent.create(0.35F, (entitypatch, animation, params) -> entitypatch.setAirborneState(true), Side.SERVER)}));
+                }, Side.CLIENT)));
         AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_START = builder.nextAccessor("biped/epicfight_clone/blue_demon_die_legendary_sword_start",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK = builder.nextAccessor("biped/epicfight_clone/blue_demon_die_legendary_sword_tick",
@@ -1010,6 +1005,11 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        AVAnimations.TRIDENT_DUAL_AUTO2 = builder.nextAccessor("biped/pugilist_steve/trident_dual_auto2",
+                (accessor) -> (new BasicAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
         AVAnimations.DUAL_SWORD_AUTO3 = builder.nextAccessor("biped/pugilist_steve/dual_sword_auto3",
                 (accessor) -> (new BasicAttackAnimation(0.16F, accessor, humanoidArmature, new Phase(0.0F, 0.66F, 0.69F, 0.733F, 1.0F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
@@ -1228,19 +1228,19 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
         AVAnimations.SWORD_HEAVY_AUTO_2 = builder.nextAccessor("biped/pugilist_steve/sword_heavy_auto2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.12F, 0.22F, 0.95F, ColliderPreset.SWORD, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
         AVAnimations.SWORD_HEAVY_AUTO_3 = builder.nextAccessor("biped/pugilist_steve/sword_heavy_auto3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.21F, 0.32F, 1.2F, ColliderPreset.SWORD, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 1.5F));
         AVAnimations.HARD_KICK = builder.nextAccessor("biped/pugilist_steve/hard_kick",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.29F, 1.1F, 1.2F, 3.1F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, humanoidArmature.get().legR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
@@ -1620,28 +1620,28 @@ public class AVAnimations {
                 (accessor) -> (new BasicAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.7F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
                         ));
         AVAnimations.TRIDENT_THROW_LEGENDARY = builder.nextAccessor("biped/pugilist_steve/trident_throw_legendary",
                 (accessor) -> (new BasicAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER)
                         ));
 
         // Animation from Community EpicFight Battle Arts
         AVAnimations.ADVANCED_LANCER_AUTO1 = builder.nextAccessor("biped/battle_style/advanced_lancer_auto1", access ->
                 new BasicAttackAnimation(0.2f, 0.0f, 0.2f, 0.3f, 0.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
         AVAnimations.ADVANCED_LANCER_AUTO3 = builder.nextAccessor("biped/battle_style/advanced_lancer_auto3", access ->
                 new AttackAnimation(0.2f, 0.0f, 0.75f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.2f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
                                 AnimationEvent.InTimeEvent.create(0.2f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
@@ -1674,20 +1674,20 @@ public class AVAnimations {
                         ));
         AVAnimations.TRIDENT_THROW_1 = builder.nextAccessor("biped/battle_style/trident_throw_1", access ->
                 new BasicAttackAnimation(0.2f, 0.0f, 0.2f, 0.3f, 0.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.0f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.15f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)));
+                                AnimationEvent.InTimeEvent.create(0.05f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)));
         AVAnimations.TRIDENT_THROW_5 = builder.nextAccessor("biped/battle_style/trident_throw_5", access ->
                 new AttackAnimation(0.2f, 0.0f, 0.75f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.2f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
                                 AnimationEvent.InTimeEvent.create(0.2f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.35f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(SoundEvents.TRIDENT_RETURN),
                                 AnimationEvent.InTimeEvent.create(0.35f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.4f, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.5f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_EXPLODE, Side.SERVER)));
+                                AnimationEvent.InTimeEvent.create(0.4f, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_EXPLODE, Side.SERVER)));
         AVAnimations.ADVANCED_DUELIST_WHIRLEDGE = builder.nextAccessor("biped/battle_style/advanced_duelist_whirledge", access ->
                 new AttackAnimation(0.2f, access, humanoidArmature,
                         new AttackAnimation.Phase(0.0f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null)
@@ -1711,7 +1711,7 @@ public class AVAnimations {
                         new AttackAnimation.Phase(0.9f, 0.0f, 1.25f, 1.35f, 2f, 2f, InteractionHand.MAIN_HAND, humanoidArmature.get().rootJoint, ColliderPreset.BATTOJUTSU_DASH)
                                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
                                 .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f)))
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
@@ -1745,10 +1745,10 @@ public class AVAnimations {
                                     livingentity.move(MoverType.SELF, direction.toDoubleVector());
                                     return 0.025F;
                                 } else {
-                                    return speed * 0.7f;
+                                    return speed;
                                 }
                             } else {
-                                return speed * 0.7f;
+                                return speed;
                             }
                         })
                         .addEvents(
@@ -1807,7 +1807,7 @@ public class AVAnimations {
                      (new Phase(1.05F, 1.05F, 1.15F, 1.25F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
                              .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.05F))
                              .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)))
-                     .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                     .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                      .addProperty(ActionAnimationProperty.AFFECT_SPEED, true)
                      .addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
                      .newTimePair(0.0F, 1.45F)
@@ -1818,21 +1818,21 @@ public class AVAnimations {
         AVAnimations.DP_THROW_BLADE_AUTO_1 = builder.nextAccessor("biped/epicfight_awaken/throw_blade_auto_1",
                 (accessor) -> (new AttackAnimation(0.15F, 0.33F, 0.33F, 1.33F, 1.33F, ColliderPreset.FIST, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.25F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.25F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.33F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.33F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                                AnimationEvent.InTimeEvent.create(0.15F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.15F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.23F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.23F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .newTimePair(0.0F, 0.6F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
                         .newTimePair(0.0F, 0.83F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
         AVAnimations.DP_THROW_BLADE_AUTO_2 = builder.nextAccessor("biped/epicfight_awaken/throw_blade_auto_2",
                 (accessor) -> (new AttackAnimation(0.15F, 0.53F, 0.53F, 1.2F, 1.2F, ColliderPreset.FIST, Armatures.BIPED.get().rootJoint, accessor, Armatures.BIPED))
                 .addEvents(
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT_LIGHTNING, Side.SERVER),
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                        AnimationEvent.InTimeEvent.create(0.53F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_LIGHTNING, Side.SERVER))
-                .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        AnimationEvent.InTimeEvent.create(0.43F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.43F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT_LIGHTNING, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.43F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                        AnimationEvent.InTimeEvent.create(0.43F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT_LIGHTNING, Side.SERVER))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 1.5F)
                 .newTimePair(0.0F, 0.76F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
                 .newTimePair(0.0F, 1.0F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false));
         AVAnimations.THROW_HOOK_SLASH_AIR = builder.nextAccessor("biped/epicfight_awaken/throw_hook_slash_air",
@@ -1841,15 +1841,15 @@ public class AVAnimations {
                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F)),
                         (new Phase(0.46F, 0.46F, 0.47F, 0.6F, 10.0F, Float.MAX_VALUE, InteractionHand.MAIN_HAND, AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolR, null), AttackAnimation.JointColliderPair.of(Armatures.BIPED.get().toolL, null)))
                                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> 2.0F)
                         .addProperty(ActionAnimationProperty.AFFECT_SPEED, true).addProperty(AttackAnimationProperty.STOP_MOVEMENT, false)
                         .newTimePair(0.0F, 0.85F).addStateRemoveOld(EntityState.CAN_BASIC_ATTACK, false)
                         .newTimePair(0.0F, 1.35F).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, false)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.THROW_TRIDENT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.THROW_TRIDENT_HAND_RIGHT, Side.SERVER)
                         ));
 
         // Animation from Tactical Imbuements

@@ -12,24 +12,27 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -106,11 +109,11 @@ public class MobClashBladeMixin {
             cir.setReturnValue(true);
             return;
         }
-
-        if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile projectile
+        if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile
                 && defender.onGround()
                 && !defender.isPassenger()
                 && defender.level() instanceof ServerLevel) {
+            Entity projectile = livingAttackEvent.getSource().getDirectEntity();
             // Projectile clashing
             if (defender instanceof AVNpc AVNpc
                     && AVNpc.getBlockDamage() == null
@@ -427,7 +430,7 @@ public class MobClashBladeMixin {
         }
     }
 
-    @Inject(method = "customPostAdditionClashBlade", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "customPostAdditionClashBlade", at = @At("HEAD"))
     private static void revertWeaponAfterClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
                                                   AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
@@ -443,6 +446,23 @@ public class MobClashBladeMixin {
             if (attackerLivingEntityPatch != null) {
                 AssetAccessor<? extends StaticAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                 if (attackerDynamicAnimation != null) {
+                    if (defender instanceof ServerPlayer serverPlayer && EscapeUtil.isAnimationDangerous(attackerDynamicAnimation) && CommonUtil.isAvDamageableEfnWeaponsMob(attacker)) {
+                        boolean damaged = false;
+                        int breakValue = AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get();
+                        if (ModList.get().isLoaded("efn")) {
+                            if (EpicFightNightFall.isEfnWeapons(serverPlayer.getMainHandItem())) {
+                                breakValue = AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get() * EpicFightNightFall.MULTIPLIER_DAMAGE_VALUE;
+                            }
+                        }
+                        if ((serverPlayer.getOffhandItem().getItem() instanceof SwordItem || serverPlayer.getOffhandItem().getItem() instanceof AxeItem) && (new Random()).nextBoolean()) {
+                            damaged = true;
+                            serverPlayer.getOffhandItem().hurtAndBreak(breakValue, serverPlayer, (player) -> player.broadcastBreakEvent(InteractionHand.OFF_HAND));
+                        }
+
+                        if (!damaged) {
+                            serverPlayer.getMainHandItem().hurtAndBreak(breakValue, serverPlayer, (player) -> player.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                        }
+                    }
                     if ((defender instanceof AVNpc AVNpc && AVNpc.getBlockDamage() != null)
                             || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
                         return;

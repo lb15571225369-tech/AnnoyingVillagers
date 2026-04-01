@@ -1,23 +1,22 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
-import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.ModList;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
-import net.shelmarow.combat_evolution.gameassets.ExecutionSkillAnimations;
-import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
-import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.*;
@@ -32,8 +31,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 public class EpicfightUtil {
     public static Vec3 getJointWithTranslation(Entity entity, Vec3f translation, Joint joint, float handToTip, double yOffset) {
@@ -121,6 +119,27 @@ public class EpicfightUtil {
                     Vec3 pos = new Vec3(eyePosition.x + viewVec.x, eyePosition.y + viewVec.y, eyePosition.z + viewVec.z);
                     (playerPatch.getOriginal()).level().addParticle(EpicFightParticles.NEUTRALIZE.get(), pos.x, pos.y, pos.z, (double)0.0F, (double)0.0F, (double)0.0F);
                     playerPatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 1.0F, 1.0F);
+                }
+            }
+        }
+    }
+
+    public static void breakWeaponOnParryOpAttack(DamageSource damageSource) {
+        Entity attacker = damageSource.getEntity();
+        if (attacker instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            if (playerPatch != null) {
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (EscapeUtil.isAnimationDangerous(dynamicAnimation)) {
+                    int breakValue = AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get();
+                    if (ModList.get().isLoaded("efn")) {
+                        if (EpicFightNightFall.isEfnWeapons(player.getMainHandItem())) {
+                            breakValue = AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get() * EpicFightNightFall.MULTIPLIER_DAMAGE_VALUE;
+                        }
+                    }
+                    player.getMainHandItem().hurtAndBreak(breakValue, player, (livingEntity) -> {
+                        livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+                    });
                 }
             }
         }

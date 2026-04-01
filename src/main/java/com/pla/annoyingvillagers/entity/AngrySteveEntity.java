@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
-import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.goal.KeepPositionGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -26,6 +26,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -40,12 +41,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.AnimationPlayer;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public class AngrySteveEntity extends AVNpc {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new KeepPositionGoal(this));
         CommonGoals.registerGoalForCrazyNpc(this);
     }
 
@@ -351,8 +353,20 @@ public class AngrySteveEntity extends AVNpc {
     @Override
     public void tick() {
         super.tick();
-        if (this.level() instanceof ServerLevel serverLevel) {
+        if (this.level() instanceof ServerLevel) {
+            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+                this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
+                this.getNavigation().stop();
+
+                LivingEntity target = this.getTarget();
+                if (target != null) {
+                    this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                }
+            } else {
+                this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
+            }
             this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
+            this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 3, 3));
             if (!neverLeave) {
                 this.leaveTicks = this.leaveTicks - 1;
                 int remaining = this.leaveTicks;

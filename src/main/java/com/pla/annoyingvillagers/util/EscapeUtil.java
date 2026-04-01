@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.compat.EpicFightResurrection;
 import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
@@ -31,7 +30,6 @@ public class EscapeUtil {
                 AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1.get().getRegistryName().toString(),
                 AVAnimations.AEGIS_SHIELD_SHOOT.get().getRegistryName().toString(),
                 AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT.get().getRegistryName().toString(),
-                AVAnimations.TRIDENT_FESTIVAL.get().getRegistryName().toString(),
                 AVAnimations.TRIDENT_ATTACK.get().getRegistryName().toString(),
                 AVAnimations.BLUE_DEMON_STATE_TRANSFORM.get().getRegistryName().toString(),
                 AVAnimations.ELECTRIC_FIELD.get().getRegistryName().toString(),

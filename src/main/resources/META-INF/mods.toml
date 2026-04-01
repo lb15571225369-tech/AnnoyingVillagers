@@ -49,3 +49,9 @@ description='''${mod_description}'''
     versionRange="[1.3, )"
     ordering="NONE"
     side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="efn"
+    mandatory=false
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"

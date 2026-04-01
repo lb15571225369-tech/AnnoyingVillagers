@@ -144,6 +144,11 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         // More logic when player block success
     }
 
+    @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
+    }
+
     public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
         // More logic when player parry success
     }
@@ -154,6 +159,7 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

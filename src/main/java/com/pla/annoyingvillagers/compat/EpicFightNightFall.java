@@ -2,12 +2,16 @@ package com.pla.annoyingvillagers.compat;
 
 import com.hm.efn.animations.types.stun.EFNStunAnimation;
 import com.hm.efn.client.sound.EFNSounds;
+import com.hm.efn.entity.geoEntity.*;
 import com.hm.efn.gameasset.EFNAnimations;
 import com.hm.efn.gameasset.animations.*;
+import com.hm.efn.item.custom.*;
+import com.hm.efn.item.geo.ExcaliburItem;
 import com.hm.efn.particle.EFNParticles;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import org.joml.Vector3d;
@@ -23,6 +27,7 @@ import java.util.Set;
 
 public class EpicFightNightFall {
     private static final Set<String> DANGEROUS_ANIMATIONS = new HashSet<>();
+    public static final int MULTIPLIER_DAMAGE_VALUE = 10;
 
     static {
         DANGEROUS_ANIMATIONS.addAll(Set.of(
@@ -38,6 +43,12 @@ public class EpicFightNightFall {
                 EFNLanceAnimations.NF_MEEN_CHARGE3.get().getRegistryName().toString(),
                 EFNLanceAnimations.NF_MEEN_FINISHER.get().getRegistryName().toString(),
                 EFNYamatoAnimations.YAMATO_JUDEMENCUT_ALL.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_JUDEMENCUT.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_JUDEMENCUT_CHARGE.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_JUDEMENCUT_JUST.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_VOLCANOL_ALL.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_VOLCANOL.get().getRegistryName().toString(),
+                EFNYamatoAnimations.YAMATO_VOLCANOL_CHARGE.get().getRegistryName().toString(),
                 EFNAnimations.DMC5_V_JC.get().getRegistryName().toString(),
                 EFNSkillAnimations.EXECUTION.get().getRegistryName().toString(),
                 EFNMurasamaAnimations.HF_MURASAMA_ZANDATSU.get().getRegistryName().toString(),
@@ -158,5 +169,27 @@ public class EpicFightNightFall {
             return dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT1 || dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT2 || dynamicAnimation == EFNSkillAnimations.EFN_GUARD_ACTIVE_HIT3;
         }
         return false;
+    }
+
+    public static boolean isEfnWeapons(ItemStack itemStack) {
+        return itemStack.getItem() instanceof RuinsgreatswordItem
+                || itemStack.getItem() instanceof ThornWheelItem
+                || itemStack.getItem() instanceof AetherialDuskDualSword_MainHandItem
+                || itemStack.getItem() instanceof Meen_SpearItem
+                || itemStack.getItem() instanceof PioneerItem
+                || itemStack.getItem() instanceof NFShortSwordItem
+                || itemStack.getItem() instanceof NFShortSwordTwoItem
+                || itemStack.getItem() instanceof ExsiliumgladiusItem
+                || itemStack.getItem() instanceof FireExsiliumgladiusItem
+                || itemStack.getItem() instanceof AirTachiItem
+                || itemStack.getItem() instanceof CoTachiItem
+                || itemStack.getItem() instanceof KusabimaruItem
+                || itemStack.getItem() instanceof BroadBladeItem
+                || itemStack.getItem() instanceof ScytheItem
+                || itemStack.getItem() instanceof NfClawItem
+                || itemStack.getItem() instanceof YamatoItem
+                || itemStack.getItem() instanceof HfMurasamaItem
+                || itemStack.getItem() instanceof CrescentMoonItem
+                || itemStack.getItem() instanceof ExcaliburItem;
     }
 }

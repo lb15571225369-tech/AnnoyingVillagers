@@ -21,6 +21,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_EXECUTE;
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_BURN_ITEM;
     public static ForgeConfigSpec.ConfigValue<Boolean> VANILLA_MOB_CAN_DRINK_HEALING_POTION;
+    public static ForgeConfigSpec.ConfigValue<Integer> WEAPON_BREAKING_MECHANISM_VALUE;
 
     // ==== NPC Behaviour ====
     public static ForgeConfigSpec.ConfigValue<Double> NPC_TARGET_WEIGHT_MONSTER_HUNTER;
@@ -91,6 +92,9 @@ public class AnnoyingVillagersConfig {
         VANILLA_MOB_CAN_DRINK_HEALING_POTION = BUILDER.comment(
                         "Enable drinking healing potion ability for Zombie and Skeleton")
                 .define("VanillaMobCanDrinkHealingPotion", true);
+        WEAPON_BREAKING_MECHANISM_VALUE = BUILDER.comment(
+                        "The value of durability lose of a weapon when Av Bosses blocking or clashing a dangerous animation or when Player clashing a dangerous animation by Av Bosses")
+                .defineInRange("weaponBreakingMechanismValue", 10, 0, 10000);
 
         // ===== NPC Behaviour =====
         BUILDER.comment(

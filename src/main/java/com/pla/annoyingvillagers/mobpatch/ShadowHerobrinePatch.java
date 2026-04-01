@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderEye;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianPillar;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -132,6 +133,12 @@ public class ShadowHerobrinePatch extends CEHumanoidPatch implements CustomExecu
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
+    }
+
+    @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

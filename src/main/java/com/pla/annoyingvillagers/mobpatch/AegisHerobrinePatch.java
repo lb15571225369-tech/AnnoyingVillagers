@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -124,6 +125,11 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
     }
 
     @Override
+    public boolean isBlockableSource(DamageSource damageSource) {
+        return true;
+    }
+
+    @Override
     public void playGuardHitSound() {
         if (ModList.get().isLoaded("efn")) {
         } else {
@@ -150,6 +156,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
+        EpicfightUtil.breakWeaponOnParryOpAttack(damageSource);
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {
