@@ -30,6 +30,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -49,6 +50,12 @@ public class BlueDemonTridentItem extends SwordItem {
     private static final int ENERGY_DIM_COLOR = 0x3E4A4D;
     private static final int ENERGY_TEXT_COLOR = 0xBDFBFF;
     private static final int ENERGY_FULL_COLOR = 0x7CFFFF;
+
+    private static final int FESTIVAL_TOP_UP_TRIGGER = 10;
+    private static final int FESTIVAL_TARGET_TOTAL = 20;
+    private static final int FESTIVAL_SPAWN_ATTEMPTS = 12;
+    private static final double FESTIVAL_MIN_DISTANCE_FROM_OWNER_SQR = 5.0D;
+    private static final double FESTIVAL_MIN_TRIDENT_SPACING_SQR = 1.0D;
 
 
     public BlueDemonTridentItem() {
@@ -209,9 +216,190 @@ public class BlueDemonTridentItem extends SwordItem {
         }
     }
 
+    private static void spawnMissingFestivalSupportTridents(
+            ServerLevel serverLevel,
+            BlueDemonEntity owner,
+            int missingCount,
+            List<BlueDemonThrownTridentEntity> occupiedTridents
+    ) {
+        if (missingCount <= 0) {
+            return;
+        }
+
+        List<BlueDemonThrownTridentEntity> occupied = new ArrayList<>(occupiedTridents);
+
+        for (int i = 0; i < missingCount; i++) {
+            BlockPos standPos = findFestivalStandPos(serverLevel, owner, occupied);
+            if (standPos == null) {
+                break;
+            }
+
+            BlueDemonThrownTridentEntity spawned = spawnFestivalSupportTrident(serverLevel, owner, standPos);
+            occupied.add(spawned);
+        }
+    }
+
+    @Nullable
+    private static BlockPos findFestivalStandPos(
+            ServerLevel serverLevel,
+            LivingEntity owner,
+            List<BlueDemonThrownTridentEntity> occupiedTridents
+    ) {
+        final int maxYDiff = 6;       // do not allow spawn too high/low from Blue Demon
+        final int searchUp = 8;
+        final int searchDown = 8;
+
+        for (int attempt = 0; attempt < FESTIVAL_SPAWN_ATTEMPTS; attempt++) {
+            double x = owner.getX() + Mth.nextDouble(serverLevel.random, -OWNER_HALF_BOX, OWNER_HALF_BOX);
+            double z = owner.getZ() + Mth.nextDouble(serverLevel.random, -OWNER_HALF_BOX, OWNER_HALF_BOX);
+
+            BlockPos candidate = findNearestStandablePosNearY(
+                    serverLevel,
+                    x,
+                    z,
+                    Mth.floor(owner.getY())
+            );
+
+            if (candidate == null) {
+                continue;
+            }
+
+            if (Math.abs(candidate.getY() - owner.blockPosition().getY()) > maxYDiff) {
+                continue;
+            }
+
+            Vec3 center = new Vec3(
+                    candidate.getX() + 0.5D,
+                    candidate.getY() + 0.05D,
+                    candidate.getZ() + 0.5D
+            );
+
+            if (center.distanceToSqr(owner.position()) < FESTIVAL_MIN_DISTANCE_FROM_OWNER_SQR) {
+                continue;
+            }
+
+            boolean tooClose = false;
+            for (BlueDemonThrownTridentEntity other : occupiedTridents) {
+                if (!other.isAlive()) {
+                    continue;
+                }
+
+                if (other.position().distanceToSqr(center) < FESTIVAL_MIN_TRIDENT_SPACING_SQR) {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            if (!tooClose) {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    @Nullable
+    private static BlockPos findNearestStandablePosNearY(
+            ServerLevel serverLevel,
+            double x,
+            double z,
+            int originY
+    ) {
+        int blockX = Mth.floor(x);
+        int blockZ = Mth.floor(z);
+
+        for (int offset = 0; offset <= Math.max(8, 8); offset++) {
+            if (offset <= 8) {
+                BlockPos downPos = new BlockPos(blockX, originY - offset, blockZ);
+                if (isValidFestivalStandPos(serverLevel, downPos)) {
+                    return downPos;
+                }
+            }
+
+            if (offset != 0 && offset <= 8) {
+                BlockPos upPos = new BlockPos(blockX, originY + offset, blockZ);
+                if (isValidFestivalStandPos(serverLevel, upPos)) {
+                    return upPos;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static boolean isValidFestivalStandPos(ServerLevel serverLevel, BlockPos standPos) {
+        if (!serverLevel.isInWorldBounds(standPos) || !serverLevel.isInWorldBounds(standPos.below())) {
+            return false;
+        }
+
+        if (!serverLevel.isEmptyBlock(standPos)) {
+            return false;
+        }
+
+        if (!serverLevel.getFluidState(standPos).isEmpty()) {
+            return false;
+        }
+
+        if (!serverLevel.getFluidState(standPos.below()).isEmpty()) {
+            return false;
+        }
+
+        return serverLevel.getBlockState(standPos.below()).blocksMotion();
+    }
+
+    private static BlueDemonThrownTridentEntity spawnFestivalSupportTrident(
+            ServerLevel serverLevel,
+            BlueDemonEntity owner,
+            BlockPos standPos
+    ) {
+        ItemStack stack = owner.getMainHandItem();
+
+        BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, owner, stack);
+        trident.assignSpawnSequence(owner);
+        trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
+        trident.placeAsGroundedSupport(owner, standPos);
+        trident.beginFestivalGroundRise(true);
+
+        serverLevel.addFreshEntity(trident);
+
+        serverLevel.sendParticles(
+                AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                standPos.getX() + 0.5D,
+                standPos.getY() + 0.15D,
+                standPos.getZ() + 0.5D,
+                12,
+                0.18D, 0.25D, 0.18D,
+                0.02D
+        );
+
+        serverLevel.playSound(
+                null,
+                BlockPos.containing(standPos.getX() + 0.5D, standPos.getY(), standPos.getZ() + 0.5D),
+                AnnoyingVillagersModSounds.ELECTRIFY.get(),
+                SoundSource.NEUTRAL,
+                0.8F,
+                0.9F + serverLevel.random.nextFloat() * 0.2F
+        );
+
+        return trident;
+    }
+
     public static void summonSuperLightningAtGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
-        for (BlueDemonThrownTridentEntity trident : getAllOwnerTridents(serverLevel, owner)) {
-            trident.summonSuperLightningAtSelf();
+        List<BlueDemonThrownTridentEntity> existingTridents = new ArrayList<>(getAllOwnerTridents(serverLevel, owner));
+
+        if (owner instanceof BlueDemonEntity blueDemon && existingTridents.size() < FESTIVAL_TOP_UP_TRIGGER) {
+            spawnMissingFestivalSupportTridents(
+                    serverLevel,
+                    blueDemon,
+                    FESTIVAL_TARGET_TOTAL - existingTridents.size(),
+                    existingTridents
+            );
+        }
+
+        for (BlueDemonThrownTridentEntity trident : existingTridents) {
+            if (trident.isAlive()) {
+                trident.summonSuperLightningAtSelf();
+            }
         }
     }
 

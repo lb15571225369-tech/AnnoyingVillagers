@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.compat.EpicFightResurrection;
 import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
@@ -97,6 +98,7 @@ public class EscapeUtil {
         LivingEntityPatch<?> targetLivingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
         if (target == null || targetLivingEntityPatch == null) return false;
         AssetAccessor<? extends StaticAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] check Escape for {} returned {}, animation checked: {}", mob.getDisplayName().getString(), isAnimationDangerous(targetDynamicAnimation) || targetDynamicAnimation.get() instanceof ExecutionAttackAnimation, targetDynamicAnimation);
         return isAnimationDangerous(targetDynamicAnimation) || targetDynamicAnimation.get() instanceof ExecutionAttackAnimation;
     }
 }

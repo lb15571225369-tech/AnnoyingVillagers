@@ -60,6 +60,13 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private int relaunchDelayTicks = 0;
     private int relaunchDelayTick = 0;
 
+    private static final int FESTIVAL_GROUND_RISE_DURATION = 10;
+    private boolean festivalGroundRiseActive = false;
+    private int festivalGroundRiseTick = 0;
+    private Vec3 festivalGroundRiseStart = Vec3.ZERO;
+    private Vec3 festivalGroundRiseEnd = Vec3.ZERO;
+    private boolean queueSuperLightningAfterGroundRise = false;
+
     @Nullable
     private UUID queuedTargetUUID = null;
     @Nullable
@@ -81,7 +88,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private Direction absorbReturnFace = null;
 
     private boolean isRelaunchLocked() {
-        return this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive;
+        return this.festivalGroundRiseActive || this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive;
     }
 
     public boolean isAbsorbingToWearer() {
@@ -275,9 +282,105 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.entityData.set(DATA_STUCK_FACE, direction == null ? (byte)255 : (byte) direction.get3DDataValue());
     }
 
+    public void beginFestivalGroundRise(boolean strikeWhenFinished) {
+        if (this.festivalGroundRiseActive || this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive) {
+            return;
+        }
+
+        this.festivalGroundRiseActive = true;
+        this.festivalGroundRiseTick = 0;
+        this.festivalGroundRiseEnd = this.position();
+        this.festivalGroundRiseStart = this.festivalGroundRiseEnd.add(0.0D, -1.25D, 0.0D);
+        this.queueSuperLightningAfterGroundRise = strikeWhenFinished;
+
+        this.inGround = false;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(null);
+
+        this.setPos(this.festivalGroundRiseStart.x, this.festivalGroundRiseStart.y, this.festivalGroundRiseStart.z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoPhysics(true);
+        this.setNoGravity(true);
+        this.hasImpulse = false;
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+        this.setGlowingTag(true);
+    }
+
+    private void tickFestivalGroundRise() {
+        this.festivalGroundRiseTick++;
+
+        float t = Math.min(1.0F, (float) this.festivalGroundRiseTick / (float) FESTIVAL_GROUND_RISE_DURATION);
+        float eased = 1.0F - (1.0F - t) * (1.0F - t); // ease-out
+
+        Vec3 nextPos = new Vec3(
+                Mth.lerp(eased, this.festivalGroundRiseStart.x, this.festivalGroundRiseEnd.x),
+                Mth.lerp(eased, this.festivalGroundRiseStart.y, this.festivalGroundRiseEnd.y),
+                Mth.lerp(eased, this.festivalGroundRiseStart.z, this.festivalGroundRiseEnd.z)
+        );
+
+        Vec3 moveDelta = nextPos.subtract(this.position());
+
+        this.setPos(nextPos.x, nextPos.y, nextPos.z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.updateRotationFromMovement(moveDelta.lengthSqr() > 1.0E-7D ? moveDelta : new Vec3(0.0D, 1.0D, 0.0D));
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                    this.getX(), this.getY(), this.getZ(),
+                    2,
+                    0.08D, 0.10D, 0.08D,
+                    0.01D
+            );
+        }
+
+        if (this.festivalGroundRiseTick >= FESTIVAL_GROUND_RISE_DURATION) {
+            this.finishFestivalGroundRise();
+        }
+    }
+
+    private void finishFestivalGroundRise() {
+        this.festivalGroundRiseActive = false;
+        this.festivalGroundRiseTick = 0;
+
+        this.setPos(this.festivalGroundRiseEnd.x, this.festivalGroundRiseEnd.y, this.festivalGroundRiseEnd.z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = false;
+
+        this.inGround = true;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(Direction.UP);
+        this.setGlowingTag(true);
+
+        float[] pitchChoices = new float[]{-90.0F, -60.0F, -45.0F, -30.0F};
+        float[] yawChoices = new float[]{-90.0F, -60.0F, -45.0F, -30.0F, 0.0F, 30.0F, 45.0F, 60.0F, 90.0F};
+
+        float pitch = pitchChoices[this.random.nextInt(pitchChoices.length)];
+        float yawOffset = yawChoices[this.random.nextInt(yawChoices.length)];
+
+        this.setXRot(pitch);
+        this.xRotO = this.getXRot();
+
+        this.setYRot(this.getYRot() + yawOffset);
+        this.yRotO = this.getYRot();
+
+        if (this.queueSuperLightningAfterGroundRise) {
+            this.queueSuperLightningAfterGroundRise = false;
+            this.summonSuperLightningAtSelf();
+        }
+    }
+
     @Override
     public boolean shouldBeSaved() {
-        return this.inGround && !this.relaunchAnimationActive && !this.relaunchDelayActive && !this.absorbToWearerActive;
+        return this.inGround
+                && !this.festivalGroundRiseActive
+                && !this.relaunchAnimationActive
+                && !this.relaunchDelayActive
+                && !this.absorbToWearerActive;
     }
 
     public BlueDemonThrownTridentEntity(EntityType<? extends ThrownTrident> type, Level level) {
@@ -343,6 +446,14 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.festivalGroundRiseActive) {
+            this.baseTick();
+            this.pickup = AbstractArrow.Pickup.DISALLOWED;
+            this.tickFestivalGroundRise();
+            this.tickElectricEffects();
+            return;
+        }
+
         if (!this.level().isClientSide && this.absorbToWearerActive) {
             this.baseTick();
             this.pickup = AbstractArrow.Pickup.DISALLOWED;
@@ -919,5 +1030,10 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.setNoGravity(false);
         this.hasImpulse = false;
         this.setGlowingTag(false);
+        this.festivalGroundRiseActive = false;
+        this.festivalGroundRiseTick = 0;
+        this.festivalGroundRiseStart = Vec3.ZERO;
+        this.festivalGroundRiseEnd = Vec3.ZERO;
+        this.queueSuperLightningAfterGroundRise = false;
     }
 }

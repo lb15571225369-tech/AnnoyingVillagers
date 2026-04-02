@@ -35,6 +35,7 @@ public class EpicFightNightFall {
                 EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_FIRST.get().getRegistryName().toString(),
                 EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_SECOND.get().getRegistryName().toString(),
                 EFNGreatSwordAnimations.NG_GREATSWORD_CHARGING_MOB.get().getRegistryName().toString(),
+                EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH.get().getRegistryName().toString(),
                 EFNLanceAnimations.NF_MEEN_DASH.get().getRegistryName().toString(),
                 EFNLanceAnimations.NF_MEEN_CHARGING.get().getRegistryName().toString(),
                 EFNLanceAnimations.NF_MEEN_CHARGING_MOB.get().getRegistryName().toString(),
@@ -76,6 +77,7 @@ public class EpicFightNightFall {
                 EFNThornWheelAnimations.THORNWHEEL_SKILL_START_N.get().getRegistryName().toString(),
                 EFNThornWheelAnimations.THORNWHEEL_SKILL_LOOP_N.get().getRegistryName().toString(),
                 EFNScytheAnimations.SCYTHE_HARVEST.get().getRegistryName().toString(),
+                EFNScytheAnimations.SCYTHE_AIR_SLASH.get().getRegistryName().toString(),
                 EFNScytheAnimations.SCYTHE_SCARLET_END.get().getRegistryName().toString()
         ));
     }
