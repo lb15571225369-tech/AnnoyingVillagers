@@ -150,14 +150,6 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
         super.onDeath(livingDeathEvent);
     }
 
-    public void onAttackBlocked(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player block success
-    }
-
-    public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player parry success
-    }
-
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
         if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof AVNpc avNpc && avNpc.getLivingEntityPatch() != null) {

@@ -118,7 +118,7 @@ public class BlueDemonTrident {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
-                            .maxCooldown(10)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1493,44 +1493,6 @@ public class BlueDemonTrident {
                                                                                                                             .withinDistance(0.0D, 6.0D)
                                                                                                                             .animationBehavior(AVAnimations.ADVANCED_DUELIST_WHIRLEDGE, 0.0F)
                                                                                                             )
-                                                                                            )
-                                                                            )
-                                                            )
-                                            )
-                            )
-
-                    /* 25 */
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(40.0D)
-                            .maxCooldown(20)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(5.0D, 10.0D)
-                                            .animationBehavior(AVAnimations.TRIDENT_THROW_1, 0.0F)
-                                            .addNextBehavior(
-                                                    Behavior.builder()
-                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                            .withinDistance(5.0D, 10.0D)
-                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_2, 0.0F)
-                                                            .addNextBehavior(
-                                                                    Behavior.builder()
-                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                            .withinDistance(5.0D, 10.0D)
-                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_3, 0.0F)
-                                                                            .addNextBehavior(
-                                                                                    Behavior.builder()
-                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                            .withinDistance(5.0D, 10.0D)
-                                                                                            .animationBehavior(AVAnimations.DP_THROW_BLADE_AUTO_2, 0.0F)
-                                                                                            .addNextBehavior(
-                                                                                                    Behavior.builder()
-                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                                            .withinDistance(5.0D, 10.0D)
-                                                                                                            .animationBehavior(AVAnimations.TRIDENT_THROW_5, 0.0F)
                                                                                             )
                                                                             )
                                                             )

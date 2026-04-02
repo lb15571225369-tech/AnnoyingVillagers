@@ -126,14 +126,6 @@ public class ShadowHerobrineClonePatch extends CEHumanoidPatch implements Custom
         super.onDeath(livingDeathEvent);
     }
 
-    public void onAttackBlocked(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player block success
-    }
-
-    public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player parry success
-    }
-
     @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);

@@ -50,7 +50,8 @@
     "compat.efn.HfMuramasaItemMixin",
     "compat.efn.CrescentMoonItemMixin",
     "compat.efn.ExcaliburItemMixin",
-    "compat.efn.StopEffectMixin"
+    "compat.efn.StopEffectMixin",
+    "ExecutionTaskMixin"
   ],
   "client": [
     "client.ModelPartMixin",

@@ -356,14 +356,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
         super.onDeath(livingDeathEvent);
     }
 
-    public void onAttackBlocked(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player block success
-    }
-
-    public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player parry success
-    }
-
     @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);

@@ -216,14 +216,6 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
         super.onDeath(livingDeathEvent);
     }
 
-    public void onAttackBlocked(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player block success
-    }
-
-    public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player parry success
-    }
-
     @Override
     public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
         if (ModList.get().isLoaded("efn") && this.getOriginal() instanceof GreenVillagerGeneralEntity greenVillagerGeneralEntity && greenVillagerGeneralEntity.getLivingEntityPatch() != null) {

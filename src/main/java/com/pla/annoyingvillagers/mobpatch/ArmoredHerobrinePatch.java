@@ -138,14 +138,6 @@ public class ArmoredHerobrinePatch extends CEHumanoidPatch implements CustomExec
         super.onDeath(livingDeathEvent);
     }
 
-    public void onAttackBlocked(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player block success
-    }
-
-    public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
-        // More logic when player parry success
-    }
-
     @Override
     public boolean isBlockableSource(DamageSource damageSource) {
         return true;

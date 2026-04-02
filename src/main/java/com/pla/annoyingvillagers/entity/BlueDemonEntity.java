@@ -57,7 +57,6 @@ import java.util.*;
 
 import net.minecraft.util.RandomSource;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
-import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -1252,7 +1251,7 @@ public class BlueDemonEntity extends Monster {
                             new DelayedTask(new Random().nextInt(5, 10)) {
                                 @Override
                                 public void run() {
-                                    if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive() && entity.getTarget() != null && !ExecutionHandler.isExecutingTarget(entity.getTarget(), entity)) {
+                                    if (getLivingEntityPatch() != null && EpicfightUtil.isLongHitAnimationNotExecutedAnimation(dynamicAnimation, getLivingEntityPatch()) && entity.isAlive()) {
                                         CombatBehaviour.postGuardBreakWakeUp(entity, getLivingEntityPatch(), serverLevel);
                                     } else {
                                         entity.stunEscapeCooldown = 1;
