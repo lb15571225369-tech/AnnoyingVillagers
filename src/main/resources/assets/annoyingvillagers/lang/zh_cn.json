@@ -226,7 +226,10 @@
   "entity.annoyingvillagers.projectile_enchanted_ender_pearl": "附魔末影珍珠",
   "entity.annoyingvillagers.alex": "Alex",
   "entity.annoyingvillagers.jev": "Jev",
-  "entity.annoyingvillagers.bbq": "BBQ酱",
+  "entity.annoyingvillagers.bbq_sauce": "烧烤酱",
+  "entity.annoyingvillagers.sweet_onion_sauce": "甜洋葱酱",
+  "entity.annoyingvillagers.honey_mustard_sauce": "蜂蜜芥末酱",
+  "entity.annoyingvillagers.soy_sauce": "酱油",
   "entity.annoyingvillagers.chris": "Chris",
   "entity.annoyingvillagers.infected_chris": "已感染Chris",
   "entity.annoyingvillagers.infected_the_most_moist_burrit0": "已感染TheMostMoistBurrit0",
@@ -262,6 +265,8 @@
   "subtitles.herobrine_chris_say_how_foolish": "多麼愚蠢啊！ ！ ！",
   "subtitles.herobrine_clone_die": "克隆體已被摧毀，資料已傳輸至終端。",
   "subtitles.shadow_herobrine_die": "§5阴影Him§r已被摧毀。",
+  "subtitles.bbq_retreat": "我现在就去找人来帮我们",
+  "subtitles.bbq_sauce_squad_arrived": "酱料小队来了！辣酱，我们来了！",
   "tooltip.annoyingvillagers.obsidian_weapon": "一块注入了§5Him§r力量的黑曜石块。",
   "tooltip.annoyingvillagers.shadow_obsidian_weapon": "一块注入了§5Him§r力量的暗影黑曜石块。",
   "tooltip.annoyingvillagers.bedrock_weapon": "由已知最坚硬的方块§7锻造而成。\n没有人知道§5Him§r是如何获得的。\n它可以开采任何东西。",
@@ -347,5 +352,7 @@
   "skill.annoyingvillagers.wooden_door.tooltip": "把木门猛地砸在敌人脸上。",
   "skill.annoyingvillagers.trapdoor.tooltip": "把活板门砸向敌人的脸。",
   "skill.annoyingvillagers.ladder.tooltip": "把梯子猛砸敌人的脸",
-  "skill.annoyingvillagers.trident_festival.tooltip": "此武器有两种攻击方式，按下§7特殊攻击§r§8即可切换。§r\n\n§b近战方式§r\n§8在使用者周围以及任何投掷到地面的三叉戟上释放§7电场§r§8。§b远程方式§r§8。被击中的目标会被§7带电§r§8。\n\n§b远程方式§r\n§8命令附近所有被击中的地面目标会被§7带电§r§8。\n\n§b三叉戟盛宴§r\n§8在使用者周围释放§7电场§r§8，然后命令附近所有被击中的三叉戟攻击附近的敌人，并在每个三叉戟上召唤§7闪电§r§8和§7爆炸§r§8。\n\n§7奔跑时自动格挡来自前方的飞行道具。§r"
+  "skill.annoyingvillagers.trident_festival.tooltip": "此武器有两种攻击方式，按下§7特殊攻击§r§8即可切换。§r\n\n§b近战方式§r\n§8在使用者周围以及任何投掷到地面的三叉戟上释放§7电场§r§8。§b远程方式§r§8。被击中的目标会被§7带电§r§8。\n\n§b远程方式§r\n§8命令附近所有被击中的地面目标会被§7带电§r§8。\n\n§b三叉戟盛宴§r\n§8在使用者周围释放§7电场§r§8，然后命令附近所有被击中的三叉戟攻击附近的敌人，并在每个三叉戟上召唤§7闪电§r§8和§7爆炸§r§8。\n\n§7奔跑时自动格挡来自前方的飞行道具。§r",
+  "death.attack.annoyingvillagers.impact_explosion": "%1$s未能撑过%2$s引发的§b三叉戟节§r",
+  "death.attack.annoyingvillagers.impact_explosion.item": "%1$s未能撑过%2$s引发的§b三叉戟节§r"
 }

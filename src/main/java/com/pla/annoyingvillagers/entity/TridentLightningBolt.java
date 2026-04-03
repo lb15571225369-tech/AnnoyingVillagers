@@ -1,14 +1,18 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.google.common.collect.Sets;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModDamageTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -131,17 +135,8 @@ public class TridentLightningBolt extends LightningBolt {
                 );
 
                 if (this.superLightning) {
-                    DamageSource explosionDamage;
-
-                    if (this.owner != null) {
-                        if (this.owner instanceof ServerPlayer player) {
-                            explosionDamage = serverLevel.damageSources().playerAttack(player);
-                        } else {
-                            explosionDamage = serverLevel.damageSources().mobAttack(this.owner);
-                        }
-                    } else {
-                        explosionDamage = serverLevel.damageSources().explosion(this, null);
-                    }
+                    DamageSource explosionDamage =
+                            AnnoyingVillagersModDamageTypes.Sources.impactExplosion(serverLevel.registryAccess(), owner);
 
                     serverLevel.explode(
                             this,
@@ -150,7 +145,7 @@ public class TridentLightningBolt extends LightningBolt {
                             this.getX(),
                             this.getY(),
                             this.getZ(),
-                            new Random().nextFloat(5.0F, 10.0F),
+                            serverLevel.random.nextFloat() * 5.0F + 5.0F,
                             false,
                             Level.ExplosionInteraction.BLOCK
                     );

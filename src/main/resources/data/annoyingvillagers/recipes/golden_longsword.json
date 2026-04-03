@@ -1,16 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " G ",
-        " G ",
+        " D ",
+        " D ",
         " S "
     ],
     "key": {
-        "G": {
+        "D": {
             "item": "minecraft:gold_ingot"
         },
         "S": {
-            "item": "minecraft:gold_sword"
+            "item": "minecraft:golden_sword"
         }
     },
     "result": {

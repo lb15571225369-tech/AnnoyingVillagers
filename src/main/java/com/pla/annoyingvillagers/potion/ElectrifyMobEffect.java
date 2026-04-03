@@ -11,6 +11,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -22,7 +24,7 @@ import java.util.Objects;
 public class ElectrifyMobEffect extends MobEffect {
 
     public ElectrifyMobEffect() {
-        super(MobEffectCategory.HARMFUL, -16711681);
+        super(MobEffectCategory.BENEFICIAL, -16711681);
     }
 
     public @NotNull String getDescriptionId() {
@@ -43,7 +45,9 @@ public class ElectrifyMobEffect extends MobEffect {
                 AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                 if (dynamicAnimation != null
                         && !livingEntityPatch.isStunned()
-                        && !ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch)) {
+                        && !ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch)
+                        && !(dynamicAnimation.get() instanceof ExecutionAttackAnimation)
+                        && !(dynamicAnimation.get() instanceof ExecutionHitAnimation)) {
                     if (pAmplifier > 1) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.ZAP_LONG, 0.0F);
                     } else {

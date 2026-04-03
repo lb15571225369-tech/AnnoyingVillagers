@@ -1151,8 +1151,11 @@ public class BlueDemonEntity extends Monster {
             }
         }
 
-        if (this.tickCount % 2 == 0 && this.getHealth() <= (this.getMaxHealth() * 3/2)) {
-            this.absorbNearbyGroundedOwnerTridents(serverLevel);
+        if (this.tickCount % 2 == 0 && this.getLivingEntityPatch() != null) {
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (dynamicAnimation != AVAnimations.TRIDENT_ATTACK && dynamicAnimation != AVAnimations.TRIDENT_FESTIVAL) {
+                this.absorbNearbyGroundedOwnerTridents(serverLevel);
+            }
         }
     }
 
