@@ -819,7 +819,7 @@ public class BlueDemonEntity extends Monster {
         if (damagesource.is(DamageTypes.TRIDENT)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.getDirectEntity() instanceof ThrownPoisonEggEntity) return false;
-        if (this.level() instanceof ServerLevel serverLevel && this.getState() == 2) {
+        if (this.level() instanceof ServerLevel serverLevel && (this.getState() == 2 || this.getState() == 1)) {
             if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
                 this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             }
@@ -827,6 +827,7 @@ public class BlueDemonEntity extends Monster {
                     this, damagesource.getEntity());
             return false;
         }
+
         if (this.dieTick > 0) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(
@@ -1479,10 +1480,10 @@ public class BlueDemonEntity extends Monster {
                 && this.getState() == 0 && (this.getHealth() - f1) <= 1.0F) {
             this.setHealth(1.0F);
             this.setState(1);
+            BlueDemonTridentItem.addStormEnergy(this.getMainHandItem(), 100);
+            BlueDemonTridentItem.addStormEnergy(this.getOffhandItem(), 100);
+            this.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
             if (this.getLivingEntityPatch() != null) {
-                BlueDemonTridentItem.addStormEnergy(this.getMainHandItem(), 100);
-                BlueDemonTridentItem.addStormEnergy(this.getOffhandItem(), 100);
-                this.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
                 this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.TRIDENT_FESTIVAL, 0.0F);
             }
             return;

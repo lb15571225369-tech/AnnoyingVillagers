@@ -136,7 +136,7 @@ public class TridentLightningBolt extends LightningBolt {
 
                 if (this.superLightning) {
                     DamageSource explosionDamage =
-                            AnnoyingVillagersModDamageTypes.Sources.impactExplosion(serverLevel.registryAccess(), owner);
+                            AnnoyingVillagersModDamageTypes.Sources.impactExplosion(serverLevel.registryAccess(), this);
 
                     serverLevel.explode(
                             this,

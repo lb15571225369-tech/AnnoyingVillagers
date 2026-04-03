@@ -356,6 +356,6 @@
   "skill.annoyingvillagers.trapdoor.tooltip": "Slam the Trapdoor into your enemy's face.",
   "skill.annoyingvillagers.ladder.tooltip": "Slam the Ladder into your enemy's face",
   "skill.annoyingvillagers.trident_festival.tooltip": "This weapon has 2 styles, press §7Special Attack§r§8 to switch between them.§r\n\n§bMelee Style§r\n§8Unleashes an §7Electric Field§r§8 around the wielder and at any grounded Trident thrown in §bRanged Style§r§8. Entities hit are §7Electrified§r§8.\n\n§bRanged Style§r\n§8Commands all nearby grounded Tridents to strike nearby enemies and summons a §7Lightning Bolt§r§8 at each Trident. Targets hit are §7Electrified§r§8.\n\n§bTrident Festival§r\n§8Unleashes an §7Electric Field§r§8 around the wielder, then commands all nearby grounded Tridents to strike nearby enemies and summons a §7Lightning Bolt§r§8 and an §7Explosion§r§8 at each Trident.\n\n§7Automatically blocks incoming projectiles from the front while running.§r",
-  "death.attack.annoyingvillagers.impact_explosion": "%1$s can't stand during §bTrident Festival§r by %2$s",
-  "death.attack.annoyingvillagers.impact_explosion.item": "%1$s can't stand during §bTrident Festival§r by %2$s"
+  "death.attack.annoyingvillagers.impact_explosion": "%1$s can't stand during a §bTrident Festival§r",
+  "death.attack.annoyingvillagers.impact_explosion.item": "%1$s can't stand during a §bTrident Festival§r"
 }

@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class BlueDemonTridentItem extends SwordItem {
-    private static final double OWNER_HALF_BOX = 25.0D;
+    private static final double OWNER_HALF_BOX = 50.0D;
 
     private static final int DAMAGE_ZONE_DURATION = 100;
     private static final float DAMAGE_ZONE_DAMAGE = 4.0F;

@@ -75,6 +75,7 @@ public class BbqEntity extends Chicken {
     @Nullable
     private UUID pendingDeathEscapeLeaderUUID;
     private boolean deathWatchMode;
+    private boolean selfKill = false;
 
     public boolean isEscapeFlying() {
         return this.escapeMode && this.escapeFlying;
@@ -218,7 +219,7 @@ public class BbqEntity extends Chicken {
     public boolean canBeAffected(MobEffectInstance effect) {
         if (effect.getEffect() == MobEffects.POISON) {
             if (!this.level().isClientSide && this.isAlive()) {
-                this.heal(2.0F);
+                this.heal(4.0F);
             }
             return false;
         }
@@ -964,6 +965,10 @@ public class BbqEntity extends Chicken {
             return;
         }
 
+        if (this.selfKill) {
+            this.kill();
+        }
+
         if (this.deathWatchMode) {
             this.tickLeaderDeathWatch();
             return;
@@ -1103,7 +1108,15 @@ public class BbqEntity extends Chicken {
     public boolean hurt(@NotNull DamageSource damageSource, float amount) {
         if (damageSource.is(DamageTypes.LIGHTNING_BOLT)) return false;
         if (damageSource.is(DamageTypes.EXPLOSION)) return false;
-        boolean result = super.hurt(damageSource, 2.0F);
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)
+                || damageSource.is(DamageTypes.GENERIC_KILL)) {
+            return super.hurt(damageSource, amount);
+        }
+        if (this.getHealth() <= 1.0F && !selfKill) {
+            this.selfKill = true;
+            return false;
+        }
+        boolean result = super.hurt(damageSource, 1.0F);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
             if (this.deathAssemblyMode || this.deathWatchMode) {
@@ -1120,7 +1133,6 @@ public class BbqEntity extends Chicken {
                 leader.setTarget(livingEntity);
             }
         }
-
         return result;
     }
 

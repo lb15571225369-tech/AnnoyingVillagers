@@ -51,7 +51,8 @@
     "compat.efn.CrescentMoonItemMixin",
     "compat.efn.ExcaliburItemMixin",
     "compat.efn.StopEffectMixin",
-    "ExecutionTaskMixin"
+    "ExecutionTaskMixin",
+    "PlayerMixin"
   ],
   "client": [
     "client.ModelPartMixin",

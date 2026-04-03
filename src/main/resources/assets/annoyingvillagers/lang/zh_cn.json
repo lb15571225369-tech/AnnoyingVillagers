@@ -353,6 +353,6 @@
   "skill.annoyingvillagers.trapdoor.tooltip": "把活板门砸向敌人的脸。",
   "skill.annoyingvillagers.ladder.tooltip": "把梯子猛砸敌人的脸",
   "skill.annoyingvillagers.trident_festival.tooltip": "此武器有两种攻击方式，按下§7特殊攻击§r§8即可切换。§r\n\n§b近战方式§r\n§8在使用者周围以及任何投掷到地面的三叉戟上释放§7电场§r§8。§b远程方式§r§8。被击中的目标会被§7带电§r§8。\n\n§b远程方式§r\n§8命令附近所有被击中的地面目标会被§7带电§r§8。\n\n§b三叉戟盛宴§r\n§8在使用者周围释放§7电场§r§8，然后命令附近所有被击中的三叉戟攻击附近的敌人，并在每个三叉戟上召唤§7闪电§r§8和§7爆炸§r§8。\n\n§7奔跑时自动格挡来自前方的飞行道具。§r",
-  "death.attack.annoyingvillagers.impact_explosion": "%1$s未能撑过%2$s引发的§b三叉戟节§r",
-  "death.attack.annoyingvillagers.impact_explosion.item": "%1$s未能撑过%2$s引发的§b三叉戟节§r"
+  "death.attack.annoyingvillagers.impact_explosion": "%1$s未能撑过§b三叉戟节§r",
+  "death.attack.annoyingvillagers.impact_explosion.item": "%1$s未能撑过§b三叉戟节§r"
 }

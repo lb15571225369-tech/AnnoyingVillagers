@@ -135,6 +135,7 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -884,8 +885,11 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, p) -> {
-                                    if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity && livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
-                                        BlueDemonTridentItem.summonMissingTridentAndAnimate(serverLevel, livingEntityPatch.getOriginal());
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity) {
+                                            BlueDemonTridentItem.summonMissingTridentAndAnimate(serverLevel, livingEntityPatch.getOriginal());
+                                        }
+                                        ScreenShakeUtil.applyScreenShake(serverLevel, livingEntityPatch.getOriginal().blockPosition().getCenter(), 12.0, 80, 8);
                                     }
                                 }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
@@ -994,7 +998,7 @@ public class AVAnimations {
                             }
                         }).addEvents(
                                 new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.LEGENDARY_SWORD_GROUND_SLAM, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.6F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM, Side.CLIENT),
                                         AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SHOCK_WAVE, Side.SERVER)
                                 })
         );
@@ -1577,7 +1581,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F), 1)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.45F, ReuseableEvents.LEGENDARY_SWORD_GROUND_SLAM, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.45F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM, Side.CLIENT),
                                 AnimationEvent.InTimeEvent.create(1.2F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
@@ -4460,28 +4464,6 @@ public class AVAnimations {
                             }
                         };
                     }
-                };
-
-        public static final AnimationEvent.E0 LEGENDARY_SWORD_GROUND_SLAM =
-                (livingEntityPatch, staticAnimation, object) -> {
-                    Vec3 vec3 = livingEntityPatch.getOriginal().position();
-                    OpenMatrix4f openmatrix4f = livingEntityPatch.getArmature()
-                            .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(1.0F), Armatures.BIPED.get().toolR)
-                            .mulFront(OpenMatrix4f.createTranslation((float) vec3.x, (float) vec3.y, (float) vec3.z)
-                                    .mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS)
-                                            .mulBack(livingEntityPatch.getModelMatrix(1.0F))));
-                    vec3 = OpenMatrix4f.transform(openmatrix4f, (new Vec3f(0.0F, -0.0F, -1.4F)).toDoubleVector());
-                    Level level = livingEntityPatch.getOriginal().level();
-                    Vec3 vec32 = getFloor(livingEntityPatch, new Vec3f(0.0F, 0.0F, -1.4F), Armatures.BIPED.get().toolR);
-                    BlockState blockstate = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos(new Vec3i((int) Math.floor(vec32.x), (int) Math.floor(vec32.y), (int) Math.floor(vec32.z))));
-
-                    level.playLocalSound(vec32.x, vec32.y, vec32.z, blockstate.is(Blocks.WATER) ?
-                                    SoundEvents.GENERIC_SPLASH :
-                                    EpicFightSounds.SLAM_HEAVY.get(),
-                            SoundSource.BLOCKS,
-                            1.0F, 1.0F, false);
-                    livingEntityPatch.getOriginal().level().addParticle(WOMParticles.WOM_GROUND_SLAM.get(), vec32.x, (int) vec32.y + 1, vec32.z, 1.0D, 50.0D, 1.0D);
-                    LevelUtil.circleSlamFracture(livingEntityPatch.getOriginal(), level, vec3, 3.5D, true, false);
                 };
 
         public static final AnimationEvent.E0 END_ATTACK =
