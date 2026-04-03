@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -169,6 +170,12 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
     @Override
     public boolean isBlockableSource(DamageSource damageSource) {
         return true;
+    }
+
+    @Override
+    public AttackResult tryHurt(DamageSource damageSource, float amount) {
+        EscapeUtil.stepLeftRightOnHurtByDangerousAnimation(damageSource, this);
+        return super.tryHurt(damageSource, amount);
     }
 
     @Override

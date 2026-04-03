@@ -1103,7 +1103,7 @@ public class BbqEntity extends Chicken {
     public boolean hurt(@NotNull DamageSource damageSource, float amount) {
         if (damageSource.is(DamageTypes.LIGHTNING_BOLT)) return false;
         if (damageSource.is(DamageTypes.EXPLOSION)) return false;
-        boolean result = super.hurt(damageSource, amount);
+        boolean result = super.hurt(damageSource, 2.0F);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
             if (this.deathAssemblyMode || this.deathWatchMode) {

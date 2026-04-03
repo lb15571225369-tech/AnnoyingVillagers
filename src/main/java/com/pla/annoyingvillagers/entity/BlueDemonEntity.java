@@ -48,6 +48,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -1150,7 +1151,7 @@ public class BlueDemonEntity extends Monster {
             }
         }
 
-        if (this.tickCount % 2 == 0) {
+        if (this.tickCount % 2 == 0 && this.getHealth() <= (this.getMaxHealth() * 3/2)) {
             this.absorbNearbyGroundedOwnerTridents(serverLevel);
         }
     }
@@ -1179,9 +1180,37 @@ public class BlueDemonEntity extends Monster {
         }
     }
 
+    private void tickStateTwoPhysics() {
+        this.setNoGravity(false);
+
+        Vec3 motion = this.getDeltaMovement();
+        motion = new Vec3(0.0D, motion.y, 0.0D);
+
+        if (!this.onGround() && !this.isInWater() && !this.isInLava()) {
+            motion = motion.add(0.0D, -0.08D, 0.0D);
+        }
+
+        motion = new Vec3(
+                motion.x * 0.91D,
+                motion.y * 0.98D,
+                motion.z * 0.91D
+        );
+
+        this.setDeltaMovement(motion);
+        this.move(MoverType.SELF, motion);
+
+        if (this.onGround() && this.getDeltaMovement().y < 0.0D) {
+            this.setDeltaMovement(this.getDeltaMovement().x, 0.0D, this.getDeltaMovement().z);
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
+
+        if (this.getState() == 2 || this.dieTick > 0) {
+            this.tickStateTwoPhysics();
+        }
 
         if (this.level() instanceof ServerLevel serverLevel) {
             if (!this.spawnedBbqSauce) {
@@ -1263,7 +1292,7 @@ public class BlueDemonEntity extends Monster {
                 }
             }
 
-            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+            if (this.getLivingEntityPatch() != null && CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
                 this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
                 this.getNavigation().stop();
 

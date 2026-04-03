@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -108,6 +109,12 @@ public class GlaiveHerobrinePatch extends CEHumanoidPatch implements CustomExecu
     @Override
     public boolean isBlockableSource(DamageSource damageSource) {
         return true;
+    }
+
+    @Override
+    public AttackResult tryHurt(DamageSource damageSource, float amount) {
+        EscapeUtil.stepLeftRightOnHurtByDangerousAnimation(damageSource, this);
+        return super.tryHurt(damageSource, amount);
     }
 
     @Override

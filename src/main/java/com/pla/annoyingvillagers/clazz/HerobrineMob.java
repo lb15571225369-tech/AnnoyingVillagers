@@ -854,7 +854,7 @@ public class HerobrineMob extends Monster {
                 efnGuardHitState = 0;
             }
 
-            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+            if (this.getLivingEntityPatch() != null && CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
                 this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
                 this.getNavigation().stop();
 

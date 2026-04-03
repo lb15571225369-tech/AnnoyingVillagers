@@ -883,17 +883,22 @@ public class AVAnimations {
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity && livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        BlueDemonTridentItem.summonMissingTridentAndAnimate(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
                                     if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
                                         BlueDemonTridentItem.spawnDamageZones(serverLevel, livingEntityPatch.getOriginal());
-                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal(), true);
                                     }
                                 }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(1.2F, (livingEntityPatch, self, p) -> {
                                     if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
-                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal());
+                                        BlueDemonTridentItem.relaunchGroundedTridents(serverLevel, livingEntityPatch.getOriginal(), true);
                                     }
                                 }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(1.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),

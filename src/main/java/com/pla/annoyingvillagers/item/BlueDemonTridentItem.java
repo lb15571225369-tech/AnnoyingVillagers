@@ -30,9 +30,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class BlueDemonTridentItem extends SwordItem {
     private static final double OWNER_HALF_BOX = 25.0D;
@@ -51,12 +49,9 @@ public class BlueDemonTridentItem extends SwordItem {
     private static final int ENERGY_TEXT_COLOR = 0xBDFBFF;
     private static final int ENERGY_FULL_COLOR = 0x7CFFFF;
 
-    private static final int FESTIVAL_TOP_UP_TRIGGER = 10;
-    private static final int FESTIVAL_TARGET_TOTAL = 20;
-    private static final int FESTIVAL_SPAWN_ATTEMPTS = 12;
-    private static final double FESTIVAL_MIN_DISTANCE_FROM_OWNER_SQR = 5.0D;
-    private static final double FESTIVAL_MIN_TRIDENT_SPACING_SQR = 1.0D;
-
+    private static final int FESTIVAL_GATHER_SIZE = 10;
+    private static final int FESTIVAL_GATHER_MAX_Y_DIFF = 6;
+    private static final double FESTIVAL_GATHER_MIN_OWNER_DISTANCE_SQR  = 2.25D;
 
     public BlueDemonTridentItem() {
         super(new Tier() {
@@ -190,7 +185,16 @@ public class BlueDemonTridentItem extends SwordItem {
     }
 
     public static void relaunchGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
-        List<BlueDemonThrownTridentEntity> tridents = getGroundedOwnerTridents(serverLevel, owner);
+        relaunchGroundedTridents(serverLevel, owner, false);
+    }
+
+    public static void relaunchGroundedTridents(ServerLevel serverLevel, LivingEntity owner, boolean skipSummoned) {
+        List<BlueDemonThrownTridentEntity> tridents;
+        if (!skipSummoned) {
+            tridents = getGroundedOwnerTridents(serverLevel, owner);
+        } else {
+            tridents = getGroundedOwnerTridentsSkipSummoned(serverLevel, owner);
+        }
         if (tridents.isEmpty()) {
             return;
         }
@@ -220,82 +224,166 @@ public class BlueDemonTridentItem extends SwordItem {
             ServerLevel serverLevel,
             BlueDemonEntity owner,
             int missingCount,
-            List<BlueDemonThrownTridentEntity> occupiedTridents
+            List<BlueDemonThrownTridentEntity> occupiedTridents,
+            boolean strikeWhenFinished
     ) {
         if (missingCount <= 0) {
             return;
         }
 
-        List<BlueDemonThrownTridentEntity> occupied = new ArrayList<>(occupiedTridents);
+        List<BlockPos> freePositions = getFreeGatherStandPositions(serverLevel, owner, occupiedTridents);
+        int spawnCount = Math.min(missingCount, freePositions.size());
 
-        for (int i = 0; i < missingCount; i++) {
-            BlockPos standPos = findFestivalStandPos(serverLevel, owner, occupied);
-            if (standPos == null) {
-                break;
-            }
-
-            BlueDemonThrownTridentEntity spawned = spawnFestivalSupportTrident(serverLevel, owner, standPos);
-            occupied.add(spawned);
+        for (int i = 0; i < spawnCount; i++) {
+            BlueDemonThrownTridentEntity spawned = spawnFestivalSupportTrident(
+                    serverLevel,
+                    owner,
+                    freePositions.get(i),
+                    strikeWhenFinished
+            );
+            spawned.setSummonedGroundTridentFestival(true);
+            occupiedTridents.add(spawned);
         }
     }
 
-    @Nullable
-    private static BlockPos findFestivalStandPos(
+    private static double horizontalDistanceToOwnerSqr(BlockPos pos, LivingEntity owner) {
+        double dx = (pos.getX() + 0.5D) - owner.getX();
+        double dz = (pos.getZ() + 0.5D) - owner.getZ();
+        return dx * dx + dz * dz;
+    }
+
+    private static List<BlockPos> buildRandomGatherStandPositions(ServerLevel serverLevel, LivingEntity owner) {
+        List<BlockPos> result = new ArrayList<>();
+
+        int half = FESTIVAL_GATHER_SIZE / 2;
+        int startX = Mth.floor(owner.getX()) - half;
+        int startZ = Mth.floor(owner.getZ()) - half;
+        int ownerY = Mth.floor(owner.getY());
+
+        for (int x = 0; x < FESTIVAL_GATHER_SIZE; x++) {
+            for (int z = 0; z < FESTIVAL_GATHER_SIZE; z++) {
+                double sampleX = startX + x + 0.5D;
+                double sampleZ = startZ + z + 0.5D;
+
+                BlockPos candidate = findNearestStandablePosNearY(serverLevel, sampleX, sampleZ, ownerY);
+                if (candidate == null) {
+                    continue;
+                }
+
+                if (Math.abs(candidate.getY() - owner.blockPosition().getY()) > FESTIVAL_GATHER_MAX_Y_DIFF) {
+                    continue;
+                }
+
+                Vec3 center = new Vec3(
+                        candidate.getX() + 0.5D,
+                        candidate.getY() + 0.05D,
+                        candidate.getZ() + 0.5D
+                );
+
+                if (center.distanceToSqr(owner.position()) < FESTIVAL_GATHER_MIN_OWNER_DISTANCE_SQR ) {
+                    continue;
+                }
+
+                if (!result.contains(candidate)) {
+                    result.add(candidate.immutable());
+                }
+            }
+        }
+
+        Collections.shuffle(result, new Random(serverLevel.random.nextLong()));
+        return result;
+    }
+
+    private static List<BlockPos> buildCompactGatherStandPositions(ServerLevel serverLevel, LivingEntity owner) {
+        List<BlockPos> result = new ArrayList<>();
+
+        int half = FESTIVAL_GATHER_SIZE / 2;
+        int startX = Mth.floor(owner.getX()) - half;
+        int startZ = Mth.floor(owner.getZ()) - half;
+        int ownerY = Mth.floor(owner.getY());
+
+        for (int x = 0; x < FESTIVAL_GATHER_SIZE; x++) {
+            for (int z = 0; z < FESTIVAL_GATHER_SIZE; z++) {
+                double sampleX = startX + x + 0.5D;
+                double sampleZ = startZ + z + 0.5D;
+
+                BlockPos standPos = findNearestStandablePosNearY(serverLevel, sampleX, sampleZ, ownerY);
+                if (standPos == null) {
+                    continue;
+                }
+
+                if (Math.abs(standPos.getY() - owner.blockPosition().getY()) > FESTIVAL_GATHER_MAX_Y_DIFF) {
+                    continue;
+                }
+
+                if (horizontalDistanceToOwnerSqr(standPos, owner) < FESTIVAL_GATHER_MIN_OWNER_DISTANCE_SQR) {
+                    continue;
+                }
+
+                if (!result.contains(standPos)) {
+                    result.add(standPos.immutable());
+                }
+            }
+        }
+        result.sort(
+                Comparator.<BlockPos>comparingDouble(pos -> horizontalDistanceToOwnerSqr(pos, owner))
+                        .thenComparingInt(BlockPos::getY)
+                        .thenComparingInt(BlockPos::getX)
+                        .thenComparingInt(BlockPos::getZ)
+        );
+
+        return result;
+    }
+
+    private static List<BlockPos> getFreeGatherStandPositions(
             ServerLevel serverLevel,
             LivingEntity owner,
             List<BlueDemonThrownTridentEntity> occupiedTridents
     ) {
-        final int maxYDiff = 6;       // do not allow spawn too high/low from Blue Demon
-        final int searchUp = 8;
-        final int searchDown = 8;
+        List<BlockPos> result = buildRandomGatherStandPositions(serverLevel, owner);
 
-        for (int attempt = 0; attempt < FESTIVAL_SPAWN_ATTEMPTS; attempt++) {
-            double x = owner.getX() + Mth.nextDouble(serverLevel.random, -OWNER_HALF_BOX, OWNER_HALF_BOX);
-            double z = owner.getZ() + Mth.nextDouble(serverLevel.random, -OWNER_HALF_BOX, OWNER_HALF_BOX);
-
-            BlockPos candidate = findNearestStandablePosNearY(
-                    serverLevel,
-                    x,
-                    z,
-                    Mth.floor(owner.getY())
-            );
-
-            if (candidate == null) {
-                continue;
-            }
-
-            if (Math.abs(candidate.getY() - owner.blockPosition().getY()) > maxYDiff) {
-                continue;
-            }
-
+        result.removeIf(pos -> {
             Vec3 center = new Vec3(
-                    candidate.getX() + 0.5D,
-                    candidate.getY() + 0.05D,
-                    candidate.getZ() + 0.5D
+                    pos.getX() + 0.5D,
+                    pos.getY() + 0.05D,
+                    pos.getZ() + 0.5D
             );
 
-            if (center.distanceToSqr(owner.position()) < FESTIVAL_MIN_DISTANCE_FROM_OWNER_SQR) {
-                continue;
-            }
-
-            boolean tooClose = false;
             for (BlueDemonThrownTridentEntity other : occupiedTridents) {
                 if (!other.isAlive()) {
                     continue;
                 }
-
-                if (other.position().distanceToSqr(center) < FESTIVAL_MIN_TRIDENT_SPACING_SQR) {
-                    tooClose = true;
-                    break;
+                if (other.position().distanceToSqr(center) < 0.25D) {
+                    return true;
                 }
             }
 
-            if (!tooClose) {
-                return candidate;
-            }
+            return false;
+        });
+
+        return result;
+    }
+
+    public static void gatherGroundedTridentsAroundOwner(ServerLevel serverLevel, LivingEntity owner) {
+        List<BlueDemonThrownTridentEntity> tridents = new ArrayList<>(getGroundedOwnerTridents(serverLevel, owner));
+        if (tridents.isEmpty()) {
+            return;
         }
 
-        return null;
+        List<BlockPos> standPositions = buildRandomGatherStandPositions(serverLevel, owner);
+        if (standPositions.isEmpty()) {
+            return;
+        }
+
+        tridents.sort(
+                Comparator.comparingLong(BlueDemonThrownTridentEntity::getSpawnSequence)
+                        .thenComparing(BlueDemonThrownTridentEntity::getUUID)
+        );
+
+        int count = Math.min(tridents.size(), standPositions.size());
+        for (int i = 0; i < count; i++) {
+            tridents.get(i).placeAsGroundedSupport(owner, standPositions.get(i));
+        }
     }
 
     @Nullable
@@ -308,15 +396,13 @@ public class BlueDemonTridentItem extends SwordItem {
         int blockX = Mth.floor(x);
         int blockZ = Mth.floor(z);
 
-        for (int offset = 0; offset <= Math.max(8, 8); offset++) {
-            if (offset <= 8) {
-                BlockPos downPos = new BlockPos(blockX, originY - offset, blockZ);
-                if (isValidFestivalStandPos(serverLevel, downPos)) {
-                    return downPos;
-                }
+        for (int offset = 0; offset <= 8; offset++) {
+            BlockPos downPos = new BlockPos(blockX, originY - offset, blockZ);
+            if (isValidFestivalStandPos(serverLevel, downPos)) {
+                return downPos;
             }
 
-            if (offset != 0 && offset <= 8) {
+            if (offset != 0) {
                 BlockPos upPos = new BlockPos(blockX, originY + offset, blockZ);
                 if (isValidFestivalStandPos(serverLevel, upPos)) {
                     return upPos;
@@ -350,15 +436,15 @@ public class BlueDemonTridentItem extends SwordItem {
     private static BlueDemonThrownTridentEntity spawnFestivalSupportTrident(
             ServerLevel serverLevel,
             BlueDemonEntity owner,
-            BlockPos standPos
+            BlockPos standPos,
+            boolean strikeWhenFinished
     ) {
         ItemStack stack = owner.getMainHandItem();
 
         BlueDemonThrownTridentEntity trident = new BlueDemonThrownTridentEntity(serverLevel, owner, stack);
         trident.assignSpawnSequence(owner);
         trident.trimOldGroundedTridentsAroundOwnerOnSpawn();
-        trident.placeAsGroundedSupport(owner, standPos);
-        trident.beginFestivalGroundRise(true);
+        trident.beginFestivalGroundRise(owner, standPos, strikeWhenFinished);
 
         serverLevel.addFreshEntity(trident);
 
@@ -384,25 +470,36 @@ public class BlueDemonTridentItem extends SwordItem {
         return trident;
     }
 
-    public static void summonSuperLightningAtGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
-        List<BlueDemonThrownTridentEntity> existingTridents = new ArrayList<>(getAllOwnerTridents(serverLevel, owner));
-
-        if (owner instanceof BlueDemonEntity blueDemon && existingTridents.size() < FESTIVAL_TOP_UP_TRIGGER) {
-            spawnMissingFestivalSupportTridents(
-                    serverLevel,
-                    blueDemon,
-                    FESTIVAL_TARGET_TOTAL - existingTridents.size(),
-                    existingTridents
-            );
+    public static void summonMissingTridentAndAnimate(ServerLevel serverLevel, LivingEntity owner) {
+        if (!(owner instanceof BlueDemonEntity blueDemon)) {
+            return;
         }
 
-        for (BlueDemonThrownTridentEntity trident : existingTridents) {
-            if (trident.isAlive()) {
-                trident.summonSuperLightningAtSelf();
+        gatherGroundedTridentsAroundOwner(serverLevel, owner);
+
+        List<BlueDemonThrownTridentEntity> existingTridents = new ArrayList<>(getAllOwnerTridents(serverLevel, owner));
+        if (existingTridents.size() >= 20) {
+            return;
+        }
+
+        spawnMissingFestivalSupportTridents(
+                serverLevel,
+                blueDemon,
+                20 - existingTridents.size(),
+                existingTridents,
+                false
+        );
+    }
+
+    public static void summonSuperLightningAtGroundedTridents(ServerLevel serverLevel, LivingEntity owner) {
+        for (BlueDemonThrownTridentEntity trident : getGroundedOwnerTridents(serverLevel, owner)) {
+            trident.summonSuperLightningAtSelf();
+
+            if (trident.isSummonedGroundTridentFestival()) {
+                trident.finishSummonedGroundTridentFestival();
             }
         }
     }
-
     private static List<BlueDemonThrownTridentEntity> getAllOwnerTridents(ServerLevel serverLevel, LivingEntity owner) {
         return serverLevel.getEntitiesOfClass(
                 BlueDemonThrownTridentEntity.class,
@@ -418,6 +515,17 @@ public class BlueDemonTridentItem extends SwordItem {
                 makeOwnerBox(owner),
                 trident -> trident.isAlive()
                         && trident.isGroundedTrident()
+                        && trident.belongsToOwner(owner)
+        );
+    }
+
+    public static List<BlueDemonThrownTridentEntity> getGroundedOwnerTridentsSkipSummoned(ServerLevel serverLevel, LivingEntity owner) {
+        return serverLevel.getEntitiesOfClass(
+                BlueDemonThrownTridentEntity.class,
+                makeOwnerBox(owner),
+                trident -> trident.isAlive()
+                        && trident.isGroundedTrident()
+                        && !trident.isSummonedGroundTridentFestival()
                         && trident.belongsToOwner(owner)
         );
     }

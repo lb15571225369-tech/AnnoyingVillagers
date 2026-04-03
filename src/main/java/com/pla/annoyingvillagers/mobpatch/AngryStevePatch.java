@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -140,6 +141,12 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
     @Override
     public boolean isBlockableSource(DamageSource damageSource) {
         return true;
+    }
+
+    @Override
+    public AttackResult tryHurt(DamageSource damageSource, float amount) {
+        EscapeUtil.stepLeftRightOnHurtByDangerousAnimation(damageSource, this);
+        return super.tryHurt(damageSource, amount);
     }
 
     public void tick(LivingTickEvent livingTickEvent) {

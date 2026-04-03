@@ -29,7 +29,6 @@ import java.util.Set;
 public class TridentLightningBolt extends LightningBolt {
     private int tridentLife = 2;
     private int tridentFlashes;
-    private long tridentSeed;
     private final Set<Entity> tridentHitEntities = Sets.newHashSet();
     boolean superLightning = false;
 
@@ -46,7 +45,6 @@ public class TridentLightningBolt extends LightningBolt {
         super(pEntityType, pLevel);
         this.noCulling = true;
         this.tridentLife = 2;
-        this.tridentSeed = this.random.nextLong();
         this.tridentFlashes = this.random.nextInt(3) + 1;
     }
 
@@ -116,7 +114,6 @@ public class TridentLightningBolt extends LightningBolt {
             } else if (this.tridentLife < -this.random.nextInt(10)) {
                 --this.tridentFlashes;
                 this.tridentLife = 1;
-                this.tridentSeed = this.random.nextLong();
             }
         }
 
@@ -153,7 +150,7 @@ public class TridentLightningBolt extends LightningBolt {
                             this.getX(),
                             this.getY(),
                             this.getZ(),
-                            new Random().nextFloat(10.0F, 15.0F),
+                            new Random().nextFloat(5.0F, 10.0F),
                             false,
                             Level.ExplosionInteraction.BLOCK
                     );

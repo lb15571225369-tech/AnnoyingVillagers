@@ -1,10 +1,14 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.compat.EpicFightResurrection;
 import com.pla.annoyingvillagers.compat.EpicFightSwordSoaring;
+import com.pla.annoyingvillagers.entity.AngrySteveEntity;
+import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.fml.ModList;
@@ -13,11 +17,14 @@ import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 public class EscapeUtil {
@@ -98,7 +105,48 @@ public class EscapeUtil {
         LivingEntityPatch<?> targetLivingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
         if (target == null || targetLivingEntityPatch == null) return false;
         AssetAccessor<? extends StaticAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] check Escape for {} returned {}, animation checked: {}", mob.getDisplayName().getString(), isAnimationDangerous(targetDynamicAnimation) || targetDynamicAnimation.get() instanceof ExecutionAttackAnimation, targetDynamicAnimation);
         return isAnimationDangerous(targetDynamicAnimation) || targetDynamicAnimation.get() instanceof ExecutionAttackAnimation;
+    }
+
+    public static void stepLeftRightOnHurtByDangerousAnimation(DamageSource damageSource, MobPatch<?> mobPatch) {
+        Entity target = damageSource.getEntity();
+        if (!(target instanceof LivingEntity livingEntity)) return;
+        LivingEntityPatch<?> targetEntityPatch = EpicFightCapabilities.getEntityPatch(livingEntity, LivingEntityPatch.class);
+        if (targetEntityPatch != null) {
+            AssetAccessor<? extends StaticAnimation> targetDynamicAnimation = Objects.requireNonNull(targetEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(mobPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (isAnimationDangerous(targetDynamicAnimation)
+                    && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, mobPatch)) {
+                if (mobPatch.getOriginal() instanceof HerobrineMob herobrineMob
+                        && herobrineMob.getStunEscapeCooldown() == 0) {
+                    herobrineMob.setStunEscapeCooldown(60);
+                    if (new Random().nextBoolean()) {
+                        mobPatch.playAnimationSynchronized(WOMAnimations.ENDERSTEP_LEFT, 0.0F);
+                    } else {
+                        mobPatch.playAnimationSynchronized(WOMAnimations.ENDERSTEP_RIGHT, 0.0F);
+                    }
+                }
+
+                if (mobPatch.getOriginal() instanceof AngrySteveEntity angrySteveEntity
+                        && angrySteveEntity.getStunEscapeCooldown() == 0) {
+                    angrySteveEntity.setStunEscapeCooldown(60);
+                    if (new Random().nextBoolean()) {
+                        mobPatch.playAnimationSynchronized(Animations.BIPED_STEP_LEFT, 0.0F);
+                    } else {
+                        mobPatch.playAnimationSynchronized(Animations.BIPED_STEP_RIGHT, 0.0F);
+                    }
+                }
+
+                if (mobPatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity
+                        && blueDemonEntity.getStunEscapeCooldown() == 0) {
+                    blueDemonEntity.setStunEscapeCooldown(60);
+                    if (new Random().nextBoolean()) {
+                        mobPatch.playAnimationSynchronized(Animations.BIPED_STEP_LEFT, 0.0F);
+                    } else {
+                        mobPatch.playAnimationSynchronized(Animations.BIPED_STEP_RIGHT, 0.0F);
+                    }
+                }
+            }
+        }
     }
 }

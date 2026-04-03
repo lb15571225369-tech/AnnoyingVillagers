@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.EscapeUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -148,7 +149,11 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                 } else {
                     this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_RIGHT, 0.0F);
                 }
+            } else {
+                EscapeUtil.stepLeftRightOnHurtByDangerousAnimation(damageSource, this);
             }
+        } else {
+            EscapeUtil.stepLeftRightOnHurtByDangerousAnimation(damageSource, this);
         }
         return super.tryHurt(damageSource, amount);
     }

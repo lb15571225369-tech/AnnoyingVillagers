@@ -354,7 +354,7 @@ public class AngrySteveEntity extends AVNpc {
     public void tick() {
         super.tick();
         if (this.level() instanceof ServerLevel) {
-            if (CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
+            if (this.getLivingEntityPatch() != null && CombatCommon.canEscape((MobPatch<?>) this.getLivingEntityPatch())) {
                 this.goalSelector.disableControlFlag(Goal.Flag.MOVE);
                 this.getNavigation().stop();
 

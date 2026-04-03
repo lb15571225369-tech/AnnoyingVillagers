@@ -60,12 +60,17 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private int relaunchDelayTicks = 0;
     private int relaunchDelayTick = 0;
 
-    private static final int FESTIVAL_GROUND_RISE_DURATION = 10;
     private boolean festivalGroundRiseActive = false;
+    private boolean summonedGroundTridentFestival = false;
     private int festivalGroundRiseTick = 0;
     private Vec3 festivalGroundRiseStart = Vec3.ZERO;
     private Vec3 festivalGroundRiseEnd = Vec3.ZERO;
-    private boolean queueSuperLightningAfterGroundRise = false;
+    private static final int FESTIVAL_GROUND_RISE_DURATION = 6;
+    private static final double FESTIVAL_RISE_START_DEPTH = 1.0D;
+    private static final double FESTIVAL_RISE_END_OFFSET = 0.0D;
+    private float festivalPoseXRot = 90.0F;
+    private float festivalPoseYRot = 0.0F;
+    private double festivalPoseYOffset = 0.0D;
 
     @Nullable
     private UUID queuedTargetUUID = null;
@@ -74,7 +79,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private float queuedLaunchSpeed = 0.0F;
 
     private long spawnSequence;
-    private static final float ABSORB_HEAL_AMOUNT = 2.0F; // 1 heart
+    private static final float ABSORB_HEAL_AMOUNT = 2.0F;
     private static final double ABSORB_FINISH_DISTANCE_SQR = 1.0D;
 
     private boolean absorbToWearerActive = false;
@@ -88,7 +93,18 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     private Direction absorbReturnFace = null;
 
     private boolean isRelaunchLocked() {
-        return this.festivalGroundRiseActive || this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive;
+        return this.festivalGroundRiseActive
+                || this.relaunchAnimationActive
+                || this.relaunchDelayActive
+                || this.absorbToWearerActive;
+    }
+
+    public boolean isSummonedGroundTridentFestival() {
+        return summonedGroundTridentFestival;
+    }
+
+    public void setSummonedGroundTridentFestival(boolean summonedGroundTridentFestival) {
+        this.summonedGroundTridentFestival = summonedGroundTridentFestival;
     }
 
     public boolean isAbsorbingToWearer() {
@@ -129,7 +145,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         if (!this.inGround || !this.belongsToOwner(entity)) {
             return;
         }
-
         this.absorbToWearerActive = true;
         this.absorbWearerUUID = entity.getUUID();
         this.absorbStartGroundPos = this.position();
@@ -267,10 +282,24 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     protected boolean tryPickup(@NotNull Player player) {
         return false;
     }
+    private boolean festivalGroundedPoseActive = false;
+    private static final double FESTIVAL_FORCE_HITBLOCK_REMAINING_Y = 0.65D;
 
+    private static final EntityDataAccessor<Boolean> DATA_FESTIVAL_GROUNDED_POSE =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_FESTIVAL_POSE_XROT =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_FESTIVAL_POSE_YROT =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.FLOAT);
     private boolean specialImpactTriggered = false;
     private static final EntityDataAccessor<Byte> DATA_STUCK_FACE =
             SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> DATA_FESTIVAL_RISE_ACTIVE =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_FESTIVAL_START_Y =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_FESTIVAL_END_Y =
+            SynchedEntityData.defineId(BlueDemonThrownTridentEntity.class, EntityDataSerializers.FLOAT);
 
     @Nullable
     public Direction getStuckFace() {
@@ -282,16 +311,30 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.entityData.set(DATA_STUCK_FACE, direction == null ? (byte)255 : (byte) direction.get3DDataValue());
     }
 
-    public void beginFestivalGroundRise(boolean strikeWhenFinished) {
+    public void beginFestivalGroundRise(@NotNull LivingEntity owner, @NotNull BlockPos standPos, boolean strikeWhenFinished) {
         if (this.festivalGroundRiseActive || this.relaunchAnimationActive || this.relaunchDelayActive || this.absorbToWearerActive) {
             return;
         }
+        this.clearFestivalGroundedPose();
+        this.setOwner(owner);
+        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+        this.specialImpactTriggered = true;
+        this.dealtDamage = false;
 
+        this.entityData.set(DATA_FESTIVAL_RISE_ACTIVE, true);
+        this.summonedGroundTridentFestival = true;
         this.festivalGroundRiseActive = true;
         this.festivalGroundRiseTick = 0;
-        this.festivalGroundRiseEnd = this.position();
-        this.festivalGroundRiseStart = this.festivalGroundRiseEnd.add(0.0D, -1.25D, 0.0D);
-        this.queueSuperLightningAfterGroundRise = strikeWhenFinished;
+        this.rollFestivalPose();
+
+        double endX = standPos.getX() + 0.5D;
+        double endY = standPos.getY() + FESTIVAL_RISE_END_OFFSET + this.festivalPoseYOffset;
+        double endZ = standPos.getZ() + 0.5D;
+
+        this.festivalGroundRiseEnd = new Vec3(endX, endY, endZ);
+        this.festivalGroundRiseStart = new Vec3(endX, endY - FESTIVAL_RISE_START_DEPTH, endZ);
+        this.entityData.set(DATA_FESTIVAL_START_Y, (float)this.festivalGroundRiseStart.y);
+        this.entityData.set(DATA_FESTIVAL_END_Y, (float)this.festivalGroundRiseEnd.y);
 
         this.inGround = false;
         this.inGroundTime = 0;
@@ -300,30 +343,38 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
         this.setPos(this.festivalGroundRiseStart.x, this.festivalGroundRiseStart.y, this.festivalGroundRiseStart.z);
         this.setDeltaMovement(Vec3.ZERO);
+
         this.setNoPhysics(true);
         this.setNoGravity(true);
         this.hasImpulse = false;
-        this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
         this.setGlowingTag(true);
+        this.applyFestivalVerticalPose();
     }
 
     private void tickFestivalGroundRise() {
         this.festivalGroundRiseTick++;
 
         float t = Math.min(1.0F, (float) this.festivalGroundRiseTick / (float) FESTIVAL_GROUND_RISE_DURATION);
-        float eased = 1.0F - (1.0F - t) * (1.0F - t); // ease-out
+        double nextY = Mth.lerp(t, this.festivalGroundRiseStart.y, this.festivalGroundRiseEnd.y);
 
-        Vec3 nextPos = new Vec3(
-                Mth.lerp(eased, this.festivalGroundRiseStart.x, this.festivalGroundRiseEnd.x),
-                Mth.lerp(eased, this.festivalGroundRiseStart.y, this.festivalGroundRiseEnd.y),
-                Mth.lerp(eased, this.festivalGroundRiseStart.z, this.festivalGroundRiseEnd.z)
+        if (this.festivalGroundRiseEnd.y - nextY <= FESTIVAL_FORCE_HITBLOCK_REMAINING_Y) {
+            this.finishFestivalGroundRise();
+            return;
+        }
+
+        this.xo = this.getX();
+        this.yo = this.getY();
+        this.zo = this.getZ();
+
+        this.setPos(
+                this.festivalGroundRiseStart.x,
+                nextY,
+                this.festivalGroundRiseStart.z
         );
-
-        Vec3 moveDelta = nextPos.subtract(this.position());
-
-        this.setPos(nextPos.x, nextPos.y, nextPos.z);
         this.setDeltaMovement(Vec3.ZERO);
-        this.updateRotationFromMovement(moveDelta.lengthSqr() > 1.0E-7D ? moveDelta : new Vec3(0.0D, 1.0D, 0.0D));
+        this.applyFestivalVerticalPose();
+        this.setGlowingTag(true);
 
         if (this.level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(
@@ -341,37 +392,14 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     }
 
     private void finishFestivalGroundRise() {
+        if (!this.level().isClientSide) {
+            this.entityData.set(DATA_FESTIVAL_RISE_ACTIVE, false);
+        }
+
         this.festivalGroundRiseActive = false;
         this.festivalGroundRiseTick = 0;
 
-        this.setPos(this.festivalGroundRiseEnd.x, this.festivalGroundRiseEnd.y, this.festivalGroundRiseEnd.z);
-        this.setDeltaMovement(Vec3.ZERO);
-        this.setNoPhysics(false);
-        this.setNoGravity(false);
-        this.hasImpulse = false;
-
-        this.inGround = true;
-        this.inGroundTime = 0;
-        this.shakeTime = 0;
-        this.setStuckFace(Direction.UP);
-        this.setGlowingTag(true);
-
-        float[] pitchChoices = new float[]{-90.0F, -60.0F, -45.0F, -30.0F};
-        float[] yawChoices = new float[]{-90.0F, -60.0F, -45.0F, -30.0F, 0.0F, 30.0F, 45.0F, 60.0F, 90.0F};
-
-        float pitch = pitchChoices[this.random.nextInt(pitchChoices.length)];
-        float yawOffset = yawChoices[this.random.nextInt(yawChoices.length)];
-
-        this.setXRot(pitch);
-        this.xRotO = this.getXRot();
-
-        this.setYRot(this.getYRot() + yawOffset);
-        this.yRotO = this.getYRot();
-
-        if (this.queueSuperLightningAfterGroundRise) {
-            this.queueSuperLightningAfterGroundRise = false;
-            this.summonSuperLightningAtSelf();
-        }
+        this.releaseFestivalGroundedPose(true);
     }
 
     @Override
@@ -401,6 +429,30 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_STUCK_FACE, (byte)255);
+        this.entityData.define(DATA_FESTIVAL_RISE_ACTIVE, false);
+        this.entityData.define(DATA_FESTIVAL_GROUNDED_POSE, false);
+        this.entityData.define(DATA_FESTIVAL_POSE_XROT, 90.0F);
+        this.entityData.define(DATA_FESTIVAL_POSE_YROT, 0.0F);
+        this.entityData.define(DATA_FESTIVAL_START_Y, 0.0F);
+        this.entityData.define(DATA_FESTIVAL_END_Y, 0.0F);
+    }
+
+    private void syncFestivalPoseFromData() {
+        this.festivalPoseXRot = this.entityData.get(DATA_FESTIVAL_POSE_XROT);
+        this.festivalPoseYRot = this.entityData.get(DATA_FESTIVAL_POSE_YROT);
+    }
+
+    private void clearFestivalGroundedPose() {
+        this.festivalGroundedPoseActive = false;
+
+        if (!this.level().isClientSide) {
+            this.entityData.set(DATA_FESTIVAL_GROUNDED_POSE, false);
+        }
+
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = false;
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
     }
 
     public void setMode(TridentMode mode) {
@@ -446,10 +498,54 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     @Override
     public void tick() {
-        if (!this.level().isClientSide && this.festivalGroundRiseActive) {
+        if (this.level().isClientSide) {
+            boolean riseActive = this.entityData.get(DATA_FESTIVAL_RISE_ACTIVE);
+            boolean groundedPoseActive = this.entityData.get(DATA_FESTIVAL_GROUNDED_POSE);
+
+            if (riseActive) {
+                if (!this.festivalGroundRiseActive) {
+                    this.startFestivalGroundRiseClient();
+                }
+            } else if (groundedPoseActive) {
+                if (!this.festivalGroundedPoseActive) {
+                    this.startFestivalGroundedPoseClient();
+                }
+            } else if (this.festivalGroundedPoseActive) {
+                this.clearFestivalGroundedPose();
+            }
+        }
+
+        if (this.festivalGroundRiseActive) {
             this.baseTick();
             this.pickup = AbstractArrow.Pickup.DISALLOWED;
             this.tickFestivalGroundRise();
+            this.tickElectricEffects();
+            return;
+        }
+
+        if (this.festivalGroundedPoseActive) {
+            this.baseTick();
+            this.pickup = AbstractArrow.Pickup.DISALLOWED;
+
+            this.setDeltaMovement(Vec3.ZERO);
+            this.hasImpulse = false;
+
+            this.inGround = true;
+            this.inGroundTime = 0;
+            this.shakeTime = 0;
+            this.setStuckFace(Direction.UP);
+
+            this.setNoPhysics(true);
+            this.setNoGravity(true);
+            this.applyFestivalVerticalPose();
+
+            if (!this.level().isClientSide && this.tickCount % 10 == 0) {
+                this.discardIfGroundedAndFarFromOwner();
+                if (!this.isAlive()) {
+                    return;
+                }
+            }
+
             this.tickElectricEffects();
             return;
         }
@@ -513,6 +609,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
         lightning.moveTo(Vec3.atBottomCenterOf(pos));
         lightning.setDamage(5.0F);
+        this.setGlowingTag(false);
 
         LivingEntity owner = this.getOwnerLiving();
         if (owner != null) {
@@ -528,6 +625,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
                 serverLevel
         );
 
+        this.setGlowingTag(false);
         lightning.moveTo(Vec3.atBottomCenterOf(pos));
         lightning.setSuperLightning(true);
         lightning.setDamage(15.0F);
@@ -613,6 +711,146 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
                 || Math.abs(this.getZ() - owner.getZ()) > OWNER_BOX_HALF_SIZE;
     }
 
+    private void startFestivalGroundRiseClient() {
+        this.festivalGroundedPoseActive = false;
+        this.festivalGroundRiseActive = true;
+        this.festivalGroundRiseTick = 0;
+
+        this.syncFestivalPoseFromData();
+
+        double x = this.getX();
+        double z = this.getZ();
+        double startY = this.entityData.get(DATA_FESTIVAL_START_Y);
+        double endY = this.entityData.get(DATA_FESTIVAL_END_Y);
+
+        this.festivalGroundRiseStart = new Vec3(x, startY, z);
+        this.festivalGroundRiseEnd = new Vec3(x, endY, z);
+
+        this.setPos(x, startY, z);
+        this.xo = x;
+        this.yo = startY;
+        this.zo = z;
+
+        this.inGround = false;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(null);
+
+        this.setNoPhysics(true);
+        this.setNoGravity(true);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = false;
+
+        this.setGlowingTag(true);
+        this.applyFestivalVerticalPose();
+    }
+
+    private void startFestivalGroundedPoseClient() {
+        this.festivalGroundedPoseActive = true;
+        this.syncFestivalPoseFromData();
+
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = false;
+
+        this.inGround = true;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(Direction.UP);
+
+        this.setNoPhysics(true);
+        this.setNoGravity(true);
+
+        this.applyFestivalVerticalPose();
+    }
+
+    private void releaseFestivalGroundedPose(boolean glowing) {
+        releaseFestivalGroundedPose(glowing, true);
+    }
+
+    private void releaseFestivalGroundedPose(boolean glowing, boolean noPhysicGravity) {
+        Vec3 finalPos = this.festivalGroundRiseEnd;
+
+        this.festivalGroundedPoseActive = true;
+        if (!this.level().isClientSide) {
+            this.entityData.set(DATA_FESTIVAL_GROUNDED_POSE, true);
+        }
+
+        this.setPos(finalPos.x, finalPos.y, finalPos.z);
+        this.xo = finalPos.x;
+        this.yo = finalPos.y;
+        this.zo = finalPos.z;
+
+        this.setDeltaMovement(Vec3.ZERO);
+        this.hasImpulse = false;
+
+        this.inGround = true;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(Direction.UP);
+
+        this.setNoPhysics(noPhysicGravity);
+        this.setNoGravity(noPhysicGravity);
+
+        this.setGlowingTag(glowing);
+        this.applyFestivalVerticalPose();
+    }
+
+//    private void rollFestivalPose() {
+//        this.festivalPoseXRot = 90.0F + (this.random.nextFloat() - 0.5F) * 6.0F;
+//        this.festivalPoseYRot = this.random.nextFloat() * 360.0F;
+//        this.festivalPoseYOffset = 0.02D + this.random.nextDouble() * 0.08D;
+//
+//        this.entityData.set(DATA_FESTIVAL_POSE_XROT, this.festivalPoseXRot);
+//        this.entityData.set(DATA_FESTIVAL_POSE_YROT, this.festivalPoseYRot);
+//    }
+
+    private void rollFestivalPose() {
+        this.festivalPoseXRot = 90.0F + (this.random.nextFloat() - 0.5F) * 12.0F;
+        this.festivalPoseYRot = this.random.nextFloat() * 360.0F;
+        this.festivalPoseYOffset = 0.05D + this.random.nextDouble() * 0.14D;
+
+        this.entityData.set(DATA_FESTIVAL_POSE_XROT, this.festivalPoseXRot);
+        this.entityData.set(DATA_FESTIVAL_POSE_YROT, this.festivalPoseYRot);
+    }
+
+    private void applyFestivalVerticalPose() {
+        if (this.level().isClientSide) {
+            this.syncFestivalPoseFromData();
+        }
+
+        this.setXRot(this.festivalPoseXRot);
+        this.xRotO = this.festivalPoseXRot;
+
+        this.setYRot(this.festivalPoseYRot);
+        this.yRotO = this.festivalPoseYRot;
+    }
+
+    public void finishSummonedGroundTridentFestival() {
+        if (!this.summonedGroundTridentFestival) {
+            return;
+        }
+
+        this.summonedGroundTridentFestival = false;
+        this.clearFestivalGroundedPose();
+        this.setGlowingTag(false);
+
+        this.inGround = false;
+        this.inGroundTime = 0;
+        this.shakeTime = 0;
+        this.setStuckFace(null);
+
+        this.setNoPhysics(false);
+        this.setNoGravity(false);
+        this.hasImpulse = true;
+
+        this.setPos(this.getX(), this.getY() + 0.25D, this.getZ());
+        this.xo = this.getX();
+        this.yo = this.getY();
+        this.zo = this.getZ();
+
+        this.setDeltaMovement(0.0D, -0.12D, 0.0D);
+    }
+
     public void trimOldGroundedTridentsAroundOwnerOnSpawn() {
         if (!(this.level() instanceof ServerLevel serverLevel)) {
             return;
@@ -662,13 +900,18 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
-        super.onHitBlock(result);
-
-        this.setGlowingTag(false);
-
         if (this.level().isClientSide) {
+            super.onHitBlock(result);
             return;
         }
+
+        if (this.summonedGroundTridentFestival) {
+            this.releaseFestivalGroundedPose(true);
+            this.discardIfGroundedAndFarFromOwner();
+            return;
+        }
+
+        super.onHitBlock(result);
 
         this.setStuckFace(result.getDirection());
 
@@ -752,7 +995,6 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         if (this.relaunchAnimationActive || this.relaunchDelayActive) {
             return;
         }
-
         int offsetX = this.random.nextInt(3) - 1;
         int offsetZ = this.random.nextInt(3) - 1;
 
@@ -978,6 +1220,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         tag.putString("BlueDemonMode", this.mode.name());
         tag.putBoolean("SpecialImpactTriggered", this.specialImpactTriggered);
         tag.putLong(TAG_SPAWN_SEQUENCE, this.spawnSequence);
+        tag.putBoolean("SummonedGroundTridentFestival", this.summonedGroundTridentFestival);
 
         Direction face = this.getStuckFace();
         if (face != null) {
@@ -1001,6 +1244,7 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
 
         this.specialImpactTriggered = tag.getBoolean("SpecialImpactTriggered");
         this.spawnSequence = tag.getLong(TAG_SPAWN_SEQUENCE);
+        this.summonedGroundTridentFestival = tag.getBoolean("SummonedGroundTridentFestival");
 
         if (tag.contains("StuckFace")) {
             this.setStuckFace(Direction.from3DDataValue(tag.getByte("StuckFace")));
@@ -1034,6 +1278,5 @@ public class BlueDemonThrownTridentEntity extends ThrownTrident {
         this.festivalGroundRiseTick = 0;
         this.festivalGroundRiseStart = Vec3.ZERO;
         this.festivalGroundRiseEnd = Vec3.ZERO;
-        this.queueSuperLightningAfterGroundRise = false;
     }
 }
