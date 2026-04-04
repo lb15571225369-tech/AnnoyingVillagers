@@ -40,7 +40,7 @@ public class NpcSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )
@@ -889,7 +889,7 @@ public class NpcSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )
@@ -1810,7 +1810,7 @@ public class NpcSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )
@@ -2706,7 +2706,7 @@ public class NpcSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )

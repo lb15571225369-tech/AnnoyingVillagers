@@ -44,7 +44,7 @@ public class HerobrineEnderSlayerScythe {
                                     Behavior.builder()
                                             .custom(CombatCommon::isNotRiding)
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )

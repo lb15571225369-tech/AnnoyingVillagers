@@ -41,7 +41,7 @@ public class SteveSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .animationBehavior(AVAnimations.KNIFE_CHECK, 0.0F)
                             )
             )
@@ -883,7 +883,7 @@ public class SteveSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .guard(40)
                             )
             )

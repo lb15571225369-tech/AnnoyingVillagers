@@ -40,7 +40,7 @@ public class PlayerNpcFist {
                                     Behavior.builder()
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
+                                            .withinDistance(0.0D, 48.0D)
                                             .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)
                             )
