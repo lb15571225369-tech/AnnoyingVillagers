@@ -308,6 +308,11 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
             return !AVNpc.isHealing();
         }
+        if (mobpatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity
+                && blueDemonEntity.getBbqEntity() != null
+                && blueDemonEntity.getTarget() instanceof Mob mob) {
+            return !(mob.getTarget() instanceof BbqEntity);
+        }
         return false;
     }
 

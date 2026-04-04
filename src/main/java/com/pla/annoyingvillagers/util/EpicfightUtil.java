@@ -95,7 +95,7 @@ public class EpicfightUtil {
     }
 
     public static void dealStaminaDamage(DamageSource damageSource, float amount, LivingEntityPatch<?> livingEntityPatch, boolean playStunAnimation) {
-        if (livingEntityPatch instanceof CEHumanoidPatch ceHumanoidPatch) {
+        if (livingEntityPatch instanceof CEHumanoidPatch<?> ceHumanoidPatch) {
             if (!ceHumanoidPatch.dealStaminaDamage(damageSource, amount) && playStunAnimation) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
             }

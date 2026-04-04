@@ -967,6 +967,7 @@ public class BbqEntity extends Chicken {
 
         if (this.selfKill) {
             this.kill();
+            return;
         }
 
         if (this.deathWatchMode) {

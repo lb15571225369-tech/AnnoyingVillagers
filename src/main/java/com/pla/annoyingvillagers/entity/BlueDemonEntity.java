@@ -41,6 +41,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -846,7 +847,8 @@ public class BlueDemonEntity extends Monster {
                     || dynamicAnimation == AVAnimations.TRIDENT_ATTACK
                     || dynamicAnimation == AVAnimations.ELECTRIC_FIELD
                     || dynamicAnimation == AVAnimations.TRIDENT_FESTIVAL
-                    || dynamicAnimation == AVAnimations.BLUE_DEMON_STATE_TRANSFORM) {
+                    || dynamicAnimation == AVAnimations.BLUE_DEMON_STATE_TRANSFORM
+                    || dynamicAnimation == AVAnimations.BLUE_DEMON_STATE_TRANSFORM_END) {
                 EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
                         this, damagesource.getEntity());
                 return false;
@@ -1240,6 +1242,7 @@ public class BlueDemonEntity extends Monster {
 
                         this.setItemInHand(InteractionHand.MAIN_HAND, legendaryStack);
                         this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 4, 300));
                     }
                 }
                 if (stateTransformCooldown % 2 == 0) {

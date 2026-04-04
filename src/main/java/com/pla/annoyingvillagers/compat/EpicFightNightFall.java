@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class EpicFightNightFall {
     private static final Set<String> DANGEROUS_ANIMATIONS = new HashSet<>();
-    public static final int MULTIPLIER_DAMAGE_VALUE = 10;
+    public static final int MULTIPLIER_DAMAGE_VALUE = 5;
 
     static {
         DANGEROUS_ANIMATIONS.addAll(Set.of(
@@ -164,7 +164,7 @@ public class EpicFightNightFall {
         }
     }
 
-    public static boolean isPlayingEfnGuardHit(CEHumanoidPatch ceHumanoidPatch) {
+    public static boolean isPlayingEfnGuardHit(CEHumanoidPatch<?> ceHumanoidPatch) {
         AnimationPlayer animationPlayer = ceHumanoidPatch.getAnimator().getPlayerFor(null);
         if (animationPlayer != null) {
             AssetAccessor<? extends StaticAnimation> dynamicAnimation = animationPlayer.getRealAnimation();
