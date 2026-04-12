@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.minecraftforge.fml.ModList;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
@@ -106,9 +107,11 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                 .put(WOMWeaponCategories.ENDERBLASTER,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST, Styles.TWO_HAND, PlayerNpcFist.FIST));
 
-        this.weaponAttackMotions
-                .put(WeaponCategories.AXE,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
+            this.weaponAttackMotions
+                    .put(WeaponCategories.AXE,
+                            ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
+        }
 
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
@@ -130,9 +133,11 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                 Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
                         ));
 
-        this.weaponAttackMotions
-                .put(WeaponCategories.GREATSWORD,
-                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
+            this.weaponAttackMotions
+                    .put(WeaponCategories.GREATSWORD,
+                            ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
+        }
 
         this.weaponAttackMotions
                 .put(WOMWeaponCategories.TORMENT,
@@ -227,18 +232,17 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                         )
                 )
         );
-        this.guardHitMotions.put(WeaponCategories.AXE,
-                ImmutableMap.of(
-                        Styles.ONE_HAND, List.of(
-                                Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                Animations.SWORD_GUARD_ACTIVE_HIT3
-                        ),
-                        Styles.TWO_HAND, List.of(
-                                Animations.SWORD_DUAL_GUARD_HIT
-                        )
-                )
-        );
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
+            this.guardHitMotions.put(WeaponCategories.AXE,
+                    ImmutableMap.of(
+                            Styles.ONE_HAND, List.of(
+                                    Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                    Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                    Animations.SWORD_GUARD_ACTIVE_HIT3
+                            )
+                    )
+            );
+        }
         this.guardHitMotions.put(WOMWeaponCategories.TORMENT,
                 ImmutableMap.of(
                         Styles.TWO_HAND, List.of(
@@ -246,13 +250,15 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                         )
                 )
         );
-        this.guardHitMotions.put(WeaponCategories.GREATSWORD,
-                ImmutableMap.of(
-                        Styles.TWO_HAND, List.of(
-                                Animations.GREATSWORD_GUARD_HIT
-                        )
-                )
-        );
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
+            this.guardHitMotions.put(WeaponCategories.GREATSWORD,
+                    ImmutableMap.of(
+                            Styles.TWO_HAND, List.of(
+                                    Animations.GREATSWORD_GUARD_HIT
+                            )
+                    )
+            );
+        }
         this.guardHitMotions.put(WOMWeaponCategories.ANTITHEUS,
                 ImmutableMap.of(
                         Styles.TWO_HAND, List.of(
