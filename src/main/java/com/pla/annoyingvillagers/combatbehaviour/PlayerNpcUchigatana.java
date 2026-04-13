@@ -806,12 +806,6 @@ public class PlayerNpcUchigatana {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(Animations.UCHIGATANA_AIR_SLASH, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BATTOJUTSU, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()

@@ -82,9 +82,61 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )));
-        this.weaponAttackMotions
-                .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.COMMON, PlayerNpcFist.FIST));
+        if (!ModList.get().isLoaded("annoyingvillagers_epicfightx")) {
+            this.weaponAttackMotions
+                    .put(WeaponCategories.FIST,
+                            ImmutableMap.of(Styles.COMMON, PlayerNpcFist.FIST));
+            this.weaponAttackMotions
+                    .put(WeaponCategories.SWORD,
+                            ImmutableMap.of(
+                                    Styles.ONE_HAND, PlayerNpcSword.SWORD,
+                                    Styles.TWO_HAND, PlayerNpcSword.DUAL_SWORD
+                            ));
+
+            this.weaponAttackMotions
+                    .put(WeaponCategories.DAGGER,
+                            ImmutableMap.of(
+                                    Styles.ONE_HAND, PlayerNpcDagger.DAGGER,
+                                    Styles.TWO_HAND, PlayerNpcDagger.DUAL_DAGGER
+                            ));
+
+            this.weaponAttackMotions
+                    .put(WeaponCategories.UCHIGATANA,
+                            ImmutableMap.of(
+                                    Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
+                            ));
+            this.weaponAttackMotions
+                    .put(WeaponCategories.SPEAR,
+                            ImmutableMap.of(
+                                    Styles.ONE_HAND, PlayerNpcSpear.SPEAR_SHIELD,
+                                    Styles.TWO_HAND, PlayerNpcSpear.SPEAR
+                            ));
+
+            this.weaponAttackMotions
+                    .put(WeaponCategories.LONGSWORD,
+                            ImmutableMap.of(
+                                    Styles.ONE_HAND, PlayerNpcLongsword.LONGSWORD_SHIELD,
+                                    Styles.TWO_HAND, PlayerNpcLongsword.LONGSWORD
+                            ));
+
+            this.weaponAttackMotions
+                    .put(WeaponCategories.TACHI,
+                            ImmutableMap.of(
+                                    Styles.TWO_HAND, PlayerNpcTachi.TACHI
+                            ));
+        }
+
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual") && !ModList.get().isLoaded("annoyingvillagers_epicfightx")) {
+            this.weaponAttackMotions
+                    .put(WeaponCategories.AXE,
+                            ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
+        }
+
+        if (!ModList.get().isLoaded("annoyingvillagers_moredual") && !ModList.get().isLoaded("annoyingvillagers_epicfightx")) {
+            this.weaponAttackMotions
+                    .put(WeaponCategories.GREATSWORD,
+                            ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
+        }
 
         this.weaponLivingMotions
                 .put(WOMWeaponCategories.ENDERBLASTER,
@@ -106,38 +158,6 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
         this.weaponAttackMotions
                 .put(WOMWeaponCategories.ENDERBLASTER,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST, Styles.TWO_HAND, PlayerNpcFist.FIST));
-
-        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
-            this.weaponAttackMotions
-                    .put(WeaponCategories.AXE,
-                            ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
-        }
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcSword.SWORD,
-                                Styles.TWO_HAND, PlayerNpcSword.DUAL_SWORD
-                        ));
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.DAGGER,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcDagger.DAGGER,
-                                Styles.TWO_HAND, PlayerNpcDagger.DUAL_DAGGER
-                        ));
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.UCHIGATANA,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
-                        ));
-
-        if (!ModList.get().isLoaded("annoyingvillagers_moredual")) {
-            this.weaponAttackMotions
-                    .put(WeaponCategories.GREATSWORD,
-                            ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
-        }
 
         this.weaponAttackMotions
                 .put(WOMWeaponCategories.TORMENT,
@@ -189,25 +209,6 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )));
 
-        this.weaponAttackMotions
-                .put(WeaponCategories.SPEAR,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcSpear.SPEAR_SHIELD,
-                                Styles.TWO_HAND, PlayerNpcSpear.SPEAR
-                        ));
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.LONGSWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcLongsword.LONGSWORD_SHIELD,
-                                Styles.TWO_HAND, PlayerNpcLongsword.LONGSWORD
-                        ));
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.TACHI,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcTachi.TACHI
-                        ));
 
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
