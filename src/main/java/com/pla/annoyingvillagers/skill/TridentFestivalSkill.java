@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -90,6 +91,11 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
     @Override
     public void updateContainer(SkillContainer container) {
         super.updateContainer(container);
+        Player player = container.getExecutor().getOriginal();
+        if (player.level() instanceof ServerLevel serverLevel && player.tickCount % 20 == 0) {
+            SkillDataManager data = container.getDataManager();
+            data.setDataSync(AVSkillDataKeys.TRIDENT_AMOUNT.get(), BlueDemonTridentItem.getAllOwnerTridents(serverLevel, player).size());
+        }
     }
 
     @Override

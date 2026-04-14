@@ -500,7 +500,8 @@ public class BlueDemonTridentItem extends SwordItem {
             }
         }
     }
-    private static List<BlueDemonThrownTridentEntity> getAllOwnerTridents(ServerLevel serverLevel, LivingEntity owner) {
+
+    public static List<BlueDemonThrownTridentEntity> getAllOwnerTridents(ServerLevel serverLevel, LivingEntity owner) {
         return serverLevel.getEntitiesOfClass(
                 BlueDemonThrownTridentEntity.class,
                 makeOwnerBox(owner),
