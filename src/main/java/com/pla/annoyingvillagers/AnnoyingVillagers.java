@@ -77,6 +77,7 @@ public class AnnoyingVillagers {
         AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
         AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
         AVSkillDataKeys.DATA_KEYS.register(modEventBus);
+        AnnoyingVillagersModMenus.register(modEventBus);
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);
@@ -133,6 +134,24 @@ public class AnnoyingVillagers {
                     KickMessage::buffer,
                     KickMessage::new,
                     KickMessage::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
+                    EmoteButtonMessage.class,
+                    EmoteButtonMessage::encode,
+                    EmoteButtonMessage::decode,
+                    EmoteButtonMessage::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
+                    OpenEmoteMenuMessage.class,
+                    OpenEmoteMenuMessage::encode,
+                    OpenEmoteMenuMessage::decode,
+                    OpenEmoteMenuMessage::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
+                    BreakEmoteMessage.class,
+                    BreakEmoteMessage::encode,
+                    BreakEmoteMessage::decode,
+                    BreakEmoteMessage::handle
             );
         }
     }

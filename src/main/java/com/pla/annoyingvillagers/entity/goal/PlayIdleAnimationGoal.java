@@ -24,139 +24,33 @@ public class PlayIdleAnimationGoal extends Goal {
     private final int minDurationTicks;
     private int ticksLeft;
 
-    private static final Map<IdleAnimation, List<String>> idleMessages = Map.of(
-            IdleAnimation.LAY, Arrays.asList(
-                    "Just laying down a bit, nothing to worry about.",
-                    "Oof... I need to lay flat for a sec.",
-                    "You ever just flop? Yeah.",
-                    "Don't step on me, I'm laying here!",
-                    "I'm not dead, just horizontal.",
-                    "Gravity wins again.",
-                    "This is my combat strategy: play dead.",
-                    "Let me lay in peace!",
-                    "No thoughts. Just laying.",
-                    "I'm a pancake now.",
-                    "The floor is oddly comfortable today.",
-                    "Ugh, Mondays...",
-                    "Back problems? Nah. Just vibes.",
-                    "Flat and fabulous.",
-                    "Laying low... literally.",
-                    "Give me 5 minutes. Or 50.",
-                    "I fell. On purpose.",
-                    "This is fine.",
-                    "Laying is productive, okay?",
-                    "You wish you were this chill."
-            ),
-            IdleAnimation.SLEEP, Arrays.asList(
-                    "Zzz... Wait what?",
-                    "I was not sleeping, I was... recharging.",
-                    "I dream of better loot.",
-                    "Don't wake me unless it's urgent.",
-                    "I take naps seriously.",
-                    "This is strategic slumber.",
-                    "Goodnight, cruel world.",
-                    "I'm in stealth mode (asleep).",
-                    "Being awake is overrated.",
-                    "Wake me up when it's diamond o'clock.",
-                    "You ever nap in full armor? No? Weak.",
-                    "If I snore, it's intentional.",
-                    "Yes, I sleep with one eye open.",
-                    "I'm testing the bed physics.",
-                    "Rest is resistance.",
-                    "I'm on an AFK break.",
-                    "I fought, I survived, I nap.",
-                    "Don't judge me, I'm healing.",
-                    "I look peaceful, don't I?",
-                    "Sleeping beauty? That's me."
-            ),
-            IdleAnimation.SIT, Arrays.asList(
-                    "Just sitting... contemplating my existence.",
-                    "Taking a break from saving the world.",
-                    "Is it weird to sit here? Nah.",
-                    "Sit down and appreciate nature with me.",
-                    "I claim this patch of grass.",
-                    "My legs demanded this.",
-                    "You stand, I sit. Balance.",
-                    "Big brain thoughts happen in this pose.",
-                    "This seat is taken. By me.",
-                    "I'm not lazy, I'm energy efficient.",
-                    "Sometimes you gotta sit to reflect.",
-                    "Sitting builds character.",
-                    "I'm too cool to stand up right now.",
-                    "This is my vibe zone.",
-                    "I'm one with the terrain.",
-                    "Low center of gravity, maximum chill.",
-                    "Sitting: 10/10 would recommend.",
-                    "I squat with intent.",
-                    "Oh I just sit here, don't kill me!",
-                    "If you can't beat them, sit near them."
-            ),
-            IdleAnimation.FUN_SIT, Arrays.asList(
-                    "Check out this fun pose!",
-                    "I sit like no one's watching.",
-                    "I'm not normal, I'm fun-sitting.",
-                    "Vibing intensifies.",
-                    "Bet you can't sit this fabulously.",
-                    "Fun mode: activated.",
-                    "Stylish and seated.",
-                    "I'm not just sitting. I'm entertaining.",
-                    "This pose is patented.",
-                    "Join me, let's sit funny together!",
-                    "Why sit boring when you can sit awesome?",
-                    "Strike a pose: chairless edition.",
-                    "This is my emote of power.",
-                    "Look at me! I'm fabulous.",
-                    "Do I look cool yet?",
-                    "This is my signature move.",
-                    "Chaotic neutral sitting.",
-                    "The flowers envy my posture.",
-                    "This is what peak performance looks like.",
-                    "If sitting was an art, I'm Picasso."
-            ),
-            IdleAnimation.SLIGHT, Arrays.asList(
-                    "Just a subtle motion...",
-                    "That was barely an emote, but I meant it.",
-                    "Did you see that? Blink and you miss it.",
-                    "Minimal effort, maximum expression.",
-                    "I call that a slight vibe.",
-                    "Nothing major. Just flexin'.",
-                    "Slight movements, strong emotions.",
-                    "I twitched with style.",
-                    "Little gestures matter too.",
-                    "The art of the subtle flex.",
-                    "Keeping it lowkey.",
-                    "Just making sure you're paying attention.",
-                    "Did I move? Maybe.",
-                    "Smooth like butter.",
-                    "Calm, but expressive.",
-                    "That's my signal for 'hi'.",
-                    "Small movement, big energy.",
-                    "Blink and you'll miss this drip.",
-                    "I emote in Morse code.",
-                    "One frame of pure charisma."
-            ),
-            IdleAnimation.PUSH_UP, Arrays.asList(
-                    "One! Two! Ugh, who needs cardio?",
-                    "I do push-ups to impress the mobs.",
-                    "Getting blocky gains.",
-                    "Training to punch harder.",
-                    "Strength comes from suffering.",
-                    "No gym? No problem.",
-                    "Push-up speedrun!",
-                    "Working on my Minecraft muscles.",
-                    "Bet you can't beat 20 reps!",
-                    "This is my flex routine.",
-                    "Push-ups make me immune to arrows.",
-                    "Core strength? Check.",
-                    "Mobility training in progress.",
-                    "Fitness is survival.",
-                    "Strength. Endurance. Blocks.",
-                    "Sweat mode: enabled.",
-                    "Even Steve does push-ups.",
-                    "Just flexin' on creepers.",
-                    "Training arc begins now.",
-                    "Do I look stronger yet?"
-            )
+    private static List<String> keys(String prefix) {
+        List<String> list = new ArrayList<>(20);
+        for (int i = 1; i <= 20; i++) {
+            list.add(prefix + "." + i);
+        }
+        return List.copyOf(list);
+    }
+
+    private static final Map<IdleAnimation, List<String>> idleMessageKeys = Map.ofEntries(
+            Map.entry(IdleAnimation.LAY, keys("idle.annoyingvillagers.lay")),
+            Map.entry(IdleAnimation.SLEEP, keys("idle.annoyingvillagers.sleep")),
+            Map.entry(IdleAnimation.SIT, keys("idle.annoyingvillagers.sit")),
+            Map.entry(IdleAnimation.FUN_SIT, keys("idle.annoyingvillagers.fun_sit")),
+            Map.entry(IdleAnimation.SLIGHT, keys("idle.annoyingvillagers.slight")),
+            Map.entry(IdleAnimation.PUSH_UP, keys("idle.annoyingvillagers.push_up")),
+            Map.entry(IdleAnimation.LAY_RELAX_EMOTE, keys("idle.annoyingvillagers.lay_relax_emote")),
+            Map.entry(IdleAnimation.ONE_ARM_LAY_EMOTE, keys("idle.annoyingvillagers.one_arm_lay_emote")),
+            Map.entry(IdleAnimation.SALUTE_LEFT_HAND_EMOTE, keys("idle.annoyingvillagers.salute_left_hand_emote")),
+            Map.entry(IdleAnimation.SIT_NO_WEAPON_EMOTE, keys("idle.annoyingvillagers.sit_no_weapon_emote")),
+            Map.entry(IdleAnimation.SORROW_EMOTE, keys("idle.annoyingvillagers.sorrow_emote")),
+            Map.entry(IdleAnimation.SURRENDER_EMOTE, keys("idle.annoyingvillagers.surrender_emote")),
+            Map.entry(IdleAnimation.ATTENTION_EMOTE, keys("idle.annoyingvillagers.attention_emote")),
+            Map.entry(IdleAnimation.FLAPPING_EMOTE, keys("idle.annoyingvillagers.flapping_emote")),
+            Map.entry(IdleAnimation.FUN_JUMP_EMOTE, keys("idle.annoyingvillagers.fun_jump_emote")),
+            Map.entry(IdleAnimation.JUMP_EMOTE, keys("idle.annoyingvillagers.jump_emote")),
+            Map.entry(IdleAnimation.PRONE_EMOTE, keys("idle.annoyingvillagers.prone_emote")),
+            Map.entry(IdleAnimation.SALUTE_EMOTE, keys("idle.annoyingvillagers.salute_emote"))
     );
 
     public PlayIdleAnimationGoal(Mob mob, int minDurationTicks) {
@@ -367,23 +261,46 @@ public class PlayIdleAnimationGoal extends Goal {
 
     private AssetAccessor<? extends StaticAnimation> resolveAnimation(IdleAnimation idle) {
         return switch (idle) {
-            case PUSH_UP -> AVAnimations.PUSH_UP_IDLE;
-            case LAY -> AVAnimations.LAY_IDLE;
-            case SLEEP -> AVAnimations.DEATH_IDLE;
-            case SIT -> AVAnimations.SIT_IDLE;
-            case FUN_SIT -> AVAnimations.FUNNY_IDLE;
-            case SLIGHT -> AVAnimations.SLIGHT_IDLE;
+            case PUSH_UP -> AVAnimations.PUSH_UP_EMOTE;
+            case LAY -> AVAnimations.LAY_EMOTE;
+            case SLEEP -> AVAnimations.DEATH_EMOTE;
+            case SIT -> AVAnimations.SIT_EMOTE;
+            case FUN_SIT -> AVAnimations.FUNNY_EMOTE;
+            case SLIGHT -> AVAnimations.SLIGHT_EMOTE;
+            case LAY_RELAX_EMOTE -> AVAnimations.LAY_RELAX_EMOTE;
+            case ONE_ARM_LAY_EMOTE -> AVAnimations.ONE_ARM_LAY_EMOTE;
+            case SALUTE_LEFT_HAND_EMOTE -> AVAnimations.SALUTE_LEFT_HAND_EMOTE;
+            case SIT_NO_WEAPON_EMOTE -> AVAnimations.SIT_NO_WEAPON_EMOTE;
+            case SORROW_EMOTE -> AVAnimations.SORROW_EMOTE;
+            case SURRENDER_EMOTE -> AVAnimations.SURRENDER_EMOTE;
+            case ATTENTION_EMOTE -> AVAnimations.ATTENTION_EMOTE;
+            case FLAPPING_EMOTE -> AVAnimations.FLAPPING_EMOTE;
+            case FUN_JUMP_EMOTE -> AVAnimations.FUN_JUMP_EMOTE;
+            case JUMP_EMOTE -> AVAnimations.JUMP_EMOTE;
+            case PRONE_EMOTE -> AVAnimations.PRONE_EMOTE;
+            case SALUTE_EMOTE -> AVAnimations.SALUTE_EMOTE;
         };
     }
 
     private void tryBroadcastIdleMessage(IdleAnimation idle) {
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
         if (!AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()) return;
+
         if (mob instanceof PlayerNpcEntity playerNpcEntity && !playerNpcEntity.isIdleMessageBroadcast()) {
-            String msg = "<" + mob.getDisplayName().getString() + "> " + idleMessages
-                    .getOrDefault(idle, List.of("..."))
-                    .get(new Random().nextInt(idleMessages.get(idle).size()));
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
+            List<String> pool = idleMessageKeys.get(idle);
+            if (pool == null || pool.isEmpty()) return;
+
+            String key = pool.get(mob.getRandom().nextInt(pool.size()));
+
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.empty()
+                            .append(Component.literal("<"))
+                            .append(mob.getDisplayName())
+                            .append(Component.literal("> "))
+                            .append(Component.translatable(key)),
+                    false
+            );
+
             playerNpcEntity.setIdleMessageBroadcast(true);
         }
     }

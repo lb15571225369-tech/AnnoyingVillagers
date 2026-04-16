@@ -102,7 +102,7 @@ public class InfectedChrisEntity extends PathfinderMob {
             this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 2, 0, false, false));
-            livingEntityPatch.playAnimationSynchronized(AVAnimations.DEATH_IDLE, 0.0F);
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.DEATH_EMOTE, 0.0F);
         }
     }
 
