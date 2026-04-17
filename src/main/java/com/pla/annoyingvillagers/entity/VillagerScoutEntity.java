@@ -183,6 +183,14 @@ public class VillagerScoutEntity extends AVNpc {
                     new ItemStack(Items.ARROW),
                     new ItemStack(Items.ARROW),
                     new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+
+                    new ItemStack(AnnoyingVillagersModItems.ENCHANTED_ARROW.get()),
+                    new ItemStack(AnnoyingVillagersModItems.ENCHANTED_ARROW.get()),
+                    new ItemStack(AnnoyingVillagersModItems.ENCHANTED_ARROW.get()),
+                    new ItemStack(AnnoyingVillagersModItems.ENCHANTED_ARROW.get()),
 
                     new ItemStack(Items.GOLD_INGOT),
                     new ItemStack(Items.GOLD_INGOT),

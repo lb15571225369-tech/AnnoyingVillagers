@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -796,11 +795,6 @@ public class CombatCommon {
 
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());
         entity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-
-        if (entity instanceof VillagerScoutEntity && AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()
-                && !entity.level().isClientSide() && entity.level().getServer() != null) {
-            Objects.requireNonNull(entity.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Fire!"), false);
-        }
     }
 
     public static void switchWeapon(MobPatch<?> mobpatch) {

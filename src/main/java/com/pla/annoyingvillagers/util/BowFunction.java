@@ -1,5 +1,9 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -42,7 +46,16 @@ public class BowFunction {
             creativeOrInfinity = player.getAbilities().instabuild ||
                     EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, bowStack) > 0;
         } else {
-            arrowStack = new ItemStack(Items.ARROW);
+            if ((shooter instanceof VillagerScoutEntity
+                    || shooter instanceof RedVillagerGeneralEntity
+                    || shooter instanceof BlueVillagerGeneralEntity
+                    || shooter instanceof GreenVillagerGeneralEntity
+                    || shooter instanceof PurpleVillagerGeneralEntity
+                    || shooter instanceof VillagerScoutCaptainEntity) && ((AVNpc) shooter).getTarget() instanceof HerobrineMob){
+                arrowStack = new ItemStack(AnnoyingVillagersModItems.ENCHANTED_ARROW.get());
+            } else {
+                arrowStack = new ItemStack(Items.ARROW);
+            }
             creativeOrInfinity = true;
         }
 

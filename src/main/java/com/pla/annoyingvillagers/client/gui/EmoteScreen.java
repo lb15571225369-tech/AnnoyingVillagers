@@ -21,6 +21,7 @@ import java.util.List;
 public class EmoteScreen extends AbstractContainerScreen<EmoteMenu> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/empty.png");
+    private static int lastPage = 0;
 
     private static final int BUTTON_SIZE = 60;
 
@@ -45,8 +46,15 @@ public class EmoteScreen extends AbstractContainerScreen<EmoteMenu> {
 
     @Override
     protected void init() {
+        this.page = Math.max(0, Math.min(lastPage, EmoteActions.pageCount() - 1));
         super.init();
         rebuildPage();
+    }
+
+    @Override
+    public void onClose() {
+        lastPage = this.page;
+        super.onClose();
     }
 
     @Override
@@ -118,6 +126,7 @@ public class EmoteScreen extends AbstractContainerScreen<EmoteMenu> {
         int newPage = Math.max(0, Math.min(this.page + delta, EmoteActions.pageCount() - 1));
         if (newPage != this.page) {
             this.page = newPage;
+            lastPage = newPage;
             rebuildPage();
         }
     }
