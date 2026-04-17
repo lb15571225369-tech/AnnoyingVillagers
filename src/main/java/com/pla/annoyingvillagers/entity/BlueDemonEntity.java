@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.SauceType;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.goal.KeepPositionGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
@@ -33,6 +34,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -120,6 +122,21 @@ public class BlueDemonEntity extends Monster {
     private UUID savedKillerUUID;
     private float recentDamageTaken = 0.0F;
     private int recentHitCounter = 0;
+    private boolean neverLeave = false;
+    private int leaveTicks = 0;
+    private Vec3 leaveDirection = Vec3.ZERO;
+
+    public void setLeaveTicks(int leaveTicks) {
+        this.leaveTicks = leaveTicks;
+    }
+
+    public int getLeaveTicks() {
+        return leaveTicks;
+    }
+
+    public void setNeverLeave(boolean neverLeave) {
+        this.neverLeave = neverLeave;
+    }
 
     public void setStateTransformCooldown(int stateTransformCooldown) {
         this.stateTransformCooldown = stateTransformCooldown;
@@ -229,6 +246,70 @@ public class BlueDemonEntity extends Monster {
         }
 
         this.savedTargetUUID = null;
+    }
+
+    private boolean isLeavingNow() {
+        return !this.neverLeave && this.leaveTicks > 0 && this.leaveTicks <= 40;
+    }
+
+    private void updateLeaveDirectionFromThreat() {
+        Vec3 away;
+
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()) {
+            away = this.position().subtract(target.position());
+        } else if (this.getLastHurtByMob() != null && this.getLastHurtByMob().isAlive()) {
+            away = this.position().subtract(this.getLastHurtByMob().position());
+        } else {
+            away = new Vec3(-this.getLookAngle().x, 0.0D, -this.getLookAngle().z);
+        }
+
+        away = new Vec3(away.x, 0.0D, away.z);
+        if (away.lengthSqr() < 1.0E-4D) {
+            away = new Vec3(this.random.nextDouble() - 0.5D, 0.0D, this.random.nextDouble() - 0.5D);
+        }
+
+        this.leaveDirection = away.normalize();
+    }
+
+    private void tickLeaveRetreat() {
+        if (this.leaveDirection.lengthSqr() < 1.0E-4D) {
+            this.updateLeaveDirectionFromThreat();
+        }
+
+        this.setTarget(null);
+
+        double x = this.getX() + this.leaveDirection.x * 12.0D;
+        double z = this.getZ() + this.leaveDirection.z * 12.0D;
+
+        this.getNavigation().moveTo(x, this.getY(), z, 1.45D);
+        this.getLookControl().setLookAt(x, this.getEyeY(), z);
+    }
+
+    private void discardAllSauces(ServerLevel serverLevel) {
+        BbqEntity bbq = this.resolveAliveSauce(serverLevel, SauceType.BBQ_SAUCE);
+        BbqEntity honey = this.resolveAliveSauce(serverLevel, SauceType.HONEY_MUSTARD_SAUCE);
+        BbqEntity soy = this.resolveAliveSauce(serverLevel, SauceType.SOY_SAUCE);
+        BbqEntity sweet = this.resolveAliveSauce(serverLevel, SauceType.SWEET_ONION_SAUCE);
+
+        if (bbq != null) bbq.discard();
+        if (honey != null) honey.discard();
+        if (soy != null) soy.discard();
+        if (sweet != null) sweet.discard();
+
+        this.setSauce(SauceType.BBQ_SAUCE, null);
+        this.setSauce(SauceType.HONEY_MUSTARD_SAUCE, null);
+        this.setSauce(SauceType.SOY_SAUCE, null);
+        this.setSauce(SauceType.SWEET_ONION_SAUCE, null);
+    }
+
+    @Override
+    public void setTarget(@org.jetbrains.annotations.Nullable LivingEntity pTarget) {
+        if (this.isLeavingNow()) {
+            super.setTarget(null);
+            return;
+        }
+        super.setTarget(pTarget);
     }
 
     private void startSauceRetreat(SauceType sauceType) {
@@ -551,12 +632,8 @@ public class BlueDemonEntity extends Monster {
         CommonGoals.registerGoalForBlueDemonNpc(this);
     }
 
-    @Override
-    public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == MobEffects.POISON) {
-            return false;
-        }
-        return super.canBeAffected(effect);
+    public boolean canBeAffected(MobEffectInstance mobeffectinstance) {
+        return (mobeffectinstance.getEffect().getCategory() == MobEffectCategory.BENEFICIAL || mobeffectinstance.getEffect() == MobEffects.GLOWING) && super.canBeAffected(mobeffectinstance);
     }
 
     private boolean isAliveSauce(@Nullable BbqEntity sauce) {
@@ -1278,6 +1355,33 @@ public class BlueDemonEntity extends Monster {
                 return;
             }
 
+            if (!neverLeave) {
+                this.leaveTicks = this.leaveTicks - 1;
+                int remaining = this.leaveTicks;
+
+                if (remaining == 40) {
+                    this.setTarget(null);
+                    this.updateLeaveDirectionFromThreat();
+                    this.retreatAllSauces();
+                }
+
+                if (remaining <= 0) {
+                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                            Component.literal("<" + this.getName().getString() + "> " + Component.translatable("subtitles.blue_demon_retreat").getString()),
+                            false
+                    );
+
+                    this.discardAllSauces(serverLevel);
+                    this.discard();
+                    return;
+                }
+
+                if (this.isLeavingNow()) {
+                    this.tickLeaveRetreat();
+                    return;
+                }
+            }
+
             this.tickSquadArrival(serverLevel);
             if (healingTick != 0) {
                 if (healingTick > 0) {
@@ -1368,6 +1472,8 @@ public class BlueDemonEntity extends Monster {
         tag.putInt("SquadArrivalTicks", this.squadArrivalTicks);
         tag.putBoolean("SpawnedBbqSauce", this.spawnedBbqSauce);
         tag.putInt("DieTick", this.dieTick);
+        tag.putInt("LeaveTicks", leaveTicks);
+        tag.putBoolean("NeverLeave", neverLeave);
     }
 
     @Override
@@ -1407,6 +1513,8 @@ public class BlueDemonEntity extends Monster {
         this.squadArrivalTicks = tag.contains("SquadArrivalTicks") ? tag.getInt("SquadArrivalTicks") : -1;
         this.spawnedBbqSauce = tag.getBoolean("SpawnedBbqSauce");
         this.dieTick = tag.getInt("DieTick");
+        leaveTicks = tag.getInt("LeaveTicks");
+        neverLeave = tag.getBoolean("NeverLeave");
     }
 
     public void rollItem() {
@@ -1455,6 +1563,11 @@ public class BlueDemonEntity extends Monster {
             BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
             this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
+        int min = AnnoyingVillagersConfig.BLUE_DEMON_LEAVE_MIN_TIME.get();
+        int max = AnnoyingVillagersConfig.BLUE_DEMON_LEAVE_MAX_TIME.get();
+        int randomMin = Math.min(min, max);
+        int randomMax = Math.max(min, max);
+        this.leaveTicks = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
         return data;
     }
 

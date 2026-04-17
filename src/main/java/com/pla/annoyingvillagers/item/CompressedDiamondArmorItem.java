@@ -10,8 +10,8 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
     public CompressedDiamondArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
             @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
+            public int getDurabilityForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 13 * 71;  // 923
                     case LEGGINGS   -> 15 * 71;  // 1065
@@ -30,12 +30,12 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
             }
 
             @Override
-            public int getDefenseForType(ArmorItem.Type type) {
+            public int getDefenseForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 5;
-                    case LEGGINGS   -> 6;
-                    case CHESTPLATE -> 8;
-                    case HELMET     -> 6;
+                    case LEGGINGS   -> 8;
+                    case CHESTPLATE -> 9;
+                    case HELMET     -> 7;
                 };
             }
 
@@ -43,15 +43,15 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
                 return 10;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
+            public @NotNull SoundEvent getEquipSound() {
+                return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get()), new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack[]{new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get()), new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND)});
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "compressed_diamond_armor";
             }
 

@@ -25,12 +25,12 @@ public final class AnnoyingVillagersSpawnConfig {
 
     public static final List<Entry> ENTRIES = List.of(
             configurableGroupEntry("player_npc", 6, 2, 4, "Player NPC"),
-            configurableGroupEntry("villager_scout", 12, 1, 4, "Villager Scout"),
+            configurableGroupEntry("villager_scout", 4, 1, 4, "Villager Scout"),
             configurableGroupEntry("villager_scout_captain", 3, 1, 2, "Villager Scout Captain"),
             configurableGroupEntry("purple_villager_general", 3, 1, 2, "Purple Villager General"),
-            configurableGroupEntry("red_villager_general", 4, 1, 3, "Red Villager General"),
-            configurableGroupEntry("blue_villager_general", 5, 1, 3, "Blue Villager General"),
-            configurableGroupEntry("green_villager_general", 3, 1, 1, "Green Villager General"),
+            configurableGroupEntry("red_villager_general", 3, 1, 2, "Red Villager General"),
+            configurableGroupEntry("blue_villager_general", 3, 1, 2, "Blue Villager General"),
+            configurableGroupEntry("green_villager_general", 3, 1, 2, "Green Villager General"),
 
             fixedGroupEntry("steve", 1, "Steve"),
             fixedGroupEntry("alex", 1, "Alex"),

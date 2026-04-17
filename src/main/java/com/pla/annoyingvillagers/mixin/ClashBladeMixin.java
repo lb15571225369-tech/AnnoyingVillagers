@@ -38,13 +38,17 @@ public class ClashBladeMixin {
                                                        PlayerPatch<?> playerPatch,
                                                        ServerLevel serverLevel,
                                                        CallbackInfoReturnable<Integer> cir) {
-        if (EscapeUtil.isAnimationDangerous(dynamicAnimation)) {
-            if (ModList.get().isLoaded("efn")) {
-                if (EpicFightNightFall.isEfnWeapons(playerPatch.getOriginal().getMainHandItem()) && CommonUtil.isAvDamageableEfnWeaponsMob(damageSource.getEntity())) {
-                    cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get() * EpicFightNightFall.MULTIPLIER_DAMAGE_VALUE);
+        if (ModList.get().isLoaded("efn")) {
+            if (EpicFightNightFall.isEfnWeapons(playerPatch.getOriginal().getMainHandItem())) {
+                if (CommonUtil.isAvDamageableEfnWeaponsMob(damageSource.getEntity())) {
+                    if (EscapeUtil.isAnimationDangerous(dynamicAnimation)) {
+                        cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get() * EpicFightNightFall.MULTIPLIER_DAMAGE_VALUE);
+                    } else {
+                        cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get());
+                    }
                 }
+                cir.setReturnValue(0);
             }
-            cir.setReturnValue(AnnoyingVillagersConfig.WEAPON_BREAKING_MECHANISM_VALUE.get());
         }
     }
 
