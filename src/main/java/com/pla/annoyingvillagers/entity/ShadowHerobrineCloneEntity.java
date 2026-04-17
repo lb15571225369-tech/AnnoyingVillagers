@@ -21,6 +21,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 public class ShadowHerobrineCloneEntity extends HerobrineMob {
     public ShadowHerobrineCloneEntity(SpawnEntity spawnEntity, Level level) {
@@ -86,14 +87,19 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
     }
 
     public static Builder createAttributes() {
-        Builder builder = Mob.createMobAttributes();
-
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
-        builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
-        builder = builder.add(Attributes.ARMOR, 40.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
-        builder = builder.add(Attributes.ATTACK_KNOCKBACK, 2.0D);
-        return builder;
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 100.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.ARMOR, 40.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 4.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 25.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 100.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 60.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }

@@ -19,9 +19,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -35,6 +38,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,6 +52,7 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -181,6 +187,58 @@ public class AngrySteveEntity extends AVNpc {
             this.setEnderPearlCooldown();
         }
         return super.hurt(damageSource, f);
+    }
+
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - f1;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
+        }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            float cap = this.getMaxHealth() * 0.05F;
+            f1 = Mth.clamp(f1, 0.0F, cap);
+
+            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
+            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
+
+            f1 *= damageScale;
+
+            if (this.recentHitCounter >= 5) {
+                f1 = 0.1F;
+            } else {
+                f1 *= hitScale;
+            }
+
+            this.recentHitCounter++;
+            this.recentDamageTaken += f1;
+        }
+        if (f1 <= 0.0F) {
+            return;
+        }
+        this.getCombatTracker().recordDamage(pDamageSource, f1);
+        this.setHealth(this.getHealth() - f1);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
     }
 
     @Override
@@ -410,13 +468,19 @@ public class AngrySteveEntity extends AVNpc {
     }
 
     public static Builder createAttributes() {
-        Builder builder = Mob.createMobAttributes();
-
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
-        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
-        builder = builder.add(Attributes.ARMOR, 50.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
-        return builder;
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 250.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.ARMOR, 50.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 4.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 25.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 100.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 60.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }

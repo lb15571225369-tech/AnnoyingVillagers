@@ -25,7 +25,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -99,6 +101,8 @@ public class HerobrineMob extends Monster {
     private int swapWeaponCooldown;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
+    private float recentDamageTaken = 0.0F;
+    private int recentHitCounter = 0;
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -562,6 +566,24 @@ public class HerobrineMob extends Monster {
             return;
         }
         f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            float cap = this.getMaxHealth() * 0.1F;
+            f1 = Mth.clamp(f1, 0.0F, cap);
+
+            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
+            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
+
+            f1 *= damageScale;
+
+            if (this.recentHitCounter >= 5) {
+                f1 = 0.1F;
+            } else {
+                f1 *= hitScale;
+            }
+
+            this.recentHitCounter++;
+            this.recentDamageTaken += f1;
+        }
         if (f1 <= 0.0F) {
             return;
         }
@@ -845,6 +867,14 @@ public class HerobrineMob extends Monster {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (this.level() instanceof ServerLevel serverLevel) {
+            if (recentDamageTaken > 0.0F) {
+                recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
+            }
+
+            if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
+                recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
+            }
+
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
             if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;

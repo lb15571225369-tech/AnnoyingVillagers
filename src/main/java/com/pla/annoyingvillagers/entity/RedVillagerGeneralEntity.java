@@ -44,6 +44,7 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.Objects;
 import java.util.Random;
@@ -291,13 +292,19 @@ public class RedVillagerGeneralEntity extends AVNpc {
     }
 
     public static Builder createAttributes() {
-        Builder builder = Mob.createMobAttributes();
-
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
-        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
-        builder = builder.add(Attributes.ARMOR, 7.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
-        return builder;
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.ATTACK_DAMAGE, 0.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.ARMOR, 30.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 2.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 15.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 50.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 30.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }

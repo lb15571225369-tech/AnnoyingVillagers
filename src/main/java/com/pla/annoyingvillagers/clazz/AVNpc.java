@@ -12,6 +12,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -58,6 +59,8 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean isStrolling;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
+    protected float recentDamageTaken = 0.0F;
+    protected int recentHitCounter = 0;
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -459,6 +462,14 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (this.tickCount == 1 && !this.initialSpawn) {
             implementFirstTick((ServerLevel) this.level());
             this.initialSpawn = true;
+        }
+
+        if (recentDamageTaken > 0.0F) {
+            recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
+        }
+
+        if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
+            recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
         }
 
         if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {

@@ -27,6 +27,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -69,6 +70,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 public class BlueDemonEntity extends Monster {
     @Nullable
@@ -116,6 +118,8 @@ public class BlueDemonEntity extends Monster {
     private int dieTick = -1;
     @Nullable
     private UUID savedKillerUUID;
+    private float recentDamageTaken = 0.0F;
+    private int recentHitCounter = 0;
 
     public void setStateTransformCooldown(int stateTransformCooldown) {
         this.stateTransformCooldown = stateTransformCooldown;
@@ -1223,6 +1227,13 @@ public class BlueDemonEntity extends Monster {
         }
 
         if (this.level() instanceof ServerLevel serverLevel) {
+            if (recentDamageTaken > 0.0F) {
+                recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
+            }
+
+            if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
+                recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
+            }
             if (!this.spawnedBbqSauce) {
                 this.ensureSauceExists(SauceType.BBQ_SAUCE);
                 this.spawnedBbqSauce = true;
@@ -1501,6 +1512,25 @@ public class BlueDemonEntity extends Monster {
             return;
         }
         f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            float cap = this.getMaxHealth() * 0.05F;
+            f1 = Mth.clamp(f1, 0.0F, cap);
+
+            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
+            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
+
+            f1 *= damageScale;
+
+            if (this.recentHitCounter >= 5) {
+                f1 = 0.1F;
+            } else {
+                f1 *= hitScale;
+            }
+
+            this.recentHitCounter++;
+            this.recentDamageTaken += f1;
+        }
         if (f1 <= 0.0F) {
             return;
         }
@@ -1518,12 +1548,20 @@ public class BlueDemonEntity extends Monster {
         }
     }
 
-    public static @NotNull Builder createAttributes() {
-        return Zombie.createAttributes()
-                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+    public static Builder createAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 300.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.ARMOR, 75.0D)
-                .add(Attributes.ATTACK_DAMAGE, 0.0D)
-                .add(Attributes.FOLLOW_RANGE, 48.0D);
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 4.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 25.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 100.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 60.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }

@@ -17,6 +17,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -45,6 +47,7 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -218,6 +221,24 @@ public class AlexEntity extends AVNpc {
             return;
         }
         f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            float cap = this.getMaxHealth() * 0.1F;
+            f1 = Mth.clamp(f1, 0.0F, cap);
+
+            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
+            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
+
+            f1 *= damageScale;
+
+            if (this.recentHitCounter >= 5) {
+                f1 = 0.1F;
+            } else {
+                f1 *= hitScale;
+            }
+
+            this.recentHitCounter++;
+            this.recentDamageTaken += f1;
+        }
         if (f1 <= 0.0F) {
             return;
         }
@@ -410,14 +431,19 @@ public class AlexEntity extends AVNpc {
     }
 
     public static Builder createAttributes() {
-        Builder builder = Mob.createMobAttributes();
-
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
-        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
-        builder = builder.add(Attributes.ARMOR, 30.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
-        builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 5.0D);
-        return builder;
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.45D)
+                .add(Attributes.ATTACK_DAMAGE, 0.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.ARMOR, 30.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 2.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 15.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 50.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 30.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }

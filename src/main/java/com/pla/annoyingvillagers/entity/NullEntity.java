@@ -44,6 +44,7 @@ import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 public class NullEntity extends HerobrineMob {
     private NullWeapon nullSwordEntity;
@@ -921,14 +922,20 @@ public class NullEntity extends HerobrineMob {
     }
 
     public static Builder createAttributes() {
-        Builder builder = Mob.createMobAttributes();
-
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 3.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
-        builder = builder.add(Attributes.ARMOR, 75.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 90.0D);
-        builder = builder.add(Attributes.FLYING_SPEED, 3.0D);
-        return builder;
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 250.0D)
+                .add(Attributes.MOVEMENT_SPEED, 3.0D)
+                .add(Attributes.FLYING_SPEED, 3.0D)
+                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.ARMOR, 75.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                .add(EpicFightAttributes.IMPACT.get(), 4.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 25.0D)
+                .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
+                .add(EpicFightAttributes.MAX_STRIKES.get(), 100.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(), 60.0D)
+                .add(EpicFightAttributes.STAMINA_REGEN.get(), 1.5D);
     }
 }
