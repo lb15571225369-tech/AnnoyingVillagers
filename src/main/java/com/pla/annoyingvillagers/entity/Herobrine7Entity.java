@@ -14,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -48,6 +49,9 @@ public class Herobrine7Entity extends HerobrineMob {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (!(damagesource.getDirectEntity() instanceof EnchantedArrowEntity)
+                && damagesource.getDirectEntity() instanceof AbstractArrow
+                && !(damagesource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         return super.hurt(damagesource, f);
     }
 

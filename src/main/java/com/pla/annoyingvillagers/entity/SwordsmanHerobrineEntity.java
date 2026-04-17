@@ -48,7 +48,9 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.getDirectEntity() instanceof AbstractArrow && !(damagesource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
+        if (!(damagesource.getDirectEntity() instanceof EnchantedArrowEntity)
+                && damagesource.getDirectEntity() instanceof AbstractArrow
+                && !(damagesource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         return super.hurt(damagesource, f);
     }
 

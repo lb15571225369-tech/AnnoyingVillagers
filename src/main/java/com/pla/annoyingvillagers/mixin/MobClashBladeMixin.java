@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.item.EnchantedArrowItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -140,16 +141,9 @@ public class MobClashBladeMixin {
             }
 
             if (defender instanceof HerobrineMob herobrineMob) {
-                if ((defender instanceof HerobrineCloneEntity
-                        || defender instanceof ShadowHerobrineCloneEntity
-                        || defender instanceof HerobrineChrisEntity
-                        || defender instanceof Herobrine7Entity
-                        || defender instanceof ArmoredHerobrineEntity)) {
+                if (!(projectile instanceof AbstractArrow) || projectile instanceof EnchantedArrowEntity || projectile instanceof BlueDemonThrownTridentEntity) {
                     herobrineMob.setBlockDamage(projectile);
                     cir.setReturnValue(true);
-                } else if (!(projectile instanceof AbstractArrow && !(projectile instanceof BlueDemonThrownTridentEntity))) {
-                    cir.setReturnValue(true);
-                    return;
                 }
             }
 

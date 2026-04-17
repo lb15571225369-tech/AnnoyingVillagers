@@ -166,7 +166,9 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         if (damageSource.is(DamageTypes.DROWN)) return false;
         if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damageSource.getDirectEntity() instanceof AbstractArrow && !(damageSource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
+        if (!(damageSource.getDirectEntity() instanceof EnchantedArrowEntity)
+                && damageSource.getDirectEntity() instanceof AbstractArrow
+                && !(damageSource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         return super.hurt(damageSource, f);
     }
 

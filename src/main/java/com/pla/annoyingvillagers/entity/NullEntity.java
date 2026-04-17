@@ -437,7 +437,9 @@ public class NullEntity extends HerobrineMob {
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
         if (damageSource.is(DamageTypes.ON_FIRE)) return false;
         if (damageSource.is(DamageTypes.IN_FIRE)) return false;
-        if (damageSource.getDirectEntity() instanceof AbstractArrow && !(damageSource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
+        if (!(damageSource.getDirectEntity() instanceof EnchantedArrowEntity)
+                && damageSource.getDirectEntity() instanceof AbstractArrow
+                && !(damageSource.getDirectEntity() instanceof BlueDemonThrownTridentEntity)) return false;
         if (new Random().nextFloat() <= (this.getState() == 2 ? 0.5F : 0.25F)) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 randomlyParryWithWeapon(serverLevel, damageSource.getEntity());

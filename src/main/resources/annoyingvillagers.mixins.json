@@ -59,7 +59,9 @@
     "client.WeaponInnateSkillMixin",
     "client.HumanoidArmorLayerMixin",
     "client.ItemRendererMixin",
-    "client.WearableItemLayerMixin"
+    "client.WearableItemLayerMixin",
+    "client.ArrowLayerMixin",
+    "client.PatchedArrowLayerMixin"
   ],
   "minVersion": "0.8"
 }
