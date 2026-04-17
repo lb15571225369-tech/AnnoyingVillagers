@@ -64,6 +64,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
@@ -449,6 +450,7 @@ public class HerobrineGregEntity extends Monster {
                 this.summoning = true;
                 this.summonTiming = 20;
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
+                this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 120, 3, false, false));
             }
 
             if (this.getHealth() <= 2 && this.summonTiming == -1) {
@@ -461,6 +463,7 @@ public class HerobrineGregEntity extends Monster {
                 this.summonTiming = 20;
                 this.setHealth(1);
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
+                this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 120, 3, false, false));
             }
 
             if (this.summonTiming > 0) {

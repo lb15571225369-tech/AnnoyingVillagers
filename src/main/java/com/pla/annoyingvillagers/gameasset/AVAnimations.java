@@ -919,6 +919,14 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
                         .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel) {
+                                        if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
+                                            blueDemonEntity.setState(1);
+                                            blueDemonEntity.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
+                                        }
+                                    }
+                                }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, p) -> {

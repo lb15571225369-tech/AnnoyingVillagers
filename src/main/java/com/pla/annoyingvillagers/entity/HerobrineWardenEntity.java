@@ -277,6 +277,10 @@ public class HerobrineWardenEntity extends Warden {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
+        if (pSource.is(DamageTypes.FELL_OUT_OF_WORLD)
+                || pSource.is(DamageTypes.GENERIC_KILL)) {
+            return super.hurt(pSource, pAmount);
+        }
         if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL) && this.level() instanceof ServerLevel serverLevel) {
             this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,

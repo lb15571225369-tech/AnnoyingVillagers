@@ -820,6 +820,10 @@ public class BlueDemonEntity extends Monster {
         if (damagesource.is(DamageTypes.TRIDENT)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.getDirectEntity() instanceof ThrownPoisonEggEntity) return false;
+        if (damagesource.is(DamageTypes.FELL_OUT_OF_WORLD)
+                || damagesource.is(DamageTypes.GENERIC_KILL)) {
+            return super.hurt(damagesource, f);
+        }
         if (this.level() instanceof ServerLevel serverLevel && (this.getState() == 2 || this.getState() == 1)) {
             if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
                 this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
@@ -1312,8 +1316,6 @@ public class BlueDemonEntity extends Monster {
             }
 
             if (this.getState() == 3) {
-                this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
-                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 3, 3));
                 this.tickShockSauceOrders(this.getSauce(SauceType.HONEY_MUSTARD_SAUCE));
                 this.tickShockSauceOrders(this.getSauce(SauceType.SOY_SAUCE));
                 this.tickSweetOnionOrders(this.getSauce(SauceType.SWEET_ONION_SAUCE));
@@ -1448,6 +1450,9 @@ public class BlueDemonEntity extends Monster {
     public static boolean canSpawn(EntityType<BlueDemonEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (!serverLevel.isThundering()) return false;
+        if (serverLevel.isNight()) {
+            return false;
+        }
         if (BluedemonData.get(serverLevel).isOccupied(serverLevel)) {
             return false;
         }
@@ -1482,10 +1487,8 @@ public class BlueDemonEntity extends Monster {
         if (this.level() instanceof ServerLevel
                 && this.getState() == 0 && (this.getHealth() - f1) <= 1.0F) {
             this.setHealth(1.0F);
-            this.setState(1);
             BlueDemonTridentItem.addStormEnergy(this.getMainHandItem(), 100);
             BlueDemonTridentItem.addStormEnergy(this.getOffhandItem(), 100);
-            this.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
             if (this.getLivingEntityPatch() != null) {
                 this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.TRIDENT_FESTIVAL, 0.0F);
             }
