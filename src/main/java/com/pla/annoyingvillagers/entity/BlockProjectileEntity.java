@@ -122,10 +122,16 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                     1.0F, 1.0F
             );
 
+            float damage = 2.0F;
+            if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())
+                    || getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get())
+                    || getCarriedBlock().is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get())) {
+                damage = 10.0F;
+            }
             if (this.getOwner() == null) {
-                target.hurt(target.level().damageSources().generic(), 2.0F);
+                target.hurt(target.level().damageSources().generic(), damage);
             } else {
-                target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), 2.0F);
+                target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), damage);
             }
 
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
