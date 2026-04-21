@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
+import com.pla.annoyingvillagers.client.engine.CameraEngine;
 import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersSpawnConfig;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
@@ -80,6 +81,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModMenus.register(modEventBus);
 
         if (FMLEnvironment.dist.isClient()) {
+            modEventBus.addListener(this::clientSetup);
             modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);
         }
     }
@@ -93,6 +95,10 @@ public class AnnoyingVillagers {
     public static <T> void addNetworkMessage(Class<T> oclass, BiConsumer<T, FriendlyByteBuf> biconsumer, Function<FriendlyByteBuf, T> function, BiConsumer<T, Supplier<Context>> biconsumer1) {
         AnnoyingVillagers.PACKET_HANDLER.registerMessage(AnnoyingVillagers.messageID, oclass, biconsumer, function, biconsumer1);
         ++AnnoyingVillagers.messageID;
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
+        new CameraEngine();
     }
 
     @EventBusSubscriber(bus = Bus.MOD)
@@ -152,6 +158,12 @@ public class AnnoyingVillagers {
                     BreakEmoteMessage::encode,
                     BreakEmoteMessage::decode,
                     BreakEmoteMessage::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
+                    CPApplyShake.class,
+                    CPApplyShake::encode,
+                    CPApplyShake::new,
+                    CPApplyShake::handle
             );
         }
     }

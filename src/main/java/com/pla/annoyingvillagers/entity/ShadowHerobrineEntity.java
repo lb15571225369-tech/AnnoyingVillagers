@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianSwordItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -128,9 +129,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                     this.darkObUp.moveTo(livingEntity.blockPosition().getCenter());
                     shootOne(this.darkObUp, livingEntity.getOnPos().getCenter(), 2.0F, "up", this);
                     this.darkObParryCooldown = 40;
-                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                            this, this.darkObUp);
+                    EpicfightUtil.damageBlocked(damageSource, this.darkObUp, serverLevel);
                     if (!isDarkObReady()) {
                         this.summonDarkObCooldown = new Random().nextInt(200, 600);
                     }
@@ -139,9 +138,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                     this.darkObRight.moveTo(livingEntity.blockPosition().getCenter());
                     shootOne(this.darkObRight, livingEntity.getOnPos().getCenter(), 2.0F, "right", this);
                     this.darkObParryCooldown = 40;
-                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                            this, this.darkObRight);
+                    EpicfightUtil.damageBlocked(damageSource, this.darkObRight, serverLevel);
                     if (!isDarkObReady()) {
                         this.summonDarkObCooldown = new Random().nextInt(200, 600);
                     }
@@ -150,9 +147,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                     this.darkObLeft.moveTo(livingEntity.blockPosition().getCenter());
                     shootOne(this.darkObLeft, livingEntity.getOnPos().getCenter(), 2.0F, "left", this);
                     this.darkObParryCooldown = 40;
-                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                            this, this.darkObLeft);
+                    EpicfightUtil.damageBlocked(damageSource, this.darkObLeft, serverLevel);
                     if (!isDarkObReady()) {
                         this.summonDarkObCooldown = new Random().nextInt(200, 600);
                     }
@@ -621,7 +616,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.ATTACK_DAMAGE, 20.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
-                .add(Attributes.ARMOR, 75.0D)
+                .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 4.0D)

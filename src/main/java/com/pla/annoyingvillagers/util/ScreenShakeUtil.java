@@ -1,12 +1,16 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.network.CPApplyShake;
+import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 
 public class ScreenShakeUtil {
     public static void applyScreenShake(ServerLevel level, Vec3 center, double range,
@@ -20,14 +24,10 @@ public class ScreenShakeUtil {
             double distSq = player.distanceToSqr(center.x, center.y, center.z);
             if (distSq > rangeSq) continue;
 
-            player.addEffect(new MobEffectInstance(
-                    AnnoyingVillagersModMobEffects.SCREEN_SHAKE.get(),
-                    durationTicks,
-                    amplifier,
-                    false,
-                    false,
-                    true
-            ));
+            AnnoyingVillagers.PACKET_HANDLER.send(
+                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                    new CPApplyShake(durationTicks, amplifier, (float) durationTicks / 10, 1)
+            );
         }
     }
 }

@@ -88,6 +88,15 @@ All required upstream notices must be preserved.
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/epicfight_valour_guard
 
+### B2) Epic Fight - Impactful - namelesslk - LGPL-2.1
+- Type: code adapted
+- License text: `third_party/licenses/LGPL-2.1.md`
+- Source: https://github.com/Cyber2049/Epic-Fight-Impactful
+
+**Paths / Files**
+- com/pla/annoyingvillagers/network/CPApplyShake
+- com/pla/annoyingvillagers/client/CameraEngine
+
 ---
 
 ## C) MIT Components

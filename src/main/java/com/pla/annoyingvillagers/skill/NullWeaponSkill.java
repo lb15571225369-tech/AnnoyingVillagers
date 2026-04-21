@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import com.pla.annoyingvillagers.item.NullWeaponItem;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -178,8 +179,8 @@ public class NullWeaponSkill extends WeaponInnateSkill {
                         nullWeapon.moveTo(player.getX(), player.getY(), player.getZ(), nullWeapon.getYRot(), nullWeapon.getXRot());
                         pre.setCanceled(true);
                         pre.setResult(AttackResult.ResultType.BLOCKED);
-
-                        pre.getPlayerPatch().playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                        
+                        EpicfightUtil.damageBlocked(pre.getDamageSource(), player, serverLevel);
                         nullWeapon.spinfor5seconds();
 
                         EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(

@@ -67,9 +67,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
                 Objects.requireNonNull(this.getLivingEntityPatch()).playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
                 HerobrineCommon.playSecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()));
                 this.heal(4.0F);
-                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                        this, this);
+                EpicfightUtil.damageBlocked(damagesource, this, serverLevel);
                 return false;
             }
         }
@@ -111,7 +109,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.ATTACK_DAMAGE, 20.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
-                .add(Attributes.ARMOR, 40.0D)
+                .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 4.0D)

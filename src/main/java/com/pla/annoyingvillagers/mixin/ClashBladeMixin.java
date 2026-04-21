@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EscapeUtil;
+import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import com.pla.efclash_blade.skill.ClashBladeSkill;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,6 +59,6 @@ public class ClashBladeMixin {
                                                   PlayerPatch<?> playerPatch,
                                                   ServerLevel serverLevel,
                                                   CallbackInfo ci) {
-//        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] moreLogicAfterClashing is called with animation played: {}, for mob {}", dynamicAnimation, damageSource.getEntity() != null ? damageSource.getEntity().getDisplayName().getString() : "null");
+        ScreenShakeUtil.applyScreenShake(serverLevel, playerPatch.getOriginal().getOnPos().getCenter(), 1.0, 20, 4);
     }
 }

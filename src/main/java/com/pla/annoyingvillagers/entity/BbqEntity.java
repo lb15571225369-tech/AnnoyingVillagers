@@ -3,15 +3,18 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.clazz.*;
 import com.pla.annoyingvillagers.entity.goal.EscapeAvoidGoal;
 import com.pla.annoyingvillagers.entity.goal.FollowEscapeLeaderGoal;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -30,7 +33,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +81,9 @@ public class BbqEntity extends Chicken {
     private UUID pendingDeathEscapeLeaderUUID;
     private boolean deathWatchMode;
     private boolean selfKill = false;
+
+    private float recentDamageTaken = 0.0F;
+    private int recentHitCounter = 0;
 
     public boolean isEscapeFlying() {
         return this.escapeMode && this.escapeFlying;
@@ -965,6 +973,14 @@ public class BbqEntity extends Chicken {
             return;
         }
 
+        if (recentDamageTaken > 0.0F) {
+            recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
+        }
+
+        if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
+            recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
+        }
+
         if (this.selfKill) {
             this.kill();
             return;
@@ -1117,7 +1133,7 @@ public class BbqEntity extends Chicken {
             this.selfKill = true;
             return false;
         }
-        boolean result = super.hurt(damageSource, 1.0F);
+        boolean result = super.hurt(damageSource, amount);
 
         if (result && !this.level().isClientSide && damageSource.getEntity() instanceof LivingEntity livingEntity) {
             if (this.deathAssemblyMode || this.deathWatchMode) {
@@ -1135,6 +1151,58 @@ public class BbqEntity extends Chicken {
             }
         }
         return result;
+    }
+
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - f1;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
+        }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            float cap = this.getMaxHealth() * 0.025F;
+            f1 = Mth.clamp(f1, 0.0F, cap);
+
+            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
+            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
+
+            f1 *= damageScale;
+
+            if (this.recentHitCounter >= 5) {
+                f1 = 0.1F;
+            } else {
+                f1 *= hitScale;
+            }
+
+            this.recentHitCounter++;
+            this.recentDamageTaken += f1;
+        }
+        if (f1 <= 0.0F) {
+            return;
+        }
+        this.getCombatTracker().recordDamage(pDamageSource, f1);
+        this.setHealth(this.getHealth() - f1);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
     }
 
     @Override
@@ -1199,7 +1267,7 @@ public class BbqEntity extends Chicken {
         return Mob.createMobAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.27D)
                 .add(Attributes.MAX_HEALTH, 75.0D)
-                .add(Attributes.ARMOR, 40.0D)
+                .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ATTACK_DAMAGE, 7.0D)
                 .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0D);

@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -117,11 +118,10 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                     if (entitySubtract.dot(entityViewVector) > (double)0.0F) {
                         pre.setCanceled(true);
                         pre.setResult(AttackResult.ResultType.BLOCKED);
-                        playerPatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2, 0.0F, entity.getLookAngle().z * -0.2));
                         serverPlayer.setDeltaMovement(new Vec3(serverPlayer.getLookAngle().x * -0.2, 0.0F, serverPlayer.getLookAngle().z * -0.2));
                         if (serverPlayer.level() instanceof ServerLevel serverLevel) {
-                            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverPlayer, damageSource.getEntity());
+                            EpicfightUtil.damageBlocked(damageSource, serverPlayer, serverLevel);
                         }
                         enderAegisSkill.setDurationSynchronize(skillContainer, skillContainer.getRemainDuration() + 40);
                     }

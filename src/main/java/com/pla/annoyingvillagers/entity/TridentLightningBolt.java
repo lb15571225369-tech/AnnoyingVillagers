@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.google.common.collect.Sets;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModDamageTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -147,7 +148,7 @@ public class TridentLightningBolt extends LightningBolt {
                             this.getZ(),
                             serverLevel.random.nextFloat() * 5.0F + 5.0F,
                             false,
-                            Level.ExplosionInteraction.BLOCK
+                            AnnoyingVillagersConfig.TRIDENT_FESTIVAL_CAN_BREAK_BLOCK.get() ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE
                     );
                 }
 

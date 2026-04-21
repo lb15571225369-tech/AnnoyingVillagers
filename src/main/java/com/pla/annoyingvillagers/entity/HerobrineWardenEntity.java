@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -281,10 +282,8 @@ public class HerobrineWardenEntity extends Warden {
                 || pSource.is(DamageTypes.GENERIC_KILL)) {
             return super.hurt(pSource, pAmount);
         }
-        if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL) && this.level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                    this, pSource.getEntity());
+        if (this.level() instanceof ServerLevel serverLevel) {
+            EpicfightUtil.damageBlocked(pSource, this, serverLevel);
         }
         return false;
     }

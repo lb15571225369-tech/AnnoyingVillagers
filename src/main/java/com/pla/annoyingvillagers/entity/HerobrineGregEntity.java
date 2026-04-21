@@ -14,6 +14,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.HerobrinePortalUtil;
 import com.pla.annoyingvillagers.spawnhandler.GregData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
@@ -965,9 +966,7 @@ public class HerobrineGregEntity extends Monster {
             return false;
         } else if (this.getHealth() == 1 || this.combatMode) {
             if (this.level() instanceof ServerLevel serverLevel) {
-                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                        this, pSource.getEntity());
+                EpicfightUtil.damageBlocked(pSource, this, serverLevel);
             }
             return false;
         }

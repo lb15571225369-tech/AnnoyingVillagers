@@ -4,7 +4,9 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,6 +27,7 @@ import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -142,6 +145,26 @@ public class EpicfightUtil {
                     });
                 }
             }
+        }
+    }
+
+    public static void damageBlocked(DamageSource damagesource, Entity livingentity, ServerLevel level) {
+        if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
+            livingentity.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+        }
+        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(level, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                livingentity, damagesource.getEntity());
+        if (damagesource.getEntity() instanceof Player player) {
+            ScreenShakeUtil.applyScreenShake(level, player.getOnPos().getCenter(), 1.0, 20, 4);
+        }
+    }
+
+    public static void damageBlockedForce(Entity defender, Entity attacker, ServerLevel level) {
+        defender.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(level, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                defender, attacker);
+        if (attacker instanceof Player player) {
+            ScreenShakeUtil.applyScreenShake(level, player.getOnPos().getCenter(), 1.0, 20, 4);
         }
     }
 }

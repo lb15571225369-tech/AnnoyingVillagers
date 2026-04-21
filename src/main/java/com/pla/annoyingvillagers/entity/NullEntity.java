@@ -175,11 +175,9 @@ public class NullEntity extends HerobrineMob {
 
         if (weapons.isEmpty()) return;
         NullWeapon chosen = weapons.get(this.getRandom().nextInt(weapons.size()));
-        chosen.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+        EpicfightUtil.damageBlockedForce(chosen, attacker, serverLevel);
         chosen.moveTo(this.getX(), this.getY(), this.getZ());
         chosen.spinfor5seconds();
-        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel,
-                HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this, attacker);
     }
 
 
@@ -930,7 +928,7 @@ public class NullEntity extends HerobrineMob {
                 .add(Attributes.FLYING_SPEED, 3.0D)
                 .add(Attributes.ATTACK_DAMAGE, 20.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
-                .add(Attributes.ARMOR, 75.0D)
+                .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 4.0D)

@@ -4,9 +4,11 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -159,7 +161,9 @@ public class TridentFestivalSkill extends WeaponInnateSkill {
                 if (entitySubtract.dot(entityViewVector) > 0.0D) {
                     pre.setCanceled(true);
                     pre.setResult(AttackResult.ResultType.BLOCKED);
-                    playerPatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                    if (playerPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                        EpicfightUtil.damageBlocked(pre.getDamageSource(), playerPatch.getOriginal(), serverLevel);
+                    }
                     if (new Random().nextBoolean()) {
                         playerPatch.playAnimationSynchronized(AVAnimations.TRIDENT_GUARD_HIT_1, 0.0F);
                     } else {

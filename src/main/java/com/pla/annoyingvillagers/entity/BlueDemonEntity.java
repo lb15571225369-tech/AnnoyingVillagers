@@ -906,11 +906,7 @@ public class BlueDemonEntity extends Monster {
             return super.hurt(damagesource, f);
         }
         if (this.level() instanceof ServerLevel serverLevel && (this.getState() == 2 || this.getState() == 1)) {
-            if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
-                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-            }
-            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                    this, damagesource.getEntity());
+            EpicfightUtil.damageBlocked(damagesource, this, serverLevel);
             return false;
         }
 
@@ -1625,7 +1621,6 @@ public class BlueDemonEntity extends Monster {
             return;
         }
         f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
-        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
         if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             float cap = this.getMaxHealth() * 0.05F;
             f1 = Mth.clamp(f1, 0.0F, cap);
@@ -1667,7 +1662,7 @@ public class BlueDemonEntity extends Monster {
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
                 .add(Attributes.ATTACK_DAMAGE, 20.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
-                .add(Attributes.ARMOR, 75.0D)
+                .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 4.0D)

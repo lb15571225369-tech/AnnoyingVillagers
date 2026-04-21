@@ -122,13 +122,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         if (healing) {
             if (new Random().nextBoolean()
                     && this.level() instanceof ServerLevel serverLevel) {
-                if (!damageSource.is(DamageTypes.IN_WALL)
-                        && !damageSource.is(DamageTypes.IN_FIRE)
-                        && !damageSource.is(DamageTypes.ON_FIRE)) {
-                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                            this, damageSource.getEntity());
-                }
+                EpicfightUtil.damageBlocked(damageSource, this, serverLevel);
                 return false;
             } else {
                 float health = this.getHealth();

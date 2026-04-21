@@ -214,7 +214,7 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
 
     private void explode(ServerLevel serverLevel, double d0, double d1, double d2) {
         serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.NONE);
-        ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
+        ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 20, 6);
 
         BlockState cryingObsidianBlock = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
                 .defaultBlockState()

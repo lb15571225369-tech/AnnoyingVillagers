@@ -483,9 +483,7 @@ public class SnakeBladeEntity extends Entity {
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float amount) {
         if (!this.level().isClientSide() && this.level() instanceof ServerLevel serverLevel && !pSource.is(DamageTypes.IN_WALL)) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
-            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
-                    this, pSource.getEntity());
+            EpicfightUtil.damageBlocked(pSource, this, serverLevel);
         }
         return false;
     }

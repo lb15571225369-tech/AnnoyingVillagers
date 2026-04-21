@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.skill;
 
 import com.google.common.collect.Lists;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -87,13 +88,12 @@ public class BedrockWeaponSkill extends WeaponInnateSkill {
                 if (entity != null) {
                     pre.setCanceled(true);
                     pre.setResult(AttackResult.ResultType.BLOCKED);
-                    playerPatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                     playerPatch.playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
                     entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2, 0.0F, entity.getLookAngle().z * -0.2));
                     serverPlayer.setDeltaMovement(new Vec3(serverPlayer.getLookAngle().x * -0.2, 0.0F, serverPlayer.getLookAngle().z * -0.2));
                     serverPlayer.heal(2.0F);
                     if (serverPlayer.level() instanceof ServerLevel serverLevel) {
-                        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverPlayer, damageSource.getEntity());
+                        EpicfightUtil.damageBlocked(damageSource, serverPlayer, serverLevel);
                     }
                 }
             }

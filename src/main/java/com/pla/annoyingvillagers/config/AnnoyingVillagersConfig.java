@@ -14,6 +14,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Integer> ANGRY_STEVE_LEAVE_MAX_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> BLUE_DEMON_LEAVE_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> BLUE_DEMON_LEAVE_MAX_TIME;
+    public static ForgeConfigSpec.ConfigValue<Boolean> TRIDENT_FESTIVAL_CAN_BREAK_BLOCK;
     public static ForgeConfigSpec.ConfigValue<Double> KICK_STAMINA_DECREASE_PERCENTAGE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
@@ -71,6 +72,10 @@ public class AnnoyingVillagersConfig {
                         "The maximum value (in minutes) for Blue Demon's random leave time. This value should be greater than or equal to the minimum. " +
                                 "After a random time between min and max, Blue Demon will feel bored and go away.")
                 .defineInRange("blueDemonLeaveMaxTime", 300, 1, 10080);
+
+        TRIDENT_FESTIVAL_CAN_BREAK_BLOCK = BUILDER.comment(
+                        "Make Trident Festival can break block")
+                .define("tridentFestivalCanBreakBlock", true);
 
         KICK_STAMINA_DECREASE_PERCENTAGE = BUILDER.comment(
                         "Mob's stamina will be decreased by this percentage when get hit by Kick")

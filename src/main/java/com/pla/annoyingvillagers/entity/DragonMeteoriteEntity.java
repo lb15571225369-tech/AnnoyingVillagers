@@ -204,7 +204,7 @@ public class DragonMeteoriteEntity extends PathfinderMob {
 
             if (this.onGround() || this.isInWall() || (posToAim != null && this.position().distanceToSqr(posToAim) < 1.0D)) {
                 serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.MOB);
-                ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
+                ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 20, 6);
 
                 RandomSource randomSource = serverLevel.getRandom();
                 BlockState endfireState = AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState();
