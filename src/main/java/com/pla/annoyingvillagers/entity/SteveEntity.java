@@ -2,14 +2,11 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
-import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
@@ -20,13 +17,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,18 +33,10 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.api.animation.AnimationPlayer;
-import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.ArrayList;
@@ -144,114 +130,32 @@ public class SteveEntity extends AVNpc {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
-    public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
-        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
-        if (livingEntityPatch != null) {
-            AnimationPlayer animationPlayer = livingEntityPatch.getAnimator().getPlayerFor(null);
-            if (animationPlayer != null) {
-                dynamicAnimation = animationPlayer.getRealAnimation();
-            }
-        }
-
-        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
-                && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
-                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
-            AVNpc entity = this;
-            if (entity.getLivingEntityPatch() != null) {
-                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-            }
-            CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
-
-            if (Math.random() <= 0.5D) {
-                new DelayedTask(20) {
-                    @Override
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                        }
-                    }
-                };
-            }
-
-            if (Math.random() <= 0.3D) {
-                new DelayedTask(20) {
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
-                        }
-                    }
-                };
-            }
-
-            this.setEnderPearlCooldown();
-        }
-        return super.hurt(damageSource, f);
+    @Override
+    protected boolean hasEnderPearlCounter() {
+        return true;
     }
 
     @Override
-    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
-        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
-            super.actuallyHurt(pDamageSource, pDamageAmount);
-            return;
-        }
+    protected void doEnderPearlCounterPattern(@NotNull DamageSource damageSource) {
+        this.doSteveStyleEnderPearlCounter();
+    }
 
-        if (this.isInvulnerableTo(pDamageSource)) {
-            return;
-        }
-
-        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
-        if (pDamageAmount <= 0.0F) {
-            return;
-        }
-
-        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
-        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
-
-        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
-        float absorbed = pDamageAmount - f1;
-        if (absorbed > 0.0F) {
-            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
-            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
-        }
-        if (this.level() instanceof ServerLevel
-                && this.state == 0 && (this.getHealth() - f1) <= 1.0F
-                && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+    @Override
+    protected boolean afterBurstProtection(@NotNull ServerLevel serverLevel,
+                                           @NotNull DamageSource source,
+                                           float finalDamage) {
+        if (this.state == 0
+                && (this.getHealth() - finalDamage) <= 1.0F
+                && !this.getOffhandItem().is(Items.TOTEM_OF_UNDYING)) {
             this.setHealth(1.0F);
-            return;
+            return true;
         }
-        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
-        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            float cap = this.getMaxHealth() * 0.1F;
-            f1 = Mth.clamp(f1, 0.0F, cap);
+        return false;
+    }
 
-            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
-            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
-
-            f1 *= damageScale;
-
-            if (this.recentHitCounter >= 5) {
-                f1 = 0.1F;
-            } else {
-                f1 *= hitScale;
-            }
-
-            this.recentHitCounter++;
-            this.recentDamageTaken += f1;
-        }
-        if (f1 <= 0.0F) {
-            return;
-        }
-        this.getCombatTracker().recordDamage(pDamageSource, f1);
-        this.setHealth(this.getHealth() - f1);
-        this.gameEvent(GameEvent.ENTITY_DAMAGE);
+    @Override
+    public float getBurstProtectCapRatio() {
+        return 0.25F;
     }
 
     @Override

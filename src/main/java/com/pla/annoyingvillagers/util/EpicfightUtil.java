@@ -81,6 +81,12 @@ public class EpicfightUtil {
                 || ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch);
     }
 
+    public static boolean isDamagableHitAnimation(AssetAccessor<? extends StaticAnimation> dynamicAnimation, LivingEntityPatch<?> livingEntityPatch) {
+        return dynamicAnimation.get() instanceof ExecutionHitAnimation
+                || dynamicAnimation.get() instanceof KnockdownAnimation
+                || ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch);
+    }
+
     public static void dealStaminaDamageByPercentage(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch, double percentage, boolean playStunAnimation) {
         float decrease = 0.0F;
         if (livingEntityPatch instanceof CEHumanoidPatch) {

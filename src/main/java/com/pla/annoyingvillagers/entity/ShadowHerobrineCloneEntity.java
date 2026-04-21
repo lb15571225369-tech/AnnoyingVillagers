@@ -93,7 +93,7 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
-                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 10.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)

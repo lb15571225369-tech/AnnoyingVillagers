@@ -1,15 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.task.DelayedTask;
-import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.RidingUtil;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,14 +18,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -39,13 +32,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.api.animation.AnimationPlayer;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -101,65 +87,24 @@ public class VillagerScoutCaptainEntity extends AVNpc {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.death"));
     }
 
-    public boolean hurt(DamageSource damageSource, float f) {
-        LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
-        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
-        if (livingEntityPatch != null) {
-            AnimationPlayer animationPlayer = livingEntityPatch.getAnimator().getPlayerFor(null);
-            if (animationPlayer != null) {
-                dynamicAnimation = animationPlayer.getRealAnimation();
-            }
-        }
+    @Override
+    protected boolean hasEnderPearlCounter() {
+        return true;
+    }
 
-        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
-                && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
-                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
-            AVNpc entity = this;
+    @Override
+    protected void beforeEnderPearlCounter(@NotNull DamageSource damageSource) {
+        this.swapOffhandDuringEnderPearlCounter(new ItemStack(Items.DIAMOND_SWORD), 120);
+    }
 
-            if (entity.getLivingEntityPatch() != null) {
-                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-            }
-            CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
+    @Override
+    protected ItemStack getEnderPearlCounterRestoreOffhandItem() {
+        return new ItemStack(Items.ENDER_PEARL);
+    }
 
-            if (Math.random() <= 0.5D) {
-                new DelayedTask(20) {
-                    @Override
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                        }
-                    }
-                };
-            }
-
-            this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
-            new DelayedTask(120) {
-                public void run() {
-                    if (entity.isAlive()) {
-                        entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
-                    }
-                }
-            };
-
-            if (Math.random() <= 0.3D) {
-                new DelayedTask(20) {
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
-                        }
-                    }
-                };
-            }
-            this.setEnderPearlCooldown();
-        }
-        return super.hurt(damageSource, f);
+    @Override
+    protected void doEnderPearlCounterPattern(@NotNull DamageSource damageSource) {
+        this.doSteveStyleEnderPearlCounter();
     }
 
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
@@ -190,24 +135,8 @@ public class VillagerScoutCaptainEntity extends AVNpc {
     protected void implementFirstTick(ServerLevel serverLevel) {
         super.implementFirstTick(serverLevel);
 
-        if (new Random().nextInt() <= 0.3D) {
-            Sheep sheep = EntityType.SHEEP.create(serverLevel);
-            if (sheep != null) {
-                sheep.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                sheep.setPersistenceRequired();
-                sheep.finalizeSpawn(
-                        serverLevel,
-                        serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                        MobSpawnType.MOB_SUMMONED,
-                        null,
-                        null
-                );
-                serverLevel.addFreshEntity(sheep);
-                this.startRiding(sheep);
-                sheep.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
-                sheep.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1, false, false));
-                sheep.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
-            }
+        if (new Random().nextDouble() <= 0.3D) {
+            RidingUtil.rideRandomAnimal(serverLevel, this);
         }
     }
 

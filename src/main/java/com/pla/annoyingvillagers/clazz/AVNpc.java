@@ -1,9 +1,11 @@
 package com.pla.annoyingvillagers.clazz;
 
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
 import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -12,9 +14,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
@@ -24,19 +27,24 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class AVNpc extends PathfinderMob implements RangedAttackMob {
+public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtectEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
@@ -59,8 +67,28 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean isStrolling;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
+
     protected float recentDamageTaken = 0.0F;
     protected int recentHitCounter = 0;
+    @Override
+    public float getRecentDamageTaken() {
+        return recentDamageTaken;
+    }
+
+    @Override
+    public void setRecentDamageTaken(float value) {
+        recentDamageTaken = value;
+    }
+
+    @Override
+    public int getRecentHitCounter() {
+        return recentHitCounter;
+    }
+
+    @Override
+    public void setRecentHitCounter(int value) {
+        recentHitCounter = value;
+    }
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -455,6 +483,196 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     }
 
     @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.hasEnderPearlCounter()) {
+            this.tryTriggerEnderPearlCounter(damageSource);
+        }
+        return super.hurt(damageSource, f);
+    }
+
+    protected boolean hasEnderPearlCounter() {
+        return false;
+    }
+
+    protected void beforeEnderPearlCounter(@NotNull DamageSource damageSource) {
+    }
+
+    protected void afterEnderPearlCounter(@NotNull DamageSource damageSource) {
+    }
+
+    protected void doEnderPearlCounterPattern(@NotNull DamageSource damageSource) {
+        this.throwEnderPearlNow(180.0F);
+    }
+
+    protected void playEnderPearlCounterAnimation() {
+        if (this.getLivingEntityPatch() != null) {
+            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+        }
+    }
+
+    protected void throwEnderPearlNow(float angle) {
+        CombatBehaviour.throwEnderPearl(this, angle);
+    }
+
+    protected void throwEnderPearlLater(int delayTicks, float angle) {
+        AVNpc entity = this;
+        new DelayedTask(delayTicks) {
+            @Override
+            public void run() {
+                if (!entity.isAlive()) return;
+                entity.playEnderPearlCounterAnimation();
+                entity.throwEnderPearlNow(angle);
+            }
+        };
+    }
+
+    protected void throwEnderPearlLater(int delayTicks, double chance, float angle) {
+        if (this.random.nextDouble() <= chance) {
+            this.throwEnderPearlLater(delayTicks, angle);
+        }
+    }
+
+    protected void doChrisStyleEnderPearlCounter() {
+        this.throwEnderPearlNow(180.0F);
+        this.throwEnderPearlLater(20, 0.2D, 90.0F);
+    }
+
+    protected void doSteveStyleEnderPearlCounter() {
+        this.throwEnderPearlNow(new Random().nextFloat(90.0F, 180.0F));
+        this.throwEnderPearlLater(20, 0.5D, 180.0F);
+        this.throwEnderPearlLater(20, 0.3D, 90.0F);
+    }
+
+    protected void doVillagerGeneralStyleEnderPearlCounter() {
+        this.throwEnderPearlNow(new Random().nextFloat(90.0F, 180.0F));
+        this.throwEnderPearlLater(40, 0.5D, 0.0F);
+        this.throwEnderPearlLater(20, 0.2D, 180.0F);
+        this.throwEnderPearlLater(20, 0.1D, 90.0F);
+    }
+
+    protected AssetAccessor<? extends StaticAnimation> getCurrentAnimationOrEmpty() {
+        LivingEntityPatch<?> patch = this.getLivingEntityPatch();
+        if (patch == null) {
+            return Animations.EMPTY_ANIMATION;
+        }
+
+        AnimationPlayer player = patch.getAnimator().getPlayerFor(null);
+        return player != null ? player.getRealAnimation() : Animations.EMPTY_ANIMATION;
+    }
+
+    protected void tryTriggerEnderPearlCounter(@NotNull DamageSource damageSource) {
+        LivingEntityPatch<?> patch = this.getLivingEntityPatch();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = this.getCurrentAnimationOrEmpty();
+
+        if (damageSource.getEntity() == null) {
+            return;
+        }
+
+        if (this.getEnderPearlCooldown() != 0) {
+            return;
+        }
+
+        if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, patch)) {
+            return;
+        }
+
+        if (!(this.level() instanceof ServerLevel)) {
+            return;
+        }
+
+        if (dynamicAnimation != Animations.EMPTY_ANIMATION) {
+            return;
+        }
+
+        if (!(patch instanceof MobPatch<?> mobPatch)) {
+            return;
+        }
+
+        if (!CombatCommon.canPerformNormalAttackLogic(mobPatch)) {
+            return;
+        }
+
+        this.beforeEnderPearlCounter(damageSource);
+        this.playEnderPearlCounterAnimation();
+        this.doEnderPearlCounterPattern(damageSource);
+        this.afterEnderPearlCounter(damageSource);
+        this.setEnderPearlCooldown();
+    }
+
+    protected ItemStack getEnderPearlCounterRestoreOffhandItem() {
+        return this.getOffWeaponItem().copy();
+    }
+
+    protected void restoreOffhandLater(int delayTicks) {
+        AVNpc entity = this;
+        ItemStack restore = this.getEnderPearlCounterRestoreOffhandItem().copy();
+
+        new DelayedTask(delayTicks) {
+            @Override
+            public void run() {
+                if (!entity.isAlive()) return;
+                entity.setItemInHand(InteractionHand.OFF_HAND, restore.copy());
+            }
+        };
+    }
+
+    protected void swapOffhandDuringEnderPearlCounter(ItemStack temporaryOffhand, int restoreDelayTicks) {
+        this.setItemInHand(InteractionHand.OFF_HAND, temporaryOffhand.copy());
+        this.restoreOffhandLater(restoreDelayTicks);
+    }
+
+    protected boolean afterBurstProtection(@NotNull ServerLevel serverLevel,
+                                           @NotNull DamageSource source,
+                                           float finalDamage) {
+        return false;
+    }
+
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float finalDamage = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - finalDamage;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) {
+                this.setAbsorptionAmount(0.0F);
+            }
+        }
+
+        finalDamage = ForgeHooks.onLivingDamage(this, pDamageSource, finalDamage);
+        finalDamage = this.applyBurstProtection(this, pDamageSource, finalDamage);
+
+        if (this.level() instanceof ServerLevel serverLevel
+                && this.afterBurstProtection(serverLevel, pDamageSource, finalDamage)) {
+            return;
+        }
+
+        if (finalDamage <= 0.0F) {
+            return;
+        }
+
+        this.getCombatTracker().recordDamage(pDamageSource, finalDamage);
+        this.setHealth(this.getHealth() - finalDamage);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
@@ -464,13 +682,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
             this.initialSpawn = true;
         }
 
-        if (recentDamageTaken > 0.0F) {
-            recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
-        }
-
-        if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
-            recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
-        }
+        this.tickBurstProtectionDecay(this);
 
         if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
             if (getLivingEntityPatch() != null) {

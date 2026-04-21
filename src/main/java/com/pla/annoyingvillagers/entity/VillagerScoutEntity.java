@@ -3,8 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -34,12 +32,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.api.animation.AnimationPlayer;
-import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
 import java.util.Random;
@@ -93,65 +85,24 @@ public class VillagerScoutEntity extends AVNpc {
         return false;
     }
 
-    public boolean hurt(DamageSource damageSource, float f) {
-        LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
-        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
-        if (livingEntityPatch != null) {
-            AnimationPlayer animationPlayer = livingEntityPatch.getAnimator().getPlayerFor(null);
-            if (animationPlayer != null) {
-                dynamicAnimation = animationPlayer.getRealAnimation();
-            }
-        }
+    @Override
+    protected boolean hasEnderPearlCounter() {
+        return true;
+    }
 
-        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
-                && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
-                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
-            AVNpc entity = this;
+    @Override
+    protected void beforeEnderPearlCounter(@NotNull DamageSource damageSource) {
+        this.swapOffhandDuringEnderPearlCounter(new ItemStack(Items.IRON_SWORD), 120);
+    }
 
-            if (entity.getLivingEntityPatch() != null) {
-                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-            }
-            CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
+    @Override
+    protected ItemStack getEnderPearlCounterRestoreOffhandItem() {
+        return new ItemStack(Items.ENDER_PEARL);
+    }
 
-            if (Math.random() <= 0.5D) {
-                new DelayedTask(20) {
-                    @Override
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                        }
-                    }
-                };
-            }
-
-            this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.IRON_SWORD));
-            new DelayedTask(120) {
-                public void run() {
-                    if (entity.isAlive()) {
-                        entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
-                    }
-                }
-            };
-
-            if (Math.random() <= 0.3D) {
-                new DelayedTask(20) {
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (entity.getLivingEntityPatch() != null) {
-                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
-                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
-                        }
-                    }
-                };
-            }
-            this.setEnderPearlCooldown();
-        }
-        return super.hurt(damageSource, f);
+    @Override
+    protected void doEnderPearlCounterPattern(@NotNull DamageSource damageSource) {
+        this.doSteveStyleEnderPearlCounter();
     }
 
     public void die(@NotNull DamageSource damagesource) {
@@ -276,7 +227,7 @@ public class VillagerScoutEntity extends AVNpc {
     @Override
     protected void implementFirstTick(ServerLevel serverLevel) {
         super.implementFirstTick(serverLevel);
-        if (new Random().nextInt() <= 0.3D) {
+        if (new Random().nextDouble() <= 0.3D) {
             RidingUtil.rideRandomAnimal(serverLevel, this);
         }
     }

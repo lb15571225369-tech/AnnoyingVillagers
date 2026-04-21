@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.clazz.BurstProtectEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.SauceType;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
@@ -28,7 +29,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -42,9 +42,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -61,20 +59,17 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import java.util.*;
 
 import net.minecraft.util.RandomSource;
-import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
-import yesman.epicfight.world.effect.EpicFightMobEffects;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
-public class BlueDemonEntity extends Monster {
+public class BlueDemonEntity extends Monster implements BurstProtectEntity {
     @Nullable
     private BbqEntity bbqSauce;
     @Nullable
@@ -120,11 +115,31 @@ public class BlueDemonEntity extends Monster {
     private int dieTick = -1;
     @Nullable
     private UUID savedKillerUUID;
-    private float recentDamageTaken = 0.0F;
-    private int recentHitCounter = 0;
     private boolean neverLeave = false;
     private int leaveTicks = 0;
     private Vec3 leaveDirection = Vec3.ZERO;
+
+    protected float recentDamageTaken = 0.0F;
+    protected int recentHitCounter = 0;
+    @Override
+    public float getRecentDamageTaken() {
+        return recentDamageTaken;
+    }
+
+    @Override
+    public void setRecentDamageTaken(float value) {
+        recentDamageTaken = value;
+    }
+
+    @Override
+    public int getRecentHitCounter() {
+        return recentHitCounter;
+    }
+
+    @Override
+    public void setRecentHitCounter(int value) {
+        recentHitCounter = value;
+    }
 
     public void setLeaveTicks(int leaveTicks) {
         this.leaveTicks = leaveTicks;
@@ -892,6 +907,11 @@ public class BlueDemonEntity extends Monster {
         return null;
     }
 
+    @Override
+    public float getBurstProtectCapRatio() {
+        return 0.05F;
+    }
+
     public boolean hurt(DamageSource damagesource, float f) {
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
@@ -1300,13 +1320,8 @@ public class BlueDemonEntity extends Monster {
         }
 
         if (this.level() instanceof ServerLevel serverLevel) {
-            if (recentDamageTaken > 0.0F) {
-                recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
-            }
+            this.tickBurstProtectionDecay(this);
 
-            if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
-                recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
-            }
             if (!this.spawnedBbqSauce) {
                 this.ensureSauceExists(SauceType.BBQ_SAUCE);
                 this.spawnedBbqSauce = true;
@@ -1604,6 +1619,8 @@ public class BlueDemonEntity extends Monster {
             this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
             if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
         }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        f1 = this.applyBurstProtection(this, pDamageSource, f1);
         if (this.level() instanceof ServerLevel
                 && this.getState() == 0 && (this.getHealth() - f1) <= 1.0F) {
             this.setHealth(1.0F);
@@ -1619,25 +1636,6 @@ public class BlueDemonEntity extends Monster {
                 && (this.getHealth() - f1) <= 1.0F) {
             this.startFinalDeathSequence(serverLevel, pDamageSource);
             return;
-        }
-        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
-        if (!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            float cap = this.getMaxHealth() * 0.05F;
-            f1 = Mth.clamp(f1, 0.0F, cap);
-
-            float damageScale = 1.0F - Mth.clamp(this.recentDamageTaken / (this.getMaxHealth() * 0.07F), 0.0F, 0.9F);
-            float hitScale = 1.0F - Mth.clamp((float) this.recentHitCounter / 5.0F, 0.0F, 0.9F);
-
-            f1 *= damageScale;
-
-            if (this.recentHitCounter >= 5) {
-                f1 = 0.1F;
-            } else {
-                f1 *= hitScale;
-            }
-
-            this.recentHitCounter++;
-            this.recentDamageTaken += f1;
         }
         if (f1 <= 0.0F) {
             return;
@@ -1660,7 +1658,7 @@ public class BlueDemonEntity extends Monster {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 300.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.45D)
-                .add(Attributes.ATTACK_DAMAGE, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 15.0D)
                 .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
