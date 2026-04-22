@@ -242,19 +242,19 @@ public final class ColoredGlintRenderTypes extends RenderType {
             ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_lime.png");
 
     private static final ResourceLocation MAGENTA_TEX =
-            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_magenta_orange.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_magenta.png");
 
     private static final ResourceLocation PINK_TEX =
-            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_pink_cyan.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_pink.png");
 
     private static final ResourceLocation PURPLE_TEX =
-            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_purple_orange.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_purple.png");
 
     private static final ResourceLocation RED_TEX =
-            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_red_cyan.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_red.png");
 
     private static final ResourceLocation YELLOW_TEX =
-            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_yellow_orange.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_yellow.png");
 
     public static final RenderType GLINT_DIRECT_ORANGE = glintDirect("orange", ORANGE_TEX);
     public static final RenderType ENTITY_GLINT_DIRECT_ORANGE = entityGlintDirect("orange", ORANGE_TEX);

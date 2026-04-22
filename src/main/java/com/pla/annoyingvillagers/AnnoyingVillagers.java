@@ -75,8 +75,6 @@ public class AnnoyingVillagers {
         biomeModifiers.register(modEventBus);
         biomeModifiers.register("av_mob_spawns", AVMobSpawnBiomeModifier::makeCodec);
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersSpawnConfig.SPEC, "annoyingvillagers-spawns.toml");
-        AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
-        AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
         AVSkillDataKeys.DATA_KEYS.register(modEventBus);
         AnnoyingVillagersModMenus.register(modEventBus);
 
@@ -134,12 +132,6 @@ public class AnnoyingVillagers {
                     ClientboundLitePortalFx::encode,
                     ClientboundLitePortalFx::decode,
                     ClientboundLitePortalFx::handle
-            );
-            AnnoyingVillagers.addNetworkMessage(
-                    KickMessage.class,
-                    KickMessage::buffer,
-                    KickMessage::new,
-                    KickMessage::handle
             );
             AnnoyingVillagers.addNetworkMessage(
                     EmoteButtonMessage.class,

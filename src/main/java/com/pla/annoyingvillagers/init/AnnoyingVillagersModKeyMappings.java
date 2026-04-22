@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.init;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.network.KickMessage;
 import com.pla.annoyingvillagers.network.OpenEmoteMenuMessage;
 import com.pla.annoyingvillagers.network.SpecialAttackMessage;
 import com.pla.annoyingvillagers.network.ThrowingEnderPearlMessage;
@@ -20,37 +19,6 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class AnnoyingVillagersModKeyMappings {
-    public static final KeyMapping KICK = new KeyMapping(
-            "key.annoyingvillagers.kick",
-            GLFW.GLFW_KEY_X,
-            "key.categories.annoyingvillagers"
-    ) {
-        private boolean isDownOld = false;
-
-        @Override
-        public void setDown(boolean flag) {
-            super.setDown(flag);
-
-            if (this.isDownOld != flag && flag) {
-                int strafe = readStrafeAD();
-                AnnoyingVillagers.PACKET_HANDLER.sendToServer(new KickMessage(strafe));
-            }
-
-            this.isDownOld = flag;
-        }
-    };
-
-    private static int readStrafeAD() {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) return 0;
-
-        boolean left = mc.options.keyLeft.isDown();
-        boolean right = mc.options.keyRight.isDown();
-
-        if (left == right) return 0;
-        return left ? -1 : 1;
-    }
-
     public static final KeyMapping SPECIAL_ATTACK = new KeyMapping(
             "key.annoyingvillagers.special_attack",
             GLFW.GLFW_KEY_C,
@@ -122,7 +90,6 @@ public class AnnoyingVillagersModKeyMappings {
 
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
-        event.register(KICK);
         event.register(SPECIAL_ATTACK);
         event.register(THROW_ENDER_PEARL);
         event.register(DRAGON_FLIGHT_DESCENT_KEY);
@@ -150,7 +117,6 @@ public class AnnoyingVillagersModKeyMappings {
             }
 
             if (mc.screen == null) {
-                KICK.consumeClick();
                 SPECIAL_ATTACK.consumeClick();
                 THROW_ENDER_PEARL.consumeClick();
             }

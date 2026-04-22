@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.efkick.gameasset.EFKickAnimations;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
@@ -138,7 +139,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -169,7 +170,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -205,7 +206,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -221,7 +222,7 @@ public class HerobrineShadowObsidianPillar {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 4.0D)
-                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -262,7 +263,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -295,7 +296,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -326,7 +327,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -362,7 +363,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -388,7 +389,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -421,7 +422,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -452,7 +453,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -483,7 +484,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -514,7 +515,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -545,7 +546,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -578,7 +579,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -609,7 +610,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -640,7 +641,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -671,7 +672,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -702,7 +703,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -735,7 +736,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -766,7 +767,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -797,7 +798,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -828,7 +829,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -859,7 +860,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -943,25 +944,25 @@ public class HerobrineShadowObsidianPillar {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                             )
             )
             .newBehaviorRoot(
@@ -1160,7 +1161,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1191,7 +1192,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1227,7 +1228,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -1243,7 +1244,7 @@ public class HerobrineShadowObsidianPillar {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 4.0D)
-                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1284,7 +1285,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1317,7 +1318,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1348,7 +1349,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1384,7 +1385,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -1410,7 +1411,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1440,7 +1441,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1471,7 +1472,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1502,7 +1503,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1533,7 +1534,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1564,7 +1565,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1594,7 +1595,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1625,7 +1626,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1656,7 +1657,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1687,7 +1688,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1718,7 +1719,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1748,7 +1749,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1779,7 +1780,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1810,7 +1811,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1841,7 +1842,7 @@ public class HerobrineShadowObsidianPillar {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -1925,25 +1926,25 @@ public class HerobrineShadowObsidianPillar {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                             )
             )
             .newBehaviorRoot(

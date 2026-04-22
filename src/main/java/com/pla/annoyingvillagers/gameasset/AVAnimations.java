@@ -95,7 +95,6 @@ package com.pla.annoyingvillagers.gameasset;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
-import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
@@ -208,8 +207,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK;
 
     // Animation from EpicFight Infernal Gainer
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_COMBO;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_3;
@@ -273,12 +270,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD2;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD3;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_H;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_1;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_2;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_3;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_4;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_RUSH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_UP;
     public static AnimationManager.AnimationAccessor<RushSwordAnimation> RUSH_SWORD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DUAL_DANCING_EDGE;
@@ -347,7 +338,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> AXE_FUN_SKILL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LEGENDARY_SWORD_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_FIST_DASH;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_WHIRLWIND_KICK;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
@@ -492,9 +482,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL;
     public static AnimationManager.AnimationAccessor<MovementAnimation> OLD_MOONLESS_RUN;
     public static AnimationManager.AnimationAccessor<MovementAnimation> TRIDENT_TWO_HAND_RUN;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_STRONG_KICK;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_3;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_STRONG_PUNCH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM;
@@ -630,48 +617,6 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
 
         // Animation from EpicFight Infernal Gainer
-        AVAnimations.KICK_C = builder.nextAccessor("biped/epicfight_infernal_gainer/kick_c",
-                (accessor) -> (new KickAttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.4F, 0.45F, 0.49F, 0.49F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.49F, 0.5F, 0.55F, 0.59F, 0.59F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.59F, 0.6F, 0.65F, 0.69F, 0.69F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.69F, 0.7F, 0.75F, 0.79F, 0.79F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.79F, 0.8F, 0.85F, 0.9F, Float.MAX_VALUE, humanoidArmature.get().legL, WOMWeaponColliders.KICK)))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F), 1)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F), 2)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F), 3)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F), 4)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 2)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 3)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 4)
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get(), 1)
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get(), 2)
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get(), 3)
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get(), 4)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_COMBO = builder.nextAccessor("biped/epicfight_infernal_gainer/kick_combo",
-                (accessor) -> (new KickAttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.15F, 0.25F, 0.3F, 0.3F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.3F, 0.35F, 0.45F, 0.5F, 0.5F, humanoidArmature.get().legR, WOMWeaponColliders.KICK), new Phase(0.5F, 0.55F, 0.65F, 0.7F, 0.7F, humanoidArmature.get().legL, WOMWeaponColliders.KICK), new Phase(0.7F, 0.75F, 0.85F, 0.9F, 0.9F, humanoidArmature.get().legR, WOMWeaponColliders.KICK), new Phase(0.9F, 1.05F, 1.15F, 1.8F, Float.MAX_VALUE, humanoidArmature.get().legR, WOMWeaponColliders.KICK)))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.25F))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.25F), 1)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25F), 2)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.25F), 3)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.5F), 4)
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(5.8F), 4)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 1)
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 1)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 2)
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 2)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 3)
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 3)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 2)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 3)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG, 4)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.INFERNAL_AUTO_1 = builder.nextAccessor("biped/epicfight_infernal_gainer/infernal_auto_1",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.3F, 0.4F, 0.5F, ColliderPreset.FIST, humanoidArmature.get().toolL, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
@@ -1084,49 +1029,6 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
-        AVAnimations.KICK_H = builder.nextAccessor("biped/pugilist_steve/kick_h",
-                (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.4F, 0.4F, 0.8F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(5.0F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_1 = builder.nextAccessor("biped/pugilist_steve/kick_1",
-                (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.4F, 0.4F, 0.5F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(3.0F))
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_2 = builder.nextAccessor("biped/pugilist_steve/kick_2",
-                (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.4F, 0.4F, 0.4F, WOMWeaponColliders.KICK, humanoidArmature.get().legL, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(2.0F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_3 = builder.nextAccessor("biped/pugilist_steve/kick_3",
-                (accessor) -> (new KickAttackAnimation(0.05F, 0.05F, 0.3F, 0.4F, 0.6F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature))
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(5.0F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_4 = builder.nextAccessor("biped/pugilist_steve/kick_4",
-                (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.4F, 0.4F, 0.4F, WOMWeaponColliders.KICK, humanoidArmature.get().legL, accessor, humanoidArmature))
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KICK_RUSH = builder.nextAccessor("biped/pugilist_steve/kick_rush",
-                (accessor) -> (new KickAttackAnimation(0.05F, 0.05F, 0.1F, 0.4F, 0.6F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature))
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, AVSounds.KICK.get())
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(6.0F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.FIST_UP = builder.nextAccessor("biped/pugilist_steve/fist_up",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.25F, 0.45F, 0.85F, 0.95F, WOMWeaponColliders.KICK, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
@@ -1631,19 +1533,6 @@ public class AVAnimations {
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.THROW_OBSIDIAN, Side.SERVER)
-                        ));
-        AVAnimations.OBSIDIAN_WHIRLWIND_KICK = builder.nextAccessor("biped/pugilist_steve/obsidian_whirlwind_kick",
-                (accessor) -> (new KickAttackAnimation(0.2F, 0.29F, 0.45F, 0.85F, 1.8F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addEvents(
-                                new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER)
-                                                .params(EpicFightSounds.WHOOSH.get())})
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.65F, ReuseableEvents.SUMMON_6_OBSIDIAN_LEG_RIGHT, Side.SERVER)
                         ));
         AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG = builder.nextAccessor("biped/pugilist_steve/shadow_obsidian_sword_onehand_long",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.15F, 0.2F, 0.3F, 0.75F, AVCollider.SHADOW_OBSIDIAN_PILLAR, humanoidArmature.get().toolR, accessor, humanoidArmature))
@@ -3577,53 +3466,6 @@ public class AVAnimations {
                 (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
         AVAnimations.TRIDENT_TWO_HAND_RUN = builder.nextAccessor("biped/wom_clone/trident_two_hand_run",
                 (accessor) -> new MovementAnimation(0.1F, true, accessor, humanoidArmature));
-        AVAnimations.OBSIDIAN_STRONG_KICK = builder.nextAccessor("biped/wom_clone/obsidian_kick",
-                (accessor) -> (new KickAttackAnimation(0.1F, 0.05F, 0.0F, 0.15F, 0.35F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(2.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(2.0F))
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
-                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.0F)
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
-                                    if (!livingEntityPatch.isLogicalClient()) {
-                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-                                    }
-                                }, Side.SERVER)
-                        ));
-        AVAnimations.OBSIDIAN_KICK_AUTO_3 = builder.nextAccessor("biped/wom_clone/obsidian_kick_3",
-                (accessor) -> (new KickAttackAnimation(0.2F, 0.45F, 0.0F, 0.55F, 0.9F, WOMWeaponColliders.KICK, humanoidArmature.get().legL, accessor, humanoidArmature))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.51F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_LEFT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.8F, (livingEntityPatch, self, p) -> {
-                                    if (!livingEntityPatch.isLogicalClient()) {
-                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-                                    }
-                                }, Side.SERVER)
-                        ));
-        AVAnimations.OBSIDIAN_KICK_AUTO_1 = builder.nextAccessor("biped/wom_clone/obsidian_kick_1",
-                (accessor) -> (new KickAttackAnimation(0.2F, 0.2F, 0.0F, 0.35F, 0.5F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.2F))
-                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
-                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SMALL.get())
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER),
-                                AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, self, p) -> {
-                                    if (!livingEntityPatch.isLogicalClient()) {
-                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-                                    }
-                                }, Side.SERVER)
-                        ));
         AVAnimations.OBSIDIAN_STRONG_PUNCH = builder.nextAccessor("biped/wom_clone/obsidian_strong_punch",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.3F, 0.1F, 0.15F, 0.35F, WOMWeaponColliders.PUNCH, humanoidArmature.get().handL, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(4.0F))

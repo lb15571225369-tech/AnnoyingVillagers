@@ -54,13 +54,9 @@ public class RenderShadowObsidianPillar extends RenderItemBase {
 
                 if (dynamicAnimation == AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL
                         || dynamicAnimation == AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3
-                        || dynamicAnimation == AVAnimations.OBSIDIAN_KICK_AUTO_1
-                        || dynamicAnimation == AVAnimations.OBSIDIAN_KICK_AUTO_3
                         || dynamicAnimation == AVAnimations.OBSIDIAN_FIST_AUTO3
-                        || dynamicAnimation == AVAnimations.OBSIDIAN_STRONG_KICK
                         || dynamicAnimation == AVAnimations.OBSIDIAN_FIST_AUTO1
-                        || dynamicAnimation == AVAnimations.OBSIDIAN_BIPED_LANDING
-                        || dynamicAnimation == AVAnimations.OBSIDIAN_WHIRLWIND_KICK) {
+                        || dynamicAnimation == AVAnimations.OBSIDIAN_BIPED_LANDING) {
                     itemstack = ItemStack.EMPTY;
                     poseStack.pushPose();
                     MathUtils.mulStack(poseStack, openmatrix4fmainHand);

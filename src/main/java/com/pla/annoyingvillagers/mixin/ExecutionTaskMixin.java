@@ -19,6 +19,8 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
+
 @Mixin(value = ExecutionTask.class, remap = false)
 public abstract class ExecutionTaskMixin extends TickTask {
     @Shadow @Final private LivingEntity executor;
@@ -42,35 +44,27 @@ public abstract class ExecutionTaskMixin extends TickTask {
             return;
         }
 
-        if (!this.executor.isAlive() || !this.target.isAlive()) {
-            this.annoyingVillagers$cancelExecution(false);
-            ci.cancel();
-            return;
-        }
+        if (this.target.isAlive()) {
+            LivingEntityPatch<?> targetPatch =
+                    EpicFightCapabilities.getEntityPatch(this.target, LivingEntityPatch.class);
+            if (targetPatch == null) {
+                this.annoyingVillagers$cancelExecution(false);
+                ci.cancel();
+                return;
+            }
+            if (targetPatch.getAnimator().getPlayerFor(null) == null) {
+                this.annoyingVillagers$cancelExecution(false);
+                ci.cancel();
+                return;
+            }
 
-        LivingEntityPatch<?> executorPatch =
-                EpicFightCapabilities.getEntityPatch(this.executor, LivingEntityPatch.class);
-        LivingEntityPatch<?> targetPatch =
-                EpicFightCapabilities.getEntityPatch(this.target, LivingEntityPatch.class);
+            AssetAccessor<? extends StaticAnimation> targetDynamicAnimation =
+                    Objects.requireNonNull(targetPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
-        if (executorPatch == null || targetPatch == null) {
-            this.annoyingVillagers$cancelExecution(false);
-            ci.cancel();
-            return;
-        }
-
-        if (targetPatch.getAnimator().getPlayerFor(null) == null) {
-            this.annoyingVillagers$cancelExecution(false);
-            ci.cancel();
-            return;
-        }
-
-        AssetAccessor<? extends StaticAnimation> targetDynamicAnimation =
-                targetPatch.getAnimator().getPlayerFor(null).getRealAnimation();
-
-        if (!(targetDynamicAnimation.get() instanceof ExecutionHitAnimation)) {
-            this.annoyingVillagers$cancelExecution(true);
-            ci.cancel();
+            if (!(targetDynamicAnimation.get() instanceof ExecutionHitAnimation)) {
+                this.annoyingVillagers$cancelExecution(true);
+                ci.cancel();
+            }
         }
     }
 

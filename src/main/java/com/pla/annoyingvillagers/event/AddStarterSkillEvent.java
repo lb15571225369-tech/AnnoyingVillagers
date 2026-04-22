@@ -1,10 +1,6 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
-import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.efclash_blade.gameasset.EFClashBladeSkillSlots;
-import com.pla.efclash_blade.gameasset.EFClashBladeSkills;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -88,9 +84,6 @@ public class AddStarterSkillEvent {
                     ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(serverPlayer, ServerPlayerPatch.class);
                     if (playerPatch == null) return;
 
-                    giveSkill(serverPlayer, playerPatch, AVSkillSlots.AV_KICK, AVSkills.KICK);
-                    giveSkill(serverPlayer, playerPatch, AVSkillSlots.AV_STUN_ESCAPE, AVSkills.STUN_ESCAPE);
-                    giveSkill(serverPlayer, playerPatch, EFClashBladeSkillSlots.CLASH_BLADE, EFClashBladeSkills.CLASH_BLADE);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.GUARD, EpicFightSkills.GUARD);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.GUARD, EpicFightSkills.PARRYING);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.DODGE, EpicFightSkills.ROLL);

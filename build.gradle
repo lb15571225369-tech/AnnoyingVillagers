@@ -76,6 +76,7 @@ dependencies {
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:7617763")
     implementation fg.deobf("curse.maven:combat-evolution-1377795:7908514")
     implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7855699")
+    implementation fg.deobf("curse.maven:epicfight-kick-skills-1521559:7966307")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7517612")
 
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
@@ -90,9 +91,7 @@ dependencies {
     implementation fg.deobf("curse.maven:selene-499980:7541536")
 
     implementation fg.deobf("curse.maven:epicfight-resurrection-1151542:6931390")
-    implementation fg.deobf("curse.maven:annoying-villagers-x-epicfight-resurrection-1468743:7718865")
-
-    implementation fg.deobf("curse.maven:damage-indicator-reborn-1059519:5512460")
+    implementation fg.deobf("curse.maven:combat-evolution-x-epicfight-resurrection-1521545:7966282")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 

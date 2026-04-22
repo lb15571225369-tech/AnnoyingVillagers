@@ -15,7 +15,6 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Integer> BLUE_DEMON_LEAVE_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> BLUE_DEMON_LEAVE_MAX_TIME;
     public static ForgeConfigSpec.ConfigValue<Boolean> TRIDENT_FESTIVAL_CAN_BREAK_BLOCK;
-    public static ForgeConfigSpec.ConfigValue<Double> KICK_STAMINA_DECREASE_PERCENTAGE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Boolean> TURN_ON_NPC_CHAT;
@@ -76,10 +75,6 @@ public class AnnoyingVillagersConfig {
         TRIDENT_FESTIVAL_CAN_BREAK_BLOCK = BUILDER.comment(
                         "Make Trident Festival can break block")
                 .define("tridentFestivalCanBreakBlock", true);
-
-        KICK_STAMINA_DECREASE_PERCENTAGE = BUILDER.comment(
-                        "Mob's stamina will be decreased by this percentage when get hit by Kick")
-                .defineInRange("kickStaminaDecreasePercentage", 0.3D, 0.0D, 1.0D);
 
         MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE = BUILDER.comment(
                         "Min chance for mob can wake up automatically on guard break")

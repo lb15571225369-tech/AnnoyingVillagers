@@ -35,8 +35,6 @@ public class AVSkills {
     public static Skill WOODEN_DOOR;
     public static Skill TRAPDOOR;
     public static Skill LADDER;
-    public static Skill KICK;
-    public static Skill STUN_ESCAPE;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -61,7 +59,5 @@ public class AVSkills {
         AVSkills.WOODEN_DOOR = modRegistry.build("wooden_door", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(WOMAnimations.TORMENT_BERSERK_DASH).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.TRAPDOOR = modRegistry.build("trapdoor", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.GIANT_WHIRLWIND).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.LADDER = modRegistry.build("ladder", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SWORD_HEAVY_AUTO_3).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
-        AVSkills.KICK =  modRegistry.build("kick", KickSkill::new, PassiveSkill.createPassiveBuilder().setCategory(AVSkillCategories.AV_KICK));
-        AVSkills.STUN_ESCAPE =  modRegistry.build("stun_escape", StunEscapeSkill::new, PassiveSkill.createPassiveBuilder().setCategory(AVSkillCategories.AV_STUN_ESCAPE));
     }
 }

@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.network.ClientboundWoopieSwordWindFx;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.efkick.gameasset.EFKickAnimations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -273,7 +274,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_1, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -311,7 +312,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_C, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_C, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -353,7 +354,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_RUSH, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -391,7 +392,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_H, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_H, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -428,7 +429,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_4, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -470,7 +471,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_2, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -508,7 +509,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_3, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -550,7 +551,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_C, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_C, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -588,7 +589,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_RUSH, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -630,7 +631,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_4, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -668,7 +669,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_1, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -710,7 +711,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_H, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_H, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -748,7 +749,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_2, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -790,7 +791,7 @@ public class SteveWoopieSword {
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                                            .animationBehavior(AVAnimations.KICK_C, 0.0F)
+                                                                                                                            .animationBehavior(EFKickAnimations.KICK_C, 0.0F)
                                                                                                                             .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -828,7 +829,7 @@ public class SteveWoopieSword {
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
+                                                                                                            .animationBehavior(EFKickAnimations.KICK_RUSH, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -932,43 +933,43 @@ public class SteveWoopieSword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_1, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_2, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_3, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_4, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_C, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AVAnimations.KICK_H, 0.0F)
+                                            .animationBehavior(EFKickAnimations.KICK_H, 0.0F)
                             )
             )
             .newBehaviorRoot(

@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
-import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -11,13 +10,14 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.item.EnchantedArrowItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.EscapeUtil;
 import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
+import com.pla.efkick.animations.KickAttackAnimation;
+import com.pla.efkick.config.EFKickConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -468,7 +468,7 @@ public class MobClashBladeMixin {
                     if (attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
                         EpicfightUtil.dealStaminaDamageByPercentage(livingAttackEvent.getSource(),
                                 attackerLivingEntityPatch,
-                                AnnoyingVillagersConfig.KICK_STAMINA_DECREASE_PERCENTAGE.get(),
+                                EFKickConfig.KICK_STAMINA_DECREASE_PERCENTAGE.get(),
                                 true);
                     }
                 }

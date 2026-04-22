@@ -61,29 +61,25 @@ public class MobExecutionTask extends TickTask {
             return;
         }
 
-        if (!executor.isAlive() || !target.isAlive()) {
-            cancelExecution(false);
-            return;
-        }
+        if (target.isAlive()) {
+            LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
 
-        LivingEntityPatch<?> executorPatch = EpicFightCapabilities.getEntityPatch(executor, LivingEntityPatch.class);
-        LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+            if (targetPatch == null) {
+                cancelExecution(false);
+                return;
+            }
 
-        if (executorPatch == null || targetPatch == null) {
-            cancelExecution(false);
-            return;
-        }
+            if (targetPatch.getAnimator().getPlayerFor(null) == null) {
+                cancelExecution(false);
+                return;
+            }
 
-        if (targetPatch.getAnimator().getPlayerFor(null) == null) {
-            cancelExecution(false);
-            return;
-        }
+            AssetAccessor<? extends StaticAnimation> targetDynamicAnimation =
+                    Objects.requireNonNull(targetPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
-        AssetAccessor<? extends StaticAnimation> targetDynamicAnimation =
-                Objects.requireNonNull(targetPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
-
-        if (!(targetDynamicAnimation.get() instanceof ExecutionHitAnimation)) {
-            cancelExecution(true);
+            if (!(targetDynamicAnimation.get() instanceof ExecutionHitAnimation)) {
+                cancelExecution(true);
+            }
         }
     }
 

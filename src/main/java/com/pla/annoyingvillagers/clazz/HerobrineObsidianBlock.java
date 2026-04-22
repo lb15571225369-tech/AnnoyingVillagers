@@ -32,8 +32,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-import static com.pla.annoyingvillagers.skill.StunEscapeSkill.NBT_STUN_ESCAPE_CD;
-
 public class HerobrineObsidianBlock extends Block {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
     public static final IntegerProperty REPLACE_BY_LIQUID = IntegerProperty.create("replace_by_liquid", 0, 2);
@@ -208,10 +206,10 @@ public class HerobrineObsidianBlock extends Block {
 
         if (entity instanceof Player player) {
             CompoundTag data = player.getPersistentData();
-            if (data.contains(NBT_STUN_ESCAPE_CD)) {
-                int coolDownValue = data.getInt(NBT_STUN_ESCAPE_CD);
+            if (data.contains("StunEscapeCooldown")) {
+                int coolDownValue = data.getInt("StunEscapeCooldown");
                 if (coolDownValue < 5) {
-                    data.putInt(NBT_STUN_ESCAPE_CD, coolDownValue + 1);
+                    data.putInt("StunEscapeCooldown", coolDownValue + 1);
                 }
             }
         }
