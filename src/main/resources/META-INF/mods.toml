@@ -56,6 +56,12 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
+    modId="efdancing"
+    mandatory=true
+    versionRange="[1.0, )"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
     modId="efn"
     mandatory=false
     versionRange="[0,)"

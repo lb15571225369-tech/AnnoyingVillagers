@@ -68,12 +68,7 @@
  *       Local license text: third_party/licenses/MIT.md
  *       Scope: animations / assets (adapted or reused portions)
  *
- *   [11] Epic Emotes - M3tte
- *       License: Authorized
- *       Source: https://github.com/M3tte/epic_emotes/
- *       Scope: animations / assets (adapted or reused portions)
- *
- *   [12] Weapons of Miracles (dependency mod) - reacer
+ *   [11] Weapons of Miracles (dependency mod) - reacer
  *       License: Proprietary / All Rights Reserved
  *       Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
  *       Local license text: third_party/licenses/LicenseRef-WOM-Proprietary.md
@@ -343,35 +338,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_2;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_LEGENDARY;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> LAY_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> PUSH_UP_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SIT_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SLIGHT_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DEATH_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> FUNNY_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> ATTENTION_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> FLAPPING_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> FUN_JUMP_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> JUMP_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> PRONE_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SALUTE_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_1;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_2;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_3;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_4;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_5;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_6;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_7;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_8;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_9;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_10;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_11;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> DANCE_12;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NL_BOW_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NL_BOWING_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NL_GOAD_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NL_LOL_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NL_WAVE_EMOTE;
 
 
     // Animation from Community EpicFight Battle Arts
@@ -395,14 +361,6 @@ public class AVAnimations {
     // Animation from Tactical Imbuements
     public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> ZAP_LONG;
-
-    // Animation from Epic Emotes
-    public static AnimationManager.AnimationAccessor<StaticAnimation> LAY_RELAX_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> ONE_ARM_LAY_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SALUTE_LEFT_HAND_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SIT_NO_WEAPON_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SORROW_EMOTE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> SURRENDER_EMOTE;
 
     // Animation from Sculk Steve
     public static AnimationManager.AnimationAccessor<StaticAnimation> PLAYER_HEROBRINE_POSSESSION;
@@ -1795,32 +1753,6 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
         );
 
-        // Animation from Epic Emotes
-        AVAnimations.LAY_RELAX_EMOTE = builder.nextAccessor("biped/m3tte_emote/lay_relax_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.ONE_ARM_LAY_EMOTE = builder.nextAccessor("biped/m3tte_emote/one_arm_lay_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SALUTE_LEFT_HAND_EMOTE = builder.nextAccessor("biped/m3tte_emote/salute_left_hand_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SIT_NO_WEAPON_EMOTE = builder.nextAccessor("biped/m3tte_emote/sit_no_weapon_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SORROW_EMOTE = builder.nextAccessor("biped/m3tte_emote/sorrow_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SURRENDER_EMOTE = builder.nextAccessor("biped/m3tte_emote/surrender_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-
         // Animation from Sculk Steve
         AVAnimations.PLAYER_HEROBRINE_POSSESSION = builder.nextAccessor("biped/sculk_steve/player_herobrine_possession",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
@@ -1907,122 +1839,6 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/pla/place_block",
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
-        AVAnimations.LAY_EMOTE = builder.nextAccessor("biped/pugilist_steve/lay_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.PUSH_UP_EMOTE = builder.nextAccessor("biped/pugilist_steve/push_up_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SIT_EMOTE = builder.nextAccessor("biped/pugilist_steve/sit_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SLIGHT_EMOTE = builder.nextAccessor("biped/pugilist_steve/slight_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DEATH_EMOTE = builder.nextAccessor("biped/pugilist_steve/death_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.FUNNY_EMOTE = builder.nextAccessor("biped/pugilist_steve/funny_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.ATTENTION_EMOTE = builder.nextAccessor("biped/pugilist_steve/attention_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.FLAPPING_EMOTE = builder.nextAccessor("biped/pugilist_steve/flapping_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.FUN_JUMP_EMOTE = builder.nextAccessor("biped/pugilist_steve/fun_jump_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.JUMP_EMOTE = builder.nextAccessor("biped/pugilist_steve/jump_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.PRONE_EMOTE = builder.nextAccessor("biped/pugilist_steve/prone_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.SALUTE_EMOTE = builder.nextAccessor("biped/pugilist_steve/salute_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_1 = builder.nextAccessor("biped/pugilist_steve/dance_1",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_2 = builder.nextAccessor("biped/pugilist_steve/dance_2",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_3 = builder.nextAccessor("biped/pugilist_steve/dance_3",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_4 = builder.nextAccessor("biped/pugilist_steve/dance_4",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_5 = builder.nextAccessor("biped/pugilist_steve/dance_5",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_6 = builder.nextAccessor("biped/pugilist_steve/dance_6",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_7 = builder.nextAccessor("biped/pugilist_steve/dance_7",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_8 = builder.nextAccessor("biped/pugilist_steve/dance_8",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_9 = builder.nextAccessor("biped/pugilist_steve/dance_9",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_10 = builder.nextAccessor("biped/pugilist_steve/dance_10",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_11 = builder.nextAccessor("biped/pugilist_steve/dance_11",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.DANCE_12 = builder.nextAccessor("biped/pugilist_steve/piglin_celebrate_emote",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.NL_BOW_EMOTE = builder.nextAccessor("biped/pugilist_steve/nl_bow_emote",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.NL_BOWING_EMOTE = builder.nextAccessor("biped/pugilist_steve/nl_bowing_emote",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.NL_GOAD_EMOTE = builder.nextAccessor("biped/pugilist_steve/nl_goad_emote",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.NL_LOL_EMOTE = builder.nextAccessor("biped/pugilist_steve/nl_lol_emote",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
-        AVAnimations.NL_WAVE_EMOTE = builder.nextAccessor("biped/pugilist_steve/nl_wave_emote",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature)
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true));
 
         // Animations cloned and registered from WOM
         AVAnimations.CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",

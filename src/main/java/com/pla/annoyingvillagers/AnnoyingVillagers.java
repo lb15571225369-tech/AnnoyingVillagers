@@ -76,7 +76,6 @@ public class AnnoyingVillagers {
         biomeModifiers.register("av_mob_spawns", AVMobSpawnBiomeModifier::makeCodec);
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersSpawnConfig.SPEC, "annoyingvillagers-spawns.toml");
         AVSkillDataKeys.DATA_KEYS.register(modEventBus);
-        AnnoyingVillagersModMenus.register(modEventBus);
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(this::clientSetup);
@@ -132,24 +131,6 @@ public class AnnoyingVillagers {
                     ClientboundLitePortalFx::encode,
                     ClientboundLitePortalFx::decode,
                     ClientboundLitePortalFx::handle
-            );
-            AnnoyingVillagers.addNetworkMessage(
-                    EmoteButtonMessage.class,
-                    EmoteButtonMessage::encode,
-                    EmoteButtonMessage::decode,
-                    EmoteButtonMessage::handle
-            );
-            AnnoyingVillagers.addNetworkMessage(
-                    OpenEmoteMenuMessage.class,
-                    OpenEmoteMenuMessage::encode,
-                    OpenEmoteMenuMessage::decode,
-                    OpenEmoteMenuMessage::handle
-            );
-            AnnoyingVillagers.addNetworkMessage(
-                    BreakEmoteMessage.class,
-                    BreakEmoteMessage::encode,
-                    BreakEmoteMessage::decode,
-                    BreakEmoteMessage::handle
             );
             AnnoyingVillagers.addNetworkMessage(
                     CPApplyShake.class,

@@ -1,15 +1,12 @@
 package com.pla.annoyingvillagers.init;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.network.OpenEmoteMenuMessage;
 import com.pla.annoyingvillagers.network.SpecialAttackMessage;
 import com.pla.annoyingvillagers.network.ThrowingEnderPearlMessage;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -80,20 +77,11 @@ public class AnnoyingVillagersModKeyMappings {
             "key.categories.annoyingvillagers"
     );
 
-    public static final KeyMapping OPEN_EMOTE_MENU = new KeyMapping(
-            "key.annoyingvillagers.open_emote_menu",
-            KeyConflictContext.UNIVERSAL,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_GRAVE_ACCENT,
-            "key.categories.annoyingvillagers"
-    );
-
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(SPECIAL_ATTACK);
         event.register(THROW_ENDER_PEARL);
         event.register(DRAGON_FLIGHT_DESCENT_KEY);
-        event.register(OPEN_EMOTE_MENU);
     }
 
     @EventBusSubscriber(value = Dist.CLIENT)
@@ -105,16 +93,6 @@ public class AnnoyingVillagersModKeyMappings {
             }
 
             Minecraft mc = Minecraft.getInstance();
-
-            while (OPEN_EMOTE_MENU.consumeClick()) {
-                if (mc.player == null) {
-                    continue;
-                }
-
-                if (mc.screen == null) {
-                    AnnoyingVillagers.PACKET_HANDLER.sendToServer(new OpenEmoteMenuMessage());
-                }
-            }
 
             if (mc.screen == null) {
                 SPECIAL_ATTACK.consumeClick();

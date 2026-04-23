@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
+import com.pla.efdancing.gameasset.EFDancingAnimations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -102,7 +103,7 @@ public class InfectedChrisEntity extends PathfinderMob {
             this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 2, 0, false, false));
-            livingEntityPatch.playAnimationSynchronized(AVAnimations.DEATH_EMOTE, 0.0F);
+            livingEntityPatch.playAnimationSynchronized(EFDancingAnimations.DEATH_EMOTE, 0.0F);
         }
     }
 

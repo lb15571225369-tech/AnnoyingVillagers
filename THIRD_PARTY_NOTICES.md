@@ -247,10 +247,6 @@ All required upstream notices must be preserved.
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/sculk_steve
 
-### H2) M3tte
-**Paths / Files**
-- assets/annoyingvillagers/animmodels/animations/biped/m3tte_emote
-
 ---
 
 ## I) Credits - Annoying Villagers (textures / models / languages)
