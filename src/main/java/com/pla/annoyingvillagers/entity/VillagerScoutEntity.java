@@ -110,6 +110,11 @@ public class VillagerScoutEntity extends AVNpc {
     }
 
     @Override
+    public float getBurstProtectCapRatio() {
+        return 1.0F;
+    }
+
+    @Override
     public void die(@NotNull DamageSource pDamageSource) {
         super.die(pDamageSource);
 

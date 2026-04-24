@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -12,7 +11,6 @@ import com.pla.annoyingvillagers.util.TeamUtil;
 import com.pla.annoyingvillagers.util.VillagerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +35,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -64,6 +61,11 @@ public class VillagerScoutCaptainEntity extends AVNpc {
     protected void registerGoals() {
         super.registerGoals();
         CommonGoals.registerGoalForVillagerKnightNpc(this);
+    }
+
+    @Override
+    public float getBurstProtectCapRatio() {
+        return 1.0F;
     }
 
     @Override

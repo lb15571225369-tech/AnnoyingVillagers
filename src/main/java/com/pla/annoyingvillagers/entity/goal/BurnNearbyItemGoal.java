@@ -16,6 +16,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -24,6 +25,16 @@ public class BurnNearbyItemGoal extends Goal {
     private final double speed;
     private final double searchRadius;
     private ItemEntity targetItem;
+
+    private static List<String> keys(String prefix, int count) {
+        List<String> list = new ArrayList<>(count);
+        for (int i = 1; i <= count; i++) {
+            list.add(prefix + "." + i);
+        }
+        return List.copyOf(list);
+    }
+
+    private static final List<String> burnMessageKeys = keys("burn_item.annoyingvillagers", 56);
 
     public BurnNearbyItemGoal(Mob mob, double speed, double searchRadius) {
         this.mob = mob;
@@ -98,6 +109,8 @@ public class BurnNearbyItemGoal extends Goal {
 
         double dist = mob.distanceTo(targetItem);
         if (dist <= 1.5D) {
+            ItemStack burnedStack = targetItem.getItem().copy();
+
             mob.swing(InteractionHand.MAIN_HAND);
             targetItem.kill();
 
@@ -116,14 +129,7 @@ public class BurnNearbyItemGoal extends Goal {
                     1.0f
             );
 
-            if (mob.getRandom().nextFloat() < 0.05F && AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()) {
-                String rawName = targetItem.getItem().getDisplayName().getString();
-                if (rawName.startsWith("[") && rawName.endsWith("]")) {
-                    rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();
-                }
-                String msg = "<" + mob.getDisplayName().getString() + "> " + getRandomBurnLine(rawName);
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
-            }
+            tryBroadcastBurnMessage(serverLevel, burnedStack);
         }
     }
 
@@ -134,6 +140,23 @@ public class BurnNearbyItemGoal extends Goal {
         if (findTargetItem() == null) {
             restoreMainWeapon();
         }
+    }
+
+    private void tryBroadcastBurnMessage(ServerLevel serverLevel, ItemStack burnedStack) {
+        if (!AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()) return;
+        if (!(mob instanceof PlayerNpcEntity)) return;
+        if (mob.getRandom().nextFloat() >= 0.05F) return;
+
+        String key = burnMessageKeys.get(mob.getRandom().nextInt(burnMessageKeys.size()));
+
+        serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                Component.empty()
+                        .append(Component.literal("<"))
+                        .append(mob.getDisplayName())
+                        .append(Component.literal("> "))
+                        .append(Component.translatable(key, burnedStack.getHoverName())),
+                false
+        );
     }
 
     private void restoreMainWeapon() {
@@ -171,68 +194,5 @@ public class BurnNearbyItemGoal extends Goal {
             }
         }
         return best;
-    }
-
-    private String getRandomBurnLine(String itemName) {
-        String[] lines = new String[]{
-                "I burned a %s",
-                "I destroyed a %s",
-                "Trash item removed, %s",
-                "No room for this garbage, %s",
-                "Away with this worthless %s",
-                "This %s? Pathetic.",
-                "I have no use for this %s",
-                "Begone, filthy %s",
-                "What even is this %s?",
-                "%s? Into the flames you go.",
-                "I spit on this %s",
-                "Disgusting %s eliminated",
-                "Only fools carry %s",
-                "Carrying this %s would insult me",
-                "Just setting fire to a %s, nothing special",
-                "Another useless %s gone",
-                "Why would anyone keep a %s?",
-                "%s… trash belongs in the fire",
-                "I don't hoard junk like this %s",
-                "Hah, this %s is beneath me",
-                "My inventory deserves better than a %s",
-                "This %s offends me.",
-                "Did someone seriously drop a %s?",
-                "Get that %s out of my sight.",
-                "This %s belongs in a dumpster fire.",
-                "I'd rather hold a rotten potato than this %s",
-                "The flames deserve the %s more than I do.",
-                "I wouldn't even trade a stick for this %s",
-                "Burning a %s improves the world",
-                "Even zombies wouldn't use this %s",
-                "Let fire consume the pathetic %s",
-                "My hand feels dirty from touching this %s",
-                "Purging the %s like it never existed",
-                "This %s? Yeah, no.",
-                "Useless %s detected and removed",
-                "Say goodbye to your precious %s",
-                "Who dropped this excuse of a %s?",
-                "I refuse to carry this %s any longer.",
-                "Only peasants use a %s",
-                "Cursed %s gone.",
-                "Trash fire activated, %s",
-                "Firing up the pit for a %s",
-                "Look what I found… a disgusting %s",
-                "I clean the world of %s like this",
-                "Into the fire, you go, %s",
-                "Burning this %s makes me stronger",
-                "This %s is a disgrace to all gear",
-                "Flames, take this %s from my sight",
-                "An offering to the lava gods, %s",
-                "You call this a %s? Please.",
-                "Throwing away this %s like it's nothing",
-                "A toddler's toy? No, it's just a %s",
-                "This %s was a mistake to create",
-                "Forged in mediocrity, %s",
-                "This %s makes me lose brain cells",
-                "The %s has been sentenced to fire"
-        };
-        String template = lines[mob.getRandom().nextInt(lines.length)];
-        return String.format(template, itemName);
     }
 }

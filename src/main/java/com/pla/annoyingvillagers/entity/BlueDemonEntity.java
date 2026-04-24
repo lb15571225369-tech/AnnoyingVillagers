@@ -1684,7 +1684,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity, Comb
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 4.0D)
-                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 25.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 10.0D)
                 .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
                 .add(EpicFightAttributes.MAX_STRIKES.get(), 100.0D)
                 .add(EpicFightAttributes.MAX_STAMINA.get(), 60.0D)

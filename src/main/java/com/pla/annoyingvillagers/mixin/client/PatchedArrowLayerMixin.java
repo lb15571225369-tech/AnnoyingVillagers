@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.EnchantedArrowEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.GlintColorHelper;
@@ -35,30 +36,32 @@ public abstract class PatchedArrowLayerMixin<
             PoseStack poseStack, MultiBufferSource buffer, int packedLight, Entity entity, float f1, float f2, float f3, float partialTick,
             CallbackInfo ci
     ) {
-        float f = Mth.sqrt(f1 * f1 + f3 * f3);
+        if (entity instanceof HerobrineMob) {
+            float f = Mth.sqrt(f1 * f1 + f3 * f3);
 
-        EnchantedArrowEntity arrow =
-                new EnchantedArrowEntity(AnnoyingVillagersModEntities.ENCHANTED_ARROW.get(), entity.level());
+            EnchantedArrowEntity arrow =
+                    new EnchantedArrowEntity(AnnoyingVillagersModEntities.ENCHANTED_ARROW.get(), entity.level());
 
-        arrow.setPos(entity.getX(), entity.getY(), entity.getZ());
-        arrow.setYRot((float)(Math.atan2(f1, f3) * (double)(180F / (float)Math.PI)));
-        arrow.setXRot((float)(Math.atan2(f2, f) * (double)(180F / (float)Math.PI)));
-        arrow.yRotO = arrow.getYRot();
-        arrow.xRotO = arrow.getXRot();
+            arrow.setPos(entity.getX(), entity.getY(), entity.getZ());
+            arrow.setYRot((float) (Math.atan2(f1, f3) * (double) (180F / (float) Math.PI)));
+            arrow.setXRot((float) (Math.atan2(f2, f) * (double) (180F / (float) Math.PI)));
+            arrow.yRotO = arrow.getYRot();
+            arrow.xRotO = arrow.getXRot();
 
-        arrow.setColorGlint(annoyingVillagers$pickMode(entity, f1, f2, f3));
+            arrow.setColorGlint(annoyingVillagers$pickMode(entity, f1, f2, f3));
 
-        this.dispatcher.render(
-                arrow,
-                0.0D, 0.0D, 0.0D,
-                0.0F,
-                partialTick,
-                poseStack,
-                buffer,
-                packedLight
-        );
+            this.dispatcher.render(
+                    arrow,
+                    0.0D, 0.0D, 0.0D,
+                    0.0F,
+                    partialTick,
+                    poseStack,
+                    buffer,
+                    packedLight
+            );
 
-        ci.cancel();
+            ci.cancel();
+        }
     }
 
     @Unique

@@ -80,6 +80,11 @@ public class GreenVillagerGeneralEntity extends AVNpc {
     }
 
     @Override
+    public float getBurstProtectCapRatio() {
+        return 1.0F;
+    }
+
+    @Override
     public @Nullable SoundEvent getAttackVoiceSound() {
         return AnnoyingVillagersModSounds.VILLAGER_GENERALS_SAY.get();
     }
@@ -212,7 +217,7 @@ public class GreenVillagerGeneralEntity extends AVNpc {
                 .add(Attributes.ARMOR_TOUGHNESS, 20.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(EpicFightAttributes.IMPACT.get(), 2.0D)
-                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 15.0D)
+                .add(EpicFightAttributes.ARMOR_NEGATION.get(), 5.0D)
                 .add(EpicFightAttributes.STUN_ARMOR.get(), 20.0D)
                 .add(EpicFightAttributes.MAX_STRIKES.get(), 50.0D)
                 .add(EpicFightAttributes.MAX_STAMINA.get(), 30.0D)

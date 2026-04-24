@@ -18,7 +18,7 @@ public interface BurstProtectEntity {
     void setRecentHitCounter(int value);
 
     default float getBurstProtectCapRatio() {
-        return 0.5F;
+        return 0.2F;
     }
 
     default float getBurstProtectMinDamage() {
