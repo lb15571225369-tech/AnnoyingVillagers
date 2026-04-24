@@ -60,7 +60,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         if (!skillContainer.isActivated()) {
             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F);
-            skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_WEAPON_SCREAMING.get(), 0.0F, 0.0F);
+            skillContainer.getExecutor().getOriginal().playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_WEAPON_SCREAMING.get(), 0.8F, 1.0F);
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
         }

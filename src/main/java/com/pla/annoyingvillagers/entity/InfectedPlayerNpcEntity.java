@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
@@ -123,6 +122,7 @@ public class InfectedPlayerNpcEntity extends PlayerMobEntity {
             itementity.setPickUpDelay(10);
             serverLevel.addFreshEntity(itementity);
         }
+        this.discard();
     }
 
     @Override

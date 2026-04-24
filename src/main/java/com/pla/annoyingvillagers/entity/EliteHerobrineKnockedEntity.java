@@ -133,6 +133,9 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         if (pSource.getEntity() instanceof HerobrineWardenEntity) {
             eatCount = eatCount + 1;
             if (this.level() instanceof ServerLevel serverLevel) {
+                if (this.eatCount == 1) {
+                    this.playSound(AnnoyingVillagersModSounds.KNOCKED_ELITE_HEROBRINE_SAY_ON_BEING_EATEN.get(), 1.0F, 1.0F);
+                }
                 serverLevel.playSound(
                         null,
                         BlockPos.containing(this.getX(), this.getY(), this.getZ()),
@@ -203,9 +206,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             }
             if (livingentitypatch != null) {
                 if (eatCount == 1 || eatCount == 2) {
-                    if (eatCount == 1) {
-                        this.playSound(AnnoyingVillagersModSounds.KNOCKED_ELITE_HEROBRINE_SAY_ON_BEING_EATEN.get(), 1.0F, 1.0F);
-                    }
                     livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_1, 0.0F);
                 } else if (eatCount == 3 || eatCount == 4) {
                     livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_2, 0.0F);
