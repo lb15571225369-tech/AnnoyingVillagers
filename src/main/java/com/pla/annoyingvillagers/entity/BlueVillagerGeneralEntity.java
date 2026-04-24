@@ -100,8 +100,9 @@ public class BlueVillagerGeneralEntity extends AVNpc {
         this.doVillagerGeneralStyleEnderPearlCounter();
     }
 
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.level() instanceof ServerLevel serverLevel) {
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
@@ -163,13 +164,6 @@ public class BlueVillagerGeneralEntity extends AVNpc {
 
             for (ItemStack stack : drops) {
                 dropStack.accept(stack);
-            }
-
-            if (Math.random() <= 0.4D) {
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                        Component.literal("<" + this.getDisplayName().getString() + "> This is part of the agreement..."),
-                        false
-                );
             }
         }
     }

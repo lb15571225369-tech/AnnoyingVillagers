@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -27,6 +28,10 @@ public class ShadowHerobrineRenderer extends HumanoidMobRenderer<HerobrineMob, P
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull HerobrineMob herobrineMob) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
+        if (herobrineMob instanceof ShadowHerobrineEntity) {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/dark_shadow_herobrine.png");
+        } else {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
+        }
     }
 }

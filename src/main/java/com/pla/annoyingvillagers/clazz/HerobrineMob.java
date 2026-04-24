@@ -1025,7 +1025,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity, CombatV
                     HerobrinePortalUtil.sinkIntoGround(serverLevel, this, 0.06);
                 }
                 if (remaining <= 0) {
-                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal(this.getChatName() + " was sent back to the §4Herobrine Vessel Realm§r"), false);
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal(this.getChatName() + " " + Component.translatable("subtitles.herobrine_retreat")), false);
                     this.discard();
                 }
             }

@@ -135,14 +135,10 @@ public class ChrisEntity extends AVNpc {
         return 0.25F;
     }
 
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                    Component.literal("<" + this.getDisplayName().getString() + "> Steve, I'm sorry."),
-                    false
-            );
-
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
             final double z = this.getZ();

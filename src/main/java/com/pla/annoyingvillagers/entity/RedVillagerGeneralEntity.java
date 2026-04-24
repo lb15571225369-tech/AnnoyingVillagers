@@ -106,8 +106,9 @@ public class RedVillagerGeneralEntity extends AVNpc {
         this.doVillagerGeneralStyleEnderPearlCounter();
     }
 
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.level() instanceof ServerLevel serverLevel) {
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
@@ -193,13 +194,6 @@ public class RedVillagerGeneralEntity extends AVNpc {
 
             for (ItemStack stack : drops) {
                 dropStack.accept(stack);
-            }
-
-            if (Math.random() <= 0.3D) {
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                        Component.literal("<" + this.getDisplayName().getString() + "> I swear to serve the Villager King to the death..."),
-                        false
-                );
             }
         }
     }

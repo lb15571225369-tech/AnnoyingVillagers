@@ -199,7 +199,7 @@ public class HerobrineUtil {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " " + Component.translatable("subtitles.possessed_npc").getString()), false);
                 } else {
                     if ((entity instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && !lowHerobrineCloneEntity.isSummoned()) || (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && !lowShadowHerobrineCloneEntity.isSummoned())) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r " + Component.translatable("subtitles.possessed_random").getString()), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(Component.translatable("subtitles.possessed_random").getString()), false);
                     } else {
                         if (recallTicks == 0) {
                             recallTicks = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
@@ -209,7 +209,7 @@ public class HerobrineUtil {
                         }
                         if (mobSpawnType.equals(MobSpawnType.NATURAL) || mobSpawnType.equals(MobSpawnType.CHUNK_GENERATION)) { // For natural spawn
                             if (Math.random() <= 0.5D) { // Natural possessed
-                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r " + Component.translatable("subtitles.possessed_random").getString()), false);
+                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(Component.translatable("subtitles.possessed_random").getString()), false);
                             } else { // Portal animation
                                 if (entity instanceof HerobrineMob herobrineMob) {
                                     herobrineMob.setRenderPortal(true);

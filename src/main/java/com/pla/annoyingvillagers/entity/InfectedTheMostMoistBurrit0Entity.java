@@ -91,10 +91,10 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         }
     }
 
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         HerobrineUtil.dropArmoredHerobrineLoot(this.level(), this.getX(), this.getY(), this.getZ());
-        this.discard();
     }
 
     @Override

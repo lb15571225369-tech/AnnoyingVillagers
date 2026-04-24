@@ -88,8 +88,8 @@ public class InfectedPlayerNpcEntity extends PlayerMobEntity {
     }
 
     @Override
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         String possessedBy = this.getPersistentData().getString("possessed_by");
         switch (possessedBy) {
             case "herobrine_clone" -> HerobrineUtil.dropHerobrineCloneLoot(this.level(), this.getX(), this.getY(), this.getZ());
@@ -123,7 +123,6 @@ public class InfectedPlayerNpcEntity extends PlayerMobEntity {
             itementity.setPickUpDelay(10);
             serverLevel.addFreshEntity(itementity);
         }
-        this.discard();
     }
 
     @Override

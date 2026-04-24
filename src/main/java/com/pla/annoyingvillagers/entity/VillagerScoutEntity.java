@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -11,7 +10,6 @@ import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -29,12 +27,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -111,8 +109,39 @@ public class VillagerScoutEntity extends AVNpc {
         this.doSteveStyleEnderPearlCounter();
     }
 
-    public void die(@NotNull DamageSource damagesource) {
-        super.die(damagesource);
+    @Override
+    public void die(@NotNull DamageSource pDamageSource) {
+        super.die(pDamageSource);
+
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        if (this.random.nextDouble() > 0.11D) {
+            return;
+        }
+
+        final Vec3 deathPos = this.position();
+        final float deathYaw = this.getYRot();
+
+        VillagerUtil.spawnBackupFirework(serverLevel, deathPos);
+
+        new DelayedTask(400) {
+            @Override
+            public void run() {
+                BlockPos center = BlockPos.containing(deathPos);
+                if (!serverLevel.isLoaded(center)) {
+                    return;
+                }
+
+                VillagerUtil.summonRandomVillagerSupportWave(serverLevel, deathPos, deathYaw);
+            }
+        };
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
+        super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.level() instanceof ServerLevel serverLevel) {
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
@@ -160,43 +189,8 @@ public class VillagerScoutEntity extends AVNpc {
                 dropStack.accept(stack);
             }
 
-            if (Math.random() <= 0.11D) {
-                Entity entity = this;
-                try {
-                    Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
-                            "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException ignored) {
-                }
-
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Requesting backup!"), false);
-
-                new DelayedTask(400) {
-                    public void run() {
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Reinforcements have arrived!"), false);
-
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:villager_scout ^ ^ ^10",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException ignored) {
-                        }
-
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:villager_scout ^ ^ ^15",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException ignored) {
-                        }
-
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:villager_scout_captain ^10 ^ ^20",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException ignored) {
-                        }
-                    }
-                };
+            if (new Random().nextDouble() <= 0.2D) {
+                dropStack.accept(VillagerUtil.createBlackCreeperSignalFirework());
             }
         }
     }

@@ -97,6 +97,7 @@ public class HerobrineGregEntity extends Monster {
     private UUID thirdSummonedHerobrineUUID;
 
     private BlockPos lastFeetPos = null;
+    private String chatName;
 
     private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
             Items.DIAMOND_SWORD,
@@ -168,6 +169,14 @@ public class HerobrineGregEntity extends Monster {
         this(AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), level);
     }
 
+    public String getChatName() {
+        return chatName;
+    }
+
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
+    }
+
     public HerobrineGregEntity(EntityType<HerobrineGregEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.5F);
@@ -175,6 +184,7 @@ public class HerobrineGregEntity extends Monster {
         this.setNoAi(false);
         this.setPersistenceRequired();
         this.setCustomName(Component.literal("Greg"));
+        this.setChatName(this.getDisplayName().getString());
         this.setCustomNameVisible(true);
 
         int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
@@ -338,7 +348,6 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public void requestProtect(UUID protectUUID, EliteHerobrineKnockedEntity protectEntity) {
-        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Protect him !!!"), false);
         assignProtect(firstSummonedHerobrine, protectUUID, protectEntity);
         assignProtect(secondSummonedHerobrine, protectUUID, protectEntity);
         assignProtect(thirdSummonedHerobrine, protectUUID, protectEntity);
@@ -434,12 +443,12 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
                 if (new Random().nextBoolean()) {
-                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
                             Component.translatable("subtitles.herobrine_prepare_for_fight").getString()), false);
                     this.summonTimestamp = new Random().nextInt(13100, 22200);
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
-                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
                             Component.translatable("subtitles.herobrine_no_fight").getString()), false);
                 }
             }
@@ -472,7 +481,7 @@ public class HerobrineGregEntity extends Monster {
             }
             if (this.summonTiming == 10) {
                 this.playSound(AnnoyingVillagersModSounds.PORTAL_SUMMON.get(), 1.0F, 1.0F);
-                Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " +
+                Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
                         Component.translatable("subtitles.herobrine_summon").getString()), false);
             }
             if (this.summonTiming == 1) {
@@ -502,7 +511,7 @@ public class HerobrineGregEntity extends Monster {
                 }
             }
             if (this.escapeTiming == 1) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
                         Component.translatable("subtitles.herobrine_will_be_back").getString()), false);
                 if (this.firstSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     lowShadowHerobrineCloneEntity.setAutoKill(true);
