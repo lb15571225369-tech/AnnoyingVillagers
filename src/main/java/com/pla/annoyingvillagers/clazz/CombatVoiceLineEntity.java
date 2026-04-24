@@ -56,18 +56,6 @@ public interface CombatVoiceLineEntity {
         return null;
     }
 
-    default SoundSource getVoiceSoundSource() {
-        return SoundSource.HOSTILE;
-    }
-
-    default float getVoiceVolume() {
-        return 1.0F;
-    }
-
-    default float getVoicePitch() {
-        return 1.0F;
-    }
-
     default boolean canSayHurtSound(Mob self, DamageSource source) {
         return canPlayVoiceLine(self);
     }
@@ -77,7 +65,7 @@ public interface CombatVoiceLineEntity {
     }
 
     default void sayHurtSound(Mob self, DamageSource source) {
-        if (!(self.level() instanceof ServerLevel)) {
+        if (!(self.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -90,17 +78,22 @@ public interface CombatVoiceLineEntity {
             return;
         }
 
-        self.playSound(
+        serverLevel.playSound(
+                null,
+                self.getX(),
+                self.getY(),
+                self.getZ(),
                 sound,
-                getVoiceVolume(),
-                getVoicePitch()
+                SoundSource.HOSTILE,
+                1.0F,
+                1.0F
         );
 
         resetVoiceCooldown(self);
     }
 
     default void sayAttackSound(Mob self, Entity target) {
-        if (!(self.level() instanceof ServerLevel)) {
+        if (!(self.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -113,10 +106,15 @@ public interface CombatVoiceLineEntity {
             return;
         }
 
-        self.playSound(
+        serverLevel.playSound(
+                null,
+                self.getX(),
+                self.getY(),
+                self.getZ(),
                 sound,
-                getVoiceVolume(),
-                getVoicePitch()
+                SoundSource.HOSTILE,
+                1.0F,
+                1.0F
         );
 
         resetVoiceCooldown(self);
