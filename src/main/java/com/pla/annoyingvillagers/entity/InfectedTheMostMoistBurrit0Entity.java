@@ -3,10 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import com.pla.efdancing.gameasset.EFDancingAnimations;
@@ -40,6 +37,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
+    private boolean initialSpawn = false;
     final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public InfectedTheMostMoistBurrit0Entity(SpawnEntity spawnEntity, Level level) {
@@ -80,7 +78,12 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide() && this.livingEntityPatch != null) {
+        if (!(this.level() instanceof ServerLevel)) return;
+        if (this.tickCount == 1 && !this.initialSpawn) {
+            this.playSound(AnnoyingVillagersModSounds.INFECTED_THE_MOSTMOISTBURRIT0_SAY_ON_SPAWN.get(), 1.0F, 1.0F);
+            this.initialSpawn = true;
+        }
+        if (this.livingEntityPatch != null) {
             this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 2, 0, false, false));
             this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 2, 0, false, false));
@@ -92,6 +95,18 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         super.die(damageSource);
         HerobrineUtil.dropArmoredHerobrineLoot(this.level(), this.getX(), this.getY(), this.getZ());
         this.discard();
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("InitialSpawn", this.initialSpawn);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.initialSpawn = tag.getBoolean("InitialSpawn");
     }
 
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {

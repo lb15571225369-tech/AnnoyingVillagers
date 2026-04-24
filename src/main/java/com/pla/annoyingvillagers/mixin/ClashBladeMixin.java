@@ -5,7 +5,6 @@ import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EscapeUtil;
-import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import com.pla.efclash_blade.skill.ClashBladeSkill;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +13,6 @@ import net.minecraftforge.fml.ModList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -53,12 +51,12 @@ public class ClashBladeMixin {
         }
     }
 
-    @Inject(method = "moreLogicAfterClashing", at = @At("HEAD"))
-    private static void forceMoreLogicAfterClash(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
-                                                  DamageSource damageSource,
-                                                  PlayerPatch<?> playerPatch,
-                                                  ServerLevel serverLevel,
-                                                  CallbackInfo ci) {
-        ScreenShakeUtil.applyScreenShake(serverLevel, playerPatch.getOriginal().getOnPos().getCenter(), 1.0, 20, 4);
-    }
+//    @Inject(method = "moreLogicAfterClashing", at = @At("HEAD"))
+//    private static void forceMoreLogicAfterClash(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
+//                                                  DamageSource damageSource,
+//                                                  PlayerPatch<?> playerPatch,
+//                                                  ServerLevel serverLevel,
+//                                                  CallbackInfo ci) {
+//
+//    }
 }

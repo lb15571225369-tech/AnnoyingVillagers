@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -41,7 +42,6 @@ import java.util.function.Consumer;
 public class AlexEntity extends AVNpc {
     private JevEntity jevToProtect;
     private UUID jevUUID;
-    private boolean jevDeathMessageSent = false;
     private boolean spawnJev = false;
     private int state = 0;
 
@@ -87,6 +87,10 @@ public class AlexEntity extends AVNpc {
 
     public void setState(int state) {
         this.state = state;
+        if (state == 1 && this.jevToProtect != null && this.level() instanceof ServerLevel) {
+            jevToProtect.playSound(AnnoyingVillagersModSounds.JEV_SAY_WHEN_ALEX_SECOND_PHASE.get(),
+                    1.0F, 1.0F);
+        }
     }
 
     @Override
@@ -96,7 +100,6 @@ public class AlexEntity extends AVNpc {
             tag.putUUID("JevUUID", jevUUID);
         }
         tag.putInt("State", this.state);
-        tag.putBoolean("JevDeathMessageSent", jevDeathMessageSent);
         tag.putBoolean("SpawnJev", spawnJev);
     }
 
@@ -107,10 +110,13 @@ public class AlexEntity extends AVNpc {
             jevUUID = tag.getUUID("JevUUID");
         }
         state = tag.getInt("State");
-        jevDeathMessageSent = tag.getBoolean("JevDeathMessageSent");
         spawnJev = tag.getBoolean("SpawnJev");
     }
 
+    @Override
+    public SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.ALEX_SAY.get();
+    }
 
     public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
@@ -170,13 +176,6 @@ public class AlexEntity extends AVNpc {
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
         if (this.level() instanceof ServerLevel serverLevel) {
-            if (this.getServer() != null) {
-                this.getServer().getPlayerList().broadcastSystemMessage(
-                        Component.literal("<" + this.getDisplayName().getString() + "> Damn it !"),
-                        false
-                );
-            }
-
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
             final double z = this.getZ();
@@ -281,12 +280,6 @@ public class AlexEntity extends AVNpc {
     }
 
     @Override
-    protected void implementFirstTick(ServerLevel serverLevel) {
-        super.implementFirstTick(serverLevel);
-        Objects.requireNonNull(this.getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + "Hah, a loser beneath me"), false);
-    }
-
-    @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
@@ -303,25 +296,6 @@ public class AlexEntity extends AVNpc {
                 }
             }
             if (jevToProtect != null && !jevToProtect.isAlive()) {
-                if (!jevDeathMessageSent) {
-                    jevDeathMessageSent = true;
-                    if (level() instanceof ServerLevel serverLevel) {
-                        String[] JEV_DEATH_LINES = {
-                                "Jev...? Jev!? No... please no...",
-                                "Not you too, Jev...",
-                                "They killed him... They actually killed Jev...",
-                                "I told you to stay back, Jev...",
-                                "You idiot... you weren't supposed to die...",
-                                "Damn it, Jev... you were all I had left...",
-                                "Rest now, Jev... I'll handle this.",
-                                "Heh... even in death, you're still loyal, Jev...",
-                                "They’ll pay for this... I swear it, Jev"
-                        };
-
-                        String message = JEV_DEATH_LINES[level().getRandom().nextInt(JEV_DEATH_LINES.length)];
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + message), false);
-                    }
-                }
                 jevToProtect = null;
                 jevUUID = null;
             }

@@ -2,10 +2,12 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 
@@ -39,6 +42,11 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
         this.setChatName(this.getDisplayName().getString());
+    }
+
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY.get();
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {

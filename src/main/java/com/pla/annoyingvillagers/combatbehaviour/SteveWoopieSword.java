@@ -36,17 +36,7 @@ public class SteveWoopieSword {
         SteveEntity steveEntity = (SteveEntity) mobpatch.getOriginal();
         ItemStack itemStack = steveEntity.getMainHandItem();
         steveEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-        if (itemStack.getItem() instanceof WoopieTheSwordItem && steveEntity.level() instanceof ServerLevel serverLevel) {
-            if (!steveEntity.isSayWhyKeepFighting()) {
-                serverLevel.playSound(
-                        null,
-                        steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
-                        AnnoyingVillagersModSounds.STEVE_WHY_KEEP_FIGHTING.get(),
-                        SoundSource.NEUTRAL,
-                        1.0F, 1.0F
-                );
-                steveEntity.setSayWhyKeepFighting(true);
-            }
+        if (itemStack.getItem() instanceof WoopieTheSwordItem && steveEntity.level() instanceof ServerLevel) {
             new DelayedTask(10) {
                 @Override
                 public void run() {

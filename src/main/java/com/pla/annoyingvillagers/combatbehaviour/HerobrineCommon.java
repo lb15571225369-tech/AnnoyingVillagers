@@ -265,7 +265,7 @@ public class HerobrineCommon {
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
-                herobrineMob.playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
+                herobrineMob.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_WEAPON_SCREAMING.get(), 1.0F, 1.0F);
             }
         }
     }
@@ -458,6 +458,9 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
             shadowHerobrineEntity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             shadowHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()));
+            if (shadowHerobrineEntity.level() instanceof ServerLevel) {
+                shadowHerobrineEntity.playSound(AnnoyingVillagersModSounds.SHADOW_HEROBRINE_SAY_OBSIDIAN_MACHINE_GUN.get(), 1.0F, 1.0F);
+            }
         }
     }
 }

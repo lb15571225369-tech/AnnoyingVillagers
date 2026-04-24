@@ -8,11 +8,13 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -31,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.Pose;
@@ -72,6 +75,14 @@ public class NullEntity extends HerobrineMob {
         return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null;
     }
 
+    public NullSkeletonEntity getFirstWitherSkeleton() {
+        return firstWitherSkeleton;
+    }
+
+    public NullSkeletonEntity getSecondWitherSkeleton() {
+        return secondWitherSkeleton;
+    }
+
     public void claimWitherSkeletonSlot(NullSkeletonEntity witherSkeleton) {
         if (firstWitherSkeletonUuid == null) {
             firstWitherSkeletonUuid = witherSkeleton.getUUID();
@@ -80,6 +91,11 @@ public class NullEntity extends HerobrineMob {
             secondWitherSkeletonUuid = witherSkeleton.getUUID();
             secondWitherSkeleton = witherSkeleton;
         }
+    }
+
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.NULL_SAY.get();
     }
 
     private boolean spawnNullWeapon = false;

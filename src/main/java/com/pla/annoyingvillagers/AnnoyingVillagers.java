@@ -50,7 +50,7 @@ public class AnnoyingVillagers {
     public static final String MODID = "annoyingvillagers";
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry
             .newSimpleChannel(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "main"), () -> "1", "1"::equals, "1"::equals);
-    private static int messageID = 0;;
+    private static int messageID = 0;
 
     public AnnoyingVillagers(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();

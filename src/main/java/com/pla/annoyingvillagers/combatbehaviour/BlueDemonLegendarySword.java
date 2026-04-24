@@ -29,13 +29,6 @@ public class BlueDemonLegendarySword {
         ItemStack itemStack = blueDemonEntity.getMainHandItem();
         if (itemStack.getItem() instanceof LegendarySwordItem && blueDemonEntity.level() instanceof ServerLevel serverLevel) {
             blueDemonEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-            serverLevel.playSound(
-                    null,
-                    blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
-                    AnnoyingVillagersModSounds.BLUEDEMON_SAY_DONT_BE.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F, 1.0F
-            );
             new DelayedTask(10) {
                 @Override
                 public void run() {

@@ -7,12 +7,14 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.BlueDemonTridentItem;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -43,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.UUID;
 
-public class BbqEntity extends Chicken {
+public class BbqEntity extends Chicken implements BurstProtectEntity, CombatVoiceLineEntity {
     @Nullable
     private BlueDemonEntity leader;
     @Nullable
@@ -81,9 +83,39 @@ public class BbqEntity extends Chicken {
     private UUID pendingDeathEscapeLeaderUUID;
     private boolean deathWatchMode;
     private boolean selfKill = false;
+    private int voiceCooldown = 0;
 
-    private float recentDamageTaken = 0.0F;
-    private int recentHitCounter = 0;
+    @Override
+    public int getVoiceCooldown() {
+        return voiceCooldown;
+    }
+
+    @Override
+    public void setVoiceCooldown(int cooldown) {
+        this.voiceCooldown = cooldown;
+    }
+
+    protected float recentDamageTaken = 0.0F;
+    protected int recentHitCounter = 0;
+    @Override
+    public float getRecentDamageTaken() {
+        return recentDamageTaken;
+    }
+
+    @Override
+    public void setRecentDamageTaken(float value) {
+        recentDamageTaken = value;
+    }
+
+    @Override
+    public int getRecentHitCounter() {
+        return recentHitCounter;
+    }
+
+    @Override
+    public void setRecentHitCounter(int value) {
+        recentHitCounter = value;
+    }
 
     public boolean isEscapeFlying() {
         return this.escapeMode && this.escapeFlying;
@@ -973,18 +1005,13 @@ public class BbqEntity extends Chicken {
             return;
         }
 
-        if (recentDamageTaken > 0.0F) {
-            recentDamageTaken = Mth.approach(recentDamageTaken, 0.0F, this.getMaxHealth() * 0.07F / 160.0F);
-        }
-
-        if (this.tickCount % 4 == 0 && recentHitCounter > 0) {
-            recentHitCounter = Mth.clamp(recentHitCounter - 1, 0, 5);
-        }
-
         if (this.selfKill) {
             this.kill();
             return;
         }
+
+        this.tickVoiceCooldown();
+        this.tickBurstProtectionDecay(this);
 
         if (this.deathWatchMode) {
             this.tickLeaderDeathWatch();
@@ -1127,7 +1154,11 @@ public class BbqEntity extends Chicken {
         if (damageSource.is(DamageTypes.EXPLOSION)) return false;
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)
                 || damageSource.is(DamageTypes.GENERIC_KILL)) {
-            return super.hurt(damageSource, amount);
+            boolean result = super.hurt(damageSource, amount);
+            if (result) {
+                this.sayHurtSound(this, damageSource);
+            }
+            return result;
         }
         if (this.getHealth() <= 1.0F && !selfKill) {
             this.selfKill = true;
@@ -1149,6 +1180,9 @@ public class BbqEntity extends Chicken {
             if (leader != null) {
                 leader.setTarget(livingEntity);
             }
+        }
+        if (result) {
+            this.sayHurtSound(this, damageSource);
         }
         return result;
     }
@@ -1221,6 +1255,11 @@ public class BbqEntity extends Chicken {
     }
 
     @Override
+    public @Nullable SoundEvent getHurtVoiceSound() {
+        return AnnoyingVillagersModSounds.BBQ_SAY.get();
+    }
+
+    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
@@ -1234,6 +1273,7 @@ public class BbqEntity extends Chicken {
         if (this.sauceLeaderUUID != null) {
             tag.putUUID("SauceLeaderUUID", this.sauceLeaderUUID);
         }
+        tag.putInt("VoiceCooldown", this.voiceCooldown);
     }
 
     @Override
@@ -1261,6 +1301,7 @@ public class BbqEntity extends Chicken {
             this.sauceLeaderUUID = null;
         }
         this.sauceLeader = null;
+        voiceCooldown = tag.getInt("VoiceCooldown");
     }
 
     public static @NotNull Builder createAttributes() {

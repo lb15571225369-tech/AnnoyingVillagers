@@ -3,12 +3,14 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -48,6 +51,26 @@ public class HerobrineChrisEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setChatName(this.getDisplayName().getString());
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
+    }
+
+    @Override
+    public int getMinVoiceCooldown() {
+        return 60;
+    }
+
+    @Override
+    public int getMaxVoiceCooldown() {
+        return 200;
+    }
+
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.HEROBRINE_CLONE_SAY.get();
+    }
+
+    @Override
+    public @Nullable SoundEvent getHurtVoiceSound() {
+        return AnnoyingVillagersModSounds.HEROBRINE_CLONE_SAY_ON_HURT.get();
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
@@ -77,6 +100,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
     public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
+            this.playSound(AnnoyingVillagersModSounds.HEROBRINE_CLONE_SAY_ON_DEATH.get(), 1.0F, 1.0F);
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("subtitles.herobrine_clone_die"), false);
             InfectedChrisEntity corpse = new InfectedChrisEntity(AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());

@@ -123,33 +123,6 @@ public class BlueDemonPatch extends CEHumanoidPatch implements CustomExecuteEnti
         this.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
     }
 
-    public AttackResult attack(EpicFightDamageSource epicFightDamageSource, Entity entity, InteractionHand interactionhand) {
-        AttackResult attackresult = super.attack(epicFightDamageSource, entity, interactionhand);
-
-        if (attackresult.resultType == ResultType.SUCCESS
-                && entity.isAlive()
-                && this.getOriginal() instanceof BlueDemonEntity blueDemonEntity
-                && blueDemonEntity.getVoiceCooldown() == 0) {
-            blueDemonEntity.setVoiceCooldown();
-            SoundEvent soundEvent;
-            float chance = new Random().nextFloat();
-            if (chance <= 0.2) {
-                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_YC.get();
-            } else if (chance <= 0.4) {
-                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_PLAYER_INTERESTING.get();
-            } else if (chance <= 0.6) {
-                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_YOU_NO_KNOW.get();
-            } else if (chance <= 0.8) {
-                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_PLAYER.get();
-            } else {
-                soundEvent = AnnoyingVillagersModSounds.BLUEDEMON_SAY_DONT_BE.get();
-            }
-            this.getOriginal().playSound(soundEvent, 1.0F, 1.0F);
-        }
-
-        return attackresult;
-    }
-
     public void tick(LivingTickEvent livingTickEvent) {
         super.tick(livingTickEvent);
     }

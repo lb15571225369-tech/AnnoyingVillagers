@@ -50,7 +50,6 @@ public class SteveEntity extends AVNpc {
     private int state = 0;
     private int swapWeaponCooldown;
     private boolean sayLegendary = false;
-    private boolean sayWhyKeepFighting = false;
 
     public int getState() {
         return state;
@@ -84,6 +83,11 @@ public class SteveEntity extends AVNpc {
         CommonGoals.registerGoalForNeutralNpc(this);
     }
 
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.STEVE_SAY.get();
+    }
+
     public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
@@ -92,34 +96,12 @@ public class SteveEntity extends AVNpc {
         return false;
     }
 
-    @Override
-    public void awardKillScore(@NotNull Entity pKilled, int pScoreValue, @NotNull DamageSource pSource) {
-        super.awardKillScore(pKilled, pScoreValue, pSource);
-        if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(
-                    null,
-                    this.getX(), this.getY(), this.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_WIN.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F, 1.0F
-            );
-        }
-    }
-
     public double getMyRidingOffset() {
         return -0.35D;
     }
 
     public int getSwapWeaponCooldown() {
         return swapWeaponCooldown;
-    }
-
-    public void setSayWhyKeepFighting(boolean sayWhyKeepFighting) {
-        this.sayWhyKeepFighting = sayWhyKeepFighting;
-    }
-
-    public boolean isSayWhyKeepFighting() {
-        return sayWhyKeepFighting;
     }
 
     public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
@@ -186,11 +168,8 @@ public class SteveEntity extends AVNpc {
                     angrySteveEntity.setLastHurtByMob(target);
                 }
             } else {
-                serverLevel.playSound(
-                        null,
-                        this.getX(), this.getY(), this.getZ(),
-                        AnnoyingVillagersModSounds.STEVE_NO.get(),
-                        SoundSource.NEUTRAL,
+                this.playSound(
+                        AnnoyingVillagersModSounds.STEVE_SAY_ON_DEATH.get(),
                         1.0F, 1.0F
                 );
 
@@ -337,7 +316,6 @@ public class SteveEntity extends AVNpc {
         tag.putInt("State", this.state);
         tag.putInt("SwapWeaponCooldown", this.swapWeaponCooldown);
         tag.putBoolean("SayLegendary", sayLegendary);
-        tag.putBoolean("sayWhyKeepFighting", sayWhyKeepFighting);
     }
 
     @Override
@@ -346,7 +324,6 @@ public class SteveEntity extends AVNpc {
         this.state = tag.getInt("State");
         this.swapWeaponCooldown = tag.getInt("SwapWeaponCooldown");
         this.sayLegendary = tag.getBoolean("SayLegendary");
-        this.sayWhyKeepFighting = tag.getBoolean("sayWhyKeepFighting");
     }
 
     public void rollItem() {
@@ -386,11 +363,8 @@ public class SteveEntity extends AVNpc {
                     setWeapon = true;
                 } else if (this.level() instanceof ServerLevel serverLevel) {
                     if (!this.sayLegendary) {
-                        serverLevel.playSound(
-                                null,
-                                this.getX(), this.getY(), this.getZ(),
-                                AnnoyingVillagersModSounds.STEVE_LEGENDARYSWORD.get(),
-                                SoundSource.NEUTRAL,
+                        this.playSound(
+                                AnnoyingVillagersModSounds.STEVE_SAY_I_NOT_BELIEVE.get(),
                                 1.0F, 1.0F
                         );
                         this.sayLegendary = true;
@@ -445,11 +419,8 @@ public class SteveEntity extends AVNpc {
     @Override
     protected void implementFirstTick(ServerLevel serverLevel) {
         super.implementFirstTick(serverLevel);
-        serverLevel.playSound(
-                null,
-                this.getX(), this.getY(), this.getZ(),
-                AnnoyingVillagersModSounds.STEVE_SPAWN.get(),
-                SoundSource.NEUTRAL,
+        this.playSound(
+                AnnoyingVillagersModSounds.STEVE_SAY_ON_SPAWN.get(),
                 1.0F, 1.0F
         );
     }
@@ -457,14 +428,11 @@ public class SteveEntity extends AVNpc {
     @Override
     public void tick() {
         super.tick();
-        if (this.level() instanceof ServerLevel serverLevel) {
+        if (this.level() instanceof ServerLevel) {
             if (this.getTarget() != null && this.getTarget().isAlive() && this.getMainHandItem().isEmpty()) {
                 rollItem();
-                serverLevel.playSound(
-                        null,
-                        this.getX(), this.getY(), this.getZ(),
-                        AnnoyingVillagersModSounds.STEVE_WHY.get(),
-                        SoundSource.NEUTRAL,
+                this.playSound(
+                        AnnoyingVillagersModSounds.STEVE_SAY_WHAT.get(),
                         1.0F, 1.0F
                 );
             }

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,6 +51,7 @@ import java.util.*;
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private int wardenCallingCooldown;
     private int eatCount = 0;
+    private boolean initialSpawn = false;
     final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
             Items.DIAMOND_SWORD,
@@ -95,6 +97,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         super.readAdditionalSaveData(pCompound);
         wardenCallingCooldown = pCompound.getInt("WardenCallingCooldown");
         eatCount = pCompound.getInt("EatCount");
+        initialSpawn = pCompound.getBoolean("InitialSpawn");
     }
 
     @Override
@@ -102,6 +105,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("WardenCallingCooldown", wardenCallingCooldown);
         pCompound.putInt("EatCount", eatCount);
+        pCompound.putBoolean("InitialSpawn", this.initialSpawn);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -189,12 +193,19 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (!level().isClientSide()) {
+            if (this.tickCount == 1 && !this.initialSpawn) {
+                this.playSound(AnnoyingVillagersModSounds.KNOCKED_ELITE_HEROBRINE_SAY_ON_SPAWN.get(), 1.0F, 1.0F);
+                this.initialSpawn = true;
+            }
             solidifyFeetAndStandOnTop();
             if (this.wardenCallingCooldown >= 0) {
                 this.wardenCallingCooldown = this.wardenCallingCooldown - 1;
             }
             if (livingentitypatch != null) {
                 if (eatCount == 1 || eatCount == 2) {
+                    if (eatCount == 1) {
+                        this.playSound(AnnoyingVillagersModSounds.KNOCKED_ELITE_HEROBRINE_SAY_ON_BEING_EATEN.get(), 1.0F, 1.0F);
+                    }
                     livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_1, 0.0F);
                 } else if (eatCount == 3 || eatCount == 4) {
                     livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_2, 0.0F);

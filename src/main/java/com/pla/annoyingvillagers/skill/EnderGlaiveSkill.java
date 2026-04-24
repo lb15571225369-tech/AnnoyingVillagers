@@ -51,7 +51,7 @@ public class EnderGlaiveSkill extends WeaponInnateSkill {
         ItemStack itemStack = player.getMainHandItem();
         if (container.getStack() == 1 && itemStack.getTag() != null &&
                 itemStack.getItem() instanceof EnderGlaiveItem && !itemStack.getTag().getBoolean("PlaySound")) {
-            container.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
+            container.getExecutor().playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_WEAPON_SCREAMING.get(), 0.0F, 0.0F);
             itemStack.getTag().putBoolean("PlaySound", true);
         } else if (container.getStack() < 1 && itemStack.getTag() != null &&
                 itemStack.getItem() instanceof EnderGlaiveItem && itemStack.getTag().getBoolean("PlaySound")) {

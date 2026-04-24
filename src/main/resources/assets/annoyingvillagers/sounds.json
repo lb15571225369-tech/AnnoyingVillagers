@@ -39,14 +39,6 @@
       }
     ]
   },
-  "bluedemonsaytridentfestival": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemonsaytridentfestival",
-        "stream": false
-      }
-    ]
-  },
   "electrify": {
     "sounds": [
       {
@@ -67,46 +59,6 @@
       },
       {
         "name": "annoyingvillagers:electrify_5",
-        "stream": false
-      }
-    ]
-  },
-  "bluedemonsayyc": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemonsayyc",
-        "stream": false
-      }
-    ]
-  },
-  "bluedemon_say_player_interesting": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemon_say_player_interesting",
-        "stream": false
-      }
-    ]
-  },
-  "bluedemon_say_you_no_know": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemon_say_you_no_know",
-        "stream": false
-      }
-    ]
-  },
-  "bluedemonsayplayer": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemonsayplayer",
-        "stream": false
-      }
-    ]
-  },
-  "bluedemonsaydontbe": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:bluedemonsaydontbe",
         "stream": false
       }
     ]
@@ -275,14 +227,6 @@
       }
     ]
   },
-  "herobrine_attack_3": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_attack_3",
-        "stream": false
-      }
-    ]
-  },
   "wing": {
     "sounds": [
       {
@@ -367,146 +311,10 @@
       }
     ]
   },
-  "herobrine_enough": {
-    "subtitle": "subtitles.herobrine_enough",
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_enough",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_attack_1": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_attack_1",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_attack_2": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_attack_2",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_youareweak": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_youareweak",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_howfoolish": {
-    "subtitle": "subtitles.herobrine_howfoolish",
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_howfoolish",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_areyoutalkingaboutme": {
-    "subtitle": "subtitles.herobrine_areyoutalkingaboutme",
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_areyoutalkingaboutme",
-        "stream": false
-      }
-    ]
-  },
-  "steve_whykeepfighting": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_whykeepfighting",
-        "stream": false
-      }
-    ]
-  },
-  "steave_breath": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_breath",
-        "stream": false
-      }
-    ]
-  },
-  "steve_attack": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_attack",
-        "stream": false
-      }
-    ]
-  },
   "heavy_attack_start": {
     "sounds": [
       {
         "name": "annoyingvillagers:heavy_attack_start",
-        "stream": false
-      }
-    ]
-  },
-  "steve_no": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_no",
-        "stream": false
-      }
-    ]
-  },
-  "steve_legendarysword": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_legendarysword",
-        "stream": false
-      }
-    ]
-  },
-  "steve_why": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_why",
-        "stream": false
-      }
-    ]
-  },
-  "steve_spawn": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_spawn",
-        "stream": false
-      }
-    ]
-  },
-  "steve_win": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_win_1",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:steve_win_2",
-        "stream": false
-      }
-    ]
-  },
-  "steve_angry": {
-    "subtitle": "subtitles.steve_angry",
-    "sounds": [
-      {
-        "name": "annoyingvillagers:steve_angry",
-        "stream": false
-      }
-    ]
-  },
-  "herobrine_whoevergetinmyway": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:herobrine_whoevergetinmyway",
         "stream": false
       }
     ]
@@ -684,6 +492,486 @@
       {
         "name": "annoyingvillagers:electric_shoot",
         "stream": false
+      }
+    ]
+  },
+  "alex_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/alex/dammit_damit"
+      },
+      {
+        "name": "annoyingvillagers:entity/alex/guess_what_youre_dead"
+      },
+      {
+        "name": "annoyingvillagers:entity/alex/im_perfect_picture_perfect"
+      },
+      {
+        "name": "annoyingvillagers:entity/alex/laughing"
+      },
+      {
+        "name": "annoyingvillagers:entity/alex/no_youre_kidding_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/alex/you_will_now_be_punished"
+      }
+    ]
+  },
+  "bbq_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/bbq/cococococ"
+      },
+      {
+        "name": "annoyingvillagers:entity/bbq/cocococooccoc"
+      },
+      {
+        "name": "annoyingvillagers:entity/bbq/cococoococococococoocococ"
+      }
+    ]
+  },
+  "blue_demon_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/blue_demon/anyone_who_dare_toy_with_the_innocent"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/clever_monkey_but_not_clever_enough"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/conserve_your_energy"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/do_you_know"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/dont_get_cocky"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/electrify"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/fight_with_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/how_amusing_show_me_what_else_you_can_do"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/how_we_just_safe"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/I_pray_you_find_light_in_your_next_life"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/it_is_foolish_to_think_we_are_all_the_same"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/time_to_respawn_player"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/try_to_stop_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/you_are_indeed_prey_worthy_of_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/you_leave_your_back_side_defenseless_you_desire_to_fail"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/you_shall_protect_your_home"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/you_will_learn_first_hand_why_they_fear_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/blue_demon/your_strategy_is_impressive"
+      }
+    ]
+  },
+  "blue_demon_say_trident_festival": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/blue_demon/trident_festival"
+      }
+    ]
+  },
+  "blue_demon_say_phase_2_release": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/blue_demon/phase_2_release"
+      }
+    ]
+  },
+  "blue_demon_say_retreat": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/blue_demon/the_world_will_be_able_to_recover_once_Iam_finished"
+      }
+    ]
+  },
+  "chris_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/chris/chris_spawn"
+      }
+    ]
+  },
+  "jev_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/jev/her_name_is_alex_and_she_is_my_master"
+      }
+    ]
+  },
+  "jev_say_when_support_alex": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/jev/absolutely_whatever_you_say_master"
+      }
+    ]
+  },
+  "jev_say_when_alex_second_phase": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/jev/master_what_should_we_do"
+      }
+    ]
+  },
+  "armored_herobrine_say_on_death": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/armored_herobrine/armored_herobrine_defeated"
+      },
+      {
+        "name": "annoyingvillagers:entity/armored_herobrine/this_vessel_this_vessel_is_too_weak"
+      }
+    ]
+  },
+  "armored_herobrine_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/armored_herobrine/armored_herobrine_when_fighting"
+      }
+    ]
+  },
+  "infected_the_most_moisburrit0_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/armored_herobrine/infected_themostmoistburrit0_voiceline"
+      }
+    ]
+  },
+  "elite_herobrine_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/many_worthy_vessels"
+      },
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/you_can_not_stop_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/you_know_i_am_a_creator"
+      },
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/for_how_can"
+      },
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/so_you_know_i_can_nt_be_destroy"
+      }
+    ]
+  },
+  "elite_herobrine_weapon_screaming": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/weapon_screaming"
+      }
+    ]
+  },
+  "elite_herobrine_say_second_form_release": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/elite_herobrine/second_form_release"
+      }
+    ]
+  },
+  "knocked_elite_herobrine_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/knocked_elite_herobrine/requesting_immediate_assistance"
+      }
+    ]
+  },
+  "knocked_elite_herobrine_say_on_being_eaten": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/knocked_elite_herobrine/warden_eating"
+      }
+    ]
+  },
+  "herobrine_clone_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/are_you_talking_about_me"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/whoever_gets_in_my_way_shall_be_eliminated"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/resistance_is_futile"
+      }
+    ]
+  },
+  "herobrine_clone_say_on_hurt": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_hurt_1"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_hurt_2"
+      }
+    ]
+  },
+  "herobrine_clone_say_on_death": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_death_1"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_death_2"
+      }
+    ]
+  },
+  "herobrine_clone_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/enough"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_attack_1"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_attack_2"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_attack_3"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/herobrine_breath"
+      },
+      {
+        "name": "annoyingvillagers:entity/herobrine_clone/how_foolish"
+      }
+    ]
+  },
+  "null_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/null/to_think_he_will_go_this_far_why"
+      },
+      {
+        "name": "annoyingvillagers:entity/null/we_player_we_declare_war"
+      },
+      {
+        "name": "annoyingvillagers:entity/null/we_players_we_seek_your_complete_annhilation"
+      },
+      {
+        "name": "annoyingvillagers:entity/null/where_are_you_running_off_to"
+      }
+    ]
+  },
+  "shadow_herobrine_say_obsidian_machine_gun": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/shadow_herobrine/obsidian_machine_gun"
+      }
+    ]
+  },
+  "shadow_herobrine_say_on_phase_2": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/shadow_herobrine/requesting_assistance"
+      }
+    ]
+  },
+  "shadow_herobrine_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/shadow_herobrine/silence_I_shall_not_waste_my_breath_in_scam_like_you"
+      }
+    ]
+  },
+  "steve_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/steve_on_spawn"
+      }
+    ]
+  },
+  "angry_steve_say_on_spawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/angry_steve_on_spawn"
+      }
+    ]
+  },
+  "steve_say_on_death": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/steve_on_death"
+      }
+    ]
+  },
+  "steve_say_what": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/what"
+      }
+    ]
+  },
+  "steve_say_i_not_believe": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/i_can_not_believe"
+      }
+    ]
+  },
+  "steve_say_on_attack": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/steve_attack"
+      }
+    ]
+  },
+  "steve_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/i_am_not_your_enemy"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/leave_now"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/please_I_will_again"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/screaming"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/steve_breath"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/this_end_now"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/we_can_reason"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/why_are_the_players_fighting"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/why_why_do_we_have_to_keep"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/you_can_settle_this"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/you_re_right_there"
+      }
+    ]
+  },
+  "angry_steve_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/steve/angry_screaming"
+      },
+      {
+        "name": "annoyingvillagers:entity/steve/crazy_laughter"
+      }
+    ]
+  },
+  "villager_generals_say_on_fire": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/villager_generals/fire"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/destroy_them_fire"
+      }
+    ]
+  },
+  "villager_generals_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/villager_generals/breath_and_say_long"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/breath_it_player"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/breath_and_say_long"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/destroy_that_player_make_him_suffer"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/i_i_want_to_know"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/i_want_to_fight_you"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/i_want_to_know_how_strong_a_player"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/it_simple_if_youre_player"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_generals/you_you_player"
+      }
+    ]
+  },
+  "villager_scouts_say_on_fire": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/villager_scouts/fire"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_scouts/fire_2"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_scouts/open_fire"
+      }
+    ]
+  },
+  "villager_scouts_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/villager_scouts/finish_him_quickly"
+      },
+      {
+        "name": "annoyingvillagers:entity/villager_scouts/take_him_down"
+      }
+    ]
+  },
+  "zombie_say": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_1"
+      },
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_2"
+      },
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_3"
+      },
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_4"
+      },
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_5"
+      },
+      {
+        "name": "annoyingvillagers:entity/zombies/zombie_say_6"
       }
     ]
   }

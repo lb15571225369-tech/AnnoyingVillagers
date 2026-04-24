@@ -55,6 +55,10 @@ public class NullSkeletonEntity extends AbstractSkeleton {
         this.player = player;
     }
 
+    public NullEntity getNullEntity() {
+        return nullEntity;
+    }
+
     public void setNullEntity(NullEntity nullEntity) {
         this.nullUUID = nullEntity.getUUID();
         this.nullEntity = nullEntity;

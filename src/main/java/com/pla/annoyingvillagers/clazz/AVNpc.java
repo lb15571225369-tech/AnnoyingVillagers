@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtectEntity {
+public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtectEntity, CombatVoiceLineEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
@@ -92,6 +92,18 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
+    }
+
+    private int voiceCooldown = 0;
+
+    @Override
+    public int getVoiceCooldown() {
+        return voiceCooldown;
+    }
+
+    @Override
+    public void setVoiceCooldown(int cooldown) {
+        this.voiceCooldown = cooldown;
     }
 
     public void postPlayEfnGuardHit() {
@@ -291,6 +303,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
             this.offWeaponItem.save(itemTag);
             tag.put("OffHandItem", itemTag);
         }
+        tag.putInt("VoiceCooldown", this.voiceCooldown);
     }
 
     @Override
@@ -334,6 +347,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
         } else {
             this.offWeaponItem = ItemStack.EMPTY;
         }
+        this.voiceCooldown = tag.getInt("VoiceCooldown");
     }
 
     @Override
@@ -487,7 +501,20 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
         if (this.hasEnderPearlCounter()) {
             this.tryTriggerEnderPearlCounter(damageSource);
         }
-        return super.hurt(damageSource, f);
+        boolean result = super.hurt(damageSource, f);
+        if (result) {
+            this.sayHurtSound(this, damageSource);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean doHurtTarget(@NotNull Entity target) {
+        boolean result = super.doHurtTarget(target);
+        if (result) {
+            this.sayAttackSound(this, target);
+        }
+        return result;
     }
 
     protected boolean hasEnderPearlCounter() {
@@ -676,6 +703,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
     public void tick() {
         super.tick();
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        this.tickVoiceCooldown();
 
         if (this.tickCount == 1 && !this.initialSpawn) {
             implementFirstTick((ServerLevel) this.level());

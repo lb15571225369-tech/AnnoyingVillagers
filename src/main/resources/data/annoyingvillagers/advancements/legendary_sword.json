@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:legendary_sword"
+        },
+        "title": {
+            "text": "Legendary Sword",
+            "color": "light_purple"
+        },
+        "description": {
+            "text": "Obtain the Legendary Sword"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "get_item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "annoyingvillagers:legendary_sword"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:blue_demon_chestplate"
+        },
+        "title": {
+            "text": "You thought your strategy could withstand me",
+            "color": "light_purple"
+        },
+        "description": {
+            "text": "Kill Blue Demon"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "kill": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": {
+                    "type": "annoyingvillagers:blue_demon"
+                }
+            }
+        }
+    }
+}

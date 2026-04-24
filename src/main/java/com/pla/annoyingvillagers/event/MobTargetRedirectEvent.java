@@ -54,6 +54,23 @@ public class MobTargetRedirectEvent {
                 }
             }
 
+            if (mob.getTarget() instanceof NullEntity nullEntity
+                    && nullEntity.getFirstWitherSkeleton() != null) {
+                mob.setTarget(nullEntity.getFirstWitherSkeleton());
+            }
+
+            if (mob.getTarget() instanceof NullEntity nullEntity
+                    && nullEntity.getSecondWitherSkeleton() != null) {
+                mob.setTarget(nullEntity.getSecondWitherSkeleton());
+            }
+
+            if (mob.getTarget() instanceof NullSkeletonEntity nullSkeletonEntity
+                    && nullSkeletonEntity.getNullEntity() != null) {
+                if (!nullSkeletonEntity.isAlive()) {
+                    mob.setTarget(nullSkeletonEntity.getNullEntity());
+                }
+            }
+
             if (mob.getTarget() instanceof ReaperHerobrineEntity reaperHerobrineEntity
                     && reaperHerobrineEntity.isPassenger() && reaperHerobrineEntity.getVehicle() instanceof HerobrineDragonEntity herobrineDragonEntity) {
                 mob.setTarget(herobrineDragonEntity);

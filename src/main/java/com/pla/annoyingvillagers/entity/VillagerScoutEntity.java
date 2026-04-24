@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -59,6 +60,11 @@ public class VillagerScoutEntity extends AVNpc {
     protected void registerGoals() {
         super.registerGoals();
         CommonGoals.registerGoalForVillagerKnightNpc(this);
+    }
+
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.VILLAGER_SCOUTS_SAY.get();
     }
 
     public @NotNull MobType getMobType() {

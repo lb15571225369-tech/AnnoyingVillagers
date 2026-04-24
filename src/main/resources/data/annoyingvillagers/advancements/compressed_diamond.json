@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:compressed_diamond"
+        },
+        "title": {
+            "text": "Highest of quality",
+            "color": "light_purple"
+        },
+        "description": {
+            "text": "Obtain a Compressed Diamond"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "get_item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "annoyingvillagers:compressed_diamond"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

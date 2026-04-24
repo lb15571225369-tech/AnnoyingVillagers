@@ -237,34 +237,18 @@ public class HerobrineUtil {
                 }
             }
 
-            if (entity instanceof HerobrineChrisEntity) {
-                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.herobrine_chris").getString() + "> " + Component.translatable("subtitles.herobrine_chris_spawn").getString()), false);
-                }
-
-                if (levelaccessor instanceof Level level) {
-
-                    if (!level.isClientSide()) {
-                        level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), AnnoyingVillagersModSounds.HEROBRINE_AREYOUTALKINGABOUTME.get(), SoundSource.BLOCKS, 5.0F, 1.0F);
-                    } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), AnnoyingVillagersModSounds.HEROBRINE_AREYOUTALKINGABOUTME.get(), SoundSource.BLOCKS, 5.0F, 1.0F, false);
-                    }
-                }
+            if (entity.level() instanceof ServerLevel
+                    && (entity instanceof HerobrineCloneEntity
+                    || entity instanceof ShadowHerobrineCloneEntity
+                    || entity instanceof HerobrineChrisEntity
+                    || entity instanceof Herobrine7Entity
+                    || entity instanceof ArmoredHerobrineEntity)) {
+                entity.playSound(AnnoyingVillagersModSounds.HEROBRINE_CLONE_SAY_ON_SPAWN.get(), 1.0F, 1.0F);
             }
 
-            if (entity instanceof ArmoredHerobrineEntity) {
-                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.armored_herobrine").getString() + "> " + Component.translatable("subtitles.armored_herobrine_spawn").getString()), false);
-                }
-
-                if (levelaccessor instanceof Level level) {
-
-                    if (!level.isClientSide()) {
-                        level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), AnnoyingVillagersModSounds.HEROBRINE_WHOEVERGETINMYWAY.get(), SoundSource.BLOCKS, 5.0F, 1.0F);
-                    } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), AnnoyingVillagersModSounds.HEROBRINE_WHOEVERGETINMYWAY.get(), SoundSource.BLOCKS, 5.0F, 1.0F, false);
-                    }
-                }
+            if (entity.level() instanceof ServerLevel
+                    && entity instanceof ShadowHerobrineEntity) {
+                entity.playSound(AnnoyingVillagersModSounds.SHADOW_HEROBRINE_SAY_ON_SPAWN.get(), 1.0F, 1.0F);
             }
 
             TeamUtil.addOrJoinTeam(entity, "herobrine");

@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:null_weapon"
+        },
+        "title": {
+            "text": "NULL",
+            "color": "light_purple"
+        },
+        "description": {
+            "text": "Obtain Null's powers"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "get_item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "annoyingvillagers:null_weapon"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

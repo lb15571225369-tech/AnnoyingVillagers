@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
@@ -77,6 +78,11 @@ public class BlueVillagerGeneralEntity extends AVNpc {
 
     public SoundEvent getDeathSound() {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.death"));
+    }
+
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.VILLAGER_GENERALS_SAY.get();
     }
 
     @Override

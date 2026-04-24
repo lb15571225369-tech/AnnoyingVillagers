@@ -4,12 +4,14 @@ import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
@@ -148,6 +150,18 @@ public class BowFunction {
         }
 
         level.addFreshEntity(abstractArrow);
+        if ((shooter instanceof VillagerScoutEntity
+                || shooter instanceof VillagerScoutCaptainEntity) && ((AVNpc) shooter).getVoiceCooldown() == 0) {
+            shooter.playSound(AnnoyingVillagersModSounds.VILLAGER_SCOUTS_SAY_ON_FIRE.get(), 1.0F, 1.0F);
+            ((AVNpc) shooter).resetVoiceCooldown((Mob) shooter);
+        }
+        if ((shooter instanceof RedVillagerGeneralEntity
+                || shooter instanceof BlueVillagerGeneralEntity
+                || shooter instanceof GreenVillagerGeneralEntity
+                || shooter instanceof PurpleVillagerGeneralEntity) && ((AVNpc) shooter).getVoiceCooldown() == 0) {
+            shooter.playSound(AnnoyingVillagersModSounds.VILLAGER_GENERALS_SAY_ON_FIRE.get(), 1.0F, 1.0F);
+            ((AVNpc) shooter).resetVoiceCooldown((Mob) shooter);
+        }
         level.playSound(
                 null,
                 shooter.getX(), shooter.getY(), shooter.getZ(),

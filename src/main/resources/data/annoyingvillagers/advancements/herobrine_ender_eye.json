@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:herobrine_ender_eye"
+        },
+        "title": {
+            "text": "Obsidian Machine Gun!",
+            "color": "white"
+        },
+        "description": {
+            "text": "Obtain the Herobrine's Ender Eye"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "get_item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "annoyingvillagers:herobrine_ender_eye"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

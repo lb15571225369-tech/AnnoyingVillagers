@@ -34,13 +34,6 @@ public class TotemUsingEvent {
                 new DelayedTask(1) {
                     @Override
                     public void run() {
-                        serverLevel.playSound(
-                                null,
-                                steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
-                                AnnoyingVillagersModSounds.STEVE_BREATH.get(),
-                                SoundSource.NEUTRAL,
-                                1.0F, 1.0F
-                        );
                         steveEntity.setHealth(steveEntity.getMaxHealth());
                         ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
                         diamondSword.enchant(Enchantments.SHARPNESS, 5);

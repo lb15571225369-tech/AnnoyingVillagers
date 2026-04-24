@@ -155,6 +155,7 @@ public class EpicfightUtil {
     }
 
     public static void damageBlocked(DamageSource damagesource, Entity livingentity, ServerLevel level) {
+        if (livingentity == null) return;
         if (!damagesource.is(DamageTypes.IN_WALL) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.ON_FIRE)) {
             livingentity.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
         }

@@ -107,6 +107,11 @@ public class AngrySteveEntity extends AVNpc {
         pCompound.putBoolean("NeverLeave", neverLeave);
     }
 
+    @Override
+    public @Nullable SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.ANGRY_STEVE_SAY.get();
+    }
+
     public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
@@ -157,13 +162,7 @@ public class AngrySteveEntity extends AVNpc {
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
         if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(
-                    null,
-                    this.getX(), this.getY(), this.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_NO.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F, 1.0F
-            );
+            this.playSound(AnnoyingVillagersModSounds.STEVE_SAY_ON_DEATH.get());
 
             final double x = this.getX();
             final double y = this.getY() + 1.0D;
@@ -301,11 +300,8 @@ public class AngrySteveEntity extends AVNpc {
     @Override
     protected void implementFirstTick(ServerLevel serverLevel) {
         super.implementFirstTick(serverLevel);
-        serverLevel.playSound(
-                null,
-                this.getX(), this.getY(), this.getZ(),
-                AnnoyingVillagersModSounds.STEVE_ANGRY.get(),
-                SoundSource.NEUTRAL,
+        this.playSound(
+                AnnoyingVillagersModSounds.ANGRY_STEVE_SAY_ON_SPAWN.get(),
                 1.0F, 1.0F
         );
         if (this.getLivingEntityPatch() != null) {

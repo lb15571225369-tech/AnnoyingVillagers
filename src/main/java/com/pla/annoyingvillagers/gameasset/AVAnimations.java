@@ -826,7 +826,7 @@ public class AVAnimations {
                                     if (livingEntityPatch.getOriginal().level() instanceof ServerLevel) {
                                         if (livingEntityPatch.getOriginal() instanceof BlueDemonEntity blueDemonEntity) {
                                             blueDemonEntity.setState(1);
-                                            blueDemonEntity.playSound(AnnoyingVillagersModSounds.BLUEDEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
+                                            blueDemonEntity.playSound(AnnoyingVillagersModSounds.BLUE_DEMON_SAY_TRIDENT_FESTIVAL.get(), 1.0F, 1.0F);
                                         }
                                     }
                                 }, Side.SERVER),

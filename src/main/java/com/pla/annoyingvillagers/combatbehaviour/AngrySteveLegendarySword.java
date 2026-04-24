@@ -31,7 +31,7 @@ public class AngrySteveLegendarySword {
             serverLevel.playSound(
                     null,
                     steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_ATTACK.get(),
+                    AnnoyingVillagersModSounds.STEVE_SAY_ON_ATTACK.get(),
                     SoundSource.NEUTRAL,
                     1.0F, 1.0F
             );

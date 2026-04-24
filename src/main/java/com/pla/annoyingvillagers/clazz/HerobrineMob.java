@@ -25,9 +25,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -69,9 +67,6 @@ import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.EpicFightSounds;
-import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -82,7 +77,7 @@ import java.util.*;
 
 import static com.pla.annoyingvillagers.util.HerobrinePortalUtil.*;
 
-public class HerobrineMob extends Monster implements BurstProtectEntity {
+public class HerobrineMob extends Monster implements BurstProtectEntity, CombatVoiceLineEntity {
     private boolean renderPortal = false;
     private int recallTicks = 0;
     private String chatName;
@@ -96,15 +91,25 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
     private boolean sacrificing = false;
     private boolean healing = false;
     private int healingCooldown;
-    private int voiceCooldown = 0;
     private int stunEscapeCooldown = 0;
     private Entity blockDamage = null;
     private int swapWeaponCooldown;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
-
     protected float recentDamageTaken = 0.0F;
     protected int recentHitCounter = 0;
+    private int voiceCooldown = 0;
+
+    @Override
+    public int getVoiceCooldown() {
+        return voiceCooldown;
+    }
+
+    @Override
+    public void setVoiceCooldown(int cooldown) {
+        this.voiceCooldown = cooldown;
+    }
+
     @Override
     public float getRecentDamageTaken() {
         return recentDamageTaken;
@@ -144,14 +149,6 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
 
     public void setStunEscapeCooldown(int stunEscapeCooldown) {
         this.stunEscapeCooldown = stunEscapeCooldown;
-    }
-
-    public void setVoiceCooldown() {
-        this.voiceCooldown = new Random().nextInt(60, 200);
-    }
-
-    public int getVoiceDooldown() {
-        return voiceCooldown;
     }
 
     public void setBlockDamage(Entity blockDamage) {
@@ -511,7 +508,20 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             }
             return false;
         }
-        return super.hurt(damageSource, f);
+        boolean result = super.hurt(damageSource, f);
+        if (result) {
+            this.sayHurtSound(this, damageSource);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean doHurtTarget(@NotNull Entity target) {
+        boolean result = super.doHurtTarget(target);
+        if (result) {
+            this.sayAttackSound(this, target);
+        }
+        return result;
     }
 
     private void triggerSecondForm(ServerLevel serverLevel) {
@@ -531,7 +541,11 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
         if (this.gregUUID != null) {
             Entity entity = serverLevel.getEntity(this.gregUUID);
             if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
-                herobrineGregEntity.playSound(AnnoyingVillagersModSounds.GREG_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+                if (this instanceof ShadowHerobrineEntity) {
+                    this.playSound(AnnoyingVillagersModSounds.SHADOW_HEROBRINE_SAY_ON_PHASE_2.get(), 1.0F, 1.0F);
+                } else {
+                    herobrineGregEntity.playSound(AnnoyingVillagersModSounds.GREG_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+                }
                 Objects.requireNonNull(herobrineGregEntity.level().getServer()).getPlayerList().broadcastSystemMessage(
                         Component.literal("<" + Component.translatable("entity.annoyingvillagers.herobrine_greg").getString() + "> "
                                 + Component.translatable("subtitles.herobrine_request").getString()), false);
@@ -540,7 +554,11 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             }
         }
 
-        this.playSound(AnnoyingVillagersModSounds.SELF_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+        if (this instanceof ShadowHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.SHADOW_HEROBRINE_SAY_ON_PHASE_2.get(), 1.0F, 1.0F);
+        } else {
+            this.playSound(AnnoyingVillagersModSounds.SELF_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+        }
         Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(
                 Component.literal("<" + this.getChatName() + "> " + Component.translatable("subtitles.herobrine_request").getString()),
                 false);
@@ -628,6 +646,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
         state = pCompound.getInt("State");
         secondFormHitLeft = pCompound.getInt("SecondFormHitLeft");
         healingCooldown = pCompound.getInt("HealingCooldown");
+        voiceCooldown = pCompound.getInt("VoiceCooldown");
     }
 
     public void jump() {
@@ -675,6 +694,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
         pCompound.putInt("State", state);
         pCompound.putInt("SecondFormHitLeft", secondFormHitLeft);
         pCompound.putInt("HealingCooldown", healingCooldown);
+        pCompound.putInt("VoiceCooldown", this.voiceCooldown);
     }
 
     @Override
@@ -771,6 +791,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             this.getLivingEntityPatch().applyStun(StunType.FALL, 0.0F);
         }
         if (this instanceof AegisHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY_SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             ItemStack enderAegis = new ItemStack(AnnoyingVillagersModItems.ENDER_AEGIS.get());
             enderAegis.enchant(Enchantments.SHARPNESS, 3);
             enderAegis.enchant(Enchantments.SWEEPING_EDGE, 3);
@@ -778,6 +799,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             this.setItemInHand(InteractionHand.MAIN_HAND, enderAegis);
         }
         if (this instanceof SwordsmanHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY_SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             ItemStack demoniacVoltageReaver = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
             demoniacVoltageReaver.enchant(Enchantments.SHARPNESS, 3);
             demoniacVoltageReaver.enchant(Enchantments.SWEEPING_EDGE, 3);
@@ -785,6 +807,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             this.setItemInHand(InteractionHand.MAIN_HAND, demoniacVoltageReaver);
         }
         if (this instanceof SledgehammerHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY_SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             ItemStack obsidianSledgehammer = new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get());
             obsidianSledgehammer.enchant(Enchantments.SHARPNESS, 3);
             obsidianSledgehammer.enchant(Enchantments.SWEEPING_EDGE, 3);
@@ -792,6 +815,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             this.setItemInHand(InteractionHand.MAIN_HAND, obsidianSledgehammer);
         }
         if (this instanceof GlaiveHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY_SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             ItemStack enderGlaive = new ItemStack(AnnoyingVillagersModItems.ENDER_GLAIVE.get());
             enderGlaive.enchant(Enchantments.SHARPNESS, 3);
             enderGlaive.enchant(Enchantments.SWEEPING_EDGE, 3);
@@ -799,6 +823,7 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
             this.setItemInHand(InteractionHand.MAIN_HAND, enderGlaive);
         }
         if (this instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
+            this.playSound(AnnoyingVillagersModSounds.ELITE_HEROBRINE_SAY_SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             ItemStack enderSlayerScythe = new ItemStack(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get());
             enderSlayerScythe.enchant(Enchantments.SHARPNESS, 3);
             enderSlayerScythe.enchant(Enchantments.SWEEPING_EDGE, 3);
@@ -875,10 +900,10 @@ public class HerobrineMob extends Monster implements BurstProtectEntity {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (this.level() instanceof ServerLevel serverLevel) {
+            this.tickVoiceCooldown();
             this.tickBurstProtectionDecay(this);
 
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
-            if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
             if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
 

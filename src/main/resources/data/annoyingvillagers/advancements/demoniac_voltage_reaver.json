@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "item": "annoyingvillagers:demoniac_voltage_reaver"
+        },
+        "title": {
+            "text": "Snake-Blade",
+            "color": "light_purple"
+        },
+        "description": {
+            "text": "Obtain the Demoniac Voltage Reaver"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "get_item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "annoyingvillagers:demoniac_voltage_reaver"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

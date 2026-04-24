@@ -14,7 +14,6 @@ import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.EscapeUtil;
-import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
 import com.pla.efkick.animations.KickAttackAnimation;
 import com.pla.efkick.config.EFKickConfig;
@@ -30,7 +29,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -432,11 +430,6 @@ public class MobClashBladeMixin {
                                                   Entity defender, int clashBy,
                                                   CallbackInfo ci) {
         if (!(defender.level() instanceof ServerLevel serverLevel)) return;
-
-        if (attacker instanceof Player player) {
-            ScreenShakeUtil.applyScreenShake(serverLevel, player.getOnPos().getCenter(), 1.0, 20, 4);
-        }
-
         LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
 
         // Clash kick post

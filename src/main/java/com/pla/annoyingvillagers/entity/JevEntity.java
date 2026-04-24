@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.util.TeamUtil;
@@ -38,7 +39,6 @@ import java.util.UUID;
 public class JevEntity extends AVNpc {
     private UUID followTargetUUID;
     private AlexEntity followTarget;
-    private boolean alexDeathMessageSent = false;
 
     public void setFollowTarget(AlexEntity followTarget) {
         this.followTarget = followTarget;
@@ -121,6 +121,15 @@ public class JevEntity extends AVNpc {
     }
 
     @Override
+    protected void implementFirstTick(ServerLevel serverLevel) {
+        super.implementFirstTick(serverLevel);
+        this.playSound(
+                AnnoyingVillagersModSounds.JEV_SAY_ON_SPAWN.get(),
+                1.0F, 1.0F
+        );
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
@@ -133,22 +142,6 @@ public class JevEntity extends AVNpc {
                 }
             }
             if (followTarget != null && !followTarget.isAlive()) {
-                if (!alexDeathMessageSent) {
-                    alexDeathMessageSent = true;
-                    if (level() instanceof ServerLevel serverLevel) {
-                        String[] ALEX_DEATH_LINES = {
-                                "Oh no... my Alex...",
-                                "Why... Alex, why did you leave me...",
-                                "I was supposed to protect you, Alex ...",
-                                "Alex, come back, please...",
-                                "Please, Alex, wake up...",
-                                "Alex...? No..."
-                        };
-
-                        String message = ALEX_DEATH_LINES[level().getRandom().nextInt(ALEX_DEATH_LINES.length)];
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + message), false);
-                    }
-                }
                 followTarget = null;
                 followTargetUUID = null;
             }
@@ -176,7 +169,6 @@ public class JevEntity extends AVNpc {
         if (followTargetUUID != null) {
             tag.putUUID("FollowTarget", followTargetUUID);
         }
-        tag.putBoolean("AlexDeathMessageSent", alexDeathMessageSent);
     }
 
     @Override
@@ -185,7 +177,6 @@ public class JevEntity extends AVNpc {
         if (tag.hasUUID("FollowTarget")) {
             followTargetUUID = tag.getUUID("FollowTarget");
         }
-        alexDeathMessageSent = tag.getBoolean("AlexDeathMessageSent");
     }
 
     public boolean removeWhenFarAway(double d0) {

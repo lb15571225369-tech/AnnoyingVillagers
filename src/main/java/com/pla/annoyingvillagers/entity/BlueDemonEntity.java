@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.clazz.BurstProtectEntity;
+import com.pla.annoyingvillagers.clazz.CombatVoiceLineEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.SauceType;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
@@ -69,7 +70,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
-public class BlueDemonEntity extends Monster implements BurstProtectEntity {
+public class BlueDemonEntity extends Monster implements BurstProtectEntity, CombatVoiceLineEntity {
     @Nullable
     private BbqEntity bbqSauce;
     @Nullable
@@ -97,7 +98,6 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
 
     private int healingTick = 0;
     private int healingCooldown = 0;
-    private int voiceCooldown = 0;
     private int stunEscapeCooldown = 0;
     private Entity blockDamage = null;
     private int swapWeaponCooldown;
@@ -118,6 +118,17 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
     private boolean neverLeave = false;
     private int leaveTicks = 0;
     private Vec3 leaveDirection = Vec3.ZERO;
+    private int voiceCooldown = 0;
+
+    @Override
+    public int getVoiceCooldown() {
+        return voiceCooldown;
+    }
+
+    @Override
+    public void setVoiceCooldown(int cooldown) {
+        this.voiceCooldown = cooldown;
+    }
 
     protected float recentDamageTaken = 0.0F;
     protected int recentHitCounter = 0;
@@ -199,14 +210,6 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
 
     public void setStunEscapeCooldown(int stunEscapeCooldown) {
         this.stunEscapeCooldown = stunEscapeCooldown;
-    }
-
-    public void setVoiceCooldown() {
-        this.voiceCooldown = new Random().nextInt(300, 600);
-    }
-
-    public int getVoiceCooldown() {
-        return voiceCooldown;
     }
 
     public void setBlockDamage(Entity blockDamage) {
@@ -923,7 +926,11 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
         if (damagesource.getDirectEntity() instanceof ThrownPoisonEggEntity) return false;
         if (damagesource.is(DamageTypes.FELL_OUT_OF_WORLD)
                 || damagesource.is(DamageTypes.GENERIC_KILL)) {
-            return super.hurt(damagesource, f);
+            boolean result = super.hurt(damagesource, f);
+            if (result) {
+                this.sayHurtSound(this, damagesource);
+            }
+            return result;
         }
         if (this.level() instanceof ServerLevel serverLevel && (this.getState() == 2 || this.getState() == 1)) {
             EpicfightUtil.damageBlocked(damagesource, this, serverLevel);
@@ -955,7 +962,11 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
                 return false;
             }
         }
-        return super.hurt(damagesource, f);
+        boolean result = super.hurt(damagesource, f);
+        if (result) {
+            this.sayHurtSound(this, damagesource);
+        }
+        return result;
     }
 
     @Nullable
@@ -1320,6 +1331,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
         }
 
         if (this.level() instanceof ServerLevel serverLevel) {
+            this.tickVoiceCooldown();
             this.tickBurstProtectionDecay(this);
 
             if (!this.spawnedBbqSauce) {
@@ -1327,7 +1339,6 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
                 this.spawnedBbqSauce = true;
             }
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
-            if (voiceCooldown > 0) voiceCooldown--;
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
             if (efnGuardHitCooldown > 0) efnGuardHitCooldown--;
             if (healingCooldown > 0) healingCooldown--;
@@ -1336,6 +1347,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
                     if (stateTransformCooldown > 20) {
                         this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM, 0.0F);
                     } else if (stateTransformCooldown == 20) {
+                        this.playSound(AnnoyingVillagersModSounds.BLUE_DEMON_SAY_PHASE_2_RELEASE.get(), 1.0F, 1.0F);
                         this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.BLUE_DEMON_STATE_TRANSFORM_END, 0.0F);
                     } else if (stateTransformCooldown == 10) {
                         ItemStack legendaryStack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
@@ -1377,6 +1389,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
                 }
 
                 if (remaining <= 0) {
+                    this.playSound(AnnoyingVillagersModSounds.BLUE_DEMON_SAY_WHEN_RETREAT.get(), 1.0F, 1.0F);
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(
                             Component.literal("<" + this.getName().getString() + "> " + Component.translatable("subtitles.blue_demon_retreat").getString()),
                             false
@@ -1452,6 +1465,11 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
     }
 
     @Override
+    public SoundEvent getAttackVoiceSound() {
+        return AnnoyingVillagersModSounds.BLUE_DEMON_SAY.get();
+    }
+
+    @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
@@ -1485,6 +1503,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
         tag.putInt("DieTick", this.dieTick);
         tag.putInt("LeaveTicks", leaveTicks);
         tag.putBoolean("NeverLeave", neverLeave);
+        tag.putInt("VoiceCooldown", this.voiceCooldown);
     }
 
     @Override
@@ -1526,6 +1545,7 @@ public class BlueDemonEntity extends Monster implements BurstProtectEntity {
         this.dieTick = tag.getInt("DieTick");
         leaveTicks = tag.getInt("LeaveTicks");
         neverLeave = tag.getBoolean("NeverLeave");
+        voiceCooldown = tag.getInt("VoiceCooldown");
     }
 
     public void rollItem() {
