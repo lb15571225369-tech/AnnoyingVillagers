@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:ender_slayer_scythe"
         },
         "title": {
-            "text": "Ender-Slayer-Scythe",
+            "translate": "advancements.annoyingvillagers.ender_slayer_scythe.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Obtain the Ender Slayer Scythe"
+            "translate": "advancements.annoyingvillagers.ender_slayer_scythe.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

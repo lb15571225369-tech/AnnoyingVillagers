@@ -4,29 +4,21 @@
             "item": "annoyingvillagers:compressed_diamond"
         },
         "title": {
-            "text": "Highest of quality",
-            "color": "light_purple"
+            "translate": "advancements.annoyingvillagers.compressed_diamond.title",
+            "color": "green"
         },
         "description": {
-            "text": "Obtain a Compressed Diamond"
+            "translate": "advancements.annoyingvillagers.compressed_diamond.description"
         },
-        "frame": "challenge",
-        "show_toast": true,
-        "announce_to_chat": true,
-        "hidden": false
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": false,
+        "background": "minecraft:textures/block/obsidian.png"
     },
     "criteria": {
-        "get_item": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "items": [
-                            "annoyingvillagers:compressed_diamond"
-                        ]
-                    }
-                ]
-            }
+        "auto": {
+            "trigger": "minecraft:tick"
         }
     }
 }

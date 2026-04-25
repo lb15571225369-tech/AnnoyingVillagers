@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:demoniac_voltage_reaver"
         },
         "title": {
-            "text": "Snake-Blade",
+            "translate": "advancements.annoyingvillagers.demoniac_voltage_reaver.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Obtain the Demoniac Voltage Reaver"
+            "translate": "advancements.annoyingvillagers.demoniac_voltage_reaver.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

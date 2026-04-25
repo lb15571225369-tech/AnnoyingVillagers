@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:ender_aegis"
         },
         "title": {
-            "text": "Ender-Aegis",
+            "translate": "advancements.annoyingvillagers.ender_aegis.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Obtain the Ender Aegis"
+            "translate": "advancements.annoyingvillagers.ender_aegis.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

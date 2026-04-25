@@ -1,14 +1,14 @@
 {
     "display": {
         "icon": {
-            "item": "annoyingvillagers:blue_demon_chestplate"
+            "item": "annoyingvillagers:blue_demon_trident"
         },
         "title": {
-            "text": "You thought your strategy could withstand me",
+            "translate": "advancements.annoyingvillagers.blue_demon.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Kill Blue Demon"
+            "translate": "advancements.annoyingvillagers.blue_demon.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -19,10 +19,17 @@
         "kill": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
-                "entity": {
-                    "type": "annoyingvillagers:blue_demon"
-                }
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "annoyingvillagers:blue_demon"
+                        }
+                    }
+                ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

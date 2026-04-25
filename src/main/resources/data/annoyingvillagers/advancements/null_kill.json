@@ -4,11 +4,11 @@
             "item": "minecraft:wither_skeleton_skull"
         },
         "title": {
-            "text": "Its power was Null",
+            "translate": "advancements.annoyingvillagers.null_kill.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Destroy the Null vessel"
+            "translate": "advancements.annoyingvillagers.null_kill.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -19,10 +19,17 @@
         "kill": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
-                "entity": {
-                    "type": "annoyingvillagers:null"
-                }
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "annoyingvillagers:null"
+                        }
+                    }
+                ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:herobrine_ender_eye"
         },
         "title": {
-            "text": "Obsidian Machine Gun!",
+            "translate": "advancements.annoyingvillagers.herobrine_ender_eye.title",
             "color": "white"
         },
         "description": {
-            "text": "Obtain the Herobrine's Ender Eye"
+            "translate": "advancements.annoyingvillagers.herobrine_ender_eye.description"
         },
         "frame": "task",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

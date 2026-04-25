@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:legendary_sword"
         },
         "title": {
-            "text": "Legendary Sword",
+            "translate": "advancements.annoyingvillagers.legendary_sword.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Obtain the Legendary Sword"
+            "translate": "advancements.annoyingvillagers.legendary_sword.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

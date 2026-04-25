@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:enchant_bed"
         },
         "title": {
-            "text": "The Enchanted Bed",
+            "translate": "advancements.annoyingvillagers.enchant_bed.title",
             "color": "white"
         },
         "description": {
-            "text": "Obtain the Enchanted Bed"
+            "translate": "advancements.annoyingvillagers.enchant_bed.description"
         },
         "frame": "task",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

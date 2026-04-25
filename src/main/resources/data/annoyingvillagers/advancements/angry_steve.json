@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:jessica_the_dark_shield"
         },
         "title": {
-            "text": "I'm sorry, Steve",
+            "translate": "advancements.annoyingvillagers.angry_steve.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Kill Angry Steve"
+            "translate": "advancements.annoyingvillagers.angry_steve.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -19,10 +19,17 @@
         "kill": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
-                "entity": {
-                    "type": "annoyingvillagers:angry_steve"
-                }
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "annoyingvillagers:angry_steve"
+                        }
+                    }
+                ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

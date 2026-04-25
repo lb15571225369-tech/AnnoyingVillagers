@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:enchanted_ender_pearl"
         },
         "title": {
-            "text": "A pearl that ignores fall damage",
+            "translate": "advancements.annoyingvillagers.enchanted_ender_pearl.title",
             "color": "white"
         },
         "description": {
-            "text": "Obtain the Enchanted Ender Pearl"
+            "translate": "advancements.annoyingvillagers.enchanted_ender_pearl.description"
         },
         "frame": "task",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }

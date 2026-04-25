@@ -4,11 +4,11 @@
             "item": "annoyingvillagers:ender_glaive"
         },
         "title": {
-            "text": "Ender-Glaive",
+            "translate": "advancements.annoyingvillagers.ender_glaive.title",
             "color": "light_purple"
         },
         "description": {
-            "text": "Obtain the Ender Glaive"
+            "translate": "advancements.annoyingvillagers.ender_glaive.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -28,5 +28,6 @@
                 ]
             }
         }
-    }
+    },
+    "parent": "annoyingvillagers:compressed_diamond"
 }
