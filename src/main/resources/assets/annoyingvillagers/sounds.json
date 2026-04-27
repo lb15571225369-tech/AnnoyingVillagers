@@ -560,7 +560,7 @@
         "name": "annoyingvillagers:entity/blue_demon/how_we_just_safe"
       },
       {
-        "name": "annoyingvillagers:entity/blue_demon/I_pray_you_find_light_in_your_next_life"
+        "name": "annoyingvillagers:entity/blue_demon/i_pray_you_find_light_in_your_next_life"
       },
       {
         "name": "annoyingvillagers:entity/blue_demon/it_is_foolish_to_think_we_are_all_the_same"
@@ -605,7 +605,7 @@
   "blue_demon_say_retreat": {
     "sounds": [
       {
-        "name": "annoyingvillagers:entity/blue_demon/the_world_will_be_able_to_recover_once_Iam_finished"
+        "name": "annoyingvillagers:entity/blue_demon/the_world_will_be_able_to_recover_once_i_am_finished"
       }
     ]
   },
@@ -796,7 +796,7 @@
   "shadow_herobrine_say_on_spawn": {
     "sounds": [
       {
-        "name": "annoyingvillagers:entity/shadow_herobrine/silence_I_shall_not_waste_my_breath_in_scam_like_you"
+        "name": "annoyingvillagers:entity/shadow_herobrine/silence_i_shall_not_waste_my_breath_in_scam_like_you"
       }
     ]
   },
@@ -851,7 +851,7 @@
         "name": "annoyingvillagers:entity/steve/leave_now"
       },
       {
-        "name": "annoyingvillagers:entity/steve/please_I_will_again"
+        "name": "annoyingvillagers:entity/steve/please_i_will_again"
       },
       {
         "name": "annoyingvillagers:entity/steve/screaming"
