@@ -79,11 +79,6 @@ public class PurpleVillagerGeneralEntity extends AVNpc {
     }
 
     @Override
-    public float getBurstProtectCapRatio() {
-        return 1.0F;
-    }
-
-    @Override
     public @Nullable SoundEvent getAttackVoiceSound() {
         return AnnoyingVillagersModSounds.VILLAGER_GENERALS_SAY.get();
     }

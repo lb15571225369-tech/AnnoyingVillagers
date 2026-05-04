@@ -12,22 +12,11 @@
   "OFFHAND": [
   ],
   "FEET": [
-    "diamond_legbottomseal",
-    "emerald_anklebracelet",
-    "golden_mokassin"
   ],
   "LEGS": [
-    "diamond_legtopseal",
-    "emerald_tasset",
-    "golden_chrono"
   ],
   "CHEST": [
-    "diamond_armbracelet",
-    "emerald_chakra"
   ],
   "HEAD": [
-    "diamond_crown",
-    "emerald_earrings",
-    "golden_monocle"
   ]
 }

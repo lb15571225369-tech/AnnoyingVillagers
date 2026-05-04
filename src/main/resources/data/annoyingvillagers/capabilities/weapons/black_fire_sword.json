@@ -1,3 +1,11 @@
 {
-	"type": "annoyingvillagers:av_sword"
+	"attributes":
+	{
+		"common":
+		{
+			"impact":1.5,
+			"max_strikes":2
+		}
+	},
+	"type": "annoyingvillagers:black_fire_sword"
 }

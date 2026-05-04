@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -178,5 +179,18 @@ public final class ClientPacketHandlers {
 
         level.playLocalSound(msg.from().x, msg.from().y, msg.from().z, AnnoyingVillagersModSounds.WOOPIE_WIND.get(),
                 SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+    }
+
+    public static void handleBlackFire(ClientboundBlackFireFx msg) {
+        Level level = Minecraft.getInstance().level;
+
+        if (level == null) {
+            return;
+        }
+
+        if (ModList.get().isLoaded("aaa_particles")) {
+            Entity entity = level.getEntity(msg.entityId());
+            AAAParticlesUtil.sendBlackFire(level, entity);
+        }
     }
 }

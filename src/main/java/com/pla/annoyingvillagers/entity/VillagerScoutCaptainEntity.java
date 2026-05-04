@@ -64,11 +64,6 @@ public class VillagerScoutCaptainEntity extends AVNpc {
     }
 
     @Override
-    public float getBurstProtectCapRatio() {
-        return 1.0F;
-    }
-
-    @Override
     public @Nullable SoundEvent getAttackVoiceSound() {
         return AnnoyingVillagersModSounds.VILLAGER_SCOUTS_SAY.get();
     }

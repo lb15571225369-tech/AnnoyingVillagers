@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.event;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.BlackFireEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -14,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +26,9 @@ import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -48,6 +51,31 @@ public class SpecialAttackOnKeyPressedEvent {
         AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, livingEntityPatch)) {
             return;
+        }
+
+        if (entity instanceof Player player) {
+            // Spawn special effect without playing animation
+            ItemStack holdingItem = player.getMainHandItem();
+            ItemStack offHandItem = player.getOffhandItem();
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.BLACK_FIRE_SWORD.get())) {
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                    SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.BLACK_FIRE_SWORD);
+                    if (skillContainer != null
+                            && skillContainer.getSkill() instanceof BlackFireSwordSkill
+                            && entity.level() instanceof ServerLevel) {
+                        if (skillContainer.getResource() >= 5){
+                            Skill.setSkillConsumptionSynchronize(
+                                    skillContainer,
+                                    skillContainer.getResource() - 5
+                            );
+                            BlackFireEntity.spawnOnOwnerSword(player.level(), player);
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         if (entity.level() instanceof ServerLevel) {

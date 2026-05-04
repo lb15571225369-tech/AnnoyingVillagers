@@ -133,6 +133,12 @@ public class AnnoyingVillagers {
                     ClientboundLitePortalFx::handle
             );
             AnnoyingVillagers.addNetworkMessage(
+                    ClientboundBlackFireFx.class,
+                    ClientboundBlackFireFx::encode,
+                    ClientboundBlackFireFx::decode,
+                    ClientboundBlackFireFx::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
                     CPApplyShake.class,
                     CPApplyShake::encode,
                     CPApplyShake::new,

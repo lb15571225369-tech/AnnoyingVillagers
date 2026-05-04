@@ -12,7 +12,7 @@ public class JadeSwordItem extends SwordItem {
     public JadeSwordItem() {
         super(new Tier() {
             public int getUses() {
-                return 1680;
+                return 685;
             }
 
             public float getSpeed() {
@@ -20,7 +20,7 @@ public class JadeSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 5.4F;
+                return 3.0F;
             }
 
             public int getLevel() {

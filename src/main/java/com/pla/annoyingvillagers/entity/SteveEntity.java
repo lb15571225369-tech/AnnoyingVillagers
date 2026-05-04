@@ -136,11 +136,6 @@ public class SteveEntity extends AVNpc {
     }
 
     @Override
-    public float getBurstProtectCapRatio() {
-        return 0.25F;
-    }
-
-    @Override
     public void die(@NotNull DamageSource pDamageSource) {
         if (this.level() instanceof ServerLevel serverLevel) {
             if (new Random().nextFloat() <= AnnoyingVillagersConfig.ANGRY_STEVE_CHANCE.get()) {

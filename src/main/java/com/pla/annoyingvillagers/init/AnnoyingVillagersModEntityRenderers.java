@@ -72,6 +72,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.TRIDENT_LIGHTNING_BOLT.get(), LightningBoltRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLUE_DEMON_THROWN_TRIDENT.get(), ThrownTridentRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ELECTRIC_AREA.get(), ElectricAreaRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BLACK_FIRE.get(), BlackFireRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ENCHANTED_ARROW.get(), SpriteArrowRenderer::new);
     }
 

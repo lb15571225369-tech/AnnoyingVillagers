@@ -169,11 +169,6 @@ public class AlexEntity extends AVNpc {
     }
 
     @Override
-    public float getBurstProtectCapRatio() {
-        return 0.25F;
-    }
-
-    @Override
     protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
         if (this.level() instanceof ServerLevel serverLevel) {

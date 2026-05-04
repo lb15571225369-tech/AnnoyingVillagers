@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.client.emitterinfo.BlackFireParticcleEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.BlueDemonThunderBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.DragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
@@ -8,8 +9,10 @@ import com.pla.annoyingvillagers.entity.BlueDemonThunderBeamEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -63,5 +66,21 @@ public class AAAParticlesUtil {
                 new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_sword_wind"))
                         .clone()
                         .position(x, y, z));
+    }
+
+    public static void sendBlackFire(Level level, Entity entity) {
+        if (level == null || entity == null) {
+            return;
+        }
+
+        if (!level.isClientSide()) {
+            return;
+        }
+
+        new BlackFireParticcleEmitterInfo(
+                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "black_fire"))
+                .followEntity(entity, 60, Vec3.ZERO)
+                .smoothing(1.0D)
+                .spawnInWorld(level, Minecraft.getInstance().player);
     }
 }

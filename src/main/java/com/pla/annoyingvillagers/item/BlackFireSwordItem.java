@@ -20,7 +20,7 @@ public class BlackFireSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 2.4F;
+                return 3.5F;
             }
 
             public int getLevel() {
@@ -34,7 +34,7 @@ public class BlackFireSwordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -1.5F, (new Properties()));
+        }, 3, -2.0F, (new Properties()));
     }
 
     @Override

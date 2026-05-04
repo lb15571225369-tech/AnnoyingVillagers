@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtectEntity, CombatVoiceLineEntity {
+public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoiceLineEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
@@ -67,28 +67,6 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
     private boolean isStrolling;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
-
-    protected float recentDamageTaken = 0.0F;
-    protected int recentHitCounter = 0;
-    @Override
-    public float getRecentDamageTaken() {
-        return recentDamageTaken;
-    }
-
-    @Override
-    public void setRecentDamageTaken(float value) {
-        recentDamageTaken = value;
-    }
-
-    @Override
-    public int getRecentHitCounter() {
-        return recentHitCounter;
-    }
-
-    @Override
-    public void setRecentHitCounter(int value) {
-        recentHitCounter = value;
-    }
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -683,7 +661,6 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
         }
 
         finalDamage = ForgeHooks.onLivingDamage(this, pDamageSource, finalDamage);
-        finalDamage = this.applyBurstProtection(this, pDamageSource, finalDamage);
 
         if (this.level() instanceof ServerLevel serverLevel
                 && this.afterBurstProtection(serverLevel, pDamageSource, finalDamage)) {
@@ -709,8 +686,6 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, BurstProtec
             implementFirstTick((ServerLevel) this.level());
             this.initialSpawn = true;
         }
-
-        this.tickBurstProtectionDecay(this);
 
         if (this.stunEscapeCooldown == 0 && this.level() instanceof ServerLevel) {
             if (getLivingEntityPatch() != null) {

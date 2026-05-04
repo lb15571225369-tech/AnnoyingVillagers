@@ -384,6 +384,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE_GUARD;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> BLACK_FIRE_SWORD_SKILL;
 
     // Animation clone and re-registered from WOM
     public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
@@ -1839,6 +1840,16 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/pla/place_block",
                 (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature));
+        AVAnimations.BLACK_FIRE_SWORD_SKILL = builder.nextAccessor("biped/pla/black_fire_sword_skill",
+                (accessor) -> new AttackAnimation(0.0F, 0.0F, 0.0F, 0.0F, Float.MAX_VALUE, null, Armatures.BIPED.get().head, accessor, Armatures.BIPED)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.8F, (livingEntityPatch, self, p) -> {
+                                    BlackFireEntity.shootFromOwnerLook(livingEntityPatch.getOriginal().level(), livingEntityPatch.getOriginal());
+                                }, Side.SERVER)
+                        ));
 
         // Animations cloned and registered from WOM
         AVAnimations.CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",

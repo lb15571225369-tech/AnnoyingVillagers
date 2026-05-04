@@ -90,6 +90,7 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> DRAGON_DEATH_SOUND = register("entity.dragon.death");
     public static final RegistryObject<SoundEvent> DRAGON_THUNDER_SHOOT_SOUND = register("entity.dragon.thunder_shoot");
     public static final RegistryObject<SoundEvent> MUFFLED_BOOM = register("muffled_boom");
+    public static final RegistryObject<SoundEvent> BLACK_FIRE = register("black_fire");
 
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, name)));
