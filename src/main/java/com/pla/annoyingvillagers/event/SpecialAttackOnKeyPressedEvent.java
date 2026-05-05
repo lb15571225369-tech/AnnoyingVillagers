@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.event;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BlackFireEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -10,6 +9,7 @@ import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.skill.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -20,6 +20,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.fml.ModList;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
@@ -28,7 +33,6 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -416,6 +420,35 @@ public class SpecialAttackOnKeyPressedEvent {
                 if (entity.level() instanceof ServerLevel) {
                     livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE2, 0.0F);
                     return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.BLUE_FLAME_SWORD.get())) {
+                if (entity.level() instanceof ServerLevel) {
+                    if (player.level() instanceof ServerLevel level) {
+                        double reach = player.getBlockReach();
+                        HitResult hitResult = player.pick(reach, 0.0F, false);
+
+                        if (hitResult.getType() == HitResult.Type.BLOCK) {
+                            BlockHitResult blockHit = (BlockHitResult) hitResult;
+                            BlockPos lookedPos = blockHit.getBlockPos();
+
+                            BlockState lookedState = level.getBlockState(lookedPos);
+
+                            if (lookedState.is(Blocks.SOUL_SAND) || lookedState.is(Blocks.SOUL_SOIL)) {
+                                BlockPos firePos = lookedPos.above();
+                                if (level.isEmptyBlock(firePos)) {
+                                    BlockState soulFireState = Blocks.SOUL_FIRE.defaultBlockState();
+                                    if (soulFireState.canSurvive(level, firePos)) {
+                                        level.setBlock(firePos, soulFireState, Block.UPDATE_ALL);
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.BLUE_FLAME_SWORD, 0.0F);
+                                        holdingItem.hurtAndBreak(1, player, (serverPlayer1) -> serverPlayer1.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

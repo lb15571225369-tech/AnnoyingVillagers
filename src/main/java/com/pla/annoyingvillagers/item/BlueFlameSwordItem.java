@@ -21,7 +21,7 @@ public class BlueFlameSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 3.8F;
+                return 3.0F;
             }
 
             public int getLevel() {
@@ -35,12 +35,12 @@ public class BlueFlameSwordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -2.1F, (new Properties()));
+        }, 3, -1.8F, (new Properties()));
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.blue_flame_sword"));
     }
 }

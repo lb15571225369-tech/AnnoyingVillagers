@@ -134,7 +134,6 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -385,6 +384,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> BLACK_FIRE_SWORD_SKILL;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> BLUE_FLAME_SWORD;
 
     // Animation clone and re-registered from WOM
     public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
@@ -1850,6 +1850,11 @@ public class AVAnimations {
                                     BlackFireEntity.shootFromOwnerLook(livingEntityPatch.getOriginal().level(), livingEntityPatch.getOriginal());
                                 }, Side.SERVER)
                         ));
+        AVAnimations.BLUE_FLAME_SWORD = builder.nextAccessor("biped/pla/blue_flame_sword",
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidArmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false));
 
         // Animations cloned and registered from WOM
         AVAnimations.CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",
