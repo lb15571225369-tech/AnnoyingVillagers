@@ -589,6 +589,27 @@ public class AVWeaponCapabilityPresets {
                                 || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
     };
 
+    public static final Function<Item, Builder> CENTRANOS_SWORD = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.GREATSWORD)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.GREATSWORD)
+                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.SQUIRE_SWORD_AUTO_1,
+                            AVAnimations.SQUIRE_SWORD_AUTO_2,
+                            Animations.LONGSWORD_LIECHTENAUER_AUTO1,
+                            Animations.LONGSWORD_LIECHTENAUER_AUTO2,
+                            AVAnimations.SQUIRE_SWORD_AUTO_3,
+                            AVAnimations.SQUIRE_SWORD_DASH_ATTACK,
+                            AVAnimations.SQUIRE_SWORD_HOP_ATTACK)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.CENTRANOS_SWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.SQUIRE_SWORD_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.SQUIRE_SWORD_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.SQUIRE_SWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.SQUIRE_SWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
 
     public static final Function<Item, Builder> AV_AXE = (item) ->
             WeaponCapability.builder()
@@ -907,5 +928,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "trapdoor"), AVWeaponCapabilityPresets.TRAPDOOR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ladder"), AVWeaponCapabilityPresets.LADDER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "black_fire_sword"), AVWeaponCapabilityPresets.BLACK_FIRE_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "centranos_sword"), AVWeaponCapabilityPresets.CENTRANOS_SWORD);
     }
 }

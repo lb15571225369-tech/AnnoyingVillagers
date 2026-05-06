@@ -7,11 +7,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
 import yesman.epicfight.skill.Skill;
-import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
+
+import java.util.Set;
 
 @EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
 public class AVSkills {
@@ -36,6 +39,7 @@ public class AVSkills {
     public static Skill TRAPDOOR;
     public static Skill LADDER;
     public static Skill BLACK_FIRE_SWORD;
+    public static Skill CENTRANOS_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -60,6 +64,7 @@ public class AVSkills {
         AVSkills.WOODEN_DOOR = modRegistry.build("wooden_door", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(WOMAnimations.TORMENT_BERSERK_DASH).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.TRAPDOOR = modRegistry.build("trapdoor", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.GIANT_WHIRLWIND).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.LADDER = modRegistry.build("ladder", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SWORD_HEAVY_AUTO_3).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
-        AVSkills.BLACK_FIRE_SWORD = modRegistry.build("black_fire_sword", BlackFireSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkills.BLACK_FIRE_SWORD = modRegistry.build("black_fire_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.BLACK_FIRE_SWORD_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        AVSkills.CENTRANOS_SWORD = modRegistry.build("centranos_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SQUIRE_SWORD_HEAVY_BLOW)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
     }
 }

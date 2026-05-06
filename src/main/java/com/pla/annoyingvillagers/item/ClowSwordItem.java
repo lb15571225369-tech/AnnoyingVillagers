@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -9,6 +10,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ClowSwordItem extends SwordItem {
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (!pAttacker.level().isClientSide) {
+            if (pAttacker.getRandom().nextFloat() < 0.1F) {
+                pTarget.spawnAtLocation(new ItemStack(Items.LAPIS_LAZULI, 1));
+            }
+        }
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
+    }
+
     public ClowSwordItem() {
         super(new Tier() {
             public int getUses() {
@@ -34,12 +45,12 @@ public class ClowSwordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.LAPIS_LAZULI));
             }
-        }, 3, -1.5F, (new Properties()));
+        }, 3, -2.2F, (new Properties()));
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.clow_sword"));
     }
 }

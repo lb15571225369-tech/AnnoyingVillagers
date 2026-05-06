@@ -346,6 +346,15 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> ADVANCED_DUELIST_SHOOTING_STAR;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_THROW_1;
     public static AnimationManager.AnimationAccessor<AttackAnimation> TRIDENT_THROW_5;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> SQUIRE_SWORD_IDLE;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> SQUIRE_SWORD_WALK;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> SQUIRE_SWORD_RUN;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_AUTO_1;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_AUTO_2;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_AUTO_3;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> SQUIRE_SWORD_HOP_ATTACK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_HEAVY_BLOW;
 
     // Animation from Visitors from Omneria
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> TRIDENT_THROW_3;
@@ -1649,6 +1658,39 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.6f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER)
                                         .params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().rootJoint, 1.2, 1F)));
+
+        AVAnimations.SQUIRE_SWORD_IDLE = builder.nextAccessor("biped/battle_style/squire_sword_idle",
+                accessor -> new StaticAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.SQUIRE_SWORD_WALK = builder.nextAccessor("biped/battle_style/squire_sword_walk",
+                accessor -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.SQUIRE_SWORD_RUN = builder.nextAccessor("biped/battle_style/squire_sword_run",
+                accessor -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.SQUIRE_SWORD_AUTO_1 = builder.nextAccessor("biped/battle_style/squire_sword_auto1",
+                accessor -> new AttackAnimation(0.1f, 0f, 0.2f, 0.35f, 0.5f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE));
+        AVAnimations.SQUIRE_SWORD_AUTO_2 = builder.nextAccessor("biped/battle_style/squire_sword_auto2",
+                accessor -> new AttackAnimation(0.2f, 0f, 0.2f, 0.35f, 0.5f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE));
+        AVAnimations.SQUIRE_SWORD_AUTO_3 = builder.nextAccessor("biped/battle_style/squire_sword_auto3",
+                accessor -> new AttackAnimation(0.2f, 0f, 0.2f, 0.35f, 2.0f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE));
+        AVAnimations.SQUIRE_SWORD_DASH_ATTACK = builder.nextAccessor("biped/battle_style/squire_sword_dash_attack",
+                accessor -> new AttackAnimation(0.2f, accessor, Armatures.BIPED,
+                new AttackAnimation.Phase(0.0f, 0.0f, 0.2f, 0.3f, 0.5f, 1.0f, Armatures.BIPED.get().toolR, null)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2f))));
+        AVAnimations.SQUIRE_SWORD_HOP_ATTACK = builder.nextAccessor("biped/battle_style/squire_sword_hop_attack",
+                accessor ->
+                new AirSlashAnimation(0.1f, 0f, 0.2f, 0.35f, 2f, false, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE));
+        AVAnimations.SQUIRE_SWORD_HEAVY_BLOW = builder.nextAccessor("biped/battle_style/squire_sword_heavy_blow",
+                accessor -> new AttackAnimation(0.1f, 0f, 0.7f, 0.8f, 1.5f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2f))
+                .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2f))
+                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
+                .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                .addState(EntityState.CAN_SKILL_EXECUTION, false));
 
         // Animation from Visitors from Omneria
         AVAnimations.TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),

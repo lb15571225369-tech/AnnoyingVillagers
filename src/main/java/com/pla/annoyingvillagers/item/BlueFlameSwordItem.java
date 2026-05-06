@@ -35,7 +35,7 @@ public class BlueFlameSwordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -1.8F, (new Properties()));
+        }, 3, -2.4F, (new Properties()));
     }
 
     @Override
