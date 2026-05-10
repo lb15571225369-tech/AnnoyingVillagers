@@ -144,6 +144,12 @@ public class AnnoyingVillagers {
                     CPApplyShake::new,
                     CPApplyShake::handle
             );
+            AnnoyingVillagers.addNetworkMessage(
+                    ClientboundDiamondAttractorFx.class,
+                    ClientboundDiamondAttractorFx::encode,
+                    ClientboundDiamondAttractorFx::decode,
+                    ClientboundDiamondAttractorFx::handle
+            );
         }
     }
 

@@ -981,5 +981,12 @@
         "name": "annoyingvillagers:black_fire"
       }
     ]
+  },
+  "diamond_attractor": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:diamond_attractor"
+      }
+    ]
   }
 }

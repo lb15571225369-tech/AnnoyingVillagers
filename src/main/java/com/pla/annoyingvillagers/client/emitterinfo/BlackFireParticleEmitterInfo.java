@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class BlackFireParticcleEmitterInfo extends ParticleEmitterInfo {
+public class BlackFireParticleEmitterInfo extends ParticleEmitterInfo {
     private WeakReference<Entity> followEntityRef = new WeakReference<>(null);
     private Supplier<Vec3> followPositionSupplier = null;
 
@@ -34,23 +34,23 @@ public class BlackFireParticcleEmitterInfo extends ParticleEmitterInfo {
 
     private double smoothing = 1.0D;
 
-    public BlackFireParticcleEmitterInfo(ResourceLocation effek) {
+    public BlackFireParticleEmitterInfo(ResourceLocation effek) {
         super(effek);
     }
 
-    public BlackFireParticcleEmitterInfo(ResourceLocation effek, ResourceLocation emitter) {
+    public BlackFireParticleEmitterInfo(ResourceLocation effek, ResourceLocation emitter) {
         super(effek, emitter);
     }
 
-    public BlackFireParticcleEmitterInfo followEntity(Entity entity) {
+    public BlackFireParticleEmitterInfo followEntity(Entity entity) {
         return this.followEntity(entity, 0, Vec3.ZERO);
     }
 
-    public BlackFireParticcleEmitterInfo followEntity(Entity entity, int durationTicks) {
+    public BlackFireParticleEmitterInfo followEntity(Entity entity, int durationTicks) {
         return this.followEntity(entity, durationTicks, Vec3.ZERO);
     }
 
-    public BlackFireParticcleEmitterInfo followEntity(Entity entity, int durationTicks, Vec3 offset) {
+    public BlackFireParticleEmitterInfo followEntity(Entity entity, int durationTicks, Vec3 offset) {
         this.followEnabled = true;
         this.followEntityRef = new WeakReference<>(entity);
         this.followPositionSupplier = null;
@@ -60,13 +60,13 @@ public class BlackFireParticcleEmitterInfo extends ParticleEmitterInfo {
         return this;
     }
 
-    public BlackFireParticcleEmitterInfo followEntityEye(Entity entity, int durationTicks, Vec3 offset) {
+    public BlackFireParticleEmitterInfo followEntityEye(Entity entity, int durationTicks, Vec3 offset) {
         this.followEntity(entity, durationTicks, offset);
         this.useEyePosition = true;
         return this;
     }
 
-    public BlackFireParticcleEmitterInfo followPosition(Supplier<Vec3> positionSupplier, int durationTicks) {
+    public BlackFireParticleEmitterInfo followPosition(Supplier<Vec3> positionSupplier, int durationTicks) {
         this.followEnabled = true;
         this.followEntityRef = new WeakReference<>(null);
         this.followPositionSupplier = positionSupplier;
@@ -145,7 +145,7 @@ public class BlackFireParticcleEmitterInfo extends ParticleEmitterInfo {
         return getInterpolatedEntityPosition(blackFire, partialTick);
     }
 
-    public BlackFireParticcleEmitterInfo smoothing(double value) {
+    public BlackFireParticleEmitterInfo smoothing(double value) {
         this.smoothing = Math.max(0.0D, Math.min(1.0D, value));
         return this;
     }

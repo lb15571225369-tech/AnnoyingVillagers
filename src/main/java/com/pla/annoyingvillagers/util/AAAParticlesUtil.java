@@ -1,10 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.client.emitterinfo.BlackFireParticcleEmitterInfo;
-import com.pla.annoyingvillagers.client.emitterinfo.BlueDemonThunderBeamParticleEmitterInfo;
-import com.pla.annoyingvillagers.client.emitterinfo.DragonBeamParticleEmitterInfo;
-import com.pla.annoyingvillagers.client.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
+import com.pla.annoyingvillagers.client.emitterinfo.*;
 import com.pla.annoyingvillagers.entity.BlueDemonThunderBeamEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
@@ -16,6 +13,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 
 public class AAAParticlesUtil {
     public static void sendEnderGlaiveExplosion(Vec3 from, Vec3 to, Level level) {
@@ -77,10 +76,43 @@ public class AAAParticlesUtil {
             return;
         }
 
-        new BlackFireParticcleEmitterInfo(
+        new BlackFireParticleEmitterInfo(
                 ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "black_fire"))
                 .followEntity(entity, 60, Vec3.ZERO)
                 .smoothing(1.0D)
+                .spawnInWorld(level, Minecraft.getInstance().player);
+    }
+
+    public static void sendDiamondAttractor(Level level, Entity entity) {
+        if (level == null || entity == null) {
+            return;
+        }
+
+        if (!level.isClientSide()) {
+            return;
+        }
+
+        Vec3 pos;
+
+        try {
+            pos = EpicfightUtil.getJointWithTranslation(
+                    entity,
+                    new Vec3f(0.0F, 0.0F, 0.0F),
+                    Armatures.BIPED.get().toolR,
+                    Minecraft.getInstance().getFrameTime(),
+                    0.0F
+            );
+        } catch (Exception ignored) {
+            pos = null;
+        }
+
+        if (pos == null) {
+            pos = entity.position().add(0.0D, entity.getBbHeight() * 0.6D, 0.0D);
+        }
+
+        new ParticleEmitterInfo(
+                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_attractor"))
+                .position(pos.x, pos.y, pos.z)
                 .spawnInWorld(level, Minecraft.getInstance().player);
     }
 }

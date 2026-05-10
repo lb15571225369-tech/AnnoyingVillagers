@@ -211,7 +211,15 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return mainWeaponItem;
     }
 
+    public void setMainWeaponItem(ItemStack mainWeaponItem) {
+        this.mainWeaponItem = mainWeaponItem;
+    }
+
     public ItemStack getOffWeaponItem() { return offWeaponItem; }
+
+    public void setOffWeaponItem(ItemStack offWeaponItem) {
+        this.offWeaponItem = offWeaponItem;
+    }
 
     public void setUseBow(boolean useBow) {
         this.useBow = useBow;

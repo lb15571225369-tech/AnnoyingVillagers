@@ -247,6 +247,10 @@ All required upstream notices must be preserved.
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/sculk_steve
 
+### H2) Yonchi Chikito
+**Paths / Files**
+- assets/annoyingvillagers/animmodels/animations/biped/yonchi_chikito
+
 ---
 
 ## I) Credits - Annoying Villagers (textures / models / languages)

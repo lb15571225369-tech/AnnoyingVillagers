@@ -40,6 +40,7 @@ public class AVSkills {
     public static Skill LADDER;
     public static Skill BLACK_FIRE_SWORD;
     public static Skill CENTRANOS_SWORD;
+    public static Skill DIAMOND_ATTRACTOR_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -66,5 +67,6 @@ public class AVSkills {
         AVSkills.LADDER = modRegistry.build("ladder", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SWORD_HEAVY_AUTO_3).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.STAMINA)).newProperty();
         AVSkills.BLACK_FIRE_SWORD = modRegistry.build("black_fire_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.BLACK_FIRE_SWORD_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         AVSkills.CENTRANOS_SWORD = modRegistry.build("centranos_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SQUIRE_SWORD_HEAVY_BLOW)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        AVSkills.DIAMOND_ATTRACTOR_SWORD = modRegistry.build("diamond_attractor_sword", DiamondAttractorSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
     }
 }

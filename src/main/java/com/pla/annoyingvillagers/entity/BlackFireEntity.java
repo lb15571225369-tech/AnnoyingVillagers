@@ -231,7 +231,7 @@ public class BlackFireEntity extends Entity implements IEntityAdditionalSpawnDat
             return;
         }
 
-        Vec3 swordPos = getOwnerSwordPosition(owner, 1.0F);
+        Vec3 swordPos = getOwnerSwordPosition(owner);
         this.setPos(swordPos.x, swordPos.y, swordPos.z);
         this.setDeltaMovement(Vec3.ZERO);
     }
@@ -250,13 +250,13 @@ public class BlackFireEntity extends Entity implements IEntityAdditionalSpawnDat
         );
     }
 
-    private static Vec3 getOwnerSwordPosition(LivingEntity owner, float partialTick) {
+    private static Vec3 getOwnerSwordPosition(LivingEntity owner) {
         try {
             Vec3 pos = EpicfightUtil.getJointWithTranslation(
                     owner,
                     new Vec3f(0.0F, 0.0F, 0.0F),
                     Armatures.BIPED.get().toolR,
-                    partialTick,
+                    (float) 1.0,
                     0.0F
             );
 
@@ -361,7 +361,7 @@ public class BlackFireEntity extends Entity implements IEntityAdditionalSpawnDat
             return null;
         }
 
-        Vec3 pos = getOwnerSwordPosition(owner, 1.0F);
+        Vec3 pos = getOwnerSwordPosition(owner);
 
         BlackFireEntity fire = new BlackFireEntity(
                 level,
@@ -415,7 +415,7 @@ public class BlackFireEntity extends Entity implements IEntityAdditionalSpawnDat
 
         look = look.normalize();
 
-        Vec3 startPos = getOwnerSwordPosition(owner, 1.0F);
+        Vec3 startPos = getOwnerSwordPosition(owner);
         Vec3 velocity = look.scale(speed);
 
         BlackFireEntity fire = new BlackFireEntity(

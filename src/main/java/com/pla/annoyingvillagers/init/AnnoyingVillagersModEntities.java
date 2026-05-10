@@ -85,7 +85,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<ElectricAreaEntity>> ELECTRIC_AREA = REGISTRY.register("electric_area", () -> EntityType.Builder.<ElectricAreaEntity>of(ElectricAreaEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(8).updateInterval(10).build("blue_demon_area_damage_zone"));
     public static final RegistryObject<EntityType<BlackFireEntity>> BLACK_FIRE = REGISTRY.register("black_fire", () -> EntityType.Builder.<BlackFireEntity>of(BlackFireEntity::new, MobCategory.MISC).sized(0.2F, 0.2F).clientTrackingRange(64).updateInterval(1).build("black_fire"));
     public static final RegistryObject<EntityType<EnchantedArrowEntity>> ENCHANTED_ARROW = register("enchanted_arrow", Builder.<EnchantedArrowEntity>of(EnchantedArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
-
+    public static final RegistryObject<EntityType<ItemProjectile>> ITEM_PROJECTILE = register("item_projectile", Builder.<ItemProjectile>of(ItemProjectile::new, MobCategory.MISC).sized(0.35F, 0.35F).clientTrackingRange(64).updateInterval(1));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {

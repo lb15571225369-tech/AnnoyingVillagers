@@ -193,4 +193,17 @@ public final class ClientPacketHandlers {
             AAAParticlesUtil.sendBlackFire(level, entity);
         }
     }
+
+    public static void handleDiamondAttractor(ClientboundDiamondAttractorFx msg) {
+        Level level = Minecraft.getInstance().level;
+
+        if (level == null) {
+            return;
+        }
+
+        if (ModList.get().isLoaded("aaa_particles")) {
+            Entity entity = level.getEntity(msg.entityId());
+            AAAParticlesUtil.sendDiamondAttractor(level, entity);
+        }
+    }
 }

@@ -98,6 +98,8 @@ import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.item.*;
+import com.pla.annoyingvillagers.network.ClientboundBlackFireFx;
+import com.pla.annoyingvillagers.network.ClientboundDiamondAttractorFx;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -377,6 +379,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ASSISTANCE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
+
+    // Animation from Yonchi Chikito
+    public static AnimationManager.AnimationAccessor<ActionAnimation> DIAMOND_ATTRACTOR_SKILL;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
@@ -1809,6 +1814,39 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.PORTAL_SUMMON = builder.nextAccessor("biped/sculk_steve/portal_summon",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
+
+        // Animation from Yonchi Chikito
+        AVAnimations.DIAMOND_ATTRACTOR_SKILL = builder.nextAccessor("biped/yonchi_chikito/diamond_attractor",
+                (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, (livingEntityPatch, self, p) -> {
+                                    LivingEntity entity = livingEntityPatch.getOriginal();
+
+                                    if (entity.level() instanceof ServerLevel serverLevel) {
+                                        serverLevel.playSound(
+                                                null,
+                                                entity.getX(),
+                                                entity.getY(),
+                                                entity.getZ(),
+                                                AnnoyingVillagersModSounds.DIAMOND_ATTRACTOR.get(),
+                                                entity instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE,
+                                                1.0F,
+                                                1.0F
+                                        );
+
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntityPatch::getOriginal),
+                                                new ClientboundDiamondAttractorFx(entity)
+                                        );
+
+                                        DiamondAttractorSwordItem.pullWeapons(entity);
+                                    }
+                                }, Side.SERVER)
+                        ));
 
         // Animation made by me
         AVAnimations.TRIDENT_ATTACK = builder.nextAccessor("biped/pla/trident_attack",

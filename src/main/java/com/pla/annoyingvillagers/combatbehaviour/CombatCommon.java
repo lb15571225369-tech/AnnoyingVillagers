@@ -242,6 +242,9 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
             return !AVNpc.isHealing();
         }
+        if (mobpatch.getOriginal() instanceof LowShadowHerobrineCloneEntity || mobpatch.getOriginal() instanceof LowHerobrineCloneEntity) {
+            return true;
+        }
         return false;
     }
 
@@ -840,8 +843,6 @@ public class CombatCommon {
             } else {
                 if (!mainWeaponItem.isEmpty() && !(mainWeaponItem.getItem() instanceof BowItem)) {
                     AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
-                } else if (AVNpc instanceof VillagerScoutEntity villagerScoutEntity) {
-                    villagerScoutEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
                 }
                 if (!offWeaponItem.isEmpty()) {
                     AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());

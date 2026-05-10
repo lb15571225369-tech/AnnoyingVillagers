@@ -36,11 +36,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, BlueVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, GreenVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, PurpleVillagerGeneralEntity.class, true, false));
-        monster.goalSelector.addGoal(2, new MeleeAttackGoal(monster, 1.2D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingEntity) {
-                return monster.getBbWidth() * monster.getBbWidth() + livingEntity.getBbWidth();
-            }
-        });
+        monster.goalSelector.addGoal(2, new MeleeAttackGoal(monster, 1.2D, false));
         monster.goalSelector.addGoal(3, new RandomStrollGoal(monster, 1.0D));
         monster.goalSelector.addGoal(4, new RandomLookAroundGoal(monster));
         monster.goalSelector.addGoal(5, new FloatGoal(monster));
@@ -64,11 +60,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, GreenVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, PurpleVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, AbstractIllager.class, true, false));
-        monster.goalSelector.addGoal(3, new MeleeAttackGoal(monster, 1.2D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingEntity) {
-                return monster.getBbWidth() * monster.getBbWidth() + livingEntity.getBbWidth();
-            }
-        });
+        monster.goalSelector.addGoal(3, new MeleeAttackGoal(monster, 1.2D, false));
         monster.goalSelector.addGoal(4, new RandomStrollGoal(monster, 1.0D));
         monster.goalSelector.addGoal(5, new RandomLookAroundGoal(monster));
         monster.goalSelector.addGoal(6, new FloatGoal(monster));
@@ -92,11 +84,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AngrySteveEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, true, false));
-        mob.goalSelector.addGoal(5, new MeleeAttackGoal(mob, 1.5D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingentity) {
-                return mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth();
-            }
-        });
+        mob.goalSelector.addGoal(5, new MeleeAttackGoal(mob, 1.2D, false));
         mob.goalSelector.addGoal(6, new RandomStrollGoal(mob, 1.0D));
         mob.goalSelector.addGoal(7, new FollowMobGoal(mob, 1.3D, 20.0F, 15.0F));
         mob.goalSelector.addGoal(8, new OpenDoorGoal(mob, true));
@@ -113,11 +101,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowShadowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, EliteHerobrineKnockedEntity.class, true, false));
         mob.targetSelector.addGoal(2, new HurtByTargetGoal(mob));
-        mob.goalSelector.addGoal(2, new MeleeAttackGoal(mob, 1.2D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingentity) {
-                return mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth();
-            }
-        });
+        mob.goalSelector.addGoal(2, new MeleeAttackGoal(mob, 1.2D, false));
 
         if (!(mob.getTarget() instanceof VillagerScoutEntity)) {
             mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, VillagerScoutEntity.class, 12.0F, 1.2D, 1.4D));
@@ -139,11 +123,7 @@ public class CommonGoals {
         }
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity || target instanceof BlueDemonEntity)));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
-        mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.5D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingEntity) {
-                return mob.getBbWidth() * mob.getBbWidth() + livingEntity.getBbWidth();
-            }
-        });
+        mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.2D, false));
         mob.goalSelector.addGoal(4, new RandomStrollGoal(mob, 1.0D));
         mob.goalSelector.addGoal(5, new OpenDoorGoal(mob, true));
         mob.targetSelector.addGoal(6, new HurtByTargetGoal(mob));
@@ -171,11 +151,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, false, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, false, false));
         mob.targetSelector.addGoal(21, new NearestAttackableTargetGoal<>(mob, Player.class, true, true));
-        mob.goalSelector.addGoal(22, new MeleeAttackGoal(mob, 1.5D, false) {
-            protected double getAttackReachSqr(@NotNull LivingEntity livingEntity) {
-                return mob.getBbWidth() * mob.getBbWidth() + livingEntity.getBbWidth();
-            }
-        });
+        mob.goalSelector.addGoal(22, new MeleeAttackGoal(mob, 1.2D, false));
         mob.goalSelector.addGoal(23, new RandomStrollGoal(mob, 1.0D));
         mob.goalSelector.addGoal(24, new RandomLookAroundGoal(mob));
         mob.goalSelector.addGoal(25, new FloatGoal(mob));
