@@ -120,7 +120,8 @@ public class CommonUtil {
         applyHorizontalDirectionalMotion(target, direction, strength, yBoost);
     }
 
-    public static void pushEntityFromCaster(Entity target, Entity caster) {
+    public static void pushEntityFromCaster(LivingEntity target, LivingEntity caster) {
+        forceRotate(target, caster);
         pushEntityFromCaster(target, caster, 0.35D, 0.08D);
     }
 

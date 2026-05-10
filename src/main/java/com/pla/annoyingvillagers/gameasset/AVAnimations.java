@@ -98,10 +98,7 @@ import com.pla.annoyingvillagers.clazz.TridentMode;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.item.*;
-import com.pla.annoyingvillagers.network.ClientboundBlackFireFx;
-import com.pla.annoyingvillagers.network.ClientboundDiamondAttractorFx;
-import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
-import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
+import com.pla.annoyingvillagers.network.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -399,6 +396,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> BLACK_FIRE_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<ActionAnimation> BLUE_FLAME_SWORD;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DIAMOND_BLASTER_SKILL;
 
     // Animation clone and re-registered from WOM
     public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
@@ -1935,6 +1933,27 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false));
+        AVAnimations.DIAMOND_BLASTER_SKILL = builder.nextAccessor("biped/pla/diamond_blaster_skill",
+                (accessor) -> new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.2F, null, humanoidArmature.get().toolR, accessor, humanoidArmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, (livingEntityPatch, self, p) -> {
+                                    Vec3 knockPos = EpicfightUtil.getJointWithTranslation(
+                                            livingEntityPatch.getOriginal(),
+                                            new Vec3f(0.0F, 0.0F, 0.0F),
+                                            Armatures.BIPED.get().toolR,
+                                            0.0F,
+                                            0.5F
+                                    );
+                                    if (knockPos != null) {
+                                        BlockPos mutePos = BlockPos.containing(knockPos);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntityPatch.getOriginal()),
+                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                        );
+                                        livingEntityPatch.getOriginal().level().explode(livingEntityPatch.getOriginal(), knockPos.x, knockPos.y, knockPos.z,
+                                                0.5F, false, Level.ExplosionInteraction.NONE);
+                                    }
+                                }, Side.SERVER)));
 
         // Animations cloned and registered from WOM
         AVAnimations.CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",
@@ -2821,7 +2840,7 @@ public class AVAnimations {
                                                 new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                                         );
                                         if (explosionPos != null) {
-                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), AnnoyingVillagersModSounds.ENDER_SHOT.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         }
                                     }
                                 }, Side.SERVER),
@@ -2892,7 +2911,7 @@ public class AVAnimations {
                                                 new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                                         );
                                         if (explosionPos != null) {
-                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), AnnoyingVillagersModSounds.ENDER_SHOT.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         }
                                     }
                                 }, Side.SERVER),

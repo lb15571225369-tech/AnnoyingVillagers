@@ -41,6 +41,7 @@ public class AVSkills {
     public static Skill BLACK_FIRE_SWORD;
     public static Skill CENTRANOS_SWORD;
     public static Skill DIAMOND_ATTRACTOR_SWORD;
+    public static Skill DIAMOND_BLASTER_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -68,5 +69,6 @@ public class AVSkills {
         AVSkills.BLACK_FIRE_SWORD = modRegistry.build("black_fire_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.BLACK_FIRE_SWORD_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         AVSkills.CENTRANOS_SWORD = modRegistry.build("centranos_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SQUIRE_SWORD_HEAVY_BLOW)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         AVSkills.DIAMOND_ATTRACTOR_SWORD = modRegistry.build("diamond_attractor_sword", DiamondAttractorSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkills.DIAMOND_BLASTER_SWORD = modRegistry.build("diamond_blaster_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.DIAMOND_BLASTER_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
     }
 }

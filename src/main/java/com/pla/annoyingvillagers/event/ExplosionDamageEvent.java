@@ -4,11 +4,13 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.TridentLightningBolt;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.item.DiamondBlasterSwordItem;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -91,7 +93,10 @@ public class ExplosionDamageEvent {
                             && !(entity instanceof Player player && player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
-                            explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
+                            AssetAccessor<? extends StaticAnimation> explodedDynamicAnimation = Objects.requireNonNull(explodedPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                            if (!EpicfightUtil.isLongHitAnimation(explodedDynamicAnimation, explodedPatch)) {
+                                explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
+                            }
                         }
                         if (!entity.isAlive()) continue;
                         double dx = center.x - entity.getX();
@@ -113,6 +118,23 @@ public class ExplosionDamageEvent {
                             float addResource = Math.min(50.0F, neededResource);
                             woopieTheSwordSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
                         }
+                    }
+                }
+            }
+
+            if (livingEntity.getMainHandItem().getItem() instanceof DiamondBlasterSwordItem && dynamicAnimation == AVAnimations.DIAMOND_BLASTER_SKILL) {
+                for (Entity entity : detonate.getAffectedEntities()) {
+                    if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
+                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
+                            && !(entity instanceof Player player && player.isCreative())) {
+                        LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (explodedPatch != null) {
+                            AssetAccessor<? extends StaticAnimation> explodedDynamicAnimation = Objects.requireNonNull(explodedPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                            if (!EpicfightUtil.isLongHitAnimation(explodedDynamicAnimation, explodedPatch)) {
+                                explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
+                            }
+                        }
+                        CommonUtil.pushEntityFromCaster(livingExploded, livingEntity);
                     }
                 }
             }

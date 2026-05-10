@@ -93,8 +93,6 @@ public class DiamondAttractorSwordItem extends SwordItem {
                 continue;
             }
 
-            // Pull only one item from the stack. Most weapons are count 1,
-            // but this keeps behavior safe for modded stackable weapons.
             ItemStack pulledStack = stackInWorld.copy();
             pulledStack.setCount(1);
 
