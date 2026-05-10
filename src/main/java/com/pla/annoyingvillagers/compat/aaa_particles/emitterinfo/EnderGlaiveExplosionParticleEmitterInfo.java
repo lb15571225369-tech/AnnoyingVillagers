@@ -1,15 +1,18 @@
-package com.pla.annoyingvillagers.client.emitterinfo;
+package com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo;
 
+import mod.chloeprime.aaaparticles.api.client.EffectDefinition;
+import mod.chloeprime.aaaparticles.api.client.EffectHolder;
+import mod.chloeprime.aaaparticles.api.client.EffectRegistry;
 import mod.chloeprime.aaaparticles.api.client.effekseer.ParticleEmitter;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import mod.chloeprime.aaaparticles.client.installer.NativePlatform;
-import mod.chloeprime.aaaparticles.client.registry.EffectRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class EnderGlaiveExplosionParticleEmitterInfo extends ParticleEmitterInfo {
     public enum ForwardAxis { PLUS_Z, PLUS_Y }
@@ -55,15 +58,16 @@ public class EnderGlaiveExplosionParticleEmitterInfo extends ParticleEmitterInfo
         if (NativePlatform.isRunningOnUnsupportedPlatform()) return;
         if (from == null || to == null) return;
 
-        Optional.ofNullable(EffectRegistry.get(this.effek)).ifPresent(eff -> {
-            ParticleEmitter em = this.hasEmitter() ? eff.play(this.emitter) : eff.play();
+        Optional<CompletableFuture<Optional<EffectDefinition>>> loaded = Optional.ofNullable(EffectRegistry.get(this.effek)).map(EffectHolder::load);
+        loaded.ifPresent((future) -> future.thenAccept((def) -> def.ifPresent((effek) -> {
+            ParticleEmitter em = this.hasEmitter() ? effek.play(this.emitter) : effek.play();
 
             if (this.hasParameters()) for (var p : this.parameters) em.setDynamicInput(p.index(), p.value());
             if (this.hasTriggers())    this.triggers.forEach(em::sendTrigger);
 
             em.setPosition((float) from.x, (float) from.y, (float) from.z);
             aim(em, from, to, axis, roll);
-        });
+        })));
     }
 
     private static void aim(ParticleEmitter em, Vec3 from, Vec3 to, ForwardAxis axis, float roll) {

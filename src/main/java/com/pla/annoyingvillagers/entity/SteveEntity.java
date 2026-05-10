@@ -72,6 +72,7 @@ public class SteveEntity extends AVNpc {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setPlaceBlockToParryChance(0.8);
+        this.setMainWeaponItem(new ItemStack(Items.DIAMOND_SWORD));
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

@@ -67,7 +67,7 @@ public class DiamondAttractorSwordItem extends SwordItem {
             return;
         }
 
-        double radius = 5;
+        double radius = 7;
         AABB area = owner.getBoundingBox().inflate(radius);
 
         pullDroppedWeapons(level, owner, area);

@@ -1,7 +1,10 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.client.emitterinfo.*;
+import com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo.BlackFireParticleEmitterInfo;
+import com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo.BlueDemonThunderBeamParticleEmitterInfo;
+import com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo.DragonBeamParticleEmitterInfo;
+import com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
 import com.pla.annoyingvillagers.entity.BlueDemonThunderBeamEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;

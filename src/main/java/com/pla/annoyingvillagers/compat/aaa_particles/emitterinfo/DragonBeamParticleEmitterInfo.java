@@ -1,6 +1,9 @@
-package com.pla.annoyingvillagers.client.emitterinfo;
+package com.pla.annoyingvillagers.compat.aaa_particles.emitterinfo;
 
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
+import mod.chloeprime.aaaparticles.api.client.EffectDefinition;
+import mod.chloeprime.aaaparticles.api.client.EffectHolder;
+import mod.chloeprime.aaaparticles.api.client.EffectRegistry;
 import mod.chloeprime.aaaparticles.api.common.DynamicParameter;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.world.entity.boss.EnderDragonPart;
@@ -9,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import mod.chloeprime.aaaparticles.api.client.effekseer.ParticleEmitter;
 import mod.chloeprime.aaaparticles.client.installer.NativePlatform;
-import mod.chloeprime.aaaparticles.client.registry.EffectRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.Level;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
     public enum ForwardAxis { PLUS_Z, PLUS_Y }
@@ -107,8 +110,9 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
     public void spawnInWorld(Level level, Player player) {
         if (NativePlatform.isRunningOnUnsupportedPlatform()) return;
 
-        Optional.ofNullable(EffectRegistry.get(this.effek)).ifPresent(eff -> {
-            ParticleEmitter em = this.hasEmitter() ? eff.play(this.emitter) : eff.play();
+        Optional<CompletableFuture<Optional<EffectDefinition>>> loaded = Optional.ofNullable(EffectRegistry.get(this.effek)).map(EffectHolder::load);
+        loaded.ifPresent((future) -> future.thenAccept((def) -> def.ifPresent((effek) -> {
+            ParticleEmitter em = this.hasEmitter() ? effek.play(this.emitter) : effek.play();
 
             if (this.hasParameters()) for (DynamicParameter p : this.parameters) em.setDynamicInput(p.index(), p.value());
             if (this.hasTriggers())    this.triggers.forEach(em::sendTrigger);
@@ -148,6 +152,6 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
                 Emitter.setPosition((float) from.x, (float) from.y, (float) from.z);
                 aim(Emitter, from, to, axis, roll);
             });
-        });
+        })));
     }
 }

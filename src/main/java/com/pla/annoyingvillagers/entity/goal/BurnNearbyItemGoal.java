@@ -9,12 +9,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -75,9 +76,16 @@ public class BurnNearbyItemGoal extends Goal {
 
     @Override
     public void start() {
-        if (mob.getMainHandItem().getItem() != Items.FLINT_AND_STEEL) {
-            mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.FLINT_AND_STEEL));
+        if (targetItem == null) {
+            return;
         }
+
+        if (shouldPickupOrEquipInsteadOfBurn(targetItem.getItem())) {
+            restoreMainWeapon(false);
+        } else {
+            equipFlintAndSteel();
+        }
+
         mob.getNavigation().moveTo(targetItem, speed);
     }
 
@@ -89,14 +97,19 @@ public class BurnNearbyItemGoal extends Goal {
             return;
         }
 
+        if (shouldPickupOrEquipInsteadOfBurn(targetItem.getItem())) {
+            restoreMainWeapon(false);
+        } else {
+            equipFlintAndSteel();
+        }
+
         if (mob.getNavigation().isDone()) {
-            if (mob.getMainHandItem().getItem() != Items.FLINT_AND_STEEL) {
-                mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.FLINT_AND_STEEL));
-            }
             var path = mob.getNavigation().createPath(targetItem, 0);
+
             if (path == null) {
                 return;
             }
+
             mob.getNavigation().moveTo(targetItem, speed);
         }
 
@@ -108,7 +121,18 @@ public class BurnNearbyItemGoal extends Goal {
         );
 
         double dist = mob.distanceTo(targetItem);
+
         if (dist <= 1.5D) {
+            if (shouldPickupOrEquipInsteadOfBurn(targetItem.getItem())) {
+                if (tryHandleItemWithoutBurning(targetItem)) {
+                    targetItem = null;
+                    mob.getNavigation().stop();
+                    return;
+                }
+            }
+
+            equipFlintAndSteel();
+
             ItemStack burnedStack = targetItem.getItem().copy();
 
             mob.swing(InteractionHand.MAIN_HAND);
@@ -137,8 +161,9 @@ public class BurnNearbyItemGoal extends Goal {
     public void stop() {
         targetItem = null;
         mob.getNavigation().stop();
+
         if (findTargetItem() == null) {
-            restoreMainWeapon();
+            restoreMainWeapon(true);
         }
     }
 
@@ -159,16 +184,25 @@ public class BurnNearbyItemGoal extends Goal {
         );
     }
 
-    private void restoreMainWeapon() {
+    private void restoreMainWeapon(boolean addIdleCooldown) {
         ItemStack weapon = null;
+
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             weapon = playerNpcEntity.getMainWeaponItem();
-            playerNpcEntity.setPlayingIdleCooldown(playerNpcEntity.getPlayingIdleCooldown() + 40);
+
+            if (addIdleCooldown) {
+                playerNpcEntity.setPlayingIdleCooldown(playerNpcEntity.getPlayingIdleCooldown() + 40);
+            }
         }
+
         if (mob instanceof AVNpc avNpc) {
             weapon = avNpc.getMainWeaponItem();
-            avNpc.setPlayingIdleCooldown(avNpc.getPlayingIdleCooldown() + 40);
+
+            if (addIdleCooldown) {
+                avNpc.setPlayingIdleCooldown(avNpc.getPlayingIdleCooldown() + 40);
+            }
         }
+
         if (weapon != null && !weapon.isEmpty()) {
             mob.setItemSlot(EquipmentSlot.MAINHAND, weapon.copy());
         } else {
@@ -194,5 +228,274 @@ public class BurnNearbyItemGoal extends Goal {
             }
         }
         return best;
+    }
+
+    private void equipFlintAndSteel() {
+        if (mob.getMainHandItem().getItem() != Items.FLINT_AND_STEEL) {
+            mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.FLINT_AND_STEEL));
+        }
+    }
+
+    private boolean shouldPickupOrEquipInsteadOfBurn(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        if (npcInventoryCanAccept(stack)) {
+            return true;
+        }
+
+        if (mainWeaponIsEmpty() && isUsefulWeapon(stack)) {
+            return true;
+        }
+
+        return emptyArmorSlotCanUse(stack);
+    }
+
+    private boolean tryHandleItemWithoutBurning(ItemEntity itemEntity) {
+        if (itemEntity == null || !itemEntity.isAlive() || itemEntity.getItem().isEmpty()) {
+            return false;
+        }
+
+        if (mainWeaponIsEmpty() && isUsefulWeapon(itemEntity.getItem())) {
+            return tryEquipWeaponFromGround(itemEntity);
+        }
+
+        if (emptyArmorSlotCanUse(itemEntity.getItem())) {
+            return tryEquipArmorFromGround(itemEntity);
+        }
+
+        if (npcInventoryCanAccept(itemEntity.getItem())) {
+            return tryInsertIntoNpcInventory(itemEntity);
+        }
+
+        return false;
+    }
+
+    private boolean tryEquipWeaponFromGround(ItemEntity itemEntity) {
+        ItemStack groundStack = itemEntity.getItem();
+
+        if (groundStack.isEmpty() || !isUsefulWeapon(groundStack)) {
+            return false;
+        }
+
+        ItemStack equipStack = groundStack.copy();
+        equipStack.setCount(1);
+
+        mob.setItemSlot(EquipmentSlot.MAINHAND, equipStack.copy());
+
+        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.setMainWeaponItem(equipStack.copy());
+        }
+
+        if (mob instanceof AVNpc avNpc) {
+            avNpc.setMainWeaponItem(equipStack.copy());
+        }
+
+        groundStack.shrink(1);
+
+        if (groundStack.isEmpty()) {
+            itemEntity.discard();
+        } else {
+            itemEntity.setItem(groundStack);
+        }
+
+        mob.swing(InteractionHand.MAIN_HAND);
+
+        mob.level().playSound(
+                null,
+                mob.blockPosition(),
+                SoundEvents.ITEM_PICKUP,
+                SoundSource.HOSTILE,
+                0.2F,
+                1.0F
+        );
+
+        return true;
+    }
+
+    private boolean tryEquipArmorFromGround(ItemEntity itemEntity) {
+        ItemStack groundStack = itemEntity.getItem();
+
+        if (groundStack.isEmpty()) {
+            return false;
+        }
+
+        EquipmentSlot slot = LivingEntity.getEquipmentSlotForItem(groundStack);
+
+        if (slot.getType() != EquipmentSlot.Type.ARMOR) {
+            return false;
+        }
+
+        if (!mob.getItemBySlot(slot).isEmpty()) {
+            return false;
+        }
+
+        ItemStack equipStack = groundStack.copy();
+        equipStack.setCount(1);
+
+        mob.setItemSlot(slot, equipStack.copy());
+
+        groundStack.shrink(1);
+
+        if (groundStack.isEmpty()) {
+            itemEntity.discard();
+        } else {
+            itemEntity.setItem(groundStack);
+        }
+
+        mob.swing(InteractionHand.MAIN_HAND);
+
+        mob.level().playSound(
+                null,
+                mob.blockPosition(),
+                SoundEvents.ITEM_PICKUP,
+                SoundSource.HOSTILE,
+                0.2F,
+                1.0F
+        );
+
+        return true;
+    }
+
+    private boolean tryInsertIntoNpcInventory(ItemEntity itemEntity) {
+        SimpleContainer inventory = getNpcInventory();
+
+        if (inventory == null || itemEntity == null || itemEntity.getItem().isEmpty()) {
+            return false;
+        }
+
+        ItemStack remaining = itemEntity.getItem().copy();
+        int originalCount = remaining.getCount();
+
+        for (int i = 0; i < inventory.getContainerSize() && !remaining.isEmpty(); i++) {
+            ItemStack slotStack = inventory.getItem(i);
+
+            if (slotStack.isEmpty()) {
+                int transferable = Math.min(
+                        remaining.getCount(),
+                        Math.min(remaining.getMaxStackSize(), inventory.getMaxStackSize())
+                );
+
+                ItemStack inserted = remaining.copy();
+                inserted.setCount(transferable);
+
+                inventory.setItem(i, inserted);
+                remaining.shrink(transferable);
+            } else if (ItemStack.isSameItemSameTags(slotStack, remaining)
+                    && slotStack.getCount() < slotStack.getMaxStackSize()) {
+                int transferable = Math.min(
+                        remaining.getCount(),
+                        slotStack.getMaxStackSize() - slotStack.getCount()
+                );
+
+                slotStack.grow(transferable);
+                remaining.shrink(transferable);
+            }
+        }
+
+        if (remaining.getCount() == originalCount) {
+            return false;
+        }
+
+        inventory.setChanged();
+
+        if (remaining.isEmpty()) {
+            itemEntity.discard();
+        } else {
+            itemEntity.setItem(remaining);
+        }
+
+        mob.swing(InteractionHand.MAIN_HAND);
+
+        mob.level().playSound(
+                null,
+                mob.blockPosition(),
+                SoundEvents.ITEM_PICKUP,
+                SoundSource.HOSTILE,
+                0.2F,
+                1.0F
+        );
+
+        return true;
+    }
+
+    private boolean npcInventoryCanAccept(ItemStack incoming) {
+        SimpleContainer inventory = getNpcInventory();
+
+        if (inventory == null || incoming.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack slotStack = inventory.getItem(i);
+
+            if (slotStack.isEmpty()) {
+                return true;
+            }
+
+            if (ItemStack.isSameItemSameTags(slotStack, incoming)
+                    && slotStack.getCount() < slotStack.getMaxStackSize()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private SimpleContainer getNpcInventory() {
+        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            return playerNpcEntity.getInventory();
+        }
+
+        if (mob instanceof AVNpc avNpc) {
+            return avNpc.getInventory();
+        }
+
+        return null;
+    }
+
+    private boolean mainWeaponIsEmpty() {
+        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            return playerNpcEntity.getMainWeaponItem().isEmpty()
+                    || mob.getMainHandItem().isEmpty()
+                    || mob.getMainHandItem().getItem() == Items.FLINT_AND_STEEL;
+        }
+
+        if (mob instanceof AVNpc avNpc) {
+            return avNpc.getMainWeaponItem().isEmpty()
+                    || mob.getMainHandItem().isEmpty()
+                    || mob.getMainHandItem().getItem() == Items.FLINT_AND_STEEL;
+        }
+
+        return mob.getMainHandItem().isEmpty()
+                || mob.getMainHandItem().getItem() == Items.FLINT_AND_STEEL;
+    }
+
+    private boolean isUsefulWeapon(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        return stack.getItem() instanceof SwordItem
+                || stack.getItem() instanceof AxeItem
+                || stack.getItem() instanceof DiggerItem
+                || stack.getItem() instanceof TridentItem
+                || stack.getItem() instanceof BowItem
+                || stack.getItem() instanceof CrossbowItem;
+    }
+
+    private boolean emptyArmorSlotCanUse(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        EquipmentSlot slot = LivingEntity.getEquipmentSlotForItem(stack);
+
+        if (slot.getType() != EquipmentSlot.Type.ARMOR) {
+            return false;
+        }
+
+        return mob.getItemBySlot(slot).isEmpty();
     }
 }
