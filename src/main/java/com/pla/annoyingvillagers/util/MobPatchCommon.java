@@ -88,12 +88,6 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_DURANDAL.get().getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcGreatsword.AV_GREATSWORD;
-            }
-        }
-
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get().getDefaultInstance())) {
             return PlayerNpcTachi.AV_TACHI;
         }

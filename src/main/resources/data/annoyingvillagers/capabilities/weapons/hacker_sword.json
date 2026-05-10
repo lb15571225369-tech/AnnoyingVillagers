@@ -3,9 +3,9 @@
 	{
 		"common":
 		{
-			"impact": 2.4,
+			"impact": 1.0,
 			"max_strikes":2
 		}
 	},
-	"type": "annoyingvillagers:av_tachi"
+	"type": "annoyingvillagers:hacker_sword"
 }

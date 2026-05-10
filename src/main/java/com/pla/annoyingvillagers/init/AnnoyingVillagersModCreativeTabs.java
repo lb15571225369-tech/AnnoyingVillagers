@@ -90,9 +90,9 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.CLOW_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ATTRACTOR_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BLASTER_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DURANDAL.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HACKER_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_FALCHION.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREAT_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SABRE.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get());

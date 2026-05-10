@@ -119,9 +119,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DIAMOND_ATTRACTOR_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_attractor_sword", DiamondAttractorSwordItem::new);
     public static final RegistryObject<Item> DIAMOND_BLASTER_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_blaster_sword", DiamondBlasterSwordItem::new);
     public static final RegistryObject<Item> DIAMOND_BLASTER_SWORD_ABILITY = AnnoyingVillagersModItems.REGISTRY.register("diamond_blaster_sword_ability", DiamondBlasterSwordAbilityItem::new);
-    public static final RegistryObject<Item> DIAMOND_DURANDAL = AnnoyingVillagersModItems.REGISTRY.register("diamond_durandal", DiamondDurandalItem::new);
+    public static final RegistryObject<Item> HACKER_SWORD = AnnoyingVillagersModItems.REGISTRY.register("hacker_sword", HackerSwordItem::new);
+    public static final RegistryObject<Item> DIAMOND_FALCHION = AnnoyingVillagersModItems.REGISTRY.register("diamond_falchion", DiamondFalchionItem::new);
     public static final RegistryObject<Item> DIAMOND_WARBLADE = AnnoyingVillagersModItems.REGISTRY.register("diamond_warblade", DiamondWarbladeItem::new);
-    public static final RegistryObject<Item> DIAMOND_FALCHION = AnnoyingVillagersModItems.REGISTRY.register("diamond_falchion", DiamondBladeItem::new);
     public static final RegistryObject<Item> DIAMOND_GREAT_FALCHION = AnnoyingVillagersModItems.REGISTRY.register("diamond_great_falchion", DiamondGreatFalchionItem::new);
     public static final RegistryObject<Item> DIAMOND_SABRE = AnnoyingVillagersModItems.REGISTRY.register("diamond_sabre", DiamondSabreItem::new);
     public static final RegistryObject<Item> HOOKED_DIAMOND_SWORD = AnnoyingVillagersModItems.REGISTRY.register("hooked_diamond_sword", HookedDiamondSwordItem::new);

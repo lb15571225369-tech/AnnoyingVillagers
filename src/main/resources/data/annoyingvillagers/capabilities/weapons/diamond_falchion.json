@@ -1,3 +1,11 @@
 {
-	"type": "annoyingvillagers:av_tachi"
+	"attributes":
+	{
+		"common":
+		{
+			"impact": 2.5,
+			"max_strikes": 1.5
+		}
+	},
+	"type": "annoyingvillagers:av_sword"
 }

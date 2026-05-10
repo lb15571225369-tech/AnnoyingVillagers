@@ -105,8 +105,8 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -127,7 +127,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
@@ -173,7 +172,6 @@ import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -253,7 +251,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> WHIRLWIND_KICK;
     public static AnimationManager.AnimationAccessor<HeavyAttackAnimation> LEGENDARY_SWORD_HEAVY_ATTACK;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> HACKER_SWORD_SKILL;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> HACKER_SWORD_SKILL_TWOHAND;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_AUTO2;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> TRIDENT_DUAL_AUTO2;
@@ -461,6 +459,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> CLONE_NAPOLEON_WATERLOW_SHOOT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CUT_ENDERBLASTER_TWOHAND_RELOAD;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> HACKER_SWORD_SKILL;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -955,7 +954,7 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SHOCK_WAVE, Side.SERVER)
                                 })
         );
-        AVAnimations.HACKER_SWORD_SKILL = builder.nextAccessor("biped/pugilist_steve/hacker_sword_skill",
+        AVAnimations.HACKER_SWORD_SKILL_TWOHAND = builder.nextAccessor("biped/pugilist_steve/hacker_sword_skill",
                 (accessor) -> (new AttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.016F, 0.066F, 0.133F, 0.133F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.133F, 0.133F, 0.183F, 0.25F, 0.25F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.25F, 0.25F, 0.3F, 0.366F, 0.366F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.366F, 0.366F, 0.416F, 0.483F, 0.483F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.483F, 0.483F, 0.533F, 0.6F, 0.6F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.6F, 0.6F, 0.65F, 0.716F, 0.716F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.716F, 0.716F, 0.766F, 0.833F, 0.833F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, ColliderPreset.SWORD), new Phase(0.833F, 0.833F, 0.883F, 1.1F, 1.1F, humanoidArmature.get().toolR, ColliderPreset.SWORD), new Phase(0.933F, 1.133F, 1.183F, 1.6F, 1.6F, humanoidArmature.get().toolL, ColliderPreset.SWORD))).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 4.0F));
         AVAnimations.DUAL_SWORD_AUTO1 = builder.nextAccessor("biped/pugilist_steve/dual_sword_auto1",
                 (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.5F, 0.63F, 0.667F, 0.667F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, null)))
@@ -1935,6 +1934,8 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false));
         AVAnimations.DIAMOND_BLASTER_SKILL = builder.nextAccessor("biped/pla/diamond_blaster_skill",
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.2F, null, humanoidArmature.get().toolR, accessor, humanoidArmature)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.2F, (livingEntityPatch, self, p) -> {
                                     Vec3 knockPos = EpicfightUtil.getJointWithTranslation(
@@ -3679,6 +3680,44 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.35F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT),
                                 AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.TRIDENT_SPINNING, Side.CLIENT)));
+        AVAnimations.HACKER_SWORD_SKILL = builder.nextAccessor("biped/wom_clone/hacker_sword_skill", (accessor) -> (BasicMultipleAttackAnimation)(new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new AttackAnimation.Phase[]{
+                new AttackAnimation.Phase(0.0F, 0.45F, 0.5F, 0.55F, 0.55F, humanoidArmature.get().toolR, ColliderPreset.SWORD),
+                new AttackAnimation.Phase(0.55F, 0.8F, 0.85F, 0.9F, 0.9F, humanoidArmature.get().toolR, ColliderPreset.SWORD),
+                new AttackAnimation.Phase(0.9F, 1.35F, 1.4F, 1.4F, 1.4F, humanoidArmature.get().toolR, ColliderPreset.SWORD),
+                new AttackAnimation.Phase(1.55F, 1.8F, 1.85F, 1.9F, 1.9F, humanoidArmature.get().toolR, ColliderPreset.SWORD),
+                new AttackAnimation.Phase(1.9F, 2.35F, 2.4F, 2.4F, Float.MAX_VALUE, humanoidArmature.get().toolR, ColliderPreset.SWORD)}))
+                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                .addEvents(new AnimationEvent[]{
+                        AnimationEvent.InTimeEvent.create(0.0F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
+                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                        }, Side.CLIENT),
+                        AnimationEvent.InTimeEvent.create(0.35F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
+                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                        }, Side.CLIENT),
+                        AnimationEvent.InTimeEvent.create(0.85F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
+                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                        }, Side.CLIENT),
+                        AnimationEvent.InTimeEvent.create(1.35F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
+                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                        }, Side.CLIENT),
+                        AnimationEvent.InTimeEvent.create(1.85F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
+                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                        }, Side.CLIENT)
+                })
+        );
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {
