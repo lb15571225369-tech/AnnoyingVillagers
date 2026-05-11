@@ -91,10 +91,12 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ATTRACTOR_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BLASTER_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HACKER_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREAT_FALCHION.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NETHERITE_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SABRE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NETHERITE_SABRE.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_GOLDEN_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_IRON_SWORD.get());
@@ -117,8 +119,6 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.JADE_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.THUNDER_DIAMOND_BLADE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.NETHERITE_GREATBLADE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.NETHERITE_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_HALBERD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREATAXE.get());

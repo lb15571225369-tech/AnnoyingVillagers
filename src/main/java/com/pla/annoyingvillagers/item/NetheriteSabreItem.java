@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class NetheriteGreatbladeItem extends SwordItem {
+public class NetheriteSabreItem extends SwordItem {
 
-    public NetheriteGreatbladeItem() {
+    public NetheriteSabreItem() {
         super(new Tier() {
             public int getUses() {
                 return 2031;
@@ -25,26 +25,20 @@ public class NetheriteGreatbladeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 8.0F;
+                return 4.6F;
             }
 
             public int getLevel() {
-                return 3;
+                return 5;
             }
 
             public int getEnchantmentValue() {
-                return 20;
+                return 25;
             }
 
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.DARK_NETHERITE.get()));
             }
-        }, 3, -1.4F, (new Properties()));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        }, 3, -2.0F, (new Properties()));
     }
 }

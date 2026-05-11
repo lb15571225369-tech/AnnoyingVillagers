@@ -3,9 +3,9 @@
 	{
 		"common":
 		{
-			"impact": 2.0,
+			"impact": 3.0,
 			"max_strikes": 2
 		}
 	},
-	"type": "annoyingvillagers:av_tachi"
+	"type": "annoyingvillagers:diamond_sabre"
 }

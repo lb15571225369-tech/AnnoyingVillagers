@@ -272,7 +272,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.NETHERITE_GREATBLADE.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.NETHERITE_SABRE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcSword.AV_SWORD;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {

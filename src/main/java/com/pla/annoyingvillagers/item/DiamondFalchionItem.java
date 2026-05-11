@@ -31,6 +31,6 @@ public class DiamondFalchionItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -2.0F, (new Properties()));
+        }, 3, -2.5F, (new Properties()));
     }
 }

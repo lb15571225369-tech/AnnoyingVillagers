@@ -758,6 +758,27 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
+    public static final Function<Item, Builder> DIAMOND_SABRE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.LONGSWORD_LIECHTENAUER_AUTO1,
+                    Animations.LONGSWORD_LIECHTENAUER_AUTO2,
+                    AnimsRuine.RUINE_AUTO_1,
+                    AnimsRuine.RUINE_AUTO_2,
+                    AVAnimations.SABRE_AUTO3,
+                    AVAnimations.SABRE_DASH_ATTACK,
+                    AVAnimations.SABRE_AIR_ATTACK)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DIAMOND_SABRE)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE,  Animations.BIPED_HOLD_LIECHTENAUER)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN,  Animations.BIPED_HOLD_LIECHTENAUER)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_WALK_LIECHTENAUER)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_LIECHTENAUER);
+
     public static final Function<Item, Builder> AV_AXE = (item) ->
             WeaponCapability.builder()
             .category(WeaponCategories.AXE)
@@ -1079,5 +1100,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_attractor_sword"), AVWeaponCapabilityPresets.DIAMOND_ATTRACTOR_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_blaster_sword"), AVWeaponCapabilityPresets.DIAMOND_BLASTER_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hacker_sword"), AVWeaponCapabilityPresets.HACKER_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_sabre"), AVWeaponCapabilityPresets.DIAMOND_SABRE);
     }
 }

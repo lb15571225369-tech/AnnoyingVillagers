@@ -3,9 +3,9 @@
 	{
 		"common":
 		{
-			"impact": 2.5,
-			"max_strikes": 1.5
+			"impact": 1.5,
+			"max_strikes": 1
 		}
 	},
-	"type": "annoyingvillagers:av_sword"
+	"type": "annoyingvillagers:av_tachi"
 }

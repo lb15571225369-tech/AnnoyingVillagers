@@ -149,7 +149,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> JADE_SWORD = AnnoyingVillagersModItems.REGISTRY.register("jade_sword", JadeSwordItem::new);
     public static final RegistryObject<Item> RED_DIAMOND_SWORD = AnnoyingVillagersModItems.REGISTRY.register("red_diamond_sword", RedDiamondSwordItem::new);
     public static final RegistryObject<Item> WOOPIE_THE_SWORD = AnnoyingVillagersModItems.REGISTRY.register("woopie_the_sword", WoopieTheSwordItem::new);
-    public static final RegistryObject<Item> NETHERITE_GREATBLADE = AnnoyingVillagersModItems.REGISTRY.register("netherite_greatblade", NetheriteGreatbladeItem::new);
+    public static final RegistryObject<Item> NETHERITE_SABRE = AnnoyingVillagersModItems.REGISTRY.register("netherite_sabre", NetheriteSabreItem::new);
     public static final RegistryObject<Item> NETHERITE_FALCHION = AnnoyingVillagersModItems.REGISTRY.register("netherite_falchion", NetheriteFalchionItem::new);
     public static final RegistryObject<Item> DIAMOND_HALBERD = AnnoyingVillagersModItems.REGISTRY.register("diamond_halberd", DiamondHalberdItem::new);
     public static final RegistryObject<Item> DIAMOND_GREATAXE = AnnoyingVillagersModItems.REGISTRY.register("diamond_greataxe", DiamondGreataxeItem::new);

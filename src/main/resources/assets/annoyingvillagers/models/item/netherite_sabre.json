@@ -2,8 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench by stelkardmc",
 	"textures": {
-		"0": "annoyingvillagers:item/netherite_greatblade",
-		"particle": "annoyingvillagers:item/netherite_greatblade"
+		"0": "annoyingvillagers:item/netherite_sabre",
+		"particle": "annoyingvillagers:item/netherite_sabre"
 	},
 	"elements": [
 		{

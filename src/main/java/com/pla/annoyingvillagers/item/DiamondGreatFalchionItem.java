@@ -17,7 +17,7 @@ public class DiamondGreatFalchionItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 4.4F;
+                return 4.6F;
             }
 
             public int getLevel() {

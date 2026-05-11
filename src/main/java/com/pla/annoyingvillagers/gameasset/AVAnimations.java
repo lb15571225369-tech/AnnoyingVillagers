@@ -106,7 +106,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -233,7 +232,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATSWORD_DUAL_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATSWORD_DUAL_AIRSLASH;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> GREATSWORD_DUAL_EARTHQUAKE;
-
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3;
@@ -352,6 +350,10 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_DASH_ATTACK;
     public static AnimationManager.AnimationAccessor<AirSlashAnimation> SQUIRE_SWORD_HOP_ATTACK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SQUIRE_SWORD_HEAVY_BLOW;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SABRE_AUTO3;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> SABRE_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> SABRE_AIR_ATTACK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SABRE_QUAD_STING;
 
     // Animation from Visitors from Omneria
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> TRIDENT_THROW_3;
@@ -1693,6 +1695,30 @@ public class AVAnimations {
                 .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, Animations.ReusableSources.CONSTANT_ONE)
                 .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                 .addState(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.SABRE_AUTO3 = builder.nextAccessor("biped/battle_style/sabre_auto3", access ->
+                new AttackAnimation(0.05f, 0.0f, 0.1f, 0.2f, 1.9f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.EXTRA_COLLIDERS, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        AVAnimations.SABRE_DASH_ATTACK = builder.nextAccessor("biped/battle_style/sabre_dash_attack", access ->
+                new DashAttackAnimation(0.2f, 0.0f, 0.3f, 0.45f, 1.9f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        AVAnimations.SABRE_AIR_ATTACK = builder.nextAccessor("biped/battle_style/sabre_aerial", access ->
+                new AirSlashAnimation(0.2f, 0.0f, 0.5f, 0.6f, 1.9f, false, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        AVAnimations.SABRE_QUAD_STING = builder.nextAccessor("biped/battle_style/sabre_quadsting", access ->
+                new AttackAnimation(0.2f, access, Armatures.BIPED, new AttackAnimation.Phase(
+                        0.0f, 0.0f, 0.5f, 0.6f, 0.65f, 0.65f, Armatures.BIPED.get().toolR, null
+                ).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f)).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD), new AttackAnimation.Phase(
+                        0.65f, 0.0f, 0.65f, 0.75f, 0.8f, 0.8f, Armatures.BIPED.get().toolR, null
+                ).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6f)).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD), new AttackAnimation.Phase(
+                        0.8f, 0.0f, 0.8f, 0.9f, 1.1f, 1.1f, Armatures.BIPED.get().toolR, null
+                ).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7f)).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD), new AttackAnimation.Phase(
+                        1.1f, 0.0f, 1.1f, 1.2f, 2f, 2f, Armatures.BIPED.get().toolR, null
+                ).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9f)).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
 
         // Animation from Visitors from Omneria
         AVAnimations.TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),

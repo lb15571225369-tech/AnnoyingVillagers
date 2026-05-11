@@ -1,3 +1,11 @@
 {
-	"type": "annoyingvillagers:av_sword"
+	"attributes":
+	{
+		"common":
+		{
+			"impact": 2.5,
+			"max_strikes": 1.5
+		}
+	},
+	"type": "annoyingvillagers:diamond_sabre"
 }
