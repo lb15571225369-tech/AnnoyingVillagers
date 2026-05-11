@@ -538,56 +538,152 @@ public class AVWeaponCapabilityPresets {
         return builder;
     };
 
-    public static final Function<Item, Builder> BLACK_FIRE_SWORD = (item) -> {
-        return WeaponCapability.builder()
-                .category(WeaponCategories.SWORD)
-                .swingSound(AVSounds.SWORD_WHOOSH.get())
-                .styleProvider(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
-                                && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
-                                && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
-                .collider(ColliderPreset.SWORD)
-                .newStyleCombo(Styles.ONE_HAND,
-                        Animations.SWORD_AUTO1,
-                        AVAnimations.SWORD_DASH,
-                        AVAnimations.DAGGER_AUTO1,
-                        AnimsHerrscher.HERRSCHER_AUTO_2,
-                        AnimsHerrscher.HERRSCHER_AUTO_1,
-                        Animations.SWORD_DASH,
-                        Animations.SWORD_AIR_SLASH)
-                .newStyleCombo(Styles.TWO_HAND,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        AVAnimations.DUAL_SWORD1,
-                        AVAnimations.DUAL_SWORD2,
-                        AVAnimations.DUAL_SWORD3,
-                        Animations.SWORD_DUAL_DASH,
-                        Animations.SWORD_DUAL_AIR_SLASH)
-                .newStyleCombo(Styles.MOUNT,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        Animations.SWORD_MOUNT_ATTACK)
-                .innateSkill(Styles.ONE_HAND,
-                        (itemstack) -> AVSkills.BLACK_FIRE_SWORD)
-                .innateSkill(Styles.TWO_HAND,
-                        (itemstack) -> AVSkills.BLACK_FIRE_SWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .weaponCombinationPredicator(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
-                                || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
-                                || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
-    };
+    public static final Function<Item, Builder> BLACK_FIRE_SWORD = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    Animations.SWORD_AUTO1,
+                    AVAnimations.SWORD_DASH,
+                    AVAnimations.DAGGER_AUTO1,
+                    AnimsHerrscher.HERRSCHER_AUTO_2,
+                    AnimsHerrscher.HERRSCHER_AUTO_1,
+                    Animations.SWORD_DASH,
+                    Animations.SWORD_AIR_SLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    AVAnimations.DUAL_SWORD1,
+                    AVAnimations.DUAL_SWORD2,
+                    AVAnimations.DUAL_SWORD3,
+                    Animations.SWORD_DUAL_DASH,
+                    Animations.SWORD_DUAL_AIR_SLASH)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.BLACK_FIRE_SWORD)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.BLACK_FIRE_SWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
+
+    public static final Function<Item, Builder> BLUE_FLAME_SWORD = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    Animations.SWORD_AUTO1,
+                    AVAnimations.SWORD_DASH,
+                    AVAnimations.DAGGER_AUTO1,
+                    AnimsHerrscher.HERRSCHER_AUTO_2,
+                    AnimsHerrscher.HERRSCHER_AUTO_1,
+                    Animations.SWORD_DASH,
+                    Animations.SWORD_AIR_SLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    AVAnimations.DUAL_SWORD1,
+                    AVAnimations.DUAL_SWORD2,
+                    AVAnimations.DUAL_SWORD3,
+                    Animations.SWORD_DUAL_DASH,
+                    Animations.SWORD_DUAL_AIR_SLASH)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.BLUE_FLAME_SWORD)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.BLUE_FLAME_SWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
+
+    public static final Function<Item, Builder> CLOW_SWORD = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    Animations.SWORD_AUTO1,
+                    AVAnimations.SWORD_DASH,
+                    AVAnimations.DAGGER_AUTO1,
+                    AnimsHerrscher.HERRSCHER_AUTO_2,
+                    AnimsHerrscher.HERRSCHER_AUTO_1,
+                    Animations.SWORD_DASH,
+                    Animations.SWORD_AIR_SLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    AVAnimations.DUAL_SWORD1,
+                    AVAnimations.DUAL_SWORD2,
+                    AVAnimations.DUAL_SWORD3,
+                    Animations.SWORD_DUAL_DASH,
+                    Animations.SWORD_DUAL_AIR_SLASH)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.CLOW_SWORD)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.CLOW_SWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
     public static final Function<Item, Builder> CENTRANOS_SWORD = (item) ->
             WeaponCapability.builder()
@@ -1138,6 +1234,8 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "trapdoor"), AVWeaponCapabilityPresets.TRAPDOOR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ladder"), AVWeaponCapabilityPresets.LADDER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "black_fire_sword"), AVWeaponCapabilityPresets.BLACK_FIRE_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blue_flame_sword"), AVWeaponCapabilityPresets.BLUE_FLAME_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "clow_sword"), AVWeaponCapabilityPresets.CLOW_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "centranos_sword"), AVWeaponCapabilityPresets.CENTRANOS_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_attractor_sword"), AVWeaponCapabilityPresets.DIAMOND_ATTRACTOR_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_blaster_sword"), AVWeaponCapabilityPresets.DIAMOND_BLASTER_SWORD);

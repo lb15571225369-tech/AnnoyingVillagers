@@ -1,14 +1,32 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-import java.util.List;
+import java.util.Objects;
 
 public class BlueFlameSwordItem extends SwordItem {
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (pAttacker.level() instanceof ServerLevel) {
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(pAttacker, LivingEntityPatch.class);
+            if (livingEntityPatch != null) {
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                if (dynamicAnimation == AnimsHerrscher.HERRSCHER_AUSROTTUNG) {
+                    pTarget.setSecondsOnFire(5);
+                }
+            }
+        }
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
+    }
 
     public BlueFlameSwordItem() {
         super(new Tier() {
@@ -36,11 +54,5 @@ public class BlueFlameSwordItem extends SwordItem {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -2.4F, (new Properties()));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.blue_flame_sword"));
     }
 }
