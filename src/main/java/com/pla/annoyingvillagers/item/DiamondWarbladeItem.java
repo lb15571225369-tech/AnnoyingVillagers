@@ -31,6 +31,6 @@ public class DiamondWarbladeItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -2.7F, (new Properties()));
+        }, 3, -2.2F, (new Properties()));
     }
 }

@@ -1,3 +1,11 @@
 {
-	"type": "annoyingvillagers:av_greatsword"
+	"attributes":
+	{
+		"common":
+		{
+			"impact": 1.5,
+			"max_strikes":1
+		}
+	},
+	"type": "annoyingvillagers:centranos_sword"
 }

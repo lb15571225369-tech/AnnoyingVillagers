@@ -86,12 +86,14 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.NULL_HOE.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLACK_FIRE_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_FLAME_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.IRON_CLEAVER.get());
                         pOutput.accept(AnnoyingVillagersModItems.CENTRANOS_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.CLOW_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ATTRACTOR_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BLASTER_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HACKER_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_WARBLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LAEVATEINN.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREAT_FALCHION.get());
                         pOutput.accept(AnnoyingVillagersModItems.NETHERITE_FALCHION.get());
@@ -100,8 +102,6 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_GOLDEN_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_IRON_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.IRON_CLEAVER.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LAEVATEINN.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.GOLDEN_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.IRON_LONGSWORD.get());

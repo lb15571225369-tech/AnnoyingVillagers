@@ -2,7 +2,9 @@ package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.FlyingShockwaveProjectile;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -11,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.ModList;
@@ -172,6 +175,25 @@ public class EpicfightUtil {
                 defender, attacker);
         if (attacker instanceof Player player) {
             ScreenShakeUtil.applyScreenShake(level, player.getOnPos().getCenter(), 1.0, 20, 4);
+        }
+    }
+
+    public static void shootFlyingShockwave(LivingEntityPatch<?> livingEntityPatch) {
+        float ang = (float) ((livingEntityPatch.getYRot()+90)/180 * Math.PI);
+        Vec3 shootVec = new Vec3(Math.cos(ang), 0 , Math.sin(ang));
+        Vec3 shootPos = livingEntityPatch.getOriginal().position().add(shootVec.x, 0, shootVec.z);
+
+        FlyingShockwaveProjectile projectile = AnnoyingVillagersModEntities.FLYING_SHOCKWAVE.get().create(livingEntityPatch.getOriginal().level());
+        float multiplier = 1.5f;
+        if (projectile != null)
+        {
+            projectile.setDamage((float) livingEntityPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier);
+
+            projectile.setPos(shootPos);
+            projectile.setMaxStrikes(3);
+            projectile.setOwner(livingEntityPatch.getOriginal());
+            projectile.shoot(shootVec.x(), 0, shootVec.z(), 4.2f, 0);
+            livingEntityPatch.getOriginal().level().addFreshEntity(projectile);
         }
     }
 }

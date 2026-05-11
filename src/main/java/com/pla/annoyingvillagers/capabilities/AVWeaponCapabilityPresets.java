@@ -779,6 +779,48 @@ public class AVWeaponCapabilityPresets {
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_WALK_LIECHTENAUER)
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_LIECHTENAUER);
 
+    public static final Function<Item, Builder> DIAMOND_WARBLADE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.TACHI_AUTO1,
+                    Animations.TACHI_AUTO2,
+                    AnimsRuine.RUINE_AUTO_1,
+                    Animations.TACHI_AUTO3,
+                    AnimsRuine.RUINE_CHATIMENT,
+                    AVAnimations.TACHI_DASH,
+                    Animations.LONGSWORD_AIR_SLASH)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DIAMOND_WARBLADE)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.SQUIRE_SWORD_IDLE)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.SQUIRE_SWORD_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.SQUIRE_SWORD_RUN)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.SQUIRE_SWORD_RUN)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD);
+
+    public static final Function<Item, Builder> DIAMOND_LAEVATEINN = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.TACHI_AUTO1,
+                    Animations.TACHI_AUTO2,
+                    AnimsRuine.RUINE_AUTO_1,
+                    Animations.TACHI_AUTO3,
+                    AnimsRuine.RUINE_CHATIMENT,
+                    AVAnimations.TACHI_DASH,
+                    Animations.LONGSWORD_AIR_SLASH)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DIAMOND_LAEVATEINN)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.SQUIRE_SWORD_IDLE)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.SQUIRE_SWORD_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.SQUIRE_SWORD_RUN)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.SQUIRE_SWORD_RUN)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD);
+
     public static final Function<Item, Builder> AV_AXE = (item) ->
             WeaponCapability.builder()
             .category(WeaponCategories.AXE)
@@ -1101,5 +1143,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_blaster_sword"), AVWeaponCapabilityPresets.DIAMOND_BLASTER_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hacker_sword"), AVWeaponCapabilityPresets.HACKER_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_sabre"), AVWeaponCapabilityPresets.DIAMOND_SABRE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_warblade"), AVWeaponCapabilityPresets.DIAMOND_WARBLADE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_laevateinn"), AVWeaponCapabilityPresets.DIAMOND_LAEVATEINN);
     }
 }

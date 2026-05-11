@@ -21,7 +21,7 @@ public class DiamondLaevateinnItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 2.4F;
+                return 3.4F;
             }
 
             public int getLevel() {
@@ -35,12 +35,6 @@ public class DiamondLaevateinnItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -1.5F, (new Properties()));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        }, 3, -2.5F, (new Properties()));
     }
 }

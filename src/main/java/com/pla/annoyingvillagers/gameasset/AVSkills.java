@@ -44,6 +44,8 @@ public class AVSkills {
     public static Skill DIAMOND_BLASTER_SWORD;
     public static Skill HACKER_SWORD;
     public static Skill DIAMOND_SABRE;
+    public static Skill DIAMOND_WARBLADE;
+    public static Skill DIAMOND_LAEVATEINN;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -74,5 +76,7 @@ public class AVSkills {
         AVSkills.DIAMOND_BLASTER_SWORD = modRegistry.build("diamond_blaster_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.DIAMOND_BLASTER_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         AVSkills.HACKER_SWORD = modRegistry.build("hacker_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.HACKER_SWORD_SKILL)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         AVSkills.DIAMOND_SABRE = modRegistry.build("diamond_sabre", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SABRE_QUAD_STING)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        AVSkills.DIAMOND_WARBLADE = modRegistry.build("diamond_warblade", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.WARBLADE_SATSUJIN_TSUKUYOMI)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        AVSkills.DIAMOND_LAEVATEINN = modRegistry.build("diamond_laevateinn", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.TACHI_BLOSSOM_SLASH)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
     }
 }

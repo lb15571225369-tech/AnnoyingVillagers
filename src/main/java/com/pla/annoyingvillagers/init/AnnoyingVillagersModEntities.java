@@ -86,6 +86,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BlackFireEntity>> BLACK_FIRE = REGISTRY.register("black_fire", () -> EntityType.Builder.<BlackFireEntity>of(BlackFireEntity::new, MobCategory.MISC).sized(0.2F, 0.2F).clientTrackingRange(64).updateInterval(1).build("black_fire"));
     public static final RegistryObject<EntityType<EnchantedArrowEntity>> ENCHANTED_ARROW = register("enchanted_arrow", Builder.<EnchantedArrowEntity>of(EnchantedArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
     public static final RegistryObject<EntityType<ItemProjectile>> ITEM_PROJECTILE = register("item_projectile", Builder.<ItemProjectile>of(ItemProjectile::new, MobCategory.MISC).sized(0.35F, 0.35F).clientTrackingRange(64).updateInterval(1));
+    public static final RegistryObject<EntityType<FlyingShockwaveProjectile>> FLYING_SHOCKWAVE = register("flying_shockwave", Builder.of(FlyingShockwaveProjectile::new, MobCategory.MISC).sized(1.5f, 3f).clientTrackingRange(12));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
@@ -265,6 +266,7 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.HEROBRINE_7.get(), (entity) -> HerobrineClonePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), (entity) -> ShadowHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.BLUE_DEMON.get(), (entity) -> BlueDemonPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.FLYING_SHOCKWAVE.get(), (entity) -> FlyingShockwavePatch::new);
     }
 
     @SubscribeEvent
