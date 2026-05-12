@@ -335,7 +335,21 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             return !this.wantsToPickUp(stack);
         }
 
-        return true;
+        return !isRecoverableWeapon(stack)
+                || this.getTarget() == null
+                || !this.getMainHandItem().isEmpty();
+    }
+
+    private boolean isRecoverableWeapon(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        Item item = stack.getItem();
+
+        return item instanceof SwordItem
+                || item instanceof DiggerItem
+                || item instanceof TridentItem;
     }
 
     @Override
@@ -583,19 +597,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     (this.getZ() - itemEntity.getZ()) * 0.25
             );
             itemEntity.setPickUpDelay(0);
-            LivingEntity entity = this;
-            new DelayedTask(5) {
-                @Override
-                public void run() {
-                    if (!entity.isAlive() || entity.isRemoved() || entity.isDeadOrDying()) {
-                        return;
-                    } else {
-                        entity.level();
-                    }
-                    itemEntity.discard();
-                    entity.level().playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
-                }
-            };
+            itemEntity.discard();
+            this.level().playSound(null, this.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
         } else {
             itemEntity.setItem(remaining);
         }

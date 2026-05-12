@@ -396,7 +396,6 @@ public class CommonUtil {
 
         ItemStack mainHand = target.getMainHandItem();
         ItemStack offHand = target.getOffhandItem();
-
         if (isPullableWeapon(mainHand)) {
             if (isBlacklistedWeapon(mainHand)) {
                 blacklistedStack = mainHand;
@@ -404,7 +403,6 @@ public class CommonUtil {
                 candidateHands.add(InteractionHand.MAIN_HAND);
             }
         }
-
         if (isPullableWeapon(offHand)) {
             if (isBlacklistedWeapon(offHand)) {
                 blacklistedStack = offHand;
@@ -412,7 +410,6 @@ public class CommonUtil {
                 candidateHands.add(InteractionHand.OFF_HAND);
             }
         }
-
         if (candidateHands.isEmpty()) {
             if (!blacklistedStack.isEmpty()) {
                 fallBackOnBlackListWeapon(livingEntity, target, blacklistedStack);
@@ -420,30 +417,24 @@ public class CommonUtil {
 
             return;
         }
-
         InteractionHand chosenHand = candidateHands.get(
                 serverLevel.random.nextInt(candidateHands.size())
         );
-
         ItemStack chosenStack = target.getItemInHand(chosenHand);
-
         if (chosenStack.isEmpty()) {
             return;
         }
-
         ItemStack droppedStack = chosenStack.copy();
-
-        target.setItemInHand(chosenHand, ItemStack.EMPTY);
         clearCachedNpcWeapon(target, chosenHand);
-
+        target.setItemInHand(chosenHand, ItemStack.EMPTY);
         spawnDisarmedItem(serverLevel, livingEntity, target, droppedStack, launch);
-
     }
 
     private static void clearCachedNpcWeapon(LivingEntity target, InteractionHand hand) {
         if (target instanceof AVNpc avNpc) {
             if (hand == InteractionHand.MAIN_HAND) {
                 avNpc.setMainWeaponItem(ItemStack.EMPTY);
+                avNpc.setMainWeaponDisarmed(true);
             } else {
                 avNpc.setOffWeaponItem(ItemStack.EMPTY);
             }
@@ -452,6 +443,7 @@ public class CommonUtil {
         if (target instanceof PlayerNpcEntity playerNpcEntity) {
             if (hand == InteractionHand.MAIN_HAND) {
                 playerNpcEntity.setMainWeaponItem(ItemStack.EMPTY);
+                playerNpcEntity.setMainWeaponDisarmed(true);
             } else {
                 playerNpcEntity.setOffWeaponItem(ItemStack.EMPTY);
             }

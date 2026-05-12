@@ -146,22 +146,33 @@ public class RecoverWeaponInCombatGoal extends Goal {
         if (inventory == null) {
             return false;
         }
-
         if (slot < 0 || slot >= inventory.getContainerSize()) {
             return false;
         }
-
+        if (!mob.getMainHandItem().isEmpty()) {
+            return false;
+        }
         ItemStack slotStack = inventory.getItem(slot);
-
         if (slotStack.isEmpty() || !isUsefulWeapon(slotStack)) {
             return false;
         }
+        ItemStack equipStack = slotStack.split(1);
+        if (slotStack.isEmpty()) {
+            inventory.setItem(slot, ItemStack.EMPTY);
+        } else {
+            inventory.setItem(slot, slotStack);
+        }
+        inventory.setChanged();
+        return equipRecoveredWeapon(equipStack);
+    }
 
-        ItemStack equipStack = slotStack.copy();
+    private boolean equipRecoveredWeapon(ItemStack equipStack) {
+        if (equipStack.isEmpty() || !isUsefulWeapon(equipStack)) {
+            return false;
+        }
+
         equipStack.setCount(1);
-
         mob.setItemSlot(EquipmentSlot.MAINHAND, equipStack.copy());
-
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.setMainWeaponItem(equipStack.copy());
             playerNpcEntity.setMainWeaponDisarmed(false);
@@ -172,18 +183,7 @@ public class RecoverWeaponInCombatGoal extends Goal {
             avNpc.setMainWeaponDisarmed(false);
         }
 
-        slotStack.shrink(1);
-
-        if (slotStack.isEmpty()) {
-            inventory.setItem(slot, ItemStack.EMPTY);
-        } else {
-            inventory.setItem(slot, slotStack);
-        }
-
-        inventory.setChanged();
-
         mob.swing(InteractionHand.MAIN_HAND);
-
         mob.level().playSound(
                 null,
                 mob.blockPosition(),
@@ -227,9 +227,10 @@ public class RecoverWeaponInCombatGoal extends Goal {
         );
 
         if (mob.distanceToSqr(targetItem) <= PICKUP_DISTANCE_SQR) {
-            forceEquipWeaponFromItemEntity(targetItem);
+            if (forceEquipWeaponFromItemEntity(targetItem)) {
+                finished = true;
+            }
             targetItem = null;
-            finished = true;
             return;
         }
 
@@ -245,54 +246,24 @@ public class RecoverWeaponInCombatGoal extends Goal {
         }
     }
 
-    private void forceEquipWeaponFromItemEntity(ItemEntity itemEntity) {
+    private boolean forceEquipWeaponFromItemEntity(ItemEntity itemEntity) {
         if (itemEntity == null || !itemEntity.isAlive()) {
-            return;
+            return false;
         }
-
+        if (!mob.getMainHandItem().isEmpty()) {
+            return false;
+        }
         ItemStack groundStack = itemEntity.getItem();
-
-        if (groundStack.isEmpty()) {
-            return;
+        if (groundStack.isEmpty() || !isUsefulWeapon(groundStack)) {
+            return false;
         }
-
-        if (!isUsefulWeapon(groundStack)) {
-            return;
-        }
-
-        ItemStack equipStack = groundStack.copy();
-        equipStack.setCount(1);
-
-        mob.setItemSlot(EquipmentSlot.MAINHAND, equipStack.copy());
-
-        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
-            playerNpcEntity.setMainWeaponItem(equipStack.copy());
-            playerNpcEntity.setMainWeaponDisarmed(false);
-        }
-
-        if (mob instanceof AVNpc avNpc) {
-            avNpc.setMainWeaponItem(equipStack.copy());
-            avNpc.setMainWeaponDisarmed(false);
-        }
-
-        groundStack.shrink(1);
-
+        ItemStack equipStack = groundStack.split(1);
         if (groundStack.isEmpty()) {
             itemEntity.discard();
         } else {
             itemEntity.setItem(groundStack);
         }
-
-        mob.swing(InteractionHand.MAIN_HAND);
-
-        mob.level().playSound(
-                null,
-                mob.blockPosition(),
-                SoundEvents.ITEM_PICKUP,
-                SoundSource.HOSTILE,
-                0.35F,
-                1.0F
-        );
+        return equipRecoveredWeapon(equipStack);
     }
 
     @Override
