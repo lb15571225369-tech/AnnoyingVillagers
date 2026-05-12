@@ -137,6 +137,7 @@ import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
+import reascer.wom.world.damagesources.WOMDamageType;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
@@ -169,6 +170,7 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -198,6 +200,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> NERF_TSUNAMI_REINFORCED;
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE_LEGENDARY_SWORD_START;
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> HOOK_AXE_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> HOOK_AXE_AUTO2;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> HOOK_DANCING_EDGE;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
@@ -467,6 +472,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> CUT_ENDERBLASTER_TWOHAND_RELOAD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> HACKER_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> WARBLADE_SATSUJIN_TSUKUYOMI;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> HOOK_HERRSCHER_UP;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -592,6 +598,17 @@ public class AVAnimations {
                 accessor -> new StaticAnimation(false, accessor, humanoidArmature));
         BLUE_DEMON_DIE_LEGENDARY_SWORD_TICK = builder.nextAccessor("biped/epicfight_clone/blue_demon_die_legendary_sword_tick",
                 accessor -> new StaticAnimation(true, accessor, humanoidArmature));
+        HOOK_AXE_AUTO1 = builder.nextAccessor("biped/epicfight_clone/hook_axe_auto1",
+                (accessor) -> new BasicAttackAnimation(0.15F, 0.05F, 0.15F, 0.7F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
+        HOOK_AXE_AUTO2 = builder.nextAccessor("biped/epicfight_clone/hook_axe_auto2", (accessor) -> new BasicAttackAnimation(0.15F, 0.05F, 0.15F, 0.85F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
+        HOOK_DANCING_EDGE = builder.nextAccessor("biped/epicfight_clone/hook_dancing_edge",
+                (accessor) -> (AttackAnimation)(new AttackAnimation(0.1F, accessor, Armatures.BIPED,
+                        new Phase(0.0F, 0.25F, 0.4F, 0.4F, 0.4F, Armatures.BIPED.get().toolR, null),
+                        new Phase(0.4F, 0.4F, 0.5F, 0.55F, 0.6F, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null),
+                        new Phase(0.6F, 0.6F, 0.7F, 1.15F, Float.MAX_VALUE, Armatures.BIPED.get().toolR, null)))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true));
+
 
         // Animation from EpicFight Infernal Gainer
         INFERNAL_AUTO_1 = builder.nextAccessor("biped/epicfight_infernal_gainer/infernal_auto_1",
@@ -3823,6 +3840,20 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.7F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().resetFallDistance(), Side.SERVER)
                         })
         );
+        HOOK_HERRSCHER_UP = builder.nextAccessor("biped/wom_clone/hook_herrscher_up",
+                (accessor) -> (BasicMultipleAttackAnimation)(new BasicMultipleAttackAnimation(0.05F, 0.25F, 0.45F, 1.0F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, null)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.SHARPCUT_UP_SLASH)
+                        .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE, WOMDamageType.BLACKOUT))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
+                        .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.25F, (entitypatch, self, params) -> {
+            if (entitypatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                serverLevel.playSound(null, entitypatch.getOriginal().getX(), entitypatch.getOriginal().getY(), entitypatch.getOriginal().getZ(), EpicFightSounds.WHOOSH_ROD.get(), SoundSource.MASTER, 0.5F, 1.3F - ((new Random()).nextFloat() - 0.5F) * 0.1F);
+            }
+
+        }, Side.SERVER)}));
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {

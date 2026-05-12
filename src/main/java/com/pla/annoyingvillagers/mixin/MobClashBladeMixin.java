@@ -4,12 +4,17 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.clazz.HookDisarmLaunch;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.compat.EpicFightNightFall;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.item.FlankerHookedSwordItem;
+import com.pla.annoyingvillagers.item.HookedDiamondSwordItem;
+import com.pla.annoyingvillagers.item.HookedGoldenSwordItem;
+import com.pla.annoyingvillagers.item.HookedIronSwordItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -29,6 +34,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
@@ -423,13 +429,52 @@ public class MobClashBladeMixin {
     }
 
     @Inject(method = "customPostAdditionClashBlade", at = @At("HEAD"))
-    private static void revertWeaponAfterClashing(LivingAttackEvent livingAttackEvent,
+    private static void moreLogicAfterClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
                                                   AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                   EntityState defenderEntityState, Entity attacker,
                                                   Entity defender, int clashBy,
                                                   CallbackInfo ci) {
         if (!(defender.level() instanceof ServerLevel serverLevel)) return;
+
+        // Hook Sword
+        if (attacker instanceof LivingEntity livingAttacker && defender instanceof LivingEntity defenderLivingDefender) {
+            if (defenderLivingDefender.getMainHandItem().getItem() instanceof HookedIronSwordItem
+                    || defenderLivingDefender.getMainHandItem().getItem() instanceof HookedGoldenSwordItem
+                    || defenderLivingDefender.getMainHandItem().getItem() instanceof HookedDiamondSwordItem
+                    || defenderLivingDefender.getMainHandItem().getItem() instanceof FlankerHookedSwordItem) {
+                if (defenderDynamicAnimation == AVAnimations.HOOK_AXE_AUTO1) {
+                    CommonUtil.applyHookClashDisarmLogic(
+                            defenderLivingDefender,
+                            livingAttacker,
+                            serverLevel,
+                            AVAnimations.KNOCKDOWN_RIGHT,
+                            HookDisarmLaunch.RIGHT
+                    );
+                }
+
+                if (defenderDynamicAnimation == AVAnimations.HOOK_AXE_AUTO2) {
+                    CommonUtil.applyHookClashDisarmLogic(
+                            defenderLivingDefender,
+                            livingAttacker,
+                            serverLevel,
+                            AVAnimations.KNOCKDOWN_LEFT,
+                            HookDisarmLaunch.LEFT
+                    );
+                }
+
+                if (defenderDynamicAnimation == AVAnimations.HOOK_DANCING_EDGE || defenderDynamicAnimation == AVAnimations.HOOK_HERRSCHER_UP) {
+                    CommonUtil.applyHookClashDisarmLogic(
+                            defenderLivingDefender,
+                            livingAttacker,
+                            serverLevel,
+                            AVAnimations.GUARD_BREAK_ATTACK,
+                            HookDisarmLaunch.BACKWARD
+                    );
+                }
+            }
+        }
+
         LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
 
         // Clash kick post

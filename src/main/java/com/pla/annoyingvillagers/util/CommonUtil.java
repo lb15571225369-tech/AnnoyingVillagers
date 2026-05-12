@@ -2,12 +2,34 @@ package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HookDisarmLaunch;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.*;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonUtil {
     public static boolean isAvDamageableEfnWeaponsMob(Entity livingEntity) {
@@ -189,5 +211,332 @@ public class CommonUtil {
 
         entity.hasImpulse = true;
         entity.hurtMarked = true;
+    }
+
+    private static boolean matchesItemEntry(ItemStack stack, String entry) {
+        if (stack.isEmpty() || entry == null || entry.isBlank()) {
+            return false;
+        }
+
+        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+
+        if (itemId == null) {
+            return false;
+        }
+
+        if (entry.startsWith("#")) {
+            ResourceLocation tagId = ResourceLocation.tryParse(entry.substring(1));
+
+            if (tagId == null) {
+                return false;
+            }
+
+            return stack.is(TagKey.create(Registries.ITEM, tagId));
+        }
+
+        if (entry.endsWith(":*")) {
+            String namespace = entry.substring(0, entry.length() - 2);
+            return itemId.getNamespace().equals(namespace);
+        }
+        if (!entry.contains(":")) {
+            return itemId.getNamespace().equals(entry);
+        }
+        return itemId.toString().equals(entry);
+    }
+
+    private static boolean matchesEntityEntry(LivingEntity entity, String entry) {
+        if (entry == null || entry.isBlank()) {
+            return false;
+        }
+
+        EntityType<?> type = entity.getType();
+        ResourceLocation typeId = ForgeRegistries.ENTITY_TYPES.getKey(type);
+
+        if (typeId == null) {
+            return false;
+        }
+
+        if (entry.startsWith("#")) {
+            ResourceLocation tagId = ResourceLocation.tryParse(entry.substring(1));
+
+            if (tagId == null) {
+                return false;
+            }
+
+            return type.is(TagKey.create(Registries.ENTITY_TYPE, tagId));
+        }
+
+        if (entry.endsWith(":*")) {
+            String namespace = entry.substring(0, entry.length() - 2);
+            return typeId.getNamespace().equals(namespace);
+        }
+
+        if (!entry.contains(":")) {
+            return typeId.getNamespace().equals(entry);
+        }
+
+        return typeId.toString().equals(entry);
+    }
+
+    public static boolean isPullableWeapon(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        Item item = stack.getItem();
+
+        return item instanceof SwordItem
+                || item instanceof DiggerItem
+                || item instanceof TridentItem;
+    }
+
+    public static boolean isBlacklistedWeapon(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        for (String entry : AnnoyingVillagersConfig.WEAPON_DISARMS_BLACKLIST.get()) {
+            if (matchesItemEntry(stack, entry)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean entityCanBeDisarmed(LivingEntity entity) {
+        List<? extends String> entries =
+                AnnoyingVillagersConfig.WEAPON_DISARMS_AFFECTED_ENTITY_TYPES.get();
+
+        if (entries.isEmpty()) {
+            return false;
+        }
+
+        for (String entry : entries) {
+            if (matchesEntityEntry(entity, entry)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void applyHookClashDisarmLogic(
+            LivingEntity livingEntity,
+            LivingEntity attackerLivingEntity,
+            ServerLevel serverLevel,
+            AssetAccessor<? extends StaticAnimation> knockdownAnimation,
+            HookDisarmLaunch launch
+    ) {
+        if (attackerLivingEntity == null || !attackerLivingEntity.isAlive()) {
+            return;
+        }
+
+        CommonUtil.forceRotate(attackerLivingEntity, livingEntity);
+        playForcedKnockdown(attackerLivingEntity, knockdownAnimation);
+        tryDisarmAndLaunchWeapon(serverLevel, livingEntity, attackerLivingEntity, launch);
+    }
+
+    public static void applyHookClashDisarmLogic(
+            LivingEntity livingEntity,
+            DamageSource damageSource,
+            ServerLevel serverLevel,
+            AssetAccessor<? extends StaticAnimation> knockdownAnimation,
+            HookDisarmLaunch launch
+    ) {
+        LivingEntity target = getClashLivingTarget(damageSource, livingEntity);
+        applyHookClashDisarmLogic(livingEntity, target, serverLevel, knockdownAnimation, launch);
+    }
+
+    private static LivingEntity getClashLivingTarget(DamageSource damageSource, LivingEntity player) {
+        Entity entity = damageSource.getEntity();
+
+        if (entity == player || !(entity instanceof LivingEntity)) {
+            entity = damageSource.getDirectEntity();
+        }
+
+        if (entity instanceof LivingEntity livingEntity && livingEntity != player) {
+            return livingEntity;
+        }
+
+        return null;
+    }
+
+    private static void playForcedKnockdown(
+            LivingEntity target,
+            AssetAccessor<? extends StaticAnimation> knockdownAnimation
+    ) {
+        LivingEntityPatch<?> targetPatch =
+                EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+        if (targetPatch != null) {
+            targetPatch.playAnimationSynchronized(knockdownAnimation, 0.0F);
+        }
+    }
+
+    public static void fallBackOnBlackListWeapon(
+            LivingEntity owner,
+            Entity source,
+            ItemStack blacklistedStack
+    ) {
+
+    }
+
+    private static void tryDisarmAndLaunchWeapon(
+            ServerLevel serverLevel,
+            LivingEntity livingEntity,
+            LivingEntity target,
+            HookDisarmLaunch launch
+    ) {
+        if (!entityCanBeDisarmed(target)) {
+            return;
+        }
+
+        List<InteractionHand> candidateHands = new ArrayList<>(2);
+        ItemStack blacklistedStack = ItemStack.EMPTY;
+
+        ItemStack mainHand = target.getMainHandItem();
+        ItemStack offHand = target.getOffhandItem();
+
+        if (isPullableWeapon(mainHand)) {
+            if (isBlacklistedWeapon(mainHand)) {
+                blacklistedStack = mainHand;
+            } else {
+                candidateHands.add(InteractionHand.MAIN_HAND);
+            }
+        }
+
+        if (isPullableWeapon(offHand)) {
+            if (isBlacklistedWeapon(offHand)) {
+                blacklistedStack = offHand;
+            } else {
+                candidateHands.add(InteractionHand.OFF_HAND);
+            }
+        }
+
+        if (candidateHands.isEmpty()) {
+            if (!blacklistedStack.isEmpty()) {
+                fallBackOnBlackListWeapon(livingEntity, target, blacklistedStack);
+            }
+
+            return;
+        }
+
+        InteractionHand chosenHand = candidateHands.get(
+                serverLevel.random.nextInt(candidateHands.size())
+        );
+
+        ItemStack chosenStack = target.getItemInHand(chosenHand);
+
+        if (chosenStack.isEmpty()) {
+            return;
+        }
+
+        ItemStack droppedStack = chosenStack.copy();
+
+        target.setItemInHand(chosenHand, ItemStack.EMPTY);
+        clearCachedNpcWeapon(target, chosenHand);
+
+        spawnDisarmedItem(serverLevel, livingEntity, target, droppedStack, launch);
+
+    }
+
+    private static void clearCachedNpcWeapon(LivingEntity target, InteractionHand hand) {
+        if (target instanceof AVNpc avNpc) {
+            if (hand == InteractionHand.MAIN_HAND) {
+                avNpc.setMainWeaponItem(ItemStack.EMPTY);
+            } else {
+                avNpc.setOffWeaponItem(ItemStack.EMPTY);
+            }
+        }
+
+        if (target instanceof PlayerNpcEntity playerNpcEntity) {
+            if (hand == InteractionHand.MAIN_HAND) {
+                playerNpcEntity.setMainWeaponItem(ItemStack.EMPTY);
+            } else {
+                playerNpcEntity.setOffWeaponItem(ItemStack.EMPTY);
+            }
+        }
+    }
+
+    private static void spawnDisarmedItem(
+            ServerLevel serverLevel,
+            LivingEntity livingEntity,
+            LivingEntity target,
+            ItemStack stack,
+            HookDisarmLaunch launch
+    ) {
+        if (stack.isEmpty()) {
+            return;
+        }
+
+        Vec3 spawnPos;
+        spawnPos = EpicfightUtil.getJointWithTranslation(
+                target, new Vec3f(0,0,0), Armatures.BIPED.get().handR, 0.0F, 0.0F
+        );
+        if (spawnPos == null) {
+            spawnPos = target.getEyePosition().subtract(0.0D, 0.35D, 0.0D);
+        }
+
+        Vec3 towardAttacker = livingEntity.position().subtract(target.position());
+        towardAttacker = new Vec3(towardAttacker.x, 0.0D, towardAttacker.z);
+
+        if (towardAttacker.lengthSqr() < 1.0E-7D) {
+            towardAttacker = target.getLookAngle();
+            towardAttacker = new Vec3(towardAttacker.x, 0.0D, towardAttacker.z);
+        }
+
+        if (towardAttacker.lengthSqr() < 1.0E-7D) {
+            towardAttacker = new Vec3(0.0D, 0.0D, 1.0D);
+        }
+
+        towardAttacker = towardAttacker.normalize();
+
+        Vec3 right = new Vec3(-towardAttacker.z, 0.0D, towardAttacker.x).normalize();
+
+        Vec3 motion;
+        int dropAfterTicks;
+
+        switch (launch) {
+            case RIGHT -> {
+                motion = right.scale(0.72D)
+                        .add(towardAttacker.scale(0.12D))
+                        .add(0.0D, 0.40D, 0.0D);
+
+                dropAfterTicks = 16;
+            }
+
+            case LEFT -> {
+                motion = right.scale(-0.72D)
+                        .add(towardAttacker.scale(0.12D))
+                        .add(0.0D, 0.40D, 0.0D);
+
+                dropAfterTicks = 16;
+            }
+
+            case BACKWARD -> {
+                Vec3 backward = towardAttacker.scale(-1.0D);
+                spawnPos = target.getEyePosition().add(0.0D, 0.10D, 0.0D);
+                motion = backward.scale(0.85D)
+                        .add(0.0D, 0.78D, 0.0D);
+
+                dropAfterTicks = 22;
+            }
+
+            default -> {
+                motion = new Vec3(0.0D, 0.45D, 0.0D);
+                dropAfterTicks = 16;
+            }
+        }
+
+        ItemProjectile projectile = ItemProjectile.createDisarmLaunch(
+                serverLevel,
+                livingEntity,
+                stack.copy(),
+                spawnPos,
+                motion,
+                dropAfterTicks
+        );
+
+        serverLevel.addFreshEntity(projectile);
     }
 }

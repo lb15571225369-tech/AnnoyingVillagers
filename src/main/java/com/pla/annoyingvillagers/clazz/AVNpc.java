@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
 import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
+import com.pla.annoyingvillagers.entity.goal.RecoverWeaponInCombatGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -67,6 +68,15 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoice
     private boolean isStrolling;
     private int efnGuardHitState = 0;
     private int efnGuardHitCooldown = 0;
+    private boolean mainWeaponDisarmed = false;
+
+    public boolean isMainWeaponDisarmed() {
+        return mainWeaponDisarmed;
+    }
+
+    public void setMainWeaponDisarmed(boolean mainWeaponDisarmed) {
+        this.mainWeaponDisarmed = mainWeaponDisarmed;
+    }
 
     public int getEfnGuardHitState() {
         return efnGuardHitState;
@@ -230,7 +240,11 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoice
     }
 
     public void setMainWeaponItem(ItemStack mainWeaponItem) {
-        this.mainWeaponItem = mainWeaponItem;
+        this.mainWeaponItem = mainWeaponItem.copy();
+
+        if (!this.mainWeaponItem.isEmpty()) {
+            this.mainWeaponDisarmed = false;
+        }
     }
 
     public ItemStack getOffWeaponItem() { return offWeaponItem; }
@@ -282,19 +296,24 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoice
             tag.put("OffHandItem", itemTag);
         }
         tag.putInt("VoiceCooldown", this.voiceCooldown);
+        tag.putBoolean("MainWeaponDisarmed", this.mainWeaponDisarmed);
     }
 
     @Override
     public void onEquipItem(@NotNull EquipmentSlot pSlot, @NotNull ItemStack pOldItem, @NotNull ItemStack pNewItem) {
         if (pSlot == EquipmentSlot.MAINHAND &&
-                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
             this.mainWeaponItem = pNewItem.copy();
+            this.mainWeaponDisarmed = false;
         }
+
         if (pSlot == EquipmentSlot.OFFHAND &&
                 (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
             this.offWeaponItem = pNewItem.copy();
         }
+
         super.onEquipItem(pSlot, pOldItem, pNewItem);
+
         if (this.level().isClientSide) return;
         if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
 
@@ -326,6 +345,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoice
             this.offWeaponItem = ItemStack.EMPTY;
         }
         this.voiceCooldown = tag.getInt("VoiceCooldown");
+        this.mainWeaponDisarmed = tag.getBoolean("MainWeaponDisarmed");
     }
 
     @Override
@@ -343,6 +363,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob, CombatVoice
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(-2, new RecoverWeaponInCombatGoal(this, 1.2D, 10.0D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 10.0F));

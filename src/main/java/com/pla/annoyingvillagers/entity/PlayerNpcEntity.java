@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
 import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
+import com.pla.annoyingvillagers.entity.goal.RecoverWeaponInCombatGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -199,6 +200,16 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.swapToBowCooldown = random.nextInt(100, 300);
     }
 
+    private boolean mainWeaponDisarmed = false;
+
+    public boolean isMainWeaponDisarmed() {
+        return mainWeaponDisarmed;
+    }
+
+    public void setMainWeaponDisarmed(boolean mainWeaponDisarmed) {
+        this.mainWeaponDisarmed = mainWeaponDisarmed;
+    }
+
     public SimpleContainer getInventory() {
         return inventory;
     }
@@ -212,7 +223,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public void setMainWeaponItem(ItemStack mainWeaponItem) {
-        this.mainWeaponItem = mainWeaponItem;
+        this.mainWeaponItem = mainWeaponItem.copy();
+
+        if (!this.mainWeaponItem.isEmpty()) {
+            this.mainWeaponDisarmed = false;
+        }
     }
 
     public ItemStack getOffWeaponItem() { return offWeaponItem; }
@@ -237,6 +252,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.placeBlockToParryChance = new Random().nextDouble(0.20, 0.40);
+        this.setCanPickUpLoot(true);
     }
 
     @Override
@@ -261,6 +277,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.offWeaponItem.save(itemTag);
             tag.put("OffHandItem", itemTag);
         }
+        tag.putBoolean("MainWeaponDisarmed", this.mainWeaponDisarmed);
     }
 
     @Override
@@ -292,6 +309,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         } else {
             this.offWeaponItem = ItemStack.EMPTY;
         }
+        this.mainWeaponDisarmed = tag.getBoolean("MainWeaponDisarmed");
     }
 
     @Override
@@ -304,6 +322,33 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                 this.spawnAtLocation(stack);
             }
         }
+    }
+
+    private boolean shouldCustomInventoryPickup(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        EquipmentSlot slot = LivingEntity.getEquipmentSlotForItem(stack);
+
+        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+            return !this.wantsToPickUp(stack);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean wantsToPickUp(@NotNull ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        EquipmentSlot slot = LivingEntity.getEquipmentSlotForItem(stack);
+        if (slot.getType() != EquipmentSlot.Type.ARMOR) {
+            return false;
+        }
+        return super.wantsToPickUp(stack);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -360,6 +405,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(-2, new RecoverWeaponInCombatGoal(this, 1.2D, 10.0D));
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(5, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
@@ -499,14 +545,15 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         List<ItemEntity> items = level().getEntitiesOfClass(
                 ItemEntity.class,
                 box,
-                e -> !e.isRemoved() && !e.hasPickUpDelay()
+                e -> !e.isRemoved()
+                        && !e.hasPickUpDelay()
+                        && shouldCustomInventoryPickup(e.getItem())
         );
 
         for (ItemEntity itemEntity : items) {
             tryPickup(itemEntity);
         }
     }
-
     private void tryPickup(ItemEntity itemEntity) {
         ItemStack remaining = itemEntity.getItem().copy();
 
@@ -655,13 +702,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
         ChatUtil.joinGame(this);
 
-        try {
-            Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                    "data merge entity @s {CanPickUpLoot: 1b}",
-                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-        } catch (CommandSyntaxException ignored) {
-        }
-
         if (Math.random() <= 0.05D) {
             TeamUtil.addOrJoinTeam(this, "player");
         }
@@ -682,12 +722,16 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (pSlot == EquipmentSlot.MAINHAND &&
                 (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
             this.mainWeaponItem = pNewItem.copy();
+            this.mainWeaponDisarmed = false;
         }
+
         if (pSlot == EquipmentSlot.OFFHAND &&
                 (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
             this.offWeaponItem = pNewItem.copy();
         }
+
         super.onEquipItem(pSlot, pOldItem, pNewItem);
+
         if (this.level().isClientSide) return;
         if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
 

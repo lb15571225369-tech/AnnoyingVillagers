@@ -13,11 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -55,6 +51,35 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
                     ItemProjectile.class,
                     EntityDataSerializers.ITEM_STACK
             );
+    private static final EntityDataAccessor<Boolean> DATA_DISARM_LAUNCH_MODE =
+            SynchedEntityData.defineId(
+                    ItemProjectile.class,
+                    EntityDataSerializers.BOOLEAN
+            );
+
+    private static final EntityDataAccessor<Integer> DATA_DISARM_DROP_AFTER_TICKS =
+            SynchedEntityData.defineId(
+                    ItemProjectile.class,
+                    EntityDataSerializers.INT
+            );
+
+    private static final EntityDataAccessor<Float> DATA_DISARM_MOTION_X =
+            SynchedEntityData.defineId(
+                    ItemProjectile.class,
+                    EntityDataSerializers.FLOAT
+            );
+
+    private static final EntityDataAccessor<Float> DATA_DISARM_MOTION_Y =
+            SynchedEntityData.defineId(
+                    ItemProjectile.class,
+                    EntityDataSerializers.FLOAT
+            );
+
+    private static final EntityDataAccessor<Float> DATA_DISARM_MOTION_Z =
+            SynchedEntityData.defineId(
+                    ItemProjectile.class,
+                    EntityDataSerializers.FLOAT
+            );
 
     private static final double ARRIVE_DISTANCE = 0.65D;
     private static final int MAX_LIFE = 80;
@@ -78,6 +103,83 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(DATA_STACK, ItemStack.EMPTY);
+        this.entityData.define(DATA_DISARM_LAUNCH_MODE, false);
+        this.entityData.define(DATA_DISARM_DROP_AFTER_TICKS, 18);
+        this.entityData.define(DATA_DISARM_MOTION_X, 0.0F);
+        this.entityData.define(DATA_DISARM_MOTION_Y, 0.0F);
+        this.entityData.define(DATA_DISARM_MOTION_Z, 0.0F);
+    }
+
+    private boolean isDisarmLaunchMode() {
+        return this.entityData.get(DATA_DISARM_LAUNCH_MODE);
+    }
+
+    private int getDisarmDropAfterTicks() {
+        return this.entityData.get(DATA_DISARM_DROP_AFTER_TICKS);
+    }
+
+    private Vec3 getSyncedDisarmLaunchMotion() {
+        return new Vec3(
+                this.entityData.get(DATA_DISARM_MOTION_X),
+                this.entityData.get(DATA_DISARM_MOTION_Y),
+                this.entityData.get(DATA_DISARM_MOTION_Z)
+        );
+    }
+
+    private void tickDisarmLaunchMode() {
+        this.noPhysics = false;
+        this.setNoGravity(true);
+
+        Vec3 oldPos = this.position();
+        Vec3 motion = this.getDeltaMovement();
+
+        if (motion.lengthSqr() < 1.0E-7D) {
+            motion = this.getSyncedDisarmLaunchMotion();
+        }
+
+        this.move(MoverType.SELF, motion);
+
+        Vec3 moved = this.position().subtract(oldPos);
+        this.updateRotationFromMotion(moved.lengthSqr() > 1.0E-7D ? moved : motion);
+
+        Vec3 nextMotion = motion
+                .multiply(0.94D, 0.96D, 0.94D)
+                .add(0.0D, -0.045D, 0.0D);
+
+        this.setDeltaMovement(nextMotion);
+
+        if (!this.level().isClientSide
+                && (this.tickCount >= this.getDisarmDropAfterTicks()
+                || this.onGround()
+                || this.horizontalCollision
+                || this.verticalCollision)) {
+            this.dropBackToItem(nextMotion);
+        }
+    }
+
+    public static ItemProjectile createDisarmLaunch(
+            Level level,
+            LivingEntity owner,
+            ItemStack stack,
+            Vec3 spawnPos,
+            Vec3 launchMotion,
+            int dropAfterTicks
+    ) {
+        ItemProjectile projectile = new ItemProjectile(level, owner, stack, spawnPos);
+        projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+        projectile.entityData.set(DATA_DISARM_LAUNCH_MODE, true);
+        projectile.entityData.set(DATA_DISARM_DROP_AFTER_TICKS, Mth.clamp(dropAfterTicks, 4, 80));
+
+        projectile.entityData.set(DATA_DISARM_MOTION_X, (float) launchMotion.x);
+        projectile.entityData.set(DATA_DISARM_MOTION_Y, (float) launchMotion.y);
+        projectile.entityData.set(DATA_DISARM_MOTION_Z, (float) launchMotion.z);
+
+        projectile.noPhysics = false;
+        projectile.setNoGravity(true);
+        projectile.setDeltaMovement(launchMotion);
+
+        return projectile;
     }
 
     public void setWeaponStack(ItemStack stack) {
@@ -152,6 +254,11 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
         ItemStack stack = this.getWeaponStack();
         if (stack.isEmpty()) {
             this.discard();
+            return;
+        }
+
+        if (this.isDisarmLaunchMode()) {
+            this.tickDisarmLaunchMode();
             return;
         }
 
@@ -308,6 +415,10 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
     }
 
     private void dropBackToItem() {
+        this.dropBackToItem(new Vec3(0.0D, -0.05D, 0.0D));
+    }
+
+    private void dropBackToItem(Vec3 motion) {
         if (!this.level().isClientSide) {
             ItemStack stack = this.getWeaponStack().copy();
 
@@ -321,7 +432,7 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
                 );
 
                 itemEntity.setPickUpDelay(20);
-                itemEntity.setDeltaMovement(0.0D, -0.05D, 0.0D);
+                itemEntity.setDeltaMovement(motion);
 
                 this.level().addFreshEntity(itemEntity);
             }
@@ -353,6 +464,11 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
     protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("WeaponStack", this.getWeaponStack().save(new CompoundTag()));
+        tag.putBoolean("DisarmLaunchMode", this.entityData.get(DATA_DISARM_LAUNCH_MODE));
+        tag.putInt("DisarmDropAfterTicks", this.entityData.get(DATA_DISARM_DROP_AFTER_TICKS));
+        tag.putFloat("DisarmMotionX", this.entityData.get(DATA_DISARM_MOTION_X));
+        tag.putFloat("DisarmMotionY", this.entityData.get(DATA_DISARM_MOTION_Y));
+        tag.putFloat("DisarmMotionZ", this.entityData.get(DATA_DISARM_MOTION_Z));
     }
 
     @Override
@@ -361,6 +477,23 @@ public class ItemProjectile extends Projectile implements ItemSupplier {
 
         if (tag.contains("WeaponStack", 10)) {
             this.setWeaponStack(ItemStack.of(tag.getCompound("WeaponStack")));
+        }
+        this.entityData.set(DATA_DISARM_LAUNCH_MODE, tag.getBoolean("DisarmLaunchMode"));
+
+        if (tag.contains("DisarmDropAfterTicks")) {
+            this.entityData.set(DATA_DISARM_DROP_AFTER_TICKS, tag.getInt("DisarmDropAfterTicks"));
+        }
+
+        if (tag.contains("DisarmMotionX")) {
+            this.entityData.set(DATA_DISARM_MOTION_X, tag.getFloat("DisarmMotionX"));
+            this.entityData.set(DATA_DISARM_MOTION_Y, tag.getFloat("DisarmMotionY"));
+            this.entityData.set(DATA_DISARM_MOTION_Z, tag.getFloat("DisarmMotionZ"));
+
+            this.setDeltaMovement(
+                    tag.getFloat("DisarmMotionX"),
+                    tag.getFloat("DisarmMotionY"),
+                    tag.getFloat("DisarmMotionZ")
+            );
         }
     }
 

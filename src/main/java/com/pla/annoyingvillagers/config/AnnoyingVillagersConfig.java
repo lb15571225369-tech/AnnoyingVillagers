@@ -27,8 +27,8 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_BURN_ITEM;
     public static ForgeConfigSpec.ConfigValue<Boolean> VANILLA_MOB_CAN_DRINK_HEALING_POTION;
     public static ForgeConfigSpec.ConfigValue<Integer> WEAPON_BREAKING_MECHANISM_VALUE;
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> DIAMOND_ATTRACTOR_AFFECTED_ENTITY_TYPES;
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> DIAMOND_ATTRACTOR_WEAPON_BLACKLIST;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> WEAPON_DISARMS_AFFECTED_ENTITY_TYPES;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> WEAPON_DISARMS_BLACKLIST;
 
     // ==== NPC Behaviour ====
     public static ForgeConfigSpec.ConfigValue<Double> NPC_TARGET_WEIGHT_MONSTER_HUNTER;
@@ -112,8 +112,8 @@ public class AnnoyingVillagersConfig {
         WEAPON_BREAKING_MECHANISM_VALUE = BUILDER.comment(
                         "The value of durability lose of a weapon when Av Bosses blocking or clashing a dangerous animation or when Player clashing a dangerous animation by Av Bosses")
                 .defineInRange("weaponBreakingMechanismValue", 10, 0, 10000);
-        DIAMOND_ATTRACTOR_AFFECTED_ENTITY_TYPES = BUILDER.comment(
-                        "Living entity types whose held weapons can be disarmed by Diamond Attractor Sword")
+        WEAPON_DISARMS_AFFECTED_ENTITY_TYPES = BUILDER.comment(
+                        "Living entity types whose held weapons can be disarmed")
                 .defineListAllowEmpty(
                         "affectedEntityTypes",
                         List.of(
@@ -133,8 +133,8 @@ public class AnnoyingVillagersConfig {
                         AnnoyingVillagersConfig::validResourceOrTagOrNamespace
                 );
 
-        DIAMOND_ATTRACTOR_WEAPON_BLACKLIST = BUILDER.comment(
-                        "Weapons/items that cannot be pulled by Diamond Attractor Sword")
+        WEAPON_DISARMS_BLACKLIST = BUILDER.comment(
+                        "Weapons/items that cannot be disarmed")
                 .defineListAllowEmpty(
                         "weaponBlacklist",
                         List.of(

@@ -49,6 +49,9 @@ public class AVSkills {
     public static Skill DIAMOND_SABRE;
     public static Skill DIAMOND_WARBLADE;
     public static Skill DIAMOND_LAEVATEINN;
+    public static Skill HOOK_SWORD;
+    public static Skill DUAL_HOOK_SWORD;
+    public static Skill FLANKER_HOOK_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -83,5 +86,8 @@ public class AVSkills {
         DIAMOND_SABRE = modRegistry.build("diamond_sabre", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.SABRE_QUAD_STING)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         DIAMOND_WARBLADE = modRegistry.build("diamond_warblade", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.WARBLADE_SATSUJIN_TSUKUYOMI)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         DIAMOND_LAEVATEINN = modRegistry.build("diamond_laevateinn", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.TACHI_BLOSSOM_SLASH)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        HOOK_SWORD = modRegistry.build("hook_sword", HookSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        DUAL_HOOK_SWORD = modRegistry.build("dual_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.HOOK_DANCING_EDGE)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        FLANKER_HOOK_SWORD = modRegistry.build("flanker_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.HOOK_HERRSCHER_UP)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
     }
 }
