@@ -1026,12 +1026,12 @@ public class AVAnimations {
         DUAL_SWORD1 = builder.nextAccessor("biped/pugilist_steve/dual_auto1",
                 accessor -> new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.05F, 0.3F, 0.4F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolL, null), new Phase(0.1F, 0.1F, 0.4F, 0.6F, 0.6F, humanoidArmature.get().toolR, null))
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
         DUAL_SWORD2 = builder.nextAccessor("biped/pugilist_steve/dual_auto2",
                 accessor -> new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.05F, 0.4F, 0.8F, 1.167F, 2.5F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.1F, 1.2F, 1.3F, 1.5F, humanoidArmature.get().toolR, null), new Phase(0.2F, 0.1F, 1.4F, 1.5F, 2.1F, humanoidArmature.get().toolL, null))
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F));
         DUAL_SWORD3 = builder.nextAccessor("biped/pugilist_steve/dual_auto3",
                 accessor -> new BasicAttackAnimation(0.1F, 0.0F, 0.0F, 0.06F, 0.3F, ColliderPreset.SWORD, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
