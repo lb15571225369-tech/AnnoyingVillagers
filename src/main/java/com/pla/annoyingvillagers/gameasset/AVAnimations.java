@@ -1390,8 +1390,7 @@ public class AVAnimations {
                         .addState(EntityState.TURNING_LOCKED, false)
                         .addState(EntityState.LOCKON_ROTATE, false)
                         .addEvents(
-                                new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(2.5F, ReuseableEvents.END_ATTACK, Side.BOTH)})
+                                AnimationEvent.InTimeEvent.create(2.5F, ReuseableEvents.END_ATTACK, Side.BOTH))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         DUAL_END = builder.nextAccessor("biped/pugilist_steve/dual_back_end",
                 accessor -> new ActionAnimation(0.2F, Float.MAX_VALUE, accessor, humanoidArmature)
@@ -1455,8 +1454,13 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG))
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, false).addState(EntityState.LOCKON_ROTATE, false)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addState(EntityState.CAN_SKILL_EXECUTION, false)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false)
+                        .addState(EntityState.MOVEMENT_LOCKED, true)
+                        .addState(EntityState.TURNING_LOCKED, false)
+                        .addState(EntityState.LOCKON_ROTATE, false)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.8F));
         LEGENDARY_SWORD_WAKE_UP_ATTACK = builder.nextAccessor("biped/pugilist_steve/legendary_sword_wake_up_attack",
                 accessor -> new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.15F, 0.4F, 0.45F, 0.45F, humanoidArmature.get().toolR, null), new Phase(0.45F, 0.5F, 0.8F, Float.MAX_VALUE, Float.MAX_VALUE, humanoidArmature.get().toolR, null))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))

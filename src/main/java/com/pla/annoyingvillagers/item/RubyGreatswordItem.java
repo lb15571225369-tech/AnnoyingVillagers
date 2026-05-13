@@ -14,7 +14,7 @@ public class RubyGreatswordItem extends SwordItem {
     public RubyGreatswordItem() {
         super(new Tier() {
             public int getUses() {
-                return 1561;
+                return 2561;
             }
 
             public float getSpeed() {
@@ -22,7 +22,7 @@ public class RubyGreatswordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 9.0F;
+                return 4.0F;
             }
 
             public int getLevel() {
@@ -36,12 +36,6 @@ public class RubyGreatswordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.RUBY.get()));
             }
-        }, 3, -1.4F, (new Properties()));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        }, 3, -2.0F, (new Properties()));
     }
 }

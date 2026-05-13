@@ -109,7 +109,6 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.IRON_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_LONGSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_CHIPPED_LONGSWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.IRON_TWIN_BLADE_KATANA.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_SWORD.get());
@@ -148,6 +147,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SICKLE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SPEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.DOUBLE_DIAMOND_GLAIVE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.IRON_TWIN_BLADE_KATANA.get());
                         pOutput.accept(AnnoyingVillagersModItems.IRON_SICKLE.get());
                         pOutput.accept(AnnoyingVillagersModItems.NETHERITE_SPEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.TWIN_DIAMOND_SPEAR.get());

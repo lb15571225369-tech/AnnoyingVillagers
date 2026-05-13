@@ -92,8 +92,7 @@ public class BlueDemonThunderBeamParticleEmitterInfo extends ParticleEmitterInfo
     public void spawnInWorld(Level level, Player player) {
         if (NativePlatform.isRunningOnUnsupportedPlatform()) return;
 
-        Optional<CompletableFuture<Optional<EffectDefinition>>> loaded = Optional.ofNullable(EffectRegistry.get(this.effek)).map(EffectHolder::load);
-        loaded.ifPresent((future) -> future.thenAccept((def) -> def.ifPresent((effek) -> {
+        EffectRegistry.load(this.effek).thenAccept((effek) -> {
             ParticleEmitter em = this.hasEmitter() ? effek.play(this.emitter) : effek.play();
 
             if (this.hasParameters()) {
@@ -147,6 +146,6 @@ public class BlueDemonThunderBeamParticleEmitterInfo extends ParticleEmitterInfo
                 Emitter.setPosition((float) lastStartPos.x, (float) lastStartPos.y, (float) lastStartPos.z);
                 aim(Emitter, lastStartPos, lastEndPos, axis, roll);
             });
-        })));
+        });
     }
 }

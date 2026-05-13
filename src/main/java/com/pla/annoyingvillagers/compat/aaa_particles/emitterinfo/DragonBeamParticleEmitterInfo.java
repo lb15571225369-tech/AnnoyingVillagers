@@ -110,8 +110,7 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
     public void spawnInWorld(Level level, Player player) {
         if (NativePlatform.isRunningOnUnsupportedPlatform()) return;
 
-        Optional<CompletableFuture<Optional<EffectDefinition>>> loaded = Optional.ofNullable(EffectRegistry.get(this.effek)).map(EffectHolder::load);
-        loaded.ifPresent((future) -> future.thenAccept((def) -> def.ifPresent((effek) -> {
+        EffectRegistry.load(this.effek).thenAccept((effek) -> {
             ParticleEmitter em = this.hasEmitter() ? effek.play(this.emitter) : effek.play();
 
             if (this.hasParameters()) for (DynamicParameter p : this.parameters) em.setDynamicInput(p.index(), p.value());
@@ -152,6 +151,6 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
                 Emitter.setPosition((float) from.x, (float) from.y, (float) from.z);
                 aim(Emitter, from, to, axis, roll);
             });
-        })));
+        });
     }
 }

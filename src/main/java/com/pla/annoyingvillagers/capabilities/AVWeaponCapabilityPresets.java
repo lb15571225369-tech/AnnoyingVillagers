@@ -1251,7 +1251,7 @@ public class AVWeaponCapabilityPresets {
                             AnimsSolar.SOLAR_HORNO,
                             Animations.GREATSWORD_DASH,
                             Animations.GREATSWORD_AIR_SLASH)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.HELICOPTER)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)

@@ -1,13 +1,8 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class RedDiamondSwordItem extends SwordItem {
 
@@ -22,7 +17,7 @@ public class RedDiamondSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 4.5F;
+                return 2.5F;
             }
 
             public int getLevel() {
@@ -36,12 +31,6 @@ public class RedDiamondSwordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND), new ItemStack(Items.REDSTONE));
             }
-        }, 3, -2.1F, (new Properties()));
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.beta_update"));
+        }, 3, -2.2F, (new Properties()));
     }
 }

@@ -80,10 +80,10 @@ dependencies {
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7517612")
 
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
-    implementation fg.deobf("curse.maven:aaa-particles-979809:7944893")
+    implementation fg.deobf("curse.maven:aaa-particles-979809:8082320")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
 
-    implementation fg.deobf("curse.maven:epicfight-nightfall-1307848:8059118")
+    implementation fg.deobf("curse.maven:epicfight-nightfall-1307848:8082392")
     implementation fg.deobf("curse.maven:epic-fight-avalon-1268823:7619938")
     implementation fg.deobf("curse.maven:epic-fight-invincible-1184379:7679941")
     implementation fg.deobf("curse.maven:sword-soaring-1011068:7627333")

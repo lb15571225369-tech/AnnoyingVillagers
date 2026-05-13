@@ -177,8 +177,7 @@ public class DiamondAttractorParticleEmitterInfo extends ParticleEmitterInfo {
             return;
         }
 
-        Optional<CompletableFuture<Optional<EffectDefinition>>> loaded = Optional.ofNullable(EffectRegistry.get(this.effek)).map(EffectHolder::load);
-        loaded.ifPresent((future) -> future.thenAccept((def) -> def.ifPresent((effek) -> {
+        EffectRegistry.load(this.effek).thenAccept((effek) -> {
             ParticleEmitter emitter = this.hasEmitter() ? effek.play(this.emitter) : effek.play();
 
             this.applyCommonSettings(emitter);
@@ -218,6 +217,6 @@ public class DiamondAttractorParticleEmitterInfo extends ParticleEmitterInfo {
                         (float) this.lastPos.z
                 );
             });
-        })));
+        });
     }
 }
