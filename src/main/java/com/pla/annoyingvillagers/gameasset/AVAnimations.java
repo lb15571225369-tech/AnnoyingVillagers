@@ -203,6 +203,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> HOOK_AXE_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> HOOK_AXE_AUTO2;
     public static AnimationManager.AnimationAccessor<AttackAnimation> HOOK_DANCING_EDGE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> DNAX_HOOK_SWEEPING_EDGE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> DNAX_HOOK_DANCING_EDGE;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
@@ -602,6 +604,18 @@ public class AVAnimations {
                 (accessor) -> new BasicAttackAnimation(0.15F, 0.05F, 0.15F, 0.7F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
         HOOK_AXE_AUTO2 = builder.nextAccessor("biped/epicfight_clone/hook_axe_auto2", (accessor) -> new BasicAttackAnimation(0.15F, 0.05F, 0.15F, 0.85F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED));
         HOOK_DANCING_EDGE = builder.nextAccessor("biped/epicfight_clone/hook_dancing_edge",
+                (accessor) -> (AttackAnimation)(new AttackAnimation(0.1F, accessor, Armatures.BIPED,
+                        new Phase(0.0F, 0.25F, 0.4F, 0.4F, 0.4F, Armatures.BIPED.get().toolR, null),
+                        new Phase(0.4F, 0.4F, 0.5F, 0.55F, 0.6F, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null),
+                        new Phase(0.6F, 0.6F, 0.7F, 1.15F, Float.MAX_VALUE, Armatures.BIPED.get().toolR, null)))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true));
+        DNAX_HOOK_SWEEPING_EDGE = builder.nextAccessor("biped/epicfight_clone/dnax_hook_sweeping_edge",
+                (accessor) -> (new AttackAnimation(0.1F, 0.0F, 0.15F, 0.3F, 0.8F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 1)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, Animations.ReusableSources.COMBO_ATTACK_DIRECTION_MODIFIER));
+        DNAX_HOOK_DANCING_EDGE = builder.nextAccessor("biped/epicfight_clone/dnax_hook_dancing_edge",
                 (accessor) -> (AttackAnimation)(new AttackAnimation(0.1F, accessor, Armatures.BIPED,
                         new Phase(0.0F, 0.25F, 0.4F, 0.4F, 0.4F, Armatures.BIPED.get().toolR, null),
                         new Phase(0.4F, 0.4F, 0.5F, 0.55F, 0.6F, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null),
@@ -2008,26 +2022,7 @@ public class AVAnimations {
         DIAMOND_BLASTER_SKILL = builder.nextAccessor("biped/pla/diamond_blaster_skill",
                 accessor -> new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.2F, null, humanoidArmature.get().toolR, accessor, humanoidArmature)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
-                        .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.2F, (livingEntityPatch, self, p) -> {
-                                    Vec3 knockPos = EpicfightUtil.getJointWithTranslation(
-                                            livingEntityPatch.getOriginal(),
-                                            new Vec3f(0.0F, 0.0F, 0.0F),
-                                            Armatures.BIPED.get().toolR,
-                                            0.0F,
-                                            0.5F
-                                    );
-                                    if (knockPos != null) {
-                                        BlockPos mutePos = BlockPos.containing(knockPos);
-                                        AnnoyingVillagers.PACKET_HANDLER.send(
-                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntityPatch.getOriginal()),
-                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
-                                        );
-                                        livingEntityPatch.getOriginal().level().explode(livingEntityPatch.getOriginal(), knockPos.x, knockPos.y, knockPos.z,
-                                                0.5F, false, Level.ExplosionInteraction.NONE);
-                                    }
-                                }, Side.SERVER)));
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F)));
 
         // Animations cloned and registered from WOM
         CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",

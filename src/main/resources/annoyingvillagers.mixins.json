@@ -52,7 +52,8 @@
     "compat.efn.ExcaliburItemMixin",
     "compat.efn.StopEffectMixin",
     "ExecutionTaskMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "MixinPIllagerRenderer"
   ],
   "client": [
     "client.ModelPartMixin",

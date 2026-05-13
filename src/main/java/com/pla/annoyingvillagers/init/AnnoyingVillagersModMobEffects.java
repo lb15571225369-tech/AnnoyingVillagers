@@ -14,4 +14,5 @@ public class AnnoyingVillagersModMobEffects {
     public static final RegistryObject<MobEffect> ELECTRIFY = AnnoyingVillagersModMobEffects.REGISTRY.register("electrify", ElectrifyMobEffect::new);
     public static final RegistryObject<MobEffect> CAPTIVE = AnnoyingVillagersModMobEffects.REGISTRY.register("captive", CaptiveMobEffect::new);
     public static final RegistryObject<MobEffect> HEROBRINE = AnnoyingVillagersModMobEffects.REGISTRY.register("herobrine", HerobrineMobEffect::new);
+    public static final RegistryObject<MobEffect> OBEDIENCE = AnnoyingVillagersModMobEffects.REGISTRY.register("obedience", ObedienceMobEffect::new);
 }

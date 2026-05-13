@@ -5,6 +5,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 
+import javax.annotation.Nullable;
+
 public class TeamUtil {
     public static boolean isInTeam(Entity entity, String teamName) {
         if (entity == null) return false;
@@ -56,6 +58,24 @@ public class TeamUtil {
         PlayerTeam current = scoreboard.getPlayersTeam(entry);
         if (current == team) {
             scoreboard.removePlayerFromTeam(entry, team);
+        }
+    }
+
+    @Nullable
+    public static String getTeamName(Entity entity) {
+        if (entity == null) return null;
+        if (!(entity.level() instanceof ServerLevel serverLevel)) return null;
+
+        Scoreboard scoreboard = serverLevel.getScoreboard();
+        PlayerTeam current = scoreboard.getPlayersTeam(entity.getScoreboardName());
+
+        return current != null ? current.getName() : null;
+    }
+
+    public static void leaveCurrentTeam(Entity entity) {
+        String teamName = getTeamName(entity);
+        if (teamName != null) {
+            leaveTeam(entity, teamName);
         }
     }
 }

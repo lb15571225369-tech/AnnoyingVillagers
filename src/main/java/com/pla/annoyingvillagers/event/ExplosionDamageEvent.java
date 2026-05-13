@@ -1,16 +1,13 @@
 package com.pla.annoyingvillagers.event;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.TridentLightningBolt;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.item.DiamondBlasterSwordItem;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
-import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -24,7 +21,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.world.entity.mob.EnderHand;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.skill.SkillContainer;
@@ -118,23 +114,6 @@ public class ExplosionDamageEvent {
                             float addResource = Math.min(50.0F, neededResource);
                             woopieTheSwordSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
                         }
-                    }
-                }
-            }
-
-            if (livingEntity.getMainHandItem().getItem() instanceof DiamondBlasterSwordItem && dynamicAnimation == AVAnimations.DIAMOND_BLASTER_SKILL) {
-                for (Entity entity : detonate.getAffectedEntities()) {
-                    if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
-                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
-                            && !(entity instanceof Player player && player.isCreative())) {
-                        LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        if (explodedPatch != null) {
-                            AssetAccessor<? extends StaticAnimation> explodedDynamicAnimation = Objects.requireNonNull(explodedPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
-                            if (!EpicfightUtil.isLongHitAnimation(explodedDynamicAnimation, explodedPatch)) {
-                                explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
-                            }
-                        }
-                        CommonUtil.pushEntityFromCaster(livingExploded, livingEntity);
                     }
                 }
             }

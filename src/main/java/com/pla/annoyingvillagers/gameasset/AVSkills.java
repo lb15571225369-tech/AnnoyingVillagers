@@ -10,10 +10,14 @@ import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
+import yesman.epicfight.api.utils.math.ValueModifier;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
+import yesman.epicfight.world.damagesource.ExtraDamageInstance;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Set;
 
@@ -52,6 +56,8 @@ public class AVSkills {
     public static Skill HOOK_SWORD;
     public static Skill DUAL_HOOK_SWORD;
     public static Skill FLANKER_HOOK_SWORD;
+    public static Skill DNAX_HOOK_SWORD;
+    public static Skill DUAL_DNAX_HOOK_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -89,5 +95,7 @@ public class AVSkills {
         HOOK_SWORD = modRegistry.build("hook_sword", HookSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         DUAL_HOOK_SWORD = modRegistry.build("dual_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.HOOK_DANCING_EDGE)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
         FLANKER_HOOK_SWORD = modRegistry.build("flanker_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.HOOK_HERRSCHER_UP)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        DNAX_HOOK_SWORD = modRegistry.build("dnax_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.DNAX_HOOK_SWEEPING_EDGE)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
+        DUAL_DNAX_HOOK_SWORD = modRegistry.build("dual_dnax_hook_sword", SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.DNAX_HOOK_DANCING_EDGE)).newProperty().addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE));
     }
 }

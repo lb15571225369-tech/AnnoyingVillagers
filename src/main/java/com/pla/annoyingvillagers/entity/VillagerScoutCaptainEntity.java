@@ -265,7 +265,7 @@ public class VillagerScoutCaptainEntity extends AVNpc {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
         builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
         builder = builder.add(Attributes.ARMOR, 6.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);

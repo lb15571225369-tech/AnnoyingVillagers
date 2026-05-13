@@ -16,7 +16,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,7 +25,6 @@ import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -427,7 +425,34 @@ public class CommonUtil {
         ItemStack droppedStack = chosenStack.copy();
         clearCachedNpcWeapon(target, chosenHand);
         target.setItemInHand(chosenHand, ItemStack.EMPTY);
+        if (chosenHand == InteractionHand.MAIN_HAND) {
+            tryMoveOffhandWeaponToMainhand(target);
+        }
         spawnDisarmedItem(serverLevel, livingEntity, target, droppedStack, launch);
+    }
+
+    private static void tryMoveOffhandWeaponToMainhand(LivingEntity target) {
+        ItemStack offhandStack = target.getOffhandItem();
+        if (offhandStack.isEmpty()) {
+            return;
+        }
+        if (!isPullableWeapon(offhandStack)) {
+            return;
+        }
+        ItemStack movedStack = offhandStack.copy();
+        target.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        target.setItemInHand(InteractionHand.MAIN_HAND, movedStack.copy());
+        if (target instanceof AVNpc avNpc) {
+            avNpc.setOffWeaponItem(ItemStack.EMPTY);
+            avNpc.setMainWeaponItem(movedStack.copy());
+            avNpc.setMainWeaponDisarmed(false);
+        }
+        if (target instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.setOffWeaponItem(ItemStack.EMPTY);
+            playerNpcEntity.setMainWeaponItem(movedStack.copy());
+            playerNpcEntity.setMainWeaponDisarmed(false);
+        }
+
     }
 
     private static void clearCachedNpcWeapon(LivingEntity target, InteractionHand hand) {

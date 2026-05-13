@@ -18,5 +18,6 @@ public class RenderEngine {
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "shadow_obsidian_pillar"), RenderShadowObsidianPillar::new);
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "shadow_obsidian_sword"), RenderShadowObsidianSword::new);
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "diamond_blaster_sword"), RenderDiamondBlasterSword::new);
+        add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "dnax_hooked_sword"), RenderDNAxHookSword::new);
     }
 }

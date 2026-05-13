@@ -1015,6 +1015,55 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
+    public static final Function<Item, Builder> DNAX_HOOK_SWORD = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    Animations.SWORD_AUTO1,
+                    AVAnimations.SWORD_DASH,
+                    AVAnimations.DAGGER_AUTO1,
+                    AnimsHerrscher.HERRSCHER_AUTO_2,
+                    AnimsHerrscher.HERRSCHER_AUTO_1,
+                    Animations.SWORD_DASH,
+                    Animations.SWORD_AIR_SLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    AVAnimations.DUAL_SWORD1,
+                    AVAnimations.DUAL_SWORD2,
+                    AVAnimations.DUAL_SWORD3,
+                    Animations.SWORD_DUAL_DASH,
+                    Animations.SWORD_DUAL_AIR_SLASH)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.DNAX_HOOK_SWORD)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DUAL_DNAX_HOOK_SWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
+
     public static final Function<Item, Builder> AV_AXE = (item) ->
             WeaponCapability.builder()
             .category(WeaponCategories.AXE)
@@ -1343,5 +1392,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_laevateinn"), AVWeaponCapabilityPresets.DIAMOND_LAEVATEINN);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hook_sword"), AVWeaponCapabilityPresets.HOOK_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "flanker_hook_sword"), AVWeaponCapabilityPresets.FLANKER_HOOK_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dnax_hook_sword"), AVWeaponCapabilityPresets.DNAX_HOOK_SWORD);
     }
 }

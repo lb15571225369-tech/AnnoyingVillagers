@@ -755,7 +755,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
         builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);

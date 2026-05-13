@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.client.overlaylayer.PlayerMobEpicFightOverlayLayer;
+import com.pla.annoyingvillagers.client.overlaylayer.HumanoidMobEpicFightOverlayLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +21,6 @@ public abstract class MixinPHumanoidRenderer {
                                  CallbackInfo ci) {
         PatchedLivingEntityRenderer<?, ?, ?, ?, ?> self =
                 (PatchedLivingEntityRenderer<?, ?, ?, ?, ?>)(Object)this;
-        self.addCustomLayer(new PlayerMobEpicFightOverlayLayer<>((AssetAccessor) mesh));
+        self.addCustomLayer(new HumanoidMobEpicFightOverlayLayer<>((AssetAccessor) mesh));
     }
 }

@@ -816,12 +816,8 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             ItemStack mainWeaponItem = playerNpcEntity.getMainWeaponItem();
             ItemStack offWeaponItem = playerNpcEntity.getOffWeaponItem();
-            if (!mainWeaponItem.isEmpty()) {
-                playerNpcEntity.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
-            }
-            if (!offWeaponItem.isEmpty()) {
-                playerNpcEntity.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
-            }
+            playerNpcEntity.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
+            playerNpcEntity.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
             playerNpcEntity.setSwapToBowCooldown();
         }
 
@@ -832,20 +828,12 @@ public class CombatCommon {
                 if (canSwitchWeapon(mobpatch)) {
                     switchWeapon(mobpatch);
                 } else {
-                    if (!mainWeaponItem.isEmpty() && !(mainWeaponItem.getItem() instanceof BowItem)) {
-                        AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
-                    }
-                    if (!offWeaponItem.isEmpty()) {
-                        AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
-                    }
-                }
-            } else {
-                if (!mainWeaponItem.isEmpty() && !(mainWeaponItem.getItem() instanceof BowItem)) {
                     AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
-                }
-                if (!offWeaponItem.isEmpty()) {
                     AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
                 }
+            } else {
+                AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
+                AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
             }
             AVNpc.setSwapToBowCooldown();
         }

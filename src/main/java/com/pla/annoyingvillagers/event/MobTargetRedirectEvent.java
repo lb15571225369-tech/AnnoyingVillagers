@@ -5,8 +5,10 @@ import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.potion.ObedienceMobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -84,6 +86,23 @@ public class MobTargetRedirectEvent {
                     && herobrineDragonEntity.getSummoner() instanceof ReaperHerobrineEntity reaperHerobrineEntity && !reaperHerobrineEntity.isPassenger()) {
                 mob.setTarget(reaperHerobrineEntity);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingChangeTarget(LivingChangeTargetEvent event) {
+        if (!(event.getEntity() instanceof Mob mob)) {
+            return;
+        }
+
+        if (!ObedienceMobEffect.isObedientMob(mob)) {
+            return;
+        }
+
+        LivingEntity newTarget = event.getNewTarget();
+
+        if (newTarget != null && ObedienceMobEffect.shouldBlockTarget(mob, newTarget)) {
+            event.setNewTarget(null);
         }
     }
 }
