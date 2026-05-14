@@ -43,4 +43,6 @@ public class AnnoyingVillagersModParticleTypes {
             REGISTRY.register("big_splash", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> FIREBALL =
         REGISTRY.register("fireball", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ELECTRIC_LITE =
+            REGISTRY.register("electric_lite", () -> new SimpleParticleType(true));
 }

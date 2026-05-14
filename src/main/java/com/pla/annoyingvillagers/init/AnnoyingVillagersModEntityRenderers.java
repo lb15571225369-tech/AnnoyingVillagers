@@ -76,6 +76,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ENCHANTED_ARROW.get(), SpriteArrowRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ITEM_PROJECTILE.get(), ItemProjectileRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.FLYING_SHOCKWAVE.get(), FlyingShockwaveRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ELECTRIC_PHASE.get(), ElectricPhaseRenderer::new);
     }
 
     @SubscribeEvent

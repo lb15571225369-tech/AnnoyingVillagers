@@ -22,7 +22,7 @@ public class RubyGreatswordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 4.0F;
+                return 4.5F;
             }
 
             public int getLevel() {
@@ -36,6 +36,6 @@ public class RubyGreatswordItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.RUBY.get()));
             }
-        }, 3, -2.0F, (new Properties()));
+        }, 3, -2.5F, (new Properties()));
     }
 }

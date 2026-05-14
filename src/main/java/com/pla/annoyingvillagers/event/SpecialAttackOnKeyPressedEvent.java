@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.entity.BlackFireEntity;
+import com.pla.annoyingvillagers.entity.ElectricPhaseEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -33,6 +34,7 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -68,13 +70,47 @@ public class SpecialAttackOnKeyPressedEvent {
                     SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.BLACK_FIRE_SWORD);
                     if (skillContainer != null
                             && skillContainer.getSkill() instanceof BlackFireSwordSkill
-                            && entity.level() instanceof ServerLevel) {
+                            && entity.level() instanceof ServerLevel serverLevel) {
                         if (skillContainer.getResource() >= 5){
                             Skill.setSkillConsumptionSynchronize(
                                     skillContainer,
                                     skillContainer.getResource() - 5
                             );
-                            BlackFireEntity.spawnOnOwnerSword(player.level(), player);
+                            BlackFireEntity.spawnOnOwnerSword(serverLevel, player);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.THUNDER_DIAMOND_BLADE.get())) {
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                    SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.THUNDER_DIAMOND_BLADE);
+                    if (skillContainer != null
+                            && entity.level() instanceof ServerLevel serverLevel) {
+                        if (skillContainer.getResource() >= 10){
+                            Skill.setSkillConsumptionSynchronize(
+                                    skillContainer,
+                                    skillContainer.getResource() - 10
+                            );
+                            ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, player);
+                            return;
+                        }
+                    }
+
+                    skillContainer = serverPlayerPatch.getSkill(AVSkills.DUAL_THUNDER_DIAMOND_BLADE);
+                    if (skillContainer != null
+                            && entity.level() instanceof ServerLevel serverLevel) {
+                        if (skillContainer.getResource() >= 10){
+                            Skill.setSkillConsumptionSynchronize(
+                                    skillContainer,
+                                    skillContainer.getResource() - 10
+                            );
+                            ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, player);
+                            if (offHandItem.getItem().equals(AnnoyingVillagersModItems.THUNDER_DIAMOND_BLADE.get())) {
+                                ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, player, true);
+                            }
                             return;
                         }
                     }

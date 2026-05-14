@@ -205,6 +205,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> HOOK_DANCING_EDGE;
     public static AnimationManager.AnimationAccessor<AttackAnimation> DNAX_HOOK_SWEEPING_EDGE;
     public static AnimationManager.AnimationAccessor<AttackAnimation> DNAX_HOOK_DANCING_EDGE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> THUNDER_SWEEPING_EDGE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> THUNDER_DANCING_EDGE;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
@@ -622,6 +624,39 @@ public class AVAnimations {
                         new Phase(0.6F, 0.6F, 0.7F, 1.15F, Float.MAX_VALUE, Armatures.BIPED.get().toolR, null)))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true));
+        THUNDER_SWEEPING_EDGE = builder.nextAccessor("biped/epicfight_clone/thunder_sweeping_edge",
+                (accessor) -> (new AttackAnimation(0.1F, 0.0F, 0.15F, 0.3F, 0.8F, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 1)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, Animations.ReusableSources.COMBO_ATTACK_DIRECTION_MODIFIER)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, (livingEntityPatch, assetAccessor, objects) -> {
+                                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                                        ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, livingEntity);
+                                    }
+
+                                }, Side.BOTH)
+                        ));
+        THUNDER_DANCING_EDGE = builder.nextAccessor("biped/epicfight_clone/thunder_dancing_edge",
+                (accessor) -> (AttackAnimation)(new AttackAnimation(0.1F, accessor, Armatures.BIPED,
+                        new Phase(0.0F, 0.25F, 0.4F, 0.4F, 0.4F, Armatures.BIPED.get().toolR, null),
+                        new Phase(0.4F, 0.4F, 0.5F, 0.55F, 0.6F, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null),
+                        new Phase(0.6F, 0.6F, 0.7F, 1.15F, Float.MAX_VALUE, Armatures.BIPED.get().toolR, null)))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, (livingEntityPatch, assetAccessor, objects) -> {
+                                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                                        ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, livingEntity);
+                                        if (livingEntity.getOffhandItem().getItem() instanceof ThunderDiamondBladeItem) {
+                                            ElectricPhaseEntity.spawnOnOwnerSword(serverLevel, livingEntity, true);
+                                        }
+                                    }
+
+                                }, Side.BOTH)
+                        ));
 
 
         // Animation from EpicFight Infernal Gainer

@@ -29,5 +29,6 @@ public class AnnoyingVillagersModParticles {
         event.registerSpriteSet(AnnoyingVillagersModParticleTypes.METEORITE_TRAIL.get(), MeteoriteTrailParticle::provider);
         event.registerSpriteSet(AnnoyingVillagersModParticleTypes.BIG_SPLASH.get(), BigSplashParticle::provider);
         event.registerSpriteSet(AnnoyingVillagersModParticleTypes.FIREBALL.get(), FireballParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.ELECTRIC_LITE.get(), ElectricLiteParticle::provider);
     }
 }
