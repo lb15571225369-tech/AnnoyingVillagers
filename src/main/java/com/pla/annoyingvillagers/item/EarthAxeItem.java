@@ -1,11 +1,14 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.FloatingLookBlockEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import com.pla.annoyingvillagers.entity.RisingWallBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -17,6 +20,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class EarthAxeItem extends SwordItem {
     private static final int WALL_WIDTH = 5;
@@ -50,14 +55,6 @@ public class EarthAxeItem extends SwordItem {
                 return Ingredient.of(new ItemStack(Items.NETHERITE_INGOT));
             }
         }, 3, -3.0F, (new Properties()));
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (pLevel instanceof ServerLevel serverLevel) {
-            summonEarthWall(serverLevel, pPlayer);
-        }
-        return super.use(pLevel, pPlayer, pUsedHand);
     }
 
     public static void summonEarthWall(ServerLevel level, LivingEntity caster) {
@@ -115,6 +112,99 @@ public class EarthAxeItem extends SwordItem {
             }
         }
 
+    }
+
+    private static boolean canLiftBlock(ServerLevel level, BlockPos pos, BlockState state) {
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG canLiftBlock called for {} at {}", state, pos);
+
+        if (state.isAir()) {
+            return false;
+        }
+
+        if (!state.getFluidState().isEmpty()) {
+            return false;
+        }
+
+        if (state.getRenderShape() != RenderShape.MODEL) {
+            return false;
+        }
+
+        if (state.getDestroySpeed(level, pos) < 0.0F) {
+            return false;
+        }
+
+        if (state.is(Blocks.BEDROCK)
+                || state.is(Blocks.BARRIER)
+                || state.is(Blocks.STRUCTURE_BLOCK)
+                || state.is(Blocks.STRUCTURE_VOID)
+                || state.is(Blocks.JIGSAW)
+                || state.is(Blocks.COMMAND_BLOCK)
+                || state.is(Blocks.CHAIN_COMMAND_BLOCK)
+                || state.is(Blocks.REPEATING_COMMAND_BLOCK)) {
+            return false;
+        }
+
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (blockEntity instanceof Container) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Nullable
+    public static BlockPos findLiftableBlockUnderPoint(
+            ServerLevel level,
+            Vec3 worldPos,
+            int maxDown,
+            int horizontalRadius
+    ) {
+        BlockPos center = BlockPos.containing(worldPos);
+
+        for (int dy = 0; dy <= maxDown; dy++) {
+            int y = center.getY() - dy;
+
+            BlockPos bestPos = null;
+            double bestDistance = Double.MAX_VALUE;
+
+            for (int dx = -horizontalRadius; dx <= horizontalRadius; dx++) {
+                for (int dz = -horizontalRadius; dz <= horizontalRadius; dz++) {
+                    BlockPos candidate = new BlockPos(
+                            center.getX() + dx,
+                            y,
+                            center.getZ() + dz
+                    );
+
+                    if (!level.getWorldBorder().isWithinBounds(candidate)) {
+                        continue;
+                    }
+
+                    if (!level.hasChunkAt(candidate)) {
+                        continue;
+                    }
+
+                    BlockState state = level.getBlockState(candidate);
+
+                    if (!canLiftBlock(level, candidate, state)) {
+                        continue;
+                    }
+
+                    double distance = Vec3.atCenterOf(candidate).distanceToSqr(worldPos);
+
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        bestPos = candidate;
+                    }
+                }
+            }
+
+            if (bestPos != null) {
+                return bestPos.immutable();
+            }
+        }
+
+        return null;
     }
 
     private static boolean canSpawnWallBlockAt(ServerLevel level, BlockPos pos) {
@@ -188,5 +278,49 @@ public class EarthAxeItem extends SwordItem {
                 || state.is(Blocks.SMOOTH_BASALT)
                 || state.is(Blocks.NETHERRACK)
                 || state.is(Blocks.END_STONE);
+    }
+
+    public static boolean liftBlockAt(ServerLevel level, BlockPos pos, @Nullable LivingEntity owner) {
+        return liftBlockAt(level, pos, owner == null ? null : owner.getUUID());
+    }
+
+    public static boolean liftBlockAt(ServerLevel level, BlockPos pos, @Nullable UUID ownerUuid) {
+        pos = pos.immutable();
+
+        if (!level.getWorldBorder().isWithinBounds(pos)) {
+            return false;
+        }
+
+        if (!level.hasChunkAt(pos)) {
+            return false;
+        }
+
+        BlockState state = level.getBlockState(pos);
+        if (!canLiftBlock(level, pos, state)) {
+            return false;
+        }
+        CompoundTag blockEntityTag = saveBlockEntityTag(level, pos);
+        level.removeBlockEntity(pos);
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+        FloatingLookBlockEntity floatingBlock = new FloatingLookBlockEntity(
+                level,
+                pos,
+                state,
+                ownerUuid,
+                blockEntityTag
+        );
+        level.addFreshEntity(floatingBlock);
+        return true;
+    }
+
+    @Nullable
+    private static CompoundTag saveBlockEntityTag(ServerLevel level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (blockEntity == null) {
+            return null;
+        }
+
+        return blockEntity.saveWithFullMetadata();
     }
 }

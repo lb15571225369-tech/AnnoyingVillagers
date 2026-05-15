@@ -406,6 +406,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> BLACK_FIRE_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<ActionAnimation> BLUE_FLAME_SWORD;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DIAMOND_BLASTER_SKILL;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> EARTH_AXE_SHOOT;
 
     // Animation clone and re-registered from WOM
     public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
@@ -2059,6 +2060,28 @@ public class AVAnimations {
                 accessor -> new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.2F, null, humanoidArmature.get().toolR, accessor, humanoidArmature)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F)));
+        EARTH_AXE_SHOOT = builder.nextAccessor("biped/pla/earth_axe_shoot",
+                accessor -> new BasicAttackAnimation(0.1F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.05F, 0.3F, 0.4F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, null),
+                        new Phase(0.1F, 0.1F, 0.4F, 0.6F, 0.6F, humanoidArmature.get().toolR, null))
+                        .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, staticAnimation, object) -> {
+                                    Vec3 bladePos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                            Armatures.BIPED.get().toolR, 0.5F, 0.0F);
+                                    if (bladePos == null) return;
+                                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                                        BlockPos liftPos = EarthAxeItem.findLiftableBlockUnderPoint(serverLevel, bladePos, 6, 1);
+                                        if (liftPos != null) {
+                                            EarthAxeItem.liftBlockAt(serverLevel, liftPos, livingEntity);
+                                        }
+                                    }
+                                }, Side.SERVER)
+                        )
+        );
 
         // Animations cloned and registered from WOM
         CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",
@@ -3836,7 +3859,7 @@ public class AVAnimations {
         );
         WARBLADE_SATSUJIN_TSUKUYOMI = builder.nextAccessor("biped/wom_clone/warblade_katana_tsukuyomi",
                 accessor -> new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature,
-                        new Phase(0.0F, 0.1F, 0.3F, 0.35F, 0.35F, humanoidArmature.get().toolR, null))
+                        new Phase(0.0F, 0.6F, 0.75F, 0.9F, Float.MAX_VALUE, humanoidArmature.get().toolR, null))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)

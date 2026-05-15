@@ -49,6 +49,30 @@ public class BlockProjectileEntity extends ThrowableProjectile {
 
     private boolean notReadyForShoot = false;
     private UUID ownerUUID;
+    private static final float NO_DAMAGE_OVERRIDE = -1.0F;
+    private float damageOverride = NO_DAMAGE_OVERRIDE;
+
+    public void setDamageOverride(float damageOverride) {
+        this.damageOverride = Math.max(0.0F, damageOverride);
+    }
+
+    public void clearDamageOverride() {
+        this.damageOverride = NO_DAMAGE_OVERRIDE;
+    }
+
+    private float resolveImpactDamage() {
+        if (this.damageOverride >= 0.0F) {
+            return this.damageOverride;
+        }
+
+        if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())
+                || getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get())
+                || getCarriedBlock().is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get())) {
+            return 10.0F;
+        }
+
+        return 2.0F;
+    }
 
     public void setOwnerUUID(UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
@@ -122,12 +146,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                     1.0F, 1.0F
             );
 
-            float damage = 2.0F;
-            if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())
-                    || getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get())
-                    || getCarriedBlock().is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get())) {
-                damage = 10.0F;
-            }
+            float damage = resolveImpactDamage();
             if (this.getOwner() == null) {
                 target.hurt(target.level().damageSources().generic(), damage);
             } else {
@@ -220,6 +239,10 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         tag.putFloat("RotY", getRotY());
         tag.putFloat("RotZ", getRotZ());
         tag.putBoolean("NotReadyForShoot", notReadyForShoot);
+        tag.putFloat("DamageOverride", this.damageOverride);
+        if (this.ownerUUID != null) {
+            tag.putUUID("OwnerUUID", this.ownerUUID);
+        }
     }
 
     @Override
@@ -231,6 +254,13 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         setRotY(tag.contains("RotY") ? tag.getFloat("RotY") : 0f);
         setRotZ(tag.contains("RotZ") ? tag.getFloat("RotZ") : 0f);
         notReadyForShoot = tag.getBoolean("NotReadyForShoot");
+        this.damageOverride = tag.contains("DamageOverride")
+                ? tag.getFloat("DamageOverride")
+                : NO_DAMAGE_OVERRIDE;
+
+        this.ownerUUID = tag.hasUUID("OwnerUUID")
+                ? tag.getUUID("OwnerUUID")
+                : null;
     }
 
     @Override

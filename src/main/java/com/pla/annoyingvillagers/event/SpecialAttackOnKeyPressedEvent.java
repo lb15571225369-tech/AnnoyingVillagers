@@ -173,6 +173,12 @@ public class SpecialAttackOnKeyPressedEvent {
                     return;
                 }
             }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.EARTH_AXE.get())) {
+                if (entity.level() instanceof ServerLevel) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.EARTH_AXE_SHOOT, 0.0F);
+                    return;
+                }
+            }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_GLAIVE.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     boolean success = false;

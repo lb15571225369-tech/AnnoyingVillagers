@@ -89,6 +89,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<FlyingShockwaveProjectile>> FLYING_SHOCKWAVE = register("flying_shockwave", Builder.of(FlyingShockwaveProjectile::new, MobCategory.MISC).sized(1.5f, 3f).clientTrackingRange(12));
     public static final RegistryObject<EntityType<ElectricPhaseEntity>> ELECTRIC_PHASE = REGISTRY.register("electric_phase", () -> EntityType.Builder.<ElectricPhaseEntity>of(ElectricPhaseEntity::new, MobCategory.MISC).sized(0.8F, 0.8F).clientTrackingRange(64).updateInterval(1).fireImmune().build("electric_phase"));
     public static final RegistryObject<EntityType<RisingWallBlockEntity>> RISING_WALL_BLOCK = REGISTRY.register("rising_wall_block", () -> EntityType.Builder.<RisingWallBlockEntity>of(RisingWallBlockEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(64).updateInterval(1).fireImmune().build("rising_wall_block"));
+    public static final RegistryObject<EntityType<FloatingLookBlockEntity>> FLOATING_LOOK_BLOCK = REGISTRY.register("floating_look_block", () -> EntityType.Builder.<FloatingLookBlockEntity>of(FloatingLookBlockEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(64).updateInterval(1).fireImmune().build("floating_look_block"));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
