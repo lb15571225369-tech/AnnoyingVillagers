@@ -7,8 +7,8 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -285,7 +285,7 @@ public class HerobrineCommon {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                SnakeBladeHit.process(item, herobrineMob);
+                DemoniacVoltageReaverItem.process(item, herobrineMob);
                 item.getOrCreateTag().putBoolean("SnakeAnimation", true);
             } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getThunderHerobrineDragon();
@@ -317,7 +317,7 @@ public class HerobrineCommon {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                SnakeBladeHit.processGuard(item, herobrineMob);
+                DemoniacVoltageReaverItem.processGuard(item, herobrineMob);
                 item.getOrCreateTag().putBoolean("SnakeAnimation", true);
             }
         }

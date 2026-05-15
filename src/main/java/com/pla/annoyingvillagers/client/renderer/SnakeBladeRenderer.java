@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.client.model.ModelSnakeBlade;
 import com.pla.annoyingvillagers.client.model.ModelSnakeBladeFragment;
 import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -101,7 +101,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
                             / SnakeBladeEntity.MAX_EXTEND_TIME;
 
             float tipOffset = snakeBladeEntity.isGuard() ? 1.8F : 2.2F;
-            Vec3 swordPos = SnakeBladeHit.getToolTipPos(fromEntity, partialTicks, tipOffset);
+            Vec3 swordPos = DemoniacVoltageReaverItem.getToolTipPos(fromEntity, partialTicks, tipOffset);
 
             Vec3 distVec = (swordPos != null)
                     ? swordPos.subtract(x, y + 1.2F, z)

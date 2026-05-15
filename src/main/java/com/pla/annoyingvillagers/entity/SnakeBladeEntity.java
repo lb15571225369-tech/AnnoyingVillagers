@@ -9,7 +9,6 @@ import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -31,19 +30,15 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.*;
 
@@ -290,7 +285,7 @@ public class SnakeBladeEntity extends Entity {
         if (currentTarget != null) {
             targetPos = new Vec3(currentTarget.getX(), currentTarget.getY(0.4F), currentTarget.getZ());
         } else if (this.guardDirection != null) {
-            targetPos = SnakeBladeHit.guardTargetFor(livingCreator, this.guardDirection);
+            targetPos = DemoniacVoltageReaverItem.guardTargetFor(livingCreator, this.guardDirection);
         }
 
         if (targetPos != null) {
@@ -422,7 +417,7 @@ public class SnakeBladeEntity extends Entity {
         }
 
         if (creator instanceof LivingEntity livingCreator) {
-            SnakeBladeHit.setLastFragment(livingCreator, lastSnakeBladeEntity);
+            DemoniacVoltageReaverItem.setLastFragment(livingCreator, lastSnakeBladeEntity);
         }
     }
 
@@ -470,7 +465,7 @@ public class SnakeBladeEntity extends Entity {
 
         Entity creator = getCreatorEntity();
         if (creator instanceof LivingEntity living) {
-            Vec3 p = SnakeBladeHit.guardTargetFor(living, nextDirection);
+            Vec3 p = DemoniacVoltageReaverItem.guardTargetFor(living, nextDirection);
             child.setPos(p.x, p.y, p.z);
         } else {
             child.copyPosition(this);

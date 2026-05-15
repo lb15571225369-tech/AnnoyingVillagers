@@ -3,11 +3,9 @@ package com.pla.annoyingvillagers.skill;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
@@ -33,7 +31,7 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         Player player = skillContainer.getExecutor().getOriginal();
-        if (SnakeBladeHit.checkNearbyTarget(player)) {
+        if (DemoniacVoltageReaverItem.checkNearbyTarget(player)) {
             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
             super.executeOnServer(skillContainer, friendlyByteBuf);
         }

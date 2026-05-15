@@ -106,13 +106,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -153,7 +151,6 @@ import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimation
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -170,7 +167,6 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -417,6 +413,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_1;
     public static AnimationManager.AnimationAccessor<StaticAnimation> TRIDENT_GUARD_HIT_2;
     public static AnimationManager.AnimationAccessor<ActionAnimation> ELECTRIC_FIELD;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> EARTH_AXE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> GLOWING_AGONY_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
@@ -2026,7 +2023,7 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.0F, (livingEntityPatch, self, p) -> {
-                                    SnakeBladeHit.process(livingEntityPatch.getOriginal().getMainHandItem(), livingEntityPatch.getOriginal());
+                                    DemoniacVoltageReaverItem.process(livingEntityPatch.getOriginal().getMainHandItem(), livingEntityPatch.getOriginal());
                                     livingEntityPatch.getOriginal().getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
                                 }, Side.SERVER)
                         ));
@@ -2035,7 +2032,7 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.0F, (livingEntityPatch, self, p) -> {
-                                    SnakeBladeHit.processGuard(livingEntityPatch.getOriginal().getMainHandItem(), livingEntityPatch.getOriginal());
+                                    DemoniacVoltageReaverItem.processGuard(livingEntityPatch.getOriginal().getMainHandItem(), livingEntityPatch.getOriginal());
                                     livingEntityPatch.getOriginal().getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
                                 }, Side.SERVER)
                         ));
@@ -2124,6 +2121,18 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(3.2F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_RIGHT, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(3.8F, ReuseableEvents.PLAY_TRIDENT_EFFECT_HAND_LEFT, Side.SERVER)
+                        ));
+        EARTH_AXE = builder.nextAccessor("biped/wom_clone/earth_axe",
+                accessor -> new AttackAnimation(0.0F, 0.0F, 0.0F, 0.0F, Float.MAX_VALUE, null, Armatures.BIPED.get().head, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        EarthAxeItem.summonEarthWall(serverLevel, livingEntityPatch.getOriginal());
+                                    }
+                                }, Side.SERVER)
                         ));
         GLOWING_AGONY_GUARD = builder.nextAccessor("biped/wom_clone/glowing_agony_guard",
                 accessor -> new StaticAnimation(0.05F, true, accessor, humanoidArmature)
@@ -3827,17 +3836,11 @@ public class AVAnimations {
         );
         WARBLADE_SATSUJIN_TSUKUYOMI = builder.nextAccessor("biped/wom_clone/warblade_katana_tsukuyomi",
                 accessor -> new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature,
-                        new Phase(0.0F, 0.1F, 0.3F, 0.35F, 0.35F, humanoidArmature.get().toolR, null),
-                        new Phase(0.35F, 0.6F, 0.75F, 0.9F, Float.MAX_VALUE, humanoidArmature.get().toolR, null))
+                        new Phase(0.0F, 0.1F, 0.3F, 0.35F, 0.35F, humanoidArmature.get().toolR, null))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.8F), 1)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.5F))
-                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.7F), 1)
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
                         .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.SHARPCUT_UP_SLASH)
-                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_HIT_DOWN, 1)
-                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get(), 1)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
@@ -3870,7 +3873,7 @@ public class AVAnimations {
                 })
                         .addEvents(
                                 new AnimationEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, params) -> EpicfightUtil.shootFlyingShockwave(livingEntityPatch), Side.SERVER),
+                                        AnimationEvent.InTimeEvent.create(0.25F, (livingEntityPatch, self, params) -> EpicfightUtil.shootFlyingShockwave(livingEntityPatch), Side.SERVER),
                                         AnimationEvent.InTimeEvent.create(0.7F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().resetFallDistance(), Side.SERVER)
                         })
         );
@@ -4617,7 +4620,7 @@ public class AVAnimations {
                         new DelayedTask(delayTicks) {
                             @Override
                             public void run() {
-                                ShockwaveUtil.spawnCircleRing((ServerLevel) livingEntityPatch.getOriginal().level(), finalVec, ringRadius, livingEntityPatch.getOriginal());
+                                LegendarySwordItem.spawnCircleRing((ServerLevel) livingEntityPatch.getOriginal().level(), finalVec, ringRadius, livingEntityPatch.getOriginal());
                             }
                         };
                     }

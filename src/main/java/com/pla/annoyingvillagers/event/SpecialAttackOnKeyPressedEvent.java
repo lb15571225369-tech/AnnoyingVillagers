@@ -34,7 +34,6 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -69,7 +68,6 @@ public class SpecialAttackOnKeyPressedEvent {
                 if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                     SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.BLACK_FIRE_SWORD);
                     if (skillContainer != null
-                            && skillContainer.getSkill() instanceof BlackFireSwordSkill
                             && entity.level() instanceof ServerLevel serverLevel) {
                         if (skillContainer.getResource() >= 5){
                             Skill.setSkillConsumptionSynchronize(
