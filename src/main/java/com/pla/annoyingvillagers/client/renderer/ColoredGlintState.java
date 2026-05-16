@@ -31,6 +31,8 @@ public final class ColoredGlintState {
         if (mode == NONE) {
             if (stack.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
                 mode = ORANGE;
+            } else if (stack.is(AnnoyingVillagersModItems.RED_AXE.get()) || stack.is(AnnoyingVillagersModItems.GIANT_RED_AXE.get())) {
+                mode = RED;
             } else if (
                     (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_TRIDENT.get()) && BlueDemonTridentItem.isFullyCharged(stack))
                             || (stack.is(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get())

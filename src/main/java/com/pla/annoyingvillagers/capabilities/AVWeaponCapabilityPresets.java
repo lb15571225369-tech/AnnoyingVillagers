@@ -1157,6 +1157,28 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
                     .collider(ColliderPreset.TOOLS);
 
+    public static final Function<Item, Builder> RED_AXE = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.AXE)
+                    .collider(ColliderPreset.TOOLS)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.ONE_HAND,
+                            Animations.AXE_AUTO1,
+                            Animations.AXE_AUTO2,
+                            Animations.SWORD_AUTO1,
+                            Animations.SWORD_AUTO2,
+                            Animations.SWORD_AUTO3,
+                            Animations.AXE_DASH,
+                            Animations.AXE_AIRSLASH
+                    ).innateSkill(Styles.ONE_HAND,
+                            (itemstack) -> AVSkills.RED_AXE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
+                    .collider(ColliderPreset.TOOLS);
+
     public static final Function<Item, Builder> AV_SPEAR = (item) -> WeaponCapability.builder()
             .category(WeaponCategories.SPEAR)
             .styleProvider(
@@ -1450,6 +1472,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_sword"), AVWeaponCapabilityPresets.AV_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_axe"), AVWeaponCapabilityPresets.AV_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "earth_axe"), AVWeaponCapabilityPresets.EARTH_AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "red_axe"), AVWeaponCapabilityPresets.RED_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_spear"), AVWeaponCapabilityPresets.AV_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_tachi"), AVWeaponCapabilityPresets.AV_TACHI);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_longsword"), AVWeaponCapabilityPresets.AV_LONGSWORD);

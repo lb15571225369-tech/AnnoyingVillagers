@@ -131,6 +131,7 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -407,6 +408,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> BLUE_FLAME_SWORD;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DIAMOND_BLASTER_SKILL;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> EARTH_AXE_SHOOT;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> RED_AXE_ATTACK;
 
     // Animation clone and re-registered from WOM
     public static AnimationManager.AnimationAccessor<ActionAnimation> CUT_ANTITHEUS_ASCENSION;
@@ -2082,6 +2084,37 @@ public class AVAnimations {
                                 }, Side.SERVER)
                         )
         );
+        RED_AXE_ATTACK = builder.nextAccessor("biped/pla/red_axe_attack",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 1.0F, 1.2F, 1.5F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, (humanoidArmature.get()).rootJoint, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(3.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
+                        .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.FINISHER))
+                        .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.BYPASS_DODGE))
+                        .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.GUARD_PUNCTURE))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.1F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(new float[]{0.35F, 0.9F}))
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> {
+                        if (elapsedTime >= 0.9F && elapsedTime < 1.15F) {
+                            float dpx = (float)(entitypatch.getOriginal()).getX();
+                            float dpy = (float)(entitypatch.getOriginal()).getY();
+                            float dpz = (float)(entitypatch.getOriginal()).getZ();
+
+                            for(BlockState block = (entitypatch.getOriginal()).level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = entitypatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                                --dpy;
+                            }
+
+                            float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(entitypatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
+                            return 1.0F - (1.0F / (-distanceToGround - 1.0F) + 1.0F);
+                        } else {
+                            return speed;
+                        }
+                    }).addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.35F, reascer.wom.gameasset.ReuseableEvents.AIRBURST_JUMP, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.15F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM, Side.CLIENT)
+                    }));
 
         // Animations cloned and registered from WOM
         CUT_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/wom_clone/cut_antitheus_ascension",
