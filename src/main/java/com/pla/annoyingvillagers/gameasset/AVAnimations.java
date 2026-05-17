@@ -398,15 +398,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_FIRST;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_SECOND;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_THIRD;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_COMBO;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_DOWN_LEFT;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_RIGHT_HORIZONAL;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP_LEFT;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP_RIGHT;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_ATTACK;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_STEP_ATTACK;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_KICK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> MOON_BLADE_SKILL;
 
     // Animation made by me

@@ -1113,12 +1113,13 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
-    public static final Function<Item, Builder> AV_AXE = (item) ->
+    public static final Function<Item, Builder> HALBERD = (item) ->
             WeaponCapability.builder()
-            .category(WeaponCategories.AXE)
-            .collider(ColliderPreset.TOOLS)
-            .hitSound(EpicFightSounds.BLADE_HIT.get())
-            .newStyleCombo(Styles.ONE_HAND,
+                .category(WeaponCategories.AXE)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                .collider(ColliderPreset.SPEAR).canBePlacedOffhand(false)
+                .hitSound(EpicFightSounds.BLADE_HIT.get())
+                .newStyleCombo(Styles.TWO_HAND,
                     Animations.AXE_AUTO1,
                     Animations.AXE_AUTO2,
                     Animations.SWORD_AUTO1,
@@ -1126,14 +1127,37 @@ public class AVWeaponCapabilityPresets {
                     Animations.SWORD_AUTO3,
                     Animations.AXE_DASH,
                     Animations.AXE_AIRSLASH
-            ).innateSkill(Styles.ONE_HAND,
+                ).innateSkill(Styles.TWO_HAND,
                     (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, Animations.BIPED_RUN)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
-                    .collider(ColliderPreset.TOOLS);
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .collider(ColliderPreset.SPEAR);
+
+    public static final Function<Item, Builder> DOUBLE_HALBERD = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.AXE)
+                    .styleProvider((livingentitypatch) ->  Styles.TWO_HAND)
+                    .collider(ColliderPreset.SPEAR).canBePlacedOffhand(false)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            WOMAnimations.STAFF_AUTO_1,
+                            AnimsOrbit.ORBIT_ATTACK_1,
+                            AnimsOrbit.ORBIT_ATTACK_3,
+                            AnimsOrbit.ORBIT_ATTACK_4,
+                            Animations.SPEAR_DASH,
+                            AnimsOrbit.ORBIT_SATELITE,
+                            WOMAnimations.STAFF_KINKONG
+                    ).innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.STAFF_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SPEAR_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.STAFF_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.STAFF_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.STAFF_IDLE)
+                    .collider(ColliderPreset.SPEAR);
 
     public static final Function<Item, Builder> EARTH_AXE = (item) ->
             WeaponCapability.builder()
@@ -1179,52 +1203,50 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
                     .collider(ColliderPreset.TOOLS);
 
-    public static final Function<Item, Builder> EXTERMINATOR_BATTLE_AXE = (item) -> {
-        return WeaponCapability.builder()
-                .category(WeaponCategories.AXE)
-                .swingSound(AVSounds.SWORD_WHOOSH.get())
-                .styleProvider(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE ? Styles.ONE_HAND : Styles.TWO_HAND)
-                .collider(ColliderPreset.SWORD)
-                .newStyleCombo(Styles.ONE_HAND,
-                        Animations.AXE_AUTO1,
-                        Animations.AXE_AUTO2,
-                        Animations.SWORD_AUTO1,
-                        Animations.SWORD_AUTO2,
-                        Animations.SWORD_AUTO3,
-                        Animations.AXE_DASH,
-                        Animations.AXE_AIRSLASH)
-                .newStyleCombo(Styles.TWO_HAND,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        AVAnimations.DUAL_SWORD1,
-                        AVAnimations.DUAL_SWORD2,
-                        AVAnimations.DUAL_SWORD3,
-                        Animations.SWORD_DUAL_DASH,
-                        Animations.SWORD_DUAL_AIR_SLASH)
-                .newStyleCombo(Styles.MOUNT,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        Animations.SWORD_MOUNT_ATTACK)
-                .innateSkill(Styles.ONE_HAND,
-                        (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
-                .innateSkill(Styles.TWO_HAND,
-                        (itemstack) -> AVSkills.DUAL_AXE_SPIN)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .weaponCombinationPredicator(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE);
-    };
+    public static final Function<Item, Builder> EXTERMINATOR_BATTLE_AXE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.AXE)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    Animations.AXE_AUTO1,
+                    Animations.AXE_AUTO2,
+                    Animations.SWORD_AUTO1,
+                    Animations.SWORD_AUTO2,
+                    Animations.SWORD_AUTO3,
+                    Animations.AXE_DASH,
+                    Animations.AXE_AIRSLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    AVAnimations.DUAL_SWORD1,
+                    AVAnimations.DUAL_SWORD2,
+                    AVAnimations.DUAL_SWORD3,
+                    Animations.SWORD_DUAL_DASH,
+                    Animations.SWORD_DUAL_AIR_SLASH)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DUAL_AXE_SPIN)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE);
 
     public static final Function<Item, Builder> AV_SPEAR = (item) -> WeaponCapability.builder()
             .category(WeaponCategories.SPEAR)
@@ -1583,7 +1605,8 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_the_sword"), AVWeaponCapabilityPresets.WOOPIE_THE_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "great_sword"), AVWeaponCapabilityPresets.GREAT_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_sword"), AVWeaponCapabilityPresets.AV_SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_axe"), AVWeaponCapabilityPresets.AV_AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "halberd"), AVWeaponCapabilityPresets.HALBERD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "double_halberd"), AVWeaponCapabilityPresets.DOUBLE_HALBERD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "earth_axe"), AVWeaponCapabilityPresets.EARTH_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "red_axe"), AVWeaponCapabilityPresets.RED_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "exterminator_battleaxe"), AVWeaponCapabilityPresets.EXTERMINATOR_BATTLE_AXE);
