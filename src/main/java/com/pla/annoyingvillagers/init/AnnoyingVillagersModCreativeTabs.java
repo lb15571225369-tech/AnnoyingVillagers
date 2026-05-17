@@ -134,8 +134,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_HALBERD.get());
                         pOutput.accept(AnnoyingVillagersModItems.SAMANTHA_THE_KILLER_AXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ARMBLADE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                         pOutput.accept(AnnoyingVillagersModItems.KNIFE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                         pOutput.accept(AnnoyingVillagersModItems.NETHERITE_KNIFE.get());
                         pOutput.accept(AnnoyingVillagersModItems.GOLDEN_MOON_BLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_MOON_BLADE.get());

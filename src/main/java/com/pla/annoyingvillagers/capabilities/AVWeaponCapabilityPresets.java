@@ -1120,20 +1120,20 @@ public class AVWeaponCapabilityPresets {
                 .collider(ColliderPreset.SPEAR).canBePlacedOffhand(false)
                 .hitSound(EpicFightSounds.BLADE_HIT.get())
                 .newStyleCombo(Styles.TWO_HAND,
-                    Animations.AXE_AUTO1,
-                    Animations.AXE_AUTO2,
-                    Animations.SWORD_AUTO1,
-                    Animations.SWORD_AUTO2,
-                    Animations.SWORD_AUTO3,
-                    Animations.AXE_DASH,
-                    Animations.AXE_AIRSLASH
+                        AVAnimations.BAXE_AUTO_1,
+                        AVAnimations.BAXE_AUTO_2,
+                        Animations.SWORD_AUTO1,
+                        Animations.SWORD_AUTO2,
+                        Animations.SWORD_AUTO3,
+                        AVAnimations.BAXE_DASH_ATTACK,
+                        AVAnimations.BAXE_AIR_ATTACK
                 ).innateSkill(Styles.TWO_HAND,
-                    (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    (itemstack) -> AVSkills.HALBERD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.BAXE_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BAXE_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.BAXE_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.BAXE_WALK)
                     .collider(ColliderPreset.SPEAR);
 
     public static final Function<Item, Builder> DOUBLE_HALBERD = (item) ->
@@ -1151,13 +1151,36 @@ public class AVWeaponCapabilityPresets {
                             AnimsOrbit.ORBIT_SATELITE,
                             WOMAnimations.STAFF_KINKONG
                     ).innateSkill(Styles.TWO_HAND,
-                            (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
+                            (itemstack) -> AVSkills.HALBERD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.STAFF_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SPEAR_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.STAFF_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.STAFF_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.STAFF_IDLE)
                     .collider(ColliderPreset.SPEAR);
+
+    public static final Function<Item, Builder> KILLER_AXE = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.AXE)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.SWORD).canBePlacedOffhand(false)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.AXE_AUTO1,
+                            Animations.SWORD_AUTO2,
+                            Animations.SWORD_AUTO1,
+                            AVAnimations.AXE_AUTO2,
+                            AVAnimations.AXE_AUTO3,
+                            AVAnimations.AXE_DASH,
+                            AVAnimations.AXE_AIRSLASH
+                    ).innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> AVSkills.KILLER_AXE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.BAXE_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BAXE_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.BAXE_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.BAXE_WALK)
+                    .collider(ColliderPreset.SWORD);
 
     public static final Function<Item, Builder> EARTH_AXE = (item) ->
             WeaponCapability.builder()
@@ -1429,12 +1452,12 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            Animations.GREATSWORD_AUTO2,
-                            Animations.GREATSWORD_AUTO1,
-                            WOMAnimations.TORMENT_AUTO_1,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
-                            WOMAnimations.TORMENT_DASH)
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_3,
+                            AVAnimations.GREATSWORD_DASH_ATTACK,
+                            AVAnimations.GREATSWORD_POWER_GEYSER,
+                            AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GREATAXE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
@@ -1451,12 +1474,12 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            Animations.GREATSWORD_AUTO2,
-                            Animations.GREATSWORD_AUTO1,
-                            WOMAnimations.TORMENT_AUTO_1,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
-                            WOMAnimations.TORMENT_BERSERK_DASH)
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_3,
+                            AVAnimations.GREATSWORD_DASH_ATTACK,
+                            AVAnimations.GREATSWORD_POWER_GEYSER,
+                            AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GIANT_AXE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
@@ -1473,12 +1496,12 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            Animations.GREATSWORD_AUTO2,
-                            Animations.GREATSWORD_AUTO1,
-                            WOMAnimations.TORMENT_AUTO_1,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
-                            WOMAnimations.TORMENT_DASH)
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_3,
+                            AVAnimations.GREATSWORD_DASH_ATTACK,
+                            AVAnimations.GREATSWORD_POWER_GEYSER,
+                            AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.BATTLE_AXE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
@@ -1607,6 +1630,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_sword"), AVWeaponCapabilityPresets.AV_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "halberd"), AVWeaponCapabilityPresets.HALBERD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "double_halberd"), AVWeaponCapabilityPresets.DOUBLE_HALBERD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "killer_axe"), AVWeaponCapabilityPresets.KILLER_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "earth_axe"), AVWeaponCapabilityPresets.EARTH_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "red_axe"), AVWeaponCapabilityPresets.RED_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "exterminator_battleaxe"), AVWeaponCapabilityPresets.EXTERMINATOR_BATTLE_AXE);

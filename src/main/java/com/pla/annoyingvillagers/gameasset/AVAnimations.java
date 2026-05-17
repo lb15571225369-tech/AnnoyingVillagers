@@ -366,6 +366,23 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AirSlashAnimation> SABRE_AIR_ATTACK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SABRE_QUAD_STING;
     public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_BLOSSOM_SLASH;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> AXE_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> AXE_AUTO2;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> AXE_AUTO3;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> AXE_DASH;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> AXE_AIRSLASH;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> AXE_INNATE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> BAXE_IDLE;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> BAXE_WALK;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> BAXE_RUN;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> BAXE_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> BAXE_AUTO_2;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> BAXE_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> BAXE_AIR_ATTACK;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> BAXE_SEISMIC_IMPACT;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> GREATSWORD_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GREATSWORD_AIRSLAM;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> GREATSWORD_POWER_GEYSER;
 
     // Animation from Visitors from Omneria
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> TRIDENT_THROW_3;
@@ -1828,7 +1845,81 @@ public class AVAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.LONG, 4)
                         .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5f)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
-
+        AXE_AUTO1 = builder.nextAccessor("biped/battle_style/axe_auto1",
+                access -> new BasicAttackAnimation(0.2f, 0.0f, 0.7f, 0.8f, 1f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED));
+        AXE_AUTO2 = builder.nextAccessor("biped/battle_style/axe_auto2",
+                access -> new BasicAttackAnimation(0.2f, 0.0f, 0.5f, 0.6f, 1f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED));
+        AXE_AUTO3 = builder.nextAccessor("biped/battle_style/axe_auto3",
+                access -> new BasicAttackAnimation(0.2f, 0.0f, 0.35f, 0.55f, 1.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5f));
+        AXE_DASH = builder.nextAccessor("biped/battle_style/axe_dash",
+                access -> new DashAttackAnimation(0.2f, 0.0f, 0.35f, 0.45f, 1.5f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED));
+        AXE_AIRSLASH = builder.nextAccessor("biped/battle_style/axe_airslash",
+                access -> new AirSlashAnimation(0.2f, 0.0f, 0.5f, 0.65f, 1.5f, false, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false));
+        AXE_INNATE = builder.nextAccessor("biped/battle_style/axe_innate",
+                access -> new AttackAnimation(0.2f, 0.0f, 0.9f, 1.5f, 3f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.25f));
+        BAXE_IDLE = builder.nextAccessor("biped/battle_style/baxe_idle",
+                accessor -> new StaticAnimation(true, accessor, Armatures.BIPED));
+        BAXE_WALK = builder.nextAccessor("biped/battle_style/baxe_walk",
+                accessor -> new MovementAnimation(0.1f, true, accessor, Armatures.BIPED));
+        BAXE_RUN = builder.nextAccessor("biped/battle_style/baxe_run",
+                accessor -> new MovementAnimation(0.2f, true, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F));
+        BAXE_AUTO_1 = builder.nextAccessor("biped/battle_style/baxe_auto1",
+                accessor -> new BasicAttackAnimation(0.2f, 0.0f, 0.4f, 0.6f, 1.0f, null,
+                        Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F));
+        BAXE_AUTO_2 = builder.nextAccessor("biped/battle_style/baxe_auto2",
+                accessor -> new BasicAttackAnimation(0.5f, 0.0f, 0.55f, 0.65f, 2.0f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2f))
+                .addProperty(AnimationProperty.AttackAnimationProperty.EXTRA_COLLIDERS, 2));
+        BAXE_DASH_ATTACK = builder.nextAccessor("biped/battle_style/baxe_dash_attack",
+                accessor -> new AirSlashAnimation(0.2f, 0.0f, 1.15f, 1.25f, 3.0f, false, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.7f))
+                .addProperty(AnimationProperty.AttackAnimationProperty.EXTRA_COLLIDERS, 2)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false)
+                .addProperty(AnimationProperty.AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.5f)
+                .addEvents(
+                        AnimationEvent.InTimeEvent.create(1.25f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.CLIENT).params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 2.0, 2F)));
+        BAXE_AIR_ATTACK = builder.nextAccessor("biped/battle_style/baxe_airslash",
+                accessor -> new DashAttackAnimation(0.5f, 0.0f, 0.4f, 0.6f, 2.5f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                .addProperty(AnimationProperty.AttackAnimationProperty.EXTRA_COLLIDERS,2)
+                .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false));
+        BAXE_SEISMIC_IMPACT = builder.nextAccessor("biped/battle_style/baxe_seismic_impact",
+                access -> new AirSlashAnimation(0.5f, access, Armatures.BIPED,
+                        new AttackAnimation.Phase(0.0f, 0.0f, 1.4f, 1.6f, 1.6f, 1.6f, Armatures.BIPED.get().toolR, null
+                        ).addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2f)),
+                        new AttackAnimation.Phase(1.6f, 0.0f, 1.6f, 1.7f, 3.0f, 4.0f, Armatures.BIPED.get().rootJoint, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f))
+                                .addProperty(AnimationProperty.AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10))
+                                .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, SoundEvents.GENERIC_EXPLODE)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.45f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(EpicFightSounds.ROCKET_JUMP.get()),
+                                AnimationEvent.InTimeEvent.create(1.5f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
+                                                AnimationEvent.Side.CLIENT)
+                                        .params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 3.0, 2F
+                                        ))
+        );
+        GREATSWORD_DASH_ATTACK = builder.nextAccessor("biped/battle_style/greatsword_dash_attack", access ->
+                new DashAttackAnimation(0.2f, 0.0f, 0.5f, 0.65f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.7f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 1.1, 0.55F))
+        );
+        GREATSWORD_POWER_GEYSER = builder.nextAccessor("biped/battle_style/greatsword_power_geyser", access ->
+                new AttackAnimation(0.2f, 0.0f, 0.8f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.1f))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.9f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.3F, -5.0F), Armatures.BIPED.get().toolR, 1.1, 1.55F)));
+        GREATSWORD_AIRSLAM = builder.nextAccessor("biped/battle_style/greatsword_airslam", access ->
+                new BasicAttackAnimation(0.2f, 0.0f, 0.5f, 0.65f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.3f))
+                        .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0f, 0.5f))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.6f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 1.1, 0.55F)));
 
         // Animation from Visitors from Omneria
         TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),
