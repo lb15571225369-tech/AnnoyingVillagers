@@ -106,6 +106,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -390,13 +391,13 @@ public class AVAnimations {
 
     // Animation from Yonchi Chikito
     public static AnimationManager.AnimationAccessor<ActionAnimation> DIAMOND_ATTRACTOR_SKILL;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> CLEAVER_IDLE;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO1;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO2;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO3;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_SLASH;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_THRUST;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_THRUST_AFTER;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> GREATAXE_IDLE;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> GREATAXE_WALK;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GREATAXE_SLASH;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GREATAXE_OFFHAND_ATTACK;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_FIRST;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_SECOND;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SLAM_THIRD;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_COMBO;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_DOWN_LEFT;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_RIGHT_HORIZONAL;
@@ -406,13 +407,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_ATTACK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_STEP_ATTACK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_KICK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> GREAT_AXE_IDLE;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> GREAT_AXE_OFFHAND_ATTACK;
-    public static AnimationManager.AnimationAccessor<MovementAnimation> GREAT_AXE_WALK;
     public static AnimationManager.AnimationAccessor<AttackAnimation> MOON_BLADE_SKILL;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_FIRST;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_SECOND;
-    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_THIRD;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
@@ -1993,6 +1988,62 @@ public class AVAnimations {
                                         DiamondAttractorSwordItem.pullWeapons(entity);
                                     }
                                 }, Side.SERVER)
+                        ));
+        GREATAXE_IDLE = builder.nextAccessor("biped/yonchi_chikito/greataxe_idle",
+                accessor -> new StaticAnimation(true, accessor, Armatures.BIPED));
+        GREATAXE_WALK = builder.nextAccessor("biped/yonchi_chikito/greataxe_walk",
+                accessor -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        GREATAXE_SLASH = builder.nextAccessor("biped/yonchi_chikito/greataxe_slash",
+                accessor -> (new BasicAttackAnimation(0.1F, 0.7F, 1.4F, 1.47F, null, (Armatures.BIPED.get()).toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)));
+        GREATAXE_OFFHAND_ATTACK = builder.nextAccessor("biped/yonchi_chikito/greataxe_offhand_attack",
+                accessor -> (new BasicAttackAnimation(0.1F, 0.7F, 1.4F, 1.47F, null, (Armatures.BIPED.get()).toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)));
+        SLAM_FIRST = builder.nextAccessor("biped/yonchi_chikito/slamfirst",
+                accessor -> (new BasicAttackAnimation(0.1F, 0.9F, 1.4F, 1.47F, WOMWeaponColliders.SOLAR, (Armatures.BIPED.get()).toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.0F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT)
+                        )));
+        SLAM_SECOND = builder.nextAccessor("biped/yonchi_chikito/slamsecond",
+                accessor -> (new BasicAttackAnimation(0.1F, 2.1F, 3.0F, 3.0F, WOMWeaponColliders.SOLAR, (Armatures.BIPED.get()).toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(2.0F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT)
+                        )));
+        SLAM_THIRD = builder.nextAccessor("biped/yonchi_chikito/slamthird",
+                accessor -> (new BasicAttackAnimation(0.1F, 2.1F, 3.0F, 3.0F, WOMWeaponColliders.SOLAR, (Armatures.BIPED.get()).toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(2.425F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT)
+                        )));
+        SLAM_THIRD = builder.nextAccessor("biped/yonchi_chikito/slamthird",
+                accessor -> new BasicAttackAnimation(0.05F, accessor, humanoidArmature,
+                        new Phase(2.26F, 2.5F, 3.5F, 3.56F, 3.56F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, WOMWeaponColliders.SOLAR),
+                        new Phase(2.26F, 2.5F, 3.5F, 3.56F, 3.56F, humanoidArmature.get().toolR, WOMWeaponColliders.SOLAR))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(3.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(2.15F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(3.4F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT)
                         ));
 
         // Animation made by me

@@ -1398,6 +1398,72 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
 
+    public static final Function<Item, Builder> GREATAXE = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.GREATSWORD)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.GREATSWORD)
+                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.GREATAXE_SLASH,
+                            Animations.GREATSWORD_AUTO2,
+                            Animations.GREATSWORD_AUTO1,
+                            WOMAnimations.TORMENT_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_2,
+                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
+                            WOMAnimations.TORMENT_DASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GREATAXE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
+
+    public static final Function<Item, Builder> GIANT_AXE = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.GREATSWORD)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.GREATSWORD)
+                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.GREATAXE_SLASH,
+                            Animations.GREATSWORD_AUTO2,
+                            Animations.GREATSWORD_AUTO1,
+                            WOMAnimations.TORMENT_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_2,
+                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
+                            WOMAnimations.TORMENT_BERSERK_DASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GIANT_AXE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
+
+    public static final Function<Item, Builder> BATTLE_AXE = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.GREATSWORD)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.GREATSWORD)
+                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.GREATAXE_SLASH,
+                            Animations.GREATSWORD_AUTO2,
+                            Animations.GREATSWORD_AUTO1,
+                            WOMAnimations.TORMENT_AUTO_1,
+                            WOMAnimations.TORMENT_AUTO_2,
+                            AVAnimations.GREATAXE_OFFHAND_ATTACK,
+                            WOMAnimations.TORMENT_DASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.BATTLE_AXE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.GREATAXE_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.GREATAXE_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
+
     public static final Function<Item, Builder> WOODEN_DOOR = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
@@ -1411,7 +1477,7 @@ public class AVWeaponCapabilityPresets {
                             WOMAnimations.TORMENT_AUTO_2,
                             WOMAnimations.TORMENT_AUTO_3,
                             Animations.GREATSWORD_DASH,
-                            WOMAnimations.TORMENT_AIRSLAM)
+                            WOMAnimations.TORMENT_DASH)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.WOODEN_DOOR)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD)
@@ -1526,6 +1592,9 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_longsword"), AVWeaponCapabilityPresets.AV_LONGSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "chipped_longsword"), AVWeaponCapabilityPresets.CHIPPED_LONGSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_greatsword"), AVWeaponCapabilityPresets.AV_GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "greataxe"), AVWeaponCapabilityPresets.GREATAXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "giant_axe"), AVWeaponCapabilityPresets.GIANT_AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "battle_axe"), AVWeaponCapabilityPresets.BATTLE_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_bow"), AVWeaponCapabilityPresets.BOW);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wooden_door"), AVWeaponCapabilityPresets.WOODEN_DOOR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "crafting_table"), AVWeaponCapabilityPresets.CRAFTING_TABLE);

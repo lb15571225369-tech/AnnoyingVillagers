@@ -1,3 +1,12 @@
 {
-	"type": "annoyingvillagers:av_greatsword"
+	"attributes":
+	{
+		"common":
+		{
+			"armor_negation": 40,
+			"impact": 38,
+			"max_strikes": 3
+		}
+	},
+	"type": "annoyingvillagers:greataxe"
 }
