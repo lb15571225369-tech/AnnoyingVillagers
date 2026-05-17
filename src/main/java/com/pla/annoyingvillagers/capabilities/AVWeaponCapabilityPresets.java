@@ -734,7 +734,7 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
-    public static final Function<Item, Builder> CENTRANOS_SWORD = (item) ->
+    public static final Function<Item, Builder> CLEAVER = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
@@ -749,7 +749,7 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.SQUIRE_SWORD_AUTO_3,
                             AVAnimations.SQUIRE_SWORD_DASH_ATTACK,
                             AVAnimations.SQUIRE_SWORD_HOP_ATTACK)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.CENTRANOS_SWORD)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.CLEAVER)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.SQUIRE_SWORD_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.SQUIRE_SWORD_WALK)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.SQUIRE_SWORD_RUN)
@@ -1179,6 +1179,53 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
                     .collider(ColliderPreset.TOOLS);
 
+    public static final Function<Item, Builder> EXTERMINATOR_BATTLE_AXE = (item) -> {
+        return WeaponCapability.builder()
+                .category(WeaponCategories.AXE)
+                .swingSound(AVSounds.SWORD_WHOOSH.get())
+                .styleProvider(
+                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE ? Styles.ONE_HAND : Styles.TWO_HAND)
+                .collider(ColliderPreset.SWORD)
+                .newStyleCombo(Styles.ONE_HAND,
+                        Animations.AXE_AUTO1,
+                        Animations.AXE_AUTO2,
+                        Animations.SWORD_AUTO1,
+                        Animations.SWORD_AUTO2,
+                        Animations.SWORD_AUTO3,
+                        Animations.AXE_DASH,
+                        Animations.AXE_AIRSLASH)
+                .newStyleCombo(Styles.TWO_HAND,
+                        Animations.SWORD_DUAL_AUTO1,
+                        Animations.SWORD_DUAL_AUTO2,
+                        Animations.SWORD_DUAL_AUTO3,
+                        AVAnimations.DUAL_SWORD1,
+                        AVAnimations.DUAL_SWORD2,
+                        AVAnimations.DUAL_SWORD3,
+                        Animations.SWORD_DUAL_DASH,
+                        Animations.SWORD_DUAL_AIR_SLASH)
+                .newStyleCombo(Styles.MOUNT,
+                        Animations.SWORD_DUAL_AUTO1,
+                        Animations.SWORD_DUAL_AUTO2,
+                        Animations.SWORD_DUAL_AUTO3,
+                        Animations.SWORD_MOUNT_ATTACK)
+                .innateSkill(Styles.ONE_HAND,
+                        (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
+                .innateSkill(Styles.TWO_HAND,
+                        (itemstack) -> AVSkills.DUAL_AXE_SPIN)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+                .weaponCombinationPredicator(
+                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE);
+    };
+
     public static final Function<Item, Builder> AV_SPEAR = (item) -> WeaponCapability.builder()
             .category(WeaponCategories.SPEAR)
             .styleProvider(
@@ -1473,6 +1520,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_axe"), AVWeaponCapabilityPresets.AV_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "earth_axe"), AVWeaponCapabilityPresets.EARTH_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "red_axe"), AVWeaponCapabilityPresets.RED_AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "exterminator_battleaxe"), AVWeaponCapabilityPresets.EXTERMINATOR_BATTLE_AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_spear"), AVWeaponCapabilityPresets.AV_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_tachi"), AVWeaponCapabilityPresets.AV_TACHI);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_longsword"), AVWeaponCapabilityPresets.AV_LONGSWORD);
@@ -1487,7 +1535,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "thunder_diamond_blade"), AVWeaponCapabilityPresets.THUNDER_DIAMOND_BLADE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "blue_flame_sword"), AVWeaponCapabilityPresets.BLUE_FLAME_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "clow_sword"), AVWeaponCapabilityPresets.CLOW_SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "centranos_sword"), AVWeaponCapabilityPresets.CENTRANOS_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cleaver"), AVWeaponCapabilityPresets.CLEAVER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_attractor_sword"), AVWeaponCapabilityPresets.DIAMOND_ATTRACTOR_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "diamond_blaster_sword"), AVWeaponCapabilityPresets.DIAMOND_BLASTER_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hacker_sword"), AVWeaponCapabilityPresets.HACKER_SWORD);

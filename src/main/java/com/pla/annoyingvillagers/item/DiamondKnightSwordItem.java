@@ -1,12 +1,15 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class ExterminatorBattleaxeItem extends SwordItem {
+public class DiamondKnightSwordItem extends SwordItem {
 
-    public ExterminatorBattleaxeItem() {
+    public DiamondKnightSwordItem() {
         super(new Tier() {
             public int getUses() {
                 return 1561;
@@ -17,7 +20,7 @@ public class ExterminatorBattleaxeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-            return 3.4F;
+                return 3.4F;
             }
 
             public int getLevel() {
@@ -31,6 +34,6 @@ public class ExterminatorBattleaxeItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -3.0F, (new Properties()));
+        }, 3, -2.5F, (new Properties()));
     }
 }

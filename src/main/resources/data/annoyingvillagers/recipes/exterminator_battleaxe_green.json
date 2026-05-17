@@ -7,7 +7,7 @@
     ],
     "key": {
         "D": {
-            "item": "minecraft:diamond_block"
+            "item": "minecraft:emerald_block"
         },
         "A": {
             "item": "minecraft:diamond_axe"
@@ -17,7 +17,7 @@
         }
     },
     "result": {
-        "item": "annoyingvillagers:exterminator_battleaxe",
+        "item": "annoyingvillagers:exterminator_battleaxe_green",
         "count": 1
     }
 }

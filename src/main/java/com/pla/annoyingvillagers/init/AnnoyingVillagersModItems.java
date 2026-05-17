@@ -143,6 +143,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> PALADIN_SWORD = AnnoyingVillagersModItems.REGISTRY.register("paladin_sword", PaladinSwordItem::new);
     public static final RegistryObject<Item> RUBY_GREATSWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_greatsword", RubyGreatswordItem::new);
     public static final RegistryObject<Item> RUBY_LONGSWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_longsword", PurpleGemLongSwordItem::new);
+    public static final RegistryObject<Item> DIAMOND_KNIGHT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_knight_sword", DiamondKnightSwordItem::new);
     public static final RegistryObject<Item> RUBY_KNIGHT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_knight_sword", RubyKnightSwordItem::new);
     public static final RegistryObject<Item> RUBY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_sword", RubySwordItem::new);
     public static final RegistryObject<Item> THUNDER_DIAMOND_BLADE = AnnoyingVillagersModItems.REGISTRY.register("thunder_diamond_blade", ThunderDiamondBladeItem::new);
@@ -155,6 +156,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DIAMOND_GREATAXE = AnnoyingVillagersModItems.REGISTRY.register("diamond_greataxe", DiamondGreataxeItem::new);
     public static final RegistryObject<Item> DIAMOND_BATTLEAXE = AnnoyingVillagersModItems.REGISTRY.register("diamond_battleaxe", DiamondBattleaxeItem::new);
     public static final RegistryObject<Item> EARTH_AXE = AnnoyingVillagersModItems.REGISTRY.register("earth_axe", EarthAxeItem::new);
+    public static final RegistryObject<Item> EXTERMINATOR_BATTLEAXE_GREEN = AnnoyingVillagersModItems.REGISTRY.register("exterminator_battleaxe_green", ExterminatorBattleaxeGreenItem::new);
     public static final RegistryObject<Item> EXTERMINATOR_BATTLEAXE = AnnoyingVillagersModItems.REGISTRY.register("exterminator_battleaxe", ExterminatorBattleaxeItem::new);
     public static final RegistryObject<Item> GIANT_NETHERITE_AXE = AnnoyingVillagersModItems.REGISTRY.register("giant_netherite_axe", GiantNetheriteAxeItem::new);
     public static final RegistryObject<Item> RED_AXE = AnnoyingVillagersModItems.REGISTRY.register("red_axe", RedAxeItem::new);

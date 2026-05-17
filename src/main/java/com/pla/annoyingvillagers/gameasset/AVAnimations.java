@@ -152,6 +152,7 @@ import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimation
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -389,6 +390,29 @@ public class AVAnimations {
 
     // Animation from Yonchi Chikito
     public static AnimationManager.AnimationAccessor<ActionAnimation> DIAMOND_ATTRACTOR_SKILL;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CLEAVER_IDLE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO1;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO2;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_AUTO3;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_SLASH;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_THRUST;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> CLEAVER_THRUST_AFTER;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_COMBO;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_DOWN_LEFT;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_RIGHT_HORIZONAL;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP_LEFT;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SWORD_ONEHAND_UP_RIGHT;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_ATTACK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_STEP_ATTACK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> TACHI_KICK;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> GREAT_AXE_IDLE;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> GREAT_AXE_OFFHAND_ATTACK;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> GREAT_AXE_WALK;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> MOON_BLADE_SKILL;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_FIRST;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_SECOND;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SLAM_THIRD;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<ActionAnimation> TRIDENT_ATTACK;
@@ -2085,7 +2109,7 @@ public class AVAnimations {
                         )
         );
         RED_AXE_ATTACK = builder.nextAccessor("biped/pla/red_axe_attack",
-                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 1.0F, 1.2F, 1.5F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, (humanoidArmature.get()).rootJoint, accessor, humanoidArmature))
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 1.0F, 1.2F, 2.5F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, (humanoidArmature.get()).rootJoint, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(4.0F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.8F))
                         .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(3.0F))
