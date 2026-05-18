@@ -17,7 +17,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.List;
 
-public class ObsidianSledgehammerItem extends AxeItem {
+public class ObsidianSledgehammerItem extends SwordItem {
 
     public ObsidianSledgehammerItem() {
         super(new Tier() {
@@ -44,7 +44,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get());
             }
-        }, 1.0F, -2.6F, (new Properties()).fireResistant());
+        }, 1, -2.6F, (new Properties()).fireResistant());
     }
 
     public void inventoryTick(@NotNull ItemStack itemstack, @NotNull Level level, @NotNull Entity entity, int i, boolean flag) {

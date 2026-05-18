@@ -4,7 +4,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class DiamondHalberdItem extends AxeItem {
+public class DiamondHalberdItem extends SwordItem {
 
     public DiamondHalberdItem() {
         super(new Tier() {

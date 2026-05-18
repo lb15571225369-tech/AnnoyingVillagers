@@ -1452,10 +1452,10 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_3,
                             AVAnimations.GREATSWORD_DASH_ATTACK,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
                             AVAnimations.GREATSWORD_POWER_GEYSER,
                             AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GREATAXE)
@@ -1474,10 +1474,10 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_3,
                             AVAnimations.GREATSWORD_DASH_ATTACK,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
                             AVAnimations.GREATSWORD_POWER_GEYSER,
                             AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.GIANT_AXE)
@@ -1496,10 +1496,10 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.GREATAXE_SLASH,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
-                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_3,
                             AVAnimations.GREATSWORD_DASH_ATTACK,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
                             AVAnimations.GREATSWORD_POWER_GEYSER,
                             AVAnimations.GREATSWORD_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.BATTLE_AXE)

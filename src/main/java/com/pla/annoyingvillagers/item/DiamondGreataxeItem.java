@@ -4,7 +4,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class DiamondGreataxeItem extends AxeItem {
+public class DiamondGreataxeItem extends SwordItem {
 
     public DiamondGreataxeItem() {
         super(new Tier() {
@@ -31,6 +31,6 @@ public class DiamondGreataxeItem extends AxeItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
-        }, 3, -3.2F, (new Properties()));
+        }, 3, -2.9F, (new Properties()));
     }
 }

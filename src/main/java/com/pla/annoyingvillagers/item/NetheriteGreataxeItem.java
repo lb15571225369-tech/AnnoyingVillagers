@@ -34,6 +34,6 @@ public class NetheriteGreataxeItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(AnnoyingVillagersModItems.DARK_NETHERITE.get()));
             }
-        }, 3, -2.6F, (new Properties()));
+        }, 3, -2.7F, (new Properties()));
     }
 }

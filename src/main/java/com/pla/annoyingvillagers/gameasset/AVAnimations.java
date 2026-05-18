@@ -1898,8 +1898,7 @@ public class AVAnimations {
                                 .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.9F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.45f, Animations.ReusableSources.PLAY_SOUND, AnimationEvent.Side.CLIENT).params(EpicFightSounds.ROCKET_JUMP.get()),
-                                AnimationEvent.InTimeEvent.create(1.5f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
+                                AnimationEvent.InTimeEvent.create(1.6f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE,
                                                 AnimationEvent.Side.CLIENT)
                                         .params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 3.0, 2F
                                         ))
@@ -1907,19 +1906,25 @@ public class AVAnimations {
         GREATSWORD_DASH_ATTACK = builder.nextAccessor("biped/battle_style/greatsword_dash_attack", access ->
                 new DashAttackAnimation(0.2f, 0.0f, 0.5f, 0.65f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
-                        .addEvents(AnimationEvent.InTimeEvent.create(0.7f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 1.1, 0.55F))
         );
         GREATSWORD_POWER_GEYSER = builder.nextAccessor("biped/battle_style/greatsword_power_geyser", access ->
                 new AttackAnimation(0.2f, 0.0f, 0.8f, 0.9f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.1f))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
-                        .addEvents(AnimationEvent.InTimeEvent.create(0.9f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.3F, -5.0F), Armatures.BIPED.get().toolR, 1.1, 1.55F)));
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.9f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER)
+                                .params(new Vec3f(0.0F, -0.3F, -5.0F), Armatures.BIPED.get().toolR, 1.1, 1.55F))
+        );
         GREATSWORD_AIRSLAM = builder.nextAccessor("biped/battle_style/greatsword_airslam", access ->
                 new BasicAttackAnimation(0.2f, 0.0f, 0.5f, 0.65f, 2f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
                         .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.3f))
                         .addProperty(AnimationProperty.ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0f, 0.5f))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
-                        .addEvents(AnimationEvent.InTimeEvent.create(0.6f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER).params(new Vec3f(0.0F, -0.24F, -2.0F), Armatures.BIPED.get().toolR, 1.1, 0.55F)));
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.65f, Animations.ReusableSources.FRACTURE_GROUND_SIMPLE, AnimationEvent.Side.SERVER)
+                                        .params(new Vec3f(0.0F, -0.3F, -5.0F), Armatures.BIPED.get().toolR, 1.1, 1.55F)
+                        )
+        );
 
         // Animation from Visitors from Omneria
         TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),

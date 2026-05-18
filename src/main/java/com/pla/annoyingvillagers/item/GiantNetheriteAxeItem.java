@@ -4,7 +4,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class GiantNetheriteAxeItem extends AxeItem {
+public class GiantNetheriteAxeItem extends SwordItem {
 
     public GiantNetheriteAxeItem() {
         super(new Tier() {
