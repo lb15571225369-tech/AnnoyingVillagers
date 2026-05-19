@@ -1,3 +1,11 @@
 {
-	"type": "epicfight:dagger"
+	"attributes":
+	{
+		"common":
+		{
+			"impact": 1.5,
+			"max_strikes":1
+		}
+	},
+	"type": "annoyingvillagers:moon_blade"
 }

@@ -133,12 +133,13 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.IRON_HALBERD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_HALBERD.get());
                         pOutput.accept(AnnoyingVillagersModItems.SAMANTHA_THE_KILLER_AXE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ARMBLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.KNIFE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_KNIFE.get());
                         pOutput.accept(AnnoyingVillagersModItems.NETHERITE_KNIFE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_ARMBLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.GOLDEN_MOON_BLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_MOON_BLADE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_CLAW.get());
                         pOutput.accept(AnnoyingVillagersModItems.GEM_SHIELD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEATER_SHIELD.get());
                         pOutput.accept(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get());
@@ -155,7 +156,6 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BOLT.get());
                         pOutput.accept(AnnoyingVillagersModItems.GOLDEN_MACE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_MACE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SHEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get());
                         pOutput.accept(AnnoyingVillagersModItems.DARK_NETHERITE.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY.get());

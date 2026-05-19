@@ -117,6 +117,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -249,6 +250,10 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR;
+
+    // Animation from EpicFight Sanji
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SANJI_DIABLE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SANJI_CONCASSER;
 
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
     public static AnimationManager.AnimationAccessor<StaticAnimation> BLUE_DEMON_STATE_TRANSFORM;
@@ -383,6 +388,19 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<DashAttackAnimation> GREATSWORD_DASH_ATTACK;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GREATSWORD_AIRSLAM;
     public static AnimationManager.AnimationAccessor<AttackAnimation> GREATSWORD_POWER_GEYSER;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> THIEF_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> THIEF_AUTO3;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> THIEF_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<AirSlashAnimation> THIEF_AIRSLASH;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> THIEF_STEAL;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_BLADES_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_BLADES_AIRSLAM;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> DUAL_BLADES_WHIRLEDGE;
+    public static AnimationManager.AnimationAccessor<DashAttackAnimation> SWORD_DASH_ATTACK;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> IRON_LOTUS_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> IRON_LOTUS_AUTO2;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> IRON_LOTUS_AUTO3;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> IRON_LOTUS_DASH_ATTACK;
 
     // Animation from Visitors from Omneria
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> TRIDENT_THROW_3;
@@ -921,6 +939,67 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(1.25F, ReuseableEvents.SUMMON_OBSIDIAN_CIRCLE, Side.SERVER)
                         ));
 
+        // Animation from EpicFight Sanji
+        SANJI_DIABLE = builder.nextAccessor("biped/epicsanji/sanji_disable",
+                accessor -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidArmature, new Phase[]{new Phase(0.0F, 1.95F, 2.15F, 3.0F, Float.MAX_VALUE,  humanoidArmature.get().rootJoint, AVCollider.SANJI_SPIN)}))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(12.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, SoundEvents.BLAZE_SHOOT)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.55F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.65F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.75F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.85F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.95F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.05F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.15F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.25F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.35F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.45F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.55F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(1.65F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get())
+                        ));
+        SANJI_CONCASSER = builder.nextAccessor("biped/epicsanji/sanji_concasser",
+                accessor -> (new BasicMultipleAttackAnimation(0.1F, 1.15F, 1.9F, 2.35F, AVCollider.SANJI_SPIN, humanoidArmature.get().rootJoint, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(8.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.05F)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.05F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.15F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.25F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.35F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.45F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()),
+                                AnimationEvent.InTimeEvent.create(0.55F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(AVSounds.SWORD_WHOOSH.get()))
+                        );
+
         // Animation from Pugilist Steve Annoying Villagers 1.18.2
         BLUE_DEMON_STATE_TRANSFORM = builder.nextAccessor("biped/pugilist_steve/blue_demon_state_transform",
                 accessor -> new StaticAnimation(true, accessor, humanoidArmature));
@@ -1009,17 +1088,16 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.2F));
         WHIRLWIND_KICK = builder.nextAccessor("biped/pugilist_steve/whirlwind_kick",
                 accessor -> new BasicMultipleAttackAnimation(0.2F, 0.29F, 0.45F, 0.85F, 1.8F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().legR, accessor, humanoidArmature).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addEvents(
-                                new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER)
-                                                .params(EpicFightSounds.WHOOSH.get())})
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                                AnimationEvent.InTimeEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER)
+                                        .params(EpicFightSounds.WHOOSH.get()))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.5F));
         LEGENDARY_SWORD_HEAVY_ATTACK = builder.nextAccessor("biped/pugilist_steve/legendary_sword_heavy_attack",
                 accessor -> new HeavyAttackAnimation(0.05F, 0.05F, 0.5F, 0.7F, 1.2F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(4.0F))
@@ -1108,7 +1186,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.2F));
         RUSH_SWORD = builder.nextAccessor("biped/pugilist_steve/rush_sword",
                 accessor -> new RushSwordAnimation(
                         0.15F, 0.0F, 0.1F, 0.26F, 0.75F,
@@ -1193,7 +1271,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.2F));
         KNOCKDOWN_FORWARD = builder.nextAccessor("biped/pugilist_steve/knockdown_forward",
                 accessor -> new KnockdownAnimation(0.1F, accessor, humanoidArmature)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
@@ -1376,7 +1454,7 @@ public class AVAnimations {
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
                                         AnimationEvent.InTimeEvent.create(0.23F, ReusableSources.PLAY_SOUND, Side.SERVER).params(EpicFightSounds.WHOOSH.get())})
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.5F));
         SUPER_PUNCH = builder.nextAccessor("biped/pugilist_steve/super_punch",
                 accessor -> new AttackAnimation(0.05F, 1.0F, 1.25F, 1.4F, Float.MAX_VALUE, ColliderPreset.SWORD, humanoidArmature.get().toolR, accessor, humanoidArmature)
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
@@ -1925,6 +2003,100 @@ public class AVAnimations {
                                         .params(new Vec3f(0.0F, -0.3F, -5.0F), Armatures.BIPED.get().toolR, 1.1, 1.55F)
                         )
         );
+        THIEF_AUTO1 = builder.nextAccessor("biped/battle_style/thief_auto1",
+                accessor -> new BasicAttackAnimation(0.2f, 0f, 0.2f, 0.35f, 0.5f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        THIEF_AUTO3 = builder.nextAccessor("biped/battle_style/thief_auto3",
+                accessor -> new BasicAttackAnimation(0.2f, 0f, 0.55f, 0.65f, 1.7f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+
+        THIEF_DASH_ATTACK = builder.nextAccessor("biped/battle_style/thief_dash_attack",
+                accessor -> new DashAttackAnimation(0.2f, 0f, 0.3f, 0.4f, 1.7f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+
+        THIEF_AIRSLASH = builder.nextAccessor("biped/battle_style/thief_airslash",
+                accessor -> new AirSlashAnimation(0.2f, 0f, 0.2f, 0.3f, 1.7f, false, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.MOVE_VERTICAL, false)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+
+        THIEF_STEAL = builder.nextAccessor("biped/battle_style/thief_steal",
+                accessor -> new AttackAnimation(0.2f, 0f, 0.65f, 0.75f, 1.7f, null, Armatures.BIPED.get().toolR, accessor, Armatures.BIPED)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        DUAL_BLADES_AIRSLAM = builder.nextAccessor("biped/battle_style/dual_blades_airslam", access ->
+                new BasicAttackAnimation(0.2f, access, humanoidArmature,
+                        new AttackAnimation.Phase(0.0f, 0.0f, 0.4f, 0.5f, 0.6f, 0.6f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f)))
+                        .addEvents(AnimationProperty.StaticAnimationProperty.ON_BEGIN_EVENTS, AnimationEvent.SimpleEvent.create((livingEntityPatch, assetAccessor, animationParameters) ->
+                        {
+                            if (assetAccessor.get() instanceof AttackAnimation animation && livingEntityPatch.getOriginal().getOffhandItem().getItem() instanceof SwordItem swordItem)
+                            {
+                                animation.addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.adder(swordItem.getDamage()));
+                            }
+                        }, AnimationEvent.Side.SERVER))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        DUAL_BLADES_AUTO3 = builder.nextAccessor("biped/battle_style/dual_blades_auto3", access ->
+                new BasicAttackAnimation(0.2f, access, humanoidArmature,
+                        new AttackAnimation.Phase(0.0f, 0.0f, 0.55f, 0.65f, 0.6f, 0.65f, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f)),
+                        new AttackAnimation.Phase(0.65f, 0.0f, 0.65f, 0.75f, 0.75f, 0.75f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f)),
+                        new AttackAnimation.Phase(0.75f, 0.0f, 0.9f, 1f, 1f, 1f, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f)),
+                        new AttackAnimation.Phase(1f, 0.0f, 1f, 1.1f, 3f, 3.0f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f))
+                )
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+
+        DUAL_BLADES_WHIRLEDGE = builder.nextAccessor("biped/battle_style/dual_blades_whirledge", access ->
+                new AttackAnimation(0.2f, access, humanoidArmature,
+                        new AttackAnimation.Phase(0.0f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.1f)),
+                        new AttackAnimation.Phase(0.4f, 0.0f, 0.4f, 0.5f, 0.5f, 0.5f, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.15f)),
+                        new AttackAnimation.Phase(0.5f, 0.0f, 0.5f, 0.6f, 0.6f, 0.6f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2f)),
+                        new AttackAnimation.Phase(0.6f, 0.0f, 0.6f, 0.7f, 0.7f, 0.7f, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.25f)),
+                        new AttackAnimation.Phase(0.7f, 0.0f, 0.7f, 0.8f, 0.8f, 0.8f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().toolR, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.3f)),
+                        new AttackAnimation.Phase(0.8f, 0.0f, 0.8f, 0.9f, 0.9f, 0.9f, InteractionHand.OFF_HAND, Armatures.BIPED.get().toolL, null)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.35f)),
+                        new AttackAnimation.Phase(0.9f, 0.0f, 1.25f, 1.35f, 2f, 2f, InteractionHand.MAIN_HAND, Armatures.BIPED.get().rootJoint, ColliderPreset.BATTOJUTSU_DASH)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                                .addProperty(AnimationProperty.AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5f))
+                )
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        SWORD_DASH_ATTACK = builder.nextAccessor("biped/battle_style/sword_dash_attack", access ->
+                new DashAttackAnimation(0.2f, 0.0f, 0.3f, 0.45f, 1.9f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
+        IRON_LOTUS_AUTO1 = builder.nextAccessor("biped/battle_style/iron_lotus_auto1", access ->
+                new BasicAttackAnimation(0.1f, 0.0f, 0.1f, 0.2f, 0.25f, null, Armatures.BIPED.get().toolR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.2F));
+
+        IRON_LOTUS_AUTO2 = builder.nextAccessor("biped/battle_style/iron_lotus_auto2", access ->
+                new BasicAttackAnimation(0.1f, 0.0f, 0.1f, 0.2f, 0.25f, null, Armatures.BIPED.get().toolL,  access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.2F));
+
+        IRON_LOTUS_AUTO3 = builder.nextAccessor("biped/battle_style/iron_lotus_auto3", access ->
+                new BasicAttackAnimation(0.1f, 0.0f, 0.1f, 0.2f, 1.0f, null, Armatures.BIPED.get().legR, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.2F));
+
+        IRON_LOTUS_DASH_ATTACK = builder.nextAccessor("biped/battle_style/iron_lotus_dash_attack", access ->
+                new BasicAttackAnimation(0.1f, 0.0f, 0.2f, 0.4f, 1.0f, ColliderPreset.BATTOJUTSU_DASH, Armatures.BIPED.get().rootJoint, access, Armatures.BIPED)
+                        .addProperty(AnimationProperty.AttackAnimationProperty.BASIS_ATTACK_SPEED, 5.0F));
 
         // Animation from Visitors from Omneria
         TRIDENT_THROW_3 = builder.nextAccessor("biped/omneria/trident_throw_3", accessor -> new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.3F, 0.3F, InteractionHand.OFF_HAND, humanoidArmature.get().handR, WOMWeaponColliders.PUNCH),

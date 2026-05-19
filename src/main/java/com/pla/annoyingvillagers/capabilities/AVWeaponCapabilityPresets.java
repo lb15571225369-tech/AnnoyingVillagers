@@ -685,6 +685,115 @@ public class AVWeaponCapabilityPresets {
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
+    public static final Function<Item, Builder> KNIFE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.DAGGER)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER ? Styles.TWO_HAND : Styles.ONE_HAND)
+            .collider(ColliderPreset.DAGGER)
+            .newStyleCombo(Styles.ONE_HAND,
+                    AVAnimations.THIEF_AUTO1,
+                    AVAnimations.DAGGER_AUTO1,
+                    AVAnimations.DAGGER_AUTO2,
+                    AVAnimations.DAGGER_AUTO3,
+                    AVAnimations.THIEF_AUTO3,
+                    AVAnimations.THIEF_DASH_ATTACK,
+                    AVAnimations.THIEF_AIRSLASH)
+            .newStyleCombo(Styles.TWO_HAND,
+                    AVAnimations.DAGGER_DUAL_AUTO1,
+                    AVAnimations.DAGGER_DUAL_AUTO2,
+                    AVAnimations.DAGGER_DUAL_AUTO3,
+                    AVAnimations.DAGGER_DUAL_AUTO4,
+                    AVAnimations.DUAL_BLADES_AUTO3,
+                    AVAnimations.SWORD_DASH_ATTACK,
+                    AVAnimations.DUAL_BLADES_AIRSLAM)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.KNIFE)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DUAL_KNIFE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory()
+                            == WeaponCategories.DAGGER);
+
+    public static final Function<Item, Builder> MOON_BLADE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.DAGGER)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .canBePlacedOffhand(true)
+            .collider(ColliderPreset.DAGGER)
+            .newStyleCombo(Styles.COMMON,
+                    AVAnimations.IRON_LOTUS_AUTO1,
+                    AVAnimations.IRON_LOTUS_AUTO2,
+                    AVAnimations.FIST_UP,
+                    AVAnimations.IRON_LOTUS_AUTO3,
+                    Animations.REVELATION_TWOHAND,
+                    AVAnimations.IRON_LOTUS_DASH_ATTACK,
+                    Animations.REVELATION_ONEHAND)
+            .innateSkill(Styles.COMMON,
+                    (itemstack) -> AVSkills.MOON_BLADE)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, Animations.BIPED_WALK)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory()
+                            == WeaponCategories.DAGGER);
+
+    public static final Function<Item, Builder> ARM_BLADE = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.DAGGER)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .collider(ColliderPreset.DAGGER)
+            .canBePlacedOffhand(true)
+            .newStyleCombo(Styles.COMMON,
+                    AVAnimations.IRON_LOTUS_AUTO1,
+                    AVAnimations.IRON_LOTUS_AUTO2,
+                    AVAnimations.FIST_UP,
+                    AVAnimations.IRON_LOTUS_AUTO3,
+                    Animations.REVELATION_TWOHAND,
+                    AVAnimations.IRON_LOTUS_DASH_ATTACK,
+                    Animations.REVELATION_ONEHAND)
+            .innateSkill(Styles.COMMON,
+                    (itemstack) -> AVSkills.ARM_BLADE)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, Animations.BIPED_WALK)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory()
+                            == WeaponCategories.DAGGER);
+
+    public static final Function<Item, Builder> CLAW = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.DAGGER)
+            .canBePlacedOffhand(false)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .collider(ColliderPreset.DAGGER)
+            .newStyleCombo(Styles.COMMON,
+                    AVAnimations.IRON_LOTUS_AUTO1,
+                    AVAnimations.IRON_LOTUS_AUTO2,
+                    AVAnimations.FIST_UP,
+                    AVAnimations.IRON_LOTUS_AUTO3,
+                    Animations.REVELATION_TWOHAND,
+                    AVAnimations.IRON_LOTUS_DASH_ATTACK,
+                    Animations.REVELATION_ONEHAND)
+            .innateSkill(Styles.COMMON,
+                    (itemstack) -> AVSkills.CLAW)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, Animations.BIPED_WALK);
+
     public static final Function<Item, Builder> CLOW_SWORD = (item) -> WeaponCapability.builder()
             .category(WeaponCategories.SWORD)
             .swingSound(AVSounds.SWORD_WHOOSH.get())
@@ -1661,5 +1770,9 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hook_sword"), AVWeaponCapabilityPresets.HOOK_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "flanker_hook_sword"), AVWeaponCapabilityPresets.FLANKER_HOOK_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dnax_hook_sword"), AVWeaponCapabilityPresets.DNAX_HOOK_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "knife"), AVWeaponCapabilityPresets.KNIFE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "arm_blade"), AVWeaponCapabilityPresets.ARM_BLADE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "moon_blade"), AVWeaponCapabilityPresets.MOON_BLADE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "claw"), AVWeaponCapabilityPresets.CLAW);
     }
 }

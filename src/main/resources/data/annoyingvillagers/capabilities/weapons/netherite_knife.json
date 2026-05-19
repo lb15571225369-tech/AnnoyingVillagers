@@ -1,3 +1,11 @@
 {
-	"type": "epicfight:dagger"
+	"attributes":
+	{
+		"common":
+		{
+			"impact": 3.5,
+			"max_strikes":3
+		}
+	},
+	"type": "annoyingvillagers:knife"
 }

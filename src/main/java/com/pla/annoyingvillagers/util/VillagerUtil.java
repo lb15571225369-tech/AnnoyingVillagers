@@ -28,7 +28,7 @@ public class VillagerUtil {
         float chance = new Random().nextFloat();
         ItemStack itemStack;
         if (chance <= 0.2F) {
-            itemStack = new ItemStack(AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
+            itemStack = new ItemStack(AnnoyingVillagersModItems.DIAMOND_KNIFE.get());
         } else if (chance <= 0.4F) {
             itemStack = new ItemStack(AnnoyingVillagersModItems.DIAMOND_FALCHION.get());
         } else if (chance <= 0.6F) {

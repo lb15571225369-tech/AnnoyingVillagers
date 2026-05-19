@@ -374,7 +374,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_DAGGER.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_KNIFE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return PlayerNpcDagger.DAGGER;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {
@@ -880,7 +880,7 @@ public class MobPatchCommon {
             }
         }
 
-        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_DAGGER.get().getDefaultInstance())) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.DIAMOND_KNIFE.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.ONE_HAND) {
                 return NpcDagger.DAGGER;
             } else if (style == CapabilityItem.Styles.TWO_HAND) {

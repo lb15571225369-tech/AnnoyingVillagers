@@ -338,7 +338,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             equipGearForLowClone(lowShadowHerobrineCloneEntityMiddle, false);
             lowShadowHerobrineCloneEntityMiddle.setProtectUUID(this.getUUID());
             lowShadowHerobrineCloneEntityMiddle.setProtectEntity(this);
-            lowShadowHerobrineCloneEntityMiddle.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SHEAR.get()));
+            lowShadowHerobrineCloneEntityMiddle.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_CLAW.get()));
             lowShadowHerobrineCloneEntityMiddle.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get()));
             pLevel.getLevel().addFreshEntity(lowShadowHerobrineCloneEntityMiddle);
 

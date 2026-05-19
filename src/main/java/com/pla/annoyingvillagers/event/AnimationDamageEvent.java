@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.event;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.item.DNAxHookedSwordItem;
 import com.pla.annoyingvillagers.item.DiamondBlasterSwordItem;
+import com.pla.annoyingvillagers.item.DiamondClawItem;
 import com.pla.annoyingvillagers.potion.ObedienceMobEffect;
 import com.pla.annoyingvillagers.util.CommonUtil;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -54,6 +55,14 @@ public class AnimationDamageEvent {
                             ObedienceMobEffect.applyObedience(mob, livingAttacker, 20 * 10);
                         } else {
                             ObedienceMobEffect.applyObedience(mob, livingAttacker, 20 * 5);
+                        }
+                    }
+                }
+
+                if (livingAttacker.getMainHandItem().getItem() instanceof DiamondClawItem) {
+                    if (attackerDynamicAnimation == Animations.FIST_AIR_SLASH && victim instanceof LivingEntity livingVictim) {
+                        if (!livingVictim.level().isClientSide() && !livingVictim.getActiveEffects().isEmpty()) {
+                            livingVictim.removeAllEffects();
                         }
                     }
                 }

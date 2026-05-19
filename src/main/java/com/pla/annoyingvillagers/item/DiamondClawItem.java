@@ -4,11 +4,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-public class GoldenMoonBladeItem extends SwordItem {
-    public GoldenMoonBladeItem() {
+public class DiamondClawItem extends SwordItem {
+    public DiamondClawItem() {
         super(new Tier() {
             public int getUses() {
-                return 32;
+                return 1561;
             }
 
             public float getSpeed() {
@@ -16,7 +16,7 @@ public class GoldenMoonBladeItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 2.4F;
+                return 3.0F;
             }
 
             public int getLevel() {
@@ -28,8 +28,9 @@ public class GoldenMoonBladeItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack(Items.GOLD_INGOT));
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, 0.8F, (new Properties()));
     }
 }
+
