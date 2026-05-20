@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.capabilities;
 
-import com.mojang.datafixers.util.Pair;
 import java.util.function.Function;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
@@ -12,8 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.Tiers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
@@ -22,15 +19,11 @@ import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.*;
-import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.skill.SkillSlots;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Builder;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
-import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 public class AVWeaponCapabilityPresets {
 
@@ -478,65 +471,53 @@ public class AVWeaponCapabilityPresets {
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
-    public static final Function<Item, Builder> AV_SWORD = (item) -> {
-        WeaponCapability.Builder builder = WeaponCapability.builder()
-                .category(WeaponCategories.SWORD)
-                .swingSound(AVSounds.SWORD_WHOOSH.get())
-                .styleProvider(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
-                                && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
-                                && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
-                .collider(ColliderPreset.SWORD)
-                .newStyleCombo(Styles.ONE_HAND,
-                        Animations.SWORD_AUTO1,
-                        AVAnimations.SWORD_DASH,
-                        AVAnimations.DAGGER_AUTO1,
-                        AnimsHerrscher.HERRSCHER_AUTO_2,
-                        AnimsHerrscher.HERRSCHER_AUTO_1,
-                        Animations.SWORD_DASH,
-                        Animations.SWORD_AIR_SLASH)
-                .newStyleCombo(Styles.TWO_HAND,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        AVAnimations.DUAL_SWORD1,
-                        AVAnimations.DUAL_SWORD2,
-                        AVAnimations.DUAL_SWORD3,
-                        Animations.SWORD_DUAL_DASH,
-                        Animations.SWORD_DUAL_AIR_SLASH)
-                .newStyleCombo(Styles.MOUNT,
-                        Animations.SWORD_DUAL_AUTO1,
-                        Animations.SWORD_DUAL_AUTO2,
-                        Animations.SWORD_DUAL_AUTO3,
-                        Animations.SWORD_MOUNT_ATTACK)
-                .innateSkill(Styles.ONE_HAND,
-                        (itemstack) -> EpicFightSkills.SWEEPING_EDGE)
-                .innateSkill(Styles.TWO_HAND,
-                        (itemstack) -> EpicFightSkills.DANCING_EDGE)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
-                .weaponCombinationPredicator(
-                        (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
-                                || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
-                                || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
-
-        if (item instanceof TieredItem tieredItem) {
-            builder.addStyleAttibutes(Styles.COMMON, Pair.of(EpicFightAttributes.IMPACT.get(), EpicFightAttributes.getImpactModifier(0.5D + 0.2D * (double) tieredItem.getTier().getLevel())));
-            builder.addStyleAttibutes(Styles.COMMON, Pair.of(EpicFightAttributes.MAX_STRIKES.get(), EpicFightAttributes.getMaxStrikesModifier(1)));
-            builder.hitSound(tieredItem.getTier() == Tiers.WOOD ? EpicFightSounds.BLUNT_HIT.get() : EpicFightSounds.BLADE_HIT.get());
-            builder.hitParticle(tieredItem.getTier() == Tiers.WOOD ? EpicFightParticles.HIT_BLUNT.get() : EpicFightParticles.HIT_BLADE.get());
-        }
-
-        return builder;
-    };
+    public static final Function<Item, Builder> AV_SWORD = (item) -> WeaponCapability.builder()
+            .category(WeaponCategories.SWORD)
+            .swingSound(AVSounds.SWORD_WHOOSH.get())
+            .styleProvider(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
+                            && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
+            .collider(ColliderPreset.SWORD)
+            .newStyleCombo(Styles.ONE_HAND,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
+                    AVAnimations.SWORD_DASH,
+                    AVAnimations.DAGGER_AUTO1,
+                    AnimsHerrscher.HERRSCHER_AUTO_2,
+                    AnimsHerrscher.HERRSCHER_AUTO_1,
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
+            .newStyleCombo(Styles.TWO_HAND,
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
+            .newStyleCombo(Styles.MOUNT,
+                    Animations.SWORD_DUAL_AUTO1,
+                    Animations.SWORD_DUAL_AUTO2,
+                    Animations.SWORD_DUAL_AUTO3,
+                    Animations.SWORD_MOUNT_ATTACK)
+            .innateSkill(Styles.ONE_HAND,
+                    (itemstack) -> AVSkills.SWORD)
+            .innateSkill(Styles.TWO_HAND,
+                    (itemstack) -> AVSkills.DUAL_SWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_HOLD)
+            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+            .weaponCombinationPredicator(
+                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)));
 
     public static final Function<Item, Builder> THUNDER_DIAMOND_BLADE = (item) -> WeaponCapability.builder()
             .category(WeaponCategories.SWORD)
@@ -547,22 +528,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -596,22 +576,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -645,22 +624,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -803,22 +781,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -874,22 +851,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -923,22 +899,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -972,22 +947,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -1084,22 +1058,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -1133,22 +1106,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -1182,22 +1154,21 @@ public class AVWeaponCapabilityPresets {
                             && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI ? Styles.ONE_HAND : Styles.TWO_HAND)
             .collider(ColliderPreset.SWORD)
             .newStyleCombo(Styles.ONE_HAND,
-                    Animations.SWORD_AUTO1,
+                    AVAnimations.CUT_LEFT_DP_AUTO_3,
                     AVAnimations.SWORD_DASH,
                     AVAnimations.DAGGER_AUTO1,
                     AnimsHerrscher.HERRSCHER_AUTO_2,
                     AnimsHerrscher.HERRSCHER_AUTO_1,
-                    Animations.SWORD_DASH,
-                    Animations.SWORD_AIR_SLASH)
+                    AVAnimations.CUT_LEFT_DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_AUTO_1,
+                    AVAnimations.DP_AUTO_2,
+                    AVAnimations.DP_AUTO_3,
+                    AVAnimations.DP_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO2,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.DP_NIGHT_FALL)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -1350,14 +1321,14 @@ public class AVWeaponCapabilityPresets {
                     Animations.AXE_DASH,
                     Animations.AXE_AIRSLASH)
             .newStyleCombo(Styles.TWO_HAND,
-                    Animations.SWORD_DUAL_AUTO1,
-                    Animations.SWORD_DUAL_AUTO2,
-                    Animations.SWORD_DUAL_AUTO3,
-                    AVAnimations.DUAL_SWORD1,
-                    AVAnimations.DUAL_SWORD2,
-                    AVAnimations.DUAL_SWORD3,
-                    Animations.SWORD_DUAL_DASH,
-                    Animations.SWORD_DUAL_AIR_SLASH)
+                    AVAnimations.DP_HEAVY_AUTO_1,
+                    AVAnimations.DP_HEAVY_AUTO_2,
+                    AVAnimations.DP_HEAVY_AUTO_3,
+                    AVAnimations.DP_HEAVY_AUTO_4,
+                    AVAnimations.DUAL_SWORD_AUTO4,
+                    AVAnimations.DUAL_SWORD_AUTO5,
+                    AVAnimations.DP_DASH,
+                    AVAnimations.HOOK_SLASH_AIR)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SWORD_DUAL_AUTO1,
                     Animations.SWORD_DUAL_AUTO2,
@@ -1434,21 +1405,21 @@ public class AVWeaponCapabilityPresets {
                             Animations.TACHI_AUTO3,
                             AnimsRuine.RUINE_CHATIMENT,
                             AVAnimations.TACHI_DASH,
-                            Animations.LONGSWORD_AIR_SLASH)
+                            AVAnimations.HOOK_SLASH_AIR)
                     .innateSkill(Styles.TWO_HAND,
-                            (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
+                            (itemstack) -> AVSkills.SWORD)
                     .newStyleCombo(Styles.OCHS,
-                            Animations.SWORD_DUAL_AUTO1,
-                            Animations.SWORD_DUAL_AUTO2,
+                            AVAnimations.DP_HEAVY_AUTO_1,
+                            AVAnimations.DP_HEAVY_AUTO_2,
                             AVAnimations.DUAL_SWORD_AUTO3,
                             AVAnimations.DUAL_SWORD_AUTO4,
                             AVAnimations.DUAL_SWORD_AUTO5,
-                            Animations.SWORD_DUAL_DASH,
-                            Animations.SWORD_DUAL_AIR_SLASH)
+                            AVAnimations.DP_DASH,
+                            AVAnimations.DP_NIGHT_FALL)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.OCHS,
-                            (itemstack) -> EpicFightSkills.RUSHING_TEMPO)
+                            (itemstack) -> AVSkills.DUAL_LONGSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_HOLD_TACHI)
@@ -1481,9 +1452,9 @@ public class AVWeaponCapabilityPresets {
                             Animations.LONGSWORD_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
                     .innateSkill(Styles.ONE_HAND,
-                            (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
+                            (itemstack) -> AVSkills.LONGSWORD)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AVAnimations.DUAL_SWORD1,
+                            AVAnimations.DP_HEAVY_AUTO_3,
                             AVAnimations.DUAL_SWORD_AUTO2,
                             AVAnimations.DUAL_SWORD_AUTO3,
                             AVAnimations.DUAL_SWORD_AUTO4,
@@ -1520,7 +1491,7 @@ public class AVWeaponCapabilityPresets {
                             AnimsRuine.RUINE_AUTO_3,
                             AnimsRuine.RUINE_EXPIATION_1,
                             AnimsRuine.RUINE_EXPIATION_2,
-                            Animations.LONGSWORD_DASH,
+                            AVAnimations.CUT_LEFT_DP_DASH,
                             AnimsRuine.RUINE_EXPIATION)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> AVSkills.CHIPPED_LONGSWORD)
