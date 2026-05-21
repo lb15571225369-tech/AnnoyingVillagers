@@ -1,0 +1,358 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+MixinGradle did not locate the diffplug APT plugin, skipping eclipse task configuration
+Java: 17.0.18, JVM: 17.0.18+8 (Eclipse Adoptium), Arch: amd64
+[cn-mirrors] project remove https://repo.maven.apache.org/maven2/
+files(...) dependencies are not deobfuscated. Use a flatDir repository instead: https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
+Cannot deobfuscate dependency of type DefaultFileCollectionDependency_Decorated, using obfuscated version!
+[cn-mirrors] project remove https://repo.maven.apache.org/maven2/
+
+> Task :downloadMcpConfig
+> Task :extractSrg UP-TO-DATE
+> Task :createMcpToSrg UP-TO-DATE
+
+> Task :compileJava
+注: SpongePowered MIXIN Annotation Processor Version=0.8.5 (MixinGradle Version=0.7.38)
+注: Supported obfuscation types: ObfuscationServiceMCP supports [notch] ObfuscationServiceFG3 supports [searge]
+注: Loading searge mappings from C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\createMcpToSrg\output.tsrg
+注: Writing refmap to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-refmap.json
+注: Writing refmap to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-refmap.json
+注: Writing searge composite mappings to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-mappings.tsrg
+注: Writing refmap to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-refmap.json
+注: Writing refmap to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-refmap.json
+注: Writing searge composite mappings to C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\build\tmp\compileJava\compileJava-mappings.tsrg
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:40: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:45: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:55: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:56: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:57: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:58: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:59: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:60: 警告: [removal] Builder 中的 weaponCombinationPredicator(Function<LivingEntityPatch<?>,Boolean>) 已过时, 且标记为待删除
+                    .weaponCombinationPredicator((patch) -> true);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:64: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:68: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:76: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.MOUNT,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:80: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:81: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:82: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:83: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:84: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:89: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:95: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:103: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    ).newStyleCombo(Styles.MOUNT,
+                     ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:106: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:107: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:108: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:109: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:110: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:111: 警告: [removal] Builder 中的 weaponCombinationPredicator(Function<LivingEntityPatch<?>,Boolean>) 已过时, 且标记为待删除
+                    .weaponCombinationPredicator(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:119: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:125: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:133: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    ).newStyleCombo(Styles.MOUNT,
+                     ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:136: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:137: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:138: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:139: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:140: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:141: 警告: [removal] Builder 中的 weaponCombinationPredicator(Function<LivingEntityPatch<?>,Boolean>) 已过时, 且标记为待删除
+                    .weaponCombinationPredicator(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:148: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((entityPatch) -> Styles.TWO_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:153: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:163: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:164: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:165: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:166: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:167: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.MOUNT, Animations.BIPED_MOUNT)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:168: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.MOUNT, Animations.BIPED_MOUNT)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:169: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.IDLE, Animations.BIPED_MOUNT)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:170: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:174: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:178: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:189: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:190: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_ASCENDED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:191: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_ASCENDED_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:192: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.ANTITHEUS_ASCENDED_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:193: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.FIST_GUARD);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:197: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:201: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:211: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:212: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:213: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:214: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:215: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.FIST_GUARD);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:219: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:222: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.ONE_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:232: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:233: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:234: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:235: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:236: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD);
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:240: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:245: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:253: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.OCHS,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:265: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:266: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:267: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:268: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:269: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.FIST_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:270: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.OCHS, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:271: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.OCHS, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:272: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.OCHS, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:273: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.OCHS, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:274: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.OCHS, LivingMotions.BLOCK, AVAnimations.FIST_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:275: 警告: [removal] Builder 中的 weaponCombinationPredicator(Function<LivingEntityPatch<?>,Boolean>) 已过时, 且标记为待删除
+                    .weaponCombinationPredicator(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:285: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:288: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.ONE_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:295: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:307: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:308: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:309: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:310: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:311: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:312: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:313: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:314: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:315: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:316: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:317: 警告: [removal] Builder 中的 weaponCombinationPredicator(Function<LivingEntityPatch<?>,Boolean>) 已过时, 且标记为待删除
+                    .weaponCombinationPredicator(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:323: 警告: [removal] Builder 中的 styleProvider(Function<LivingEntityPatch<?>,Style>) 已过时, 且标记为待删除
+                    .styleProvider(
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:329: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    .newStyleCombo(Styles.TWO_HAND,
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:340: 警告: [removal] Builder 中的 newStyleCombo(Style,AnimationAccessor<? extends AttackAnimation>...) 已过时, 且标记为待删除
+                    ).newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)
+                     ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:343: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.LEGENDARY_SWORD_IDLE)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:344: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.TORMENT_BERSERK_WALK)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:345: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG)
+                    ^
+C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java:346: 警告: [removal] Builder 中的 livingMotionModifier(Style,LivingMotion,AnimationAccessor<? extends StaticAnimation>) 已过时, 且标记为待删除
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG)
+                    ^
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+注: C:\Users\Administrator\Downloads\尘封古迹\AnnoyingVillagers-1.4\AnnoyingVillagers-1.4\src\main\java\com\pla\annoyingvillagers\capabilities\AVWeaponCapabilityPresets.java 额外使用或覆盖了标记为待删除的已过时 API。
+注: 某些输入文件使用了未经检查或不安全的操作。
+注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+100 个警告
+
+> Task :addMixinsToJar
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :jar
+> Task :configureReobfTaskForReobfJar
+> Task :reobfJar
+> Task :configureReobfTaskForReobfJarJar
+> Task :addMixinsToJarJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :assemble
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :build
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 33s
+11 actionable tasks: 8 executed, 3 up-to-date

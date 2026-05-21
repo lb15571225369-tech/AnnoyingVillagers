@@ -1,0 +1,1486 @@
+package com.pla.annoyingvillagers.combatbehaviour;
+
+import com.pla.annoyingvillagers.entity.BlueDemonEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.item.LegendarySwordItem;
+import com.pla.annoyingvillagers.task.DelayedTask;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
+import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
+import reascer.wom.gameasset.animations.weapons.AnimsRuine;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
+
+public class BlueDemonLegendarySword {
+    static void legendarySwordHeavyAttack(MobPatch<?> mobpatch) {
+        BlueDemonEntity blueDemonEntity = (BlueDemonEntity) mobpatch.getOriginal();
+        ItemStack itemStack = blueDemonEntity.getMainHandItem();
+        if (itemStack.getItem() instanceof LegendarySwordItem && blueDemonEntity.level() instanceof ServerLevel serverLevel) {
+            blueDemonEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+            new DelayedTask(10) {
+                @Override
+                public void run() {
+                    serverLevel.playSound(
+                            null,
+                            blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_START.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
+                    );
+
+                    serverLevel.playSound(
+                            null,
+                            blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_LEGENDARY_SWORD.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
+                    );
+
+                    serverLevel.playSound(
+                            null,
+                            blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_LEGENDARY_SWORD_2.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
+                    );
+
+                    serverLevel.sendParticles(
+                            ParticleTypes.TOTEM_OF_UNDYING,
+                            blueDemonEntity.getX(), blueDemonEntity.getY(), blueDemonEntity.getZ(),
+                            15,
+                            0.0D, 0.0D, 0.0D,
+                            0.2D);
+
+                    serverLevel.sendParticles(
+                            ParticleTypes.TOTEM_OF_UNDYING,
+                            blueDemonEntity.getX(), blueDemonEntity.getEyeY(), blueDemonEntity.getZ(),
+                            100,
+                            0.0D, 0.0D, 0.0D,
+                            0.5D
+                    );
+                    mobpatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK, 0.0F);
+                }
+            };
+        }
+    }
+
+    static void legendarySwordSpecialAttack(MobPatch<?> mobpatch) {
+        BlueDemonEntity blueDemonEntity = (BlueDemonEntity) mobpatch.getOriginal();
+        ItemStack itemStack = blueDemonEntity.getMainHandItem();
+        if (itemStack.getItem() instanceof LegendarySwordItem && blueDemonEntity.level() instanceof ServerLevel) {
+            blueDemonEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+            new DelayedTask(20) {
+                @Override
+                public void run() {
+                    mobpatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
+                }
+            };
+        }
+    }
+
+    public static final Builder<MobPatch<?>> LEGENDARY_SWORD = CECombatBehaviors.builder()
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(3.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::performEscapeRunAway)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(0.0D, 48.0D)
+                                            .guard(40)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(3.0D)
+                            .weight(100.0D)
+                            .maxCooldown (120)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canSwitchWeapon)
+                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                            .addExBehavior(CombatCommon::switchWeapon)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(20)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
+                                                                                                            .addNextBehavior(
+                                                                                                                    Behavior.builder()
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                                                            .addNextBehavior(
+                                                                                                                                    Behavior.builder()
+                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                                                            .addNextBehavior(
+                                                                                                                                                    Behavior.builder()
+                                                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
+                                                                                                                                            )
+                                                                                                                            )
+                                                                                                            )
+                                                                                            )
+                                                                            )
+                                                            )
+
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                                            )
+                                                            )
+
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F).addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(Animations.THE_GUILLOTINE, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_3, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                            )
+                                            )
+
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                            )
+                                            )
+
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsAgony.AGONY_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_COMET, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 7.0D)
+                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 10.0D)
+                                                                            .animationBehavior(AVAnimations.CLONE_ENDERBLASTER_ONEHAND_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AnimsEnderblaster.ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_OBSCURIDAD_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(Animations.THE_GUILLOTINE, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 7.0D)
+                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AnimsAgony.AGONY_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 7.0D)
+                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_COMET, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_4, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 10.0D)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_ENDERBLASTER_ONEHAND_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 7.0D)
+                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 7.0D)
+                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AnimsSolar.SOLAR_OBSCURIDAD_AUTO_4, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AnimsEnderblaster.ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsAgony.AGONY_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_COMET, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 7.0D)
+                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 7.0D)
+                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 15.0D)
+                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.CLONE_ENDERBLASTER_ONEHAND_DASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 7.0D)
+                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_COMET, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(Animations.THE_GUILLOTINE, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 8.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AnimsEnderblaster.ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_OBSCURIDAD_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 6.0D)
+                                                            .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 7.0D)
+                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 7.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 6.0D)
+                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 8.0D)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 15.0D)
+                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .maxCooldown(40)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                                                            )
+                                                            )
+                                            )
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .maxCooldown(40)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                            )
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .maxCooldown(40)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
+                                            )
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .maxCooldown(100)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.CLONE_NAPOLEON_WATERLOW_SHOOT, 0.0F)
+                                            .addExBehavior(BlueDemonLegendarySword::legendarySwordSpecialAttack)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(20.0D)
+                            .maxCooldown (200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsAgony.AGONY_RISING_EAGLE, 0.0F)
+                                            .addExBehavior(BlueDemonLegendarySword::legendarySwordHeavyAttack)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(10.0D)
+                            .maxCooldown (400)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(5.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.ELECTRIC_FIELD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(15.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .custom(CombatCommon::canPerformGuarding)
+                                            .guard(40)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(10.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(160)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(5.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
+                            )
+            );
+}
