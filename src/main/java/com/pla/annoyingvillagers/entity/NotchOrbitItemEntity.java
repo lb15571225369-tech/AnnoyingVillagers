@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.entity;
 
 import com.google.common.collect.Multimap;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import net.minecraft.core.particles.ParticleTypes;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -38,6 +40,8 @@ public class NotchOrbitItemEntity extends ThrowableProjectile {
             SynchedEntityData.defineId(NotchOrbitItemEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ROT_Z =
             SynchedEntityData.defineId(NotchOrbitItemEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_NOT_READY_FOR_SHOOT =
+            SynchedEntityData.defineId(NotchOrbitItemEntity.class, EntityDataSerializers.BOOLEAN);
 
     private boolean notReadyForShoot = false;
     private UUID ownerUUID;
@@ -65,11 +69,50 @@ public class NotchOrbitItemEntity extends ThrowableProjectile {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (this.level().isClientSide && this.entityData.get(DATA_NOT_READY_FOR_SHOOT)) {
+            for (int i = 0; i < 3; i++) {
+                this.level().addParticle(
+                        AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                        this.getX() + (this.random.nextFloat() - 0.5F) * 0.4F,
+                        this.getY() + (this.random.nextFloat() - 0.5F) * 0.4F,
+                        this.getZ() + (this.random.nextFloat() - 0.5F) * 0.4F,
+                        (this.random.nextFloat() - 0.5F) * 0.05F,
+                        (this.random.nextFloat() - 0.5F) * 0.05F,
+                        (this.random.nextFloat() - 0.5F) * 0.05F
+                );
+            }
+            if (this.tickCount % 2 == 0) {
+                this.level().addParticle(
+                        AnnoyingVillagersModParticleTypes.RED_SPARK.get(),
+                        this.getX() + (this.random.nextFloat() - 0.5F) * 0.3F,
+                        this.getY() + 0.2D,
+                        this.getZ() + (this.random.nextFloat() - 0.5F) * 0.3F,
+                        0.0D, 0.03D, 0.0D
+                );
+            }
+            if (this.tickCount % 5 == 0) {
+                this.level().addParticle(
+                        ParticleTypes.ENCHANT,
+                        this.getX(),
+                        this.getY() + 0.5D,
+                        this.getZ(),
+                        (this.random.nextFloat() - 0.5F) * 0.3F,
+                        0.1D,
+                        (this.random.nextFloat() - 0.5F) * 0.3F
+                );
+            }
+        }
+    }
+
+    @Override
     protected void defineSynchedData() {
         this.entityData.define(DATA_STACK, ItemStack.EMPTY);
         this.entityData.define(ROT_X, 0f);
         this.entityData.define(ROT_Y, 0f);
         this.entityData.define(ROT_Z, 0f);
+        this.entityData.define(DATA_NOT_READY_FOR_SHOOT, false);
     }
 
     public void setItem(ItemStack stack) {
@@ -89,6 +132,7 @@ public class NotchOrbitItemEntity extends ThrowableProjectile {
 
     public void setNotReadyForShoot(boolean notReadyForShoot) {
         this.notReadyForShoot = notReadyForShoot;
+        this.entityData.set(DATA_NOT_READY_FOR_SHOOT, notReadyForShoot);
     }
 
     public void setOwnerUUID(UUID ownerUUID) {
@@ -206,6 +250,7 @@ public class NotchOrbitItemEntity extends ThrowableProjectile {
         setRotY(tag.contains("RotY") ? tag.getFloat("RotY") : 0f);
         setRotZ(tag.contains("RotZ") ? tag.getFloat("RotZ") : 0f);
         notReadyForShoot = tag.getBoolean("NotReadyForShoot");
+        this.entityData.set(DATA_NOT_READY_FOR_SHOOT, notReadyForShoot);
         this.damageOverride = tag.contains("DamageOverride")
                 ? tag.getFloat("DamageOverride")
                 : NO_DAMAGE_OVERRIDE;
